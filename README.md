@@ -20,7 +20,7 @@
 
 ### 2.7 [Tests de pénétration](2-Introduction/README.md#Tests-de-pénétration)
 
-### 2.8 [La nécessité d'une approche équilibrée](2-Introduction/README.md#La-nécessité-d-'-une-approche-équilibrée)
+### 2.8 [La nécessité d'une approche équilibrée](2-Introduction/README.md#la-n%C3%A9cessit%C3%A9-dune-approche-%C3%A9quilibr%C3%A9e)
 
 ### 2.9 [Dérivation des exigences de test de sécurité](2-Introduction/README.md#Dérivation-des-exigences-de-test-de-sécurité)
 
