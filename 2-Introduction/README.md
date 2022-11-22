@@ -79,7 +79,7 @@ La liaison aux scénarios du guide de test de sécurité Web doit être effectu�
 
 Comme pour tous les projets OWASP, nous apprécions les commentaires et les réactions. Nous aimons particulièrement savoir que notre travail est utilisé et qu'il est efficace et précis.
 
-## Principes de test
+## Principes de test
 
 Il existe certaines idées fausses courantes lors du développement d'une méthodologie de test pour trouver des bogues de sécurité dans les logiciels. Ce chapitre couvre certains des principes de base que les professionnels doivent prendre en compte lors de la réalisation de tests de sécurité sur des logiciels.
 
