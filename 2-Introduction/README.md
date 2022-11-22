@@ -12,7 +12,7 @@ Le reste de ce guide est organisé comme suit : cette introduction couvre les p
 
 ### Mesurer la sécurité : l'économie des logiciels non sécurisés
 
-Un principe de base du génie logiciel est résumé dans une citation de [Controlling Software Projects: Management, Measurement, and Estimates](https://isbnsearch.org/isbn/9780131717114) par [Tom DeMarco](https://en.wikiquote.org/wiki/Tom_DeMarco):
+Un principe de base du génie logiciel est résumé dans une citation de [Controlling Software Projects: Management, Measurement, and Estimates](https://isbnsearch.org/isbn/9780131717114) par [Tom DeMarco](https://en.wikiquote.org/wiki/Tom_DeMarco) :
 
 > Vous ne pouvez pas contrôler ce que vous ne pouvez pas mesurer.
 
@@ -28,7 +28,7 @@ Le cadre décrit dans ce document encourage les gens à mesurer la sécurité to
 
 ### Qu'est-ce que le test ?
 
-De nombreux éléments doivent être testés au cours du cycle de développement d'une application Web, mais que signifie réellement tester ? Le dictionaaire définit "test" comme suit :
+De nombreux éléments doivent être testés au cours du cycle de développement d'une application Web, mais que signifie réellement tester ? Le dictionnaire définit le mot "test" comme suit :
 
 > **test** (nom) : procédure destinée à établir la qualité, la performance ou la fiabilité de quelque chose, notamment avant sa généralisation.
 
