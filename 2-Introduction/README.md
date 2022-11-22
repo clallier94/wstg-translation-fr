@@ -165,7 +165,7 @@ Cette section présente un aperçu de haut niveau des différentes techniques de
 - Révision des codes
 - Tests de pénétration
 
-## Inspections et révisions manuelles
+## Inspections et révisions manuelles
 
 ### Aperçu
 
