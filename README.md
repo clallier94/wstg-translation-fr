@@ -1,6 +1,6 @@
 # Table des matières
 
-## 0. [## 0. [Préface par Eoin Keary](0-Préface/README.md)](0-Foreword/README.md)
+## 0. [Préface par Eoin Keary](0-Foreword/README.md)
 
 ## 1. [Frontispice](1-Frontispiece/)
 
@@ -46,95 +46,95 @@
 
 ### 3.8 [Méthodologies des tests d'intrusion](3-The_OWASP_Testing_Framework/1-Penetration_Testing_Methodologies.md)
 
-## 4. [Web Application Security Testing](4-Web_Application_Security_Testing/)
+## 4. [Test de sécurité des applications Web](4-Web_Application_Security_Testing/)
 
-### 4.0 [Introduction and Objectives](4-Web_Application_Security_Testing/00-Introduction_and_Objectives/README.md)
+### 4.0 [Présentation et objectifs](4-Web_Application_Security_Testing/00-Introduction_and_Objectives/README.md)
 
-### 4.1 [Information Gathering](4-Web_Application_Security_Testing/01-Information_Gathering/README.md)
+### 4.1 [La collecte d'informations](4-Web_Application_Security_Testing/01-Information_Gathering/README.md)
 
-#### 4.1.1 [Conduct Search Engine Discovery Reconnaissance for Information Leakage](4-Web_Application_Security_Testing/01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md)
+#### 4.1.1 [Effectuer une reconnaissance de découverte de moteur de recherche pour les fuites d'informations](4-Web_Application_Security_Testing/01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md)
 
-#### 4.1.2 [Fingerprint Web Server](4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server.md)
+#### 4.1.2 [Serveur Web d'empreintes digitales](4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server.md)
 
-#### 4.1.3 [Review Webserver Metafiles for Information Leakage](4-Web_Application_Security_Testing/01-Information_Gathering/03-Review_Webserver_Metafiles_for_Information_Leakage.md)
+#### 4.1.3 [Examiner les métafichiers du serveur Web pour détecter les fuites d'informations](4-Web_Application_Security_Testing/01-Information_Gathering/03-Review_Webserver_Metafiles_for_Information_Leakage.md)
 
-#### 4.1.4 [Enumerate Applications on Webserver](4-Web_Application_Security_Testing/01-Information_Gathering/04-Enumerate_Applications_on_Webserver.md)
+#### 4.1.4 [Énumérer les applications sur le serveur Web](4-Web_Application_Security_Testing/01-Information_Gathering/04-Enumerate_Applications_on_Webserver.md)
 
-#### 4.1.5 [Review Webpage Content for Information Leakage](4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Content_for_Information_Leakage.md)
+#### 4.1.5 [Examiner le contenu de la page Web pour détecter les fuites d'informations](4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Webpage_Content_for_Information_Leakage.md)
 
-#### 4.1.6 [Identify Application Entry Points](4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points.md)
+#### 4.1.6 [Identifier les points d'entrée de l'application](4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points.md)
 
-#### 4.1.7 [Map Execution Paths Through Application](4-Web_Application_Security_Testing/01-Information_Gathering/07-Map_Execution_Paths_Through_Application.md)
+#### 4.1.7 [Mapper les chemins d'exécution via l'application](4-Web_Application_Security_Testing/01-Information_Gathering/07-Map_Execution_Paths_Through_Application.md)
 
-#### 4.1.8 [Fingerprint Web Application Framework](4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework.md)
+#### 4.1.8 [Cadre d'application Web d'empreintes digitales](4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework.md)
 
-#### 4.1.9 [Fingerprint Web Application](4-Web_Application_Security_Testing/01-Information_Gathering/09-Fingerprint_Web_Application.md)
+#### 4.1.9 [Application Web d'empreintes digitales](4-Web_Application_Security_Testing/01-Information_Gathering/09-Fingerprint_Web_Application.md)
 
-#### 4.1.10 [Map Application Architecture](4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture.md)
+#### 4.1.10 [Architecture des applications cartographiques](4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture.md)
 
-### 4.2 [Configuration and Deployment Management Testing](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/README.md)
+### 4.2 [Test de gestion de la configuration et du déploiement](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/README.md)
 
-#### 4.2.1 [Test Network Infrastructure Configuration](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/01-Test_Network_Infrastructure_Configuration.md)
+#### 4.2.1 [Tester la configuration de l'infrastructure réseau](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/01-Test_Network_Infrastructure_Configuration.md)
 
-#### 4.2.2 [Test Application Platform Configuration](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/02-Test_Application_Platform_Configuration.md)
+#### 4.2.2 [Tester la configuration de la plate-forme d'application](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/02-Test_Application_Platform_Configuration.md)
 
-#### 4.2.3 [Test File Extensions Handling for Sensitive Information](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/03-Test_File_Extensions_Handling_for_Sensitive_Information.md)
+#### 4.2.3 [Tester la gestion des extensions de fichiers pour les informations sensibles](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/03-Test_File_Extensions_Handling_for_Sensitive_Information.md)
 
-#### 4.2.4 [Review Old Backup and Unreferenced Files for Sensitive Information](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information.md)
+#### 4.2.4 [Examiner l'ancienne sauvegarde et les fichiers non référencés pour les informations sensibles](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information.md)
 
-#### 4.2.5 [Enumerate Infrastructure and Application Admin Interfaces](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/05-Enumerate_Infrastructure_and_Application_Admin_Interfaces.md)
+#### 4.2.5 [Énumérer les interfaces d'administration d'infrastructure et d'application](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/05-Enumerate_Infrastructure_and_Application_Admin_Interfaces.md)
 
-#### 4.2.6 [Test HTTP Methods](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods.md)
+#### 4.2.6 [Tester les méthodes HTTP](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods.md)
 
-#### 4.2.7 [Test HTTP Strict Transport Security](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security.md)
+#### 4.2.7 [Tester la sécurité du transport strict HTTP](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security.md)
 
-#### 4.2.8 [Test RIA Cross Domain Policy](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/08-Test_RIA_Cross_Domain_Policy.md)
+#### 4.2.8 [Tester la stratégie interdomaine RIA](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/08-Test_RIA_Cross_Domain_Policy.md)
 
-#### 4.2.9 [Test File Permission](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/09-Test_File_Permission.md)
+#### 4.2.9 [Autorisation de fichier de test](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/09-Test_File_Permission.md)
 
-#### 4.2.10 [Test for Subdomain Takeover](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/10-Test_for_Subdomain_Takeover.md)
+#### 4.2.10 [Test de reprise de sous-domaine](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/10-Test_for_Subdomain_Takeover.md)
 
-#### 4.2.11 [Test Cloud Storage](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/11-Test_Cloud_Storage.md)
+#### 4.2.11 [Tester le stockage en nuage](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/11-Test_Cloud_Storage.md)
 
-#### 4.2.12 [Test for Content Security Policy](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy.md)
+#### 4.2.12 [Tester la politique de sécurité du contenu](4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy.md)
 
-### 4.3 [Identity Management Testing](4-Web_Application_Security_Testing/03-Identity_Management_Testing/README.md)
+### 4.3 [Test de gestion des identités](4-Web_Application_Security_Testing/03-Identity_Management_Testing/README.md)
 
-#### 4.3.1 [Test Role Definitions](4-Web_Application_Security_Testing/03-Identity_Management_Testing/01-Test_Role_Definitions.md)
+#### 4.3.1 [Tester les définitions de rôle](4-Web_Application_Security_Testing/03-Identity_Management_Testing/01-Test_Role_Definitions.md)
 
-#### 4.3.2 [Test User Registration Process](4-Web_Application_Security_Testing/03-Identity_Management_Testing/02-Test_User_Registration_Process.md)
+#### 4.3.2 [Tester le processus d'enregistrement des utilisateurs](4-Web_Application_Security_Testing/03-Identity_Management_Testing/02-Test_User_Registration_Process.md)
 
-#### 4.3.3 [Test Account Provisioning Process](4-Web_Application_Security_Testing/03-Identity_Management_Testing/03-Test_Account_Provisioning_Process.md)
+#### 4.3.3 [Tester le processus de provisionnement de compte](4-Web_Application_Security_Testing/03-Identity_Management_Testing/03-Test_Account_Provisioning_Process.md)
 
-#### 4.3.4 [Testing for Account Enumeration and Guessable User Account](4-Web_Application_Security_Testing/03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md)
+#### 4.3.4 [Test d'énumération de compte et de compte d'utilisateur devinable](4-Web_Application_Security_Testing/03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md)
 
-#### 4.3.5 [Testing for Weak or Unenforced Username Policy](4-Web_Application_Security_Testing/03-Identity_Management_Testing/05-Testing_for_Weak_or_Unenforced_Username_Policy.md)
+#### 4.3.5 [Test de la politique de nom d'utilisateur faible ou non appliquée](4-Web_Application_Security_Testing/03-Identity_Management_Testing/05-Testing_for_Weak_or_Unenforced_Username_Policy.md)
 
-### 4.4 [Authentication Testing](4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
+### 4.4 [Test d'authentification](4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
 
-#### 4.4.1 [Testing for Credentials Transported over an Encrypted Channel](4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel.md)
+#### 4.4.1 [Test des informations d'identification transportées sur un canal crypté](4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel.md)
 
-#### 4.4.2 [Testing for Default Credentials](4-Web_Application_Security_Testing/04-Authentication_Testing/02-Testing_for_Default_Credentials.md)
+#### 4.4.2 [Test des informations d'identification par défaut](4-Web_Application_Security_Testing/04-Authentication_Testing/02-Testing_for_Default_Credentials.md)
 
-#### 4.4.3 [Testing for Weak Lock Out Mechanism](4-Web_Application_Security_Testing/04-Authentication_Testing/03-Testing_for_Weak_Lock_Out_Mechanism.md)
+#### 4.4.3 [Test de mécanisme de verrouillage faible](4-Web_Application_Security_Testing/04-Authentication_Testing/03-Testing_for_Weak_Lock_Out_Mechanism.md)
 
-#### 4.4.4 [Testing for Bypassing Authentication Schema](4-Web_Application_Security_Testing/04-Authentication_Testing/04-Testing_for_Bypassing_Authentication_Schema.md)
+#### 4.4.4 [Test de contournement du schéma d'authentification](4-Web_Application_Security_Testing/04-Authentication_Testing/04-Testing_for_Bypassing_Authentication_Schema.md)
 
-#### 4.4.5 [Testing for Vulnerable Remember Password](4-Web_Application_Security_Testing/04-Authentication_Testing/05-Testing_for_Vulnerable_Remember_Password.md)
+#### 4.4.5 [Test de mémorisation du mot de passe vulnérable](4-Web_Application_Security_Testing/04-Authentication_Testing/05-Testing_for_Vulnerable_Remember_Password.md)
 
-#### 4.4.6 [Testing for Browser Cache Weaknesses](4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
+#### 4.4.6 [Test des faiblesses du cache du navigateur](4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
 
-#### 4.4.7 [Testing for Weak Password Policy](4-Web_Application_Security_Testing/04-Authentication_Testing/07-Testing_for_Weak_Password_Policy.md)
+#### 4.4.7 [Test de la politique de mot de passe faible](4-Web_Application_Security_Testing/04-Authentication_Testing/07-Testing_for_Weak_Password_Policy.md)
 
-#### 4.4.8 [Testing for Weak Security Question Answer](4-Web_Application_Security_Testing/04-Authentication_Testing/08-Testing_for_Weak_Security_Question_Answer.md)
+#### 4.4.8 [Test de réponse à la question de sécurité faible](4-Web_Application_Security_Testing/04-Authentication_Testing/08-Testing_for_Weak_Security_Question_Answer.md)
 
-#### 4.4.9 [Testing for Weak Password Change or Reset Functionalities](4-Web_Application_Security_Testing/04-Authentication_Testing/09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md)
+#### 4.4.9 [Test des fonctionnalités de modification ou de réinitialisation de mot de passe faibles](4-Web_Application_Security_Testing/04-Authentication_Testing/09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md)
 
-#### 4.4.10 [Testing for Weaker Authentication in Alternative Channel](4-Web_Application_Security_Testing/04-Authentication_Testing/10-Testing_for_Weaker_Authentication_in_Alternative_Channel.md)
+#### 4.4.10 [Test d'authentification plus faible dans un canal alternatif](4-Web_Application_Security_Testing/04-Authentication_Testing/10-Testing_for_Weaker_Authentication_in_Alternative_Channel.md)
 
-#### 4.4.11 [Testing Multi-Factor Authentication](4-Web_Application_Security_Testing/04-Authentication_Testing/11-Testing_Multi-Factor_Authentication.md)
+#### 4.4.11 [Test de l'authentification multifacteur](4-Web_Application_Security_Testing/04-Authentication_Testing/11-Testing_Multi-Factor_Authentication.md)
 
-### 4.5 [Authorization Testing](4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
+### 4.5 [Test d'autorisation](4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
 
 #### 4.5.1 [Testing Directory Traversal File Include](4-Web_Application_Security_Testing/05-Authorization_Testing/01-Testing_Directory_Traversal_File_Include.md)
 
