@@ -20,7 +20,7 @@ Les tests de sécurité ne sont pas différents. Malheureusement, mesurer la sé
 
 Un aspect qui doit être souligné est que les mesures de sécurité concernent à la fois les problèmes techniques spécifiques (par exemple, la prévalence d'une certaine vulnérabilité) et la manière dont ces problèmes affectent l'économie des logiciels. La plupart des techniciens comprendront au moins les problèmes de base, ou ils auront peut-être une compréhension plus approfondie des vulnérabilités. Malheureusement, peu sont capables de traduire ces connaissances techniques en termes monétaires et de quantifier le coût potentiel des vulnérabilités pour l'entreprise du propriétaire de l'application. Jusqu'à ce que cela se produise, les DSI ne seront pas en mesure de développer un retour précis sur l'investissement en sécurité et, par la suite, d'affecter des budgets appropriés à la sécurité logicielle.
 
-Bien que l'estimation du coût des logiciels non sécurisés puisse sembler une tâche ardue, il y a eu beaucoup de travail dans cette direction. En 2018, le Consortium pour la qualité des logiciels informatiques [résumé](https://www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2018-report/The-Cost-of-Poor-Quality-Software-in-the-US-2018-Report.pdf):
+Bien que l'estimation du coût des logiciels non sécurisés puisse sembler une tâche ardue, il y a eu beaucoup de travail dans cette direction. En 2018, le Consortium pour la qualité des logiciels informatiques [résumé](https://www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2018-report/The-Cost-of-Poor-Quality-Software-in-the-US-2018-Report.pdf) :
 
 > ...le coût des logiciels de mauvaise qualité aux États-Unis en 2018 est d'environ 2,84 billions de dollars...
 
