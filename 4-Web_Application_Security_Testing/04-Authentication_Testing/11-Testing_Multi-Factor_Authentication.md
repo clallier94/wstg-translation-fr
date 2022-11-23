@@ -1,184 +1,184 @@
-# Testing Multi-Factor Authentication (MFA)
+# Test de l'authentification multifacteur (MFA)
 
 |ID          |
 |------------|
 |WSTG-AUTH-11|
 
-## Summary
+## Sommaire
 
-Many applications implement Multi-Factor Authentication (MFA) as an additional layer of security to protect the login process. This is also known as two-factor authentication (2FA) or two-step verification (2SV) - although these are not strictly the same thing. MFA means asking the user to provide *at least* two different [authentication factors](#types-of-mfa) when logging in.
+De nombreuses applications implémentent l'authentification multifacteur (MFA) comme couche de sécurité supplémentaire pour protéger le processus de connexion. Ceci est également connu sous le nom d'authentification à deux facteurs (2FA) ou de vérification en deux étapes (2SV) - bien que ce ne soit pas strictement la même chose. MFA signifie demander à l'utilisateur de fournir *au moins* deux [facteurs d'authentification](#types-of-MFA) différents lors de la connexion.
 
-MFA adds additional complexity to both the authentication functionality, and also to other security-related areas (such as credential management and password recovery), meaning that it is critical for it to be implemented in a correct and robust manner.
+La MFA ajoute une complexité supplémentaire à la fois à la fonctionnalité d'authentification, ainsi qu'à d'autres domaines liés à la sécurité (tels que la gestion des informations d'identification et la récupération des mots de passe), ce qui signifie qu'il est essentiel qu'elle soit mise en œuvre de manière correcte et robuste.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify the type of MFA used by the application.
-- Determine whether the MFA implementation is robust and secure.
-- Attempt to bypass the MFA.
+- Identifier le type de MFA utilisé par l'application.
+- Déterminer si la mise en œuvre MFA est robuste et sécurisée.
+- Essayez de contourner le MFA.
 
-## How to Test
+## Comment tester
 
-### Types of MFA
+### Types d'AMF
 
-MFA means that *at least* two of the following factors are required to authentication:
+MFA signifie qu'*au moins* deux des facteurs suivants sont requis pour l'authentification :
 
-| Factor | Examples |
+| Facteur | Exemples |
 |--------|----------|
-| Something You Know | Passwords, PINs and security questions. |
-| Something You Have | Hardware or software tokens, certificates, email*, SMS, and phone calls. |
-| Something You Are | Fingerprints, facial recognition, iris scans, handprint scans and behavioural factors. |
-| Location | Source IP ranges, and geolocation. |
+| Quelque chose que vous savez | Mots de passe, codes PIN et questions de sécurité. |
+| Quelque chose que vous avez | Jetons matériels ou logiciels, certificats, e-mails*, SMS et appels téléphoniques. |
+| Quelque chose que vous êtes | Empreintes digitales, reconnaissance faciale, scans d'iris, scans d'empreintes digitales et facteurs comportementaux. |
+| Localisation | Plages d'adresses IP sources et géolocalisation. |
 
-\* Email only really constitutes "something you have" if the email account itself is protected with MFA. As such, it should be considered weaker than other alternatives such as certificates or TOTP, and may not be accepted as MFA under some definitions.
+\* Le courrier électronique ne constitue vraiment "quelque chose que vous avez" que si le compte de messagerie lui-même est protégé par MFA. En tant que tel, il doit être considéré comme plus faible que d'autres alternatives telles que les certificats ou le TOTP, et peut ne pas être accepté comme MFA selon certaines définitions.
 
-Note that requiring multiple examples of a single factor (such as needing both a password and a PIN) **does not constitute MFA**, although it may provide some security benefits over a simple password, and may be considered two-step verification (2SV).
+Notez que le fait d'exiger plusieurs exemples d'un seul facteur (par exemple, avoir besoin à la fois d'un mot de passe et d'un code PIN) ** ne constitue pas une authentification multifacteur **, bien qu'il puisse offrir certains avantages en matière de sécurité par rapport à un simple mot de passe, et peut être considéré comme une vérification en deux étapes ( 2SV).
 
-Due to the complexity of implementing biometrics in a browser-based environment, "Something You Are" is rarely used for web applications, although it is starting to be adopted using standards such as WebAuthn. The most common second factor is "Something You Have".
+En raison de la complexité de la mise en œuvre de la biométrie dans un environnement basé sur un navigateur, "Something You Are" est rarement utilisé pour les applications Web, bien qu'il commence à être adopté à l'aide de normes telles que WebAuthn. Le deuxième facteur le plus courant est "Quelque chose que vous avez".
 
-### Check for MFA Bypasses
+### Vérifier les contournements MFA
 
-The first step for testing MFA is to identify all of the authentication functionality in the application, which may include:
+La première étape du test MFA consiste à identifier toutes les fonctionnalités d'authentification dans l'application, qui peuvent inclure :
 
-- The main login page.
-- Security critical functionality (such as disabling MFA or changing a password).
-- Federated login providers.
-- API endpoints (from both the main web interface and mobile apps).
-- Alternative (non-HTTP) protocols.
-- Test or debug functionality.
+- La page de connexion principale.
+- Fonctionnalité critique pour la sécurité (telle que la désactivation de MFA ou la modification d'un mot de passe).
+- Fournisseurs de connexion fédérés.
+- Points de terminaison API (à partir de l'interface Web principale et des applications mobiles).
+- Protocoles alternatifs (non HTTP).
+- Fonctionnalité de test ou de débogage.
 
-All of the different login methods should be reviewed, to ensure that MFA is enforced consistently. If some methods do not require MFA, then these can provide a simple method to bypass them.
+Toutes les différentes méthodes de connexion doivent être examinées afin de garantir que l'authentification MFA est appliquée de manière cohérente. Si certaines méthodes ne nécessitent pas de MFA, elles peuvent fournir une méthode simple pour les contourner.
 
-If the authentication is done in multiple steps then it may be possible to bypass it by completing the first step of the authentication process (entering the username and password), and then force-browsing to the application or making direct API requests without completing the second stage (entering the MFA code).
+Si l'authentification est effectuée en plusieurs étapes, il peut être possible de la contourner en complétant la première étape du processus d'authentification (en saisissant le nom d'utilisateur et le mot de passe), puis en forçant la navigation vers l'application ou en effectuant des requêtes API directes sans terminer la seconde. étape (saisie du code MFA).
 
-In some cases, there may also be intentional MFA bypasses implemented, such as not requiring MFA:
+Dans certains cas, des contournements MFA intentionnels peuvent également être mis en œuvre, comme ne pas nécessiter de MFA :
 
-- From specific IP addresses (which may be spoofable using the `X-Forwarded-For` HTTP header).
-- When a specific HTTP header is set (such as a non-standard header like `X-Debug`).
-- For a specific hard-coded account (such as a "root" or "breakglass" account).
+- À partir d'adresses IP spécifiques (qui peuvent être usurpées à l'aide de l'en-tête HTTP `X-Forwarded-For`).
+- Lorsqu'un en-tête HTTP spécifique est défini (comme un en-tête non standard comme `X-Debug`).
+- Pour un compte spécifique codé en dur (comme un compte "root" ou "breakglass").
 
-Where an application supports both local and federated logins, it may be possible to bypass the MFA if there is no strong separation between these two types of accounts. For example, if a user registers a local account and configures MFA for it, but does not have MFA configured on their account on the federated login provider, it may be possible for an attacker to re-register (or link) a federated account on the target application with the same email address by compromising the user's account on the federated login provider.
+Lorsqu'une application prend en charge à la fois les connexions locales et fédérées, il peut être possible de contourner le MFA s'il n'y a pas de séparation forte entre ces deux types de comptes. Par exemple, si un utilisateur enregistre un compte local et configure MFA pour celui-ci, mais n'a pas configuré MFA sur son compte sur le fournisseur de connexion fédérée, il peut être possible pour un attaquant de réenregistrer (ou de lier) un compte fédéré sur l'application cible avec la même adresse e-mail en compromettant le compte de l'utilisateur sur le fournisseur de connexion fédérée.
 
-Finally, if the MFA is implemented on a different system to the main application (such as on a reverse proxy, in order to protect a legacy application that does not natively support MFA), then it may be possible to bypass it by connecting directly to the backend application server, as discussed in the guide on how to [map the application architecture](../01-Information_Gathering/10-Map_Application_Architecture.md#content-delivery-network-cdn).
+Enfin, si le MFA est implémenté sur un système différent de l'application principale (comme sur un proxy inverse, afin de protéger une application héritée qui ne supporte pas nativement le MFA), il peut alors être possible de le contourner en se connectant directement à le serveur d'applications principal, comme indiqué dans le guide sur la façon de [mapper l'architecture de l'application](../01-Information_Gathering/10-Map_Application_Architecture.md#content-delivery-network-cdn).
 
-### Check MFA Management
+### Vérifier la gestion MFA
 
-The functionality used to manage MFA from inside the user's account should be tested for vulnerabilities, including:
+La fonctionnalité utilisée pour gérer MFA depuis le compte de l'utilisateur doit être testée pour détecter les vulnérabilités, notamment :
 
-- Is the user required to re-authenticate to remove or change MFA settings?
-- Is the MFA management functionality vulnerable to [cross-site request forgery](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md)?
-- Can other users' MFA setting be modified through [IDOR vulnerabilities](../05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References.md)?
+- L'utilisateur doit-il se ré-authentifier pour supprimer ou modifier les paramètres MFA ?
+- La fonctionnalité de gestion MFA est-elle vulnérable à [falsification de demande intersite](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md) ?
+- Le paramètre MFA d'autres utilisateurs peut-il être modifié via [Vulnérabilités IDOR](../05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References.md) ?
 
-### Check MFA Recovery Options
+### Vérifier les options de récupération MFA
 
-Many applications will provide users with a way to regain access to their account if they are unable to authenticate with their second factor (for example if they have lost their phone). These mechanisms can often represent a significant weakness in the application, as they effectively allow the second authentication factor to be bypassed.
+De nombreuses applications fourniront aux utilisateurs un moyen de retrouver l'accès à leur compte s'ils ne peuvent pas s'authentifier avec leur deuxième facteur (par exemple s'ils ont perdu leur téléphone). Ces mécanismes peuvent souvent représenter une faiblesse importante de l'application, car ils permettent effectivement de contourner le deuxième facteur d'authentification.
 
-#### Recovery Codes
+#### Codes de récupération
 
-Some applications will provide the user with a list of recovery or backup codes when they enable MFA, which can be used to login. These should be checked to ensure:
+Certaines applications fourniront à l'utilisateur une liste de codes de récupération ou de sauvegarde lorsqu'elles activent MFA, qui peut être utilisée pour se connecter. Ceux-ci doivent être vérifiés pour s'assurer :
 
-- They are sufficiently long and complex to protect against brute-force attacks.
-- They are securely generated.
-- They can only be used once.
-- Brute-force protection is in place (such as account lockout).
-- The user is notified (via email, SMS, etc) when a code is used.
+- Ils sont suffisamment longs et complexes pour se protéger des attaques par force brute.
+- Ils sont générés de manière sécurisée.
+- Ils ne peuvent être utilisés qu'une seule fois.
+- Une protection contre la force brute est en place (comme le verrouillage du compte).
+- L'utilisateur est averti (par e-mail, SMS, etc.) lorsqu'un code est utilisé.
 
-See the ["Backup Codes" section in the Forgotten Password Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#backup-codes) for further details.
+Consultez la section ["Codes de sauvegarde" dans l'aide-mémoire sur les mots de passe oubliés](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html#backup-codes) pour plus de détails.
 
-#### MFA Reset Process
+#### Processus de réinitialisation MFA
 
-If the application implements an MFA reset process, this should be tested in the same way that the [password reset process](09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md) is tested. It is important that this process is *at least* as strong as the MFA implementation for the application.
+Si l'application implémente un processus de réinitialisation MFA, celui-ci doit être testé de la même manière que le [processus de réinitialisation du mot de passe] (09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md) est testé. Il est important que ce processus soit *au moins* aussi solide que l'implémentation MFA pour l'application.
 
-#### Alternative Authentication
+#### Authentification alternative
 
-Some applications will allow the user to prove their identity through other means, such as the use of [security questions](08-Testing_for_Weak_Security_Question_Answer.md). This usually represents a significant weakness, as security questions provide a far lower level of security than MFA.
+Certaines applications permettront à l'utilisateur de prouver son identité par d'autres moyens, comme l'utilisation de [questions de sécurité](08-Testing_for_Weak_Security_Question_Answer.md). Cela représente généralement une faiblesse importante, car les questions de sécurité offrent un niveau de sécurité bien inférieur à celui de MFA.
 
-### One-Time Passwords
+### Mots de passe à usage unique
 
-The most common form of MFA is the one of One-Time Passwords (OTPs), which are typically six-digit numeric codes (although they can be longer or shorter). These can either be generated by both the server and the user (for example, with an authenticator app), or can be generated on the server and sent to the user. There are various ways that this OTP can be provided to the user, including:
+La forme la plus courante de MFA est celle des mots de passe à usage unique (OTP), qui sont généralement des codes numériques à six chiffres (bien qu'ils puissent être plus longs ou plus courts). Ceux-ci peuvent soit être générés à la fois par le serveur et l'utilisateur (par exemple, avec une application d'authentification), soit être générés sur le serveur et envoyés à l'utilisateur. Cet OTP peut être fourni à l'utilisateur de différentes manières, notamment :
 
-| Type | Description |
+| Taper | Descriptif |
 |------|-------------|
-| HMAC One-Time Password (HOPT) | Generates a code based on the HMAC of a secret and a shared counter. |
-| Time-based One-Time Password (TOTP) | Generates a code based on HMAC of a secret and the current time. |
-| Email | Sends a code via email. |
-| SMS | Sends a code via SMS. |
-| Phone | Sends a code via a voice call to a phone number. |
+| Mot de passe à usage unique HMAC (HOPT) | Génère un code basé sur le HMAC d'un secret et d'un compteur partagé. |
+| Mot de passe à usage unique basé sur le temps (TOTP) | Génère un code basé sur le HMAC d'un secret et l'heure actuelle. |
+| E-mail | Envoie un code par e-mail. |
+| SMS | Envoie un code par SMS. |
+| Téléphone | Envoie un code via un appel vocal à un numéro de téléphone. |
 
-The OTP is typically entered after the user has provided their username and password. There are various checks that should be performed, including:
+L'OTP est généralement entré après que l'utilisateur a fourni son nom d'utilisateur et son mot de passe. Diverses vérifications doivent être effectuées, notamment :
 
-- Is the account locked out after multiple failed MFA attempts?
-- Is the user's IP address blocked after multiple failed MFA attempts across different accounts?
-- Are failed MFA attempts logged?
-- Is the form vulnerable to injection attacks, including [SQL wildcard injection](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection)?
+- Le compte est-il verrouillé après plusieurs tentatives MFA infructueuses ?
+- L'adresse IP de l'utilisateur est-elle bloquée après plusieurs tentatives MFA infructueuses sur différents comptes ?
+- Les tentatives MFA infructueuses sont-elles enregistrées ?
+- Le formulaire est-il vulnérable aux attaques par injection, y compris [l'injection de caractères génériques SQL](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection) ?
 
-Depending on the type of OTPs used, there are also some other specific checks that should be performed:
+Selon le type d'OTP utilisé, il existe également d'autres contrôles spécifiques à effectuer :
 
-- How are OTPs sent to user (email, SMS, phone, etc)
-    - Is there rate limiting to prevent SMS/phone spam costing money?
-- How strong are OTPs (length and keyspace)?
-- How long are OTPs valid for?
-- Are multiple OTPs valid at once?
-- Can the OTPs be used more than once?
-- Are the OTPs tied to the correct user account or is it possible to authenticate with them on other accounts?
+- Comment les OTP sont-ils envoyés à l'utilisateur (e-mail, SMS, téléphone, etc.)
+    - Existe-t-il une limitation du débit pour éviter que les spams par SMS/téléphone ne coûtent de l'argent ?
+- Quelle est la force des OTP (longueur et keyspace) ?
+- Combien de temps les OTP sont-ils valables ?
+- Plusieurs OTP sont-ils valides à la fois ?
+- Les OTP peuvent-ils être utilisés plus d'une fois ?
+- Les OTP sont-ils liés au bon compte utilisateur ou est-il possible de s'authentifier auprès d'eux sur d'autres comptes ?
 
-#### HOTP and TOTP
+#### HOTP et TOTP
 
-HOTP and TOTP codes are both based on a secret that is shared between the server and the user. For TOTP codes, this is usually provided to the user in the form of a QR code that they scan with an authenticator app (although it can also be provided as a text secret for them to manually enter).
+Les codes HOTP et TOTP sont tous deux basés sur un secret partagé entre le serveur et l'utilisateur. Pour les codes TOTP, cela est généralement fourni à l'utilisateur sous la forme d'un code QR qu'il scanne avec une application d'authentification (bien qu'il puisse également être fourni sous forme de texte secret à saisir manuellement).
 
-Where the secret is generated on the server, it should be checked to ensure that it is sufficiently long and complex ([RFC 4226](https://www.rfc-editor.org/rfc/rfc4226#section-4) recommends at least 160 bits), and that it is generated using a [secure random function](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation).
+Lorsque le secret est généré sur le serveur, il doit être vérifié pour s'assurer qu'il est suffisamment long et complexe ([RFC 4226](https://www.rfc-editor.org/rfc/rfc4226#section-4) recommande à moins 160 bits), et qu'il est généré à l'aide d'une [fonction aléatoire sécurisée](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation).
 
-Where the secret can be provided by the user, an appropriate minimum length should be enforced, and the input should be checked for the usual injection attacks.
+Lorsque le secret peut être fourni par l'utilisateur, une longueur minimale appropriée doit être appliquée et l'entrée doit être vérifiée pour les attaques par injection habituelles.
 
-TOTP codes are typically valid for 30 seconds, but some applications choose to accept multiple codes (such as the previous, current, and next codes) in order to deal with differences between the system time on the server and on the user's device. Some applications may allow multiple codes on either side of the current one, which may make it easier for an attacker to guess or brute-force the code. The table below shows the chance of successfully brute-forcing an OTP code based on an attacker being able to make 10 requests a second, for applications that accept either only the current code, or multiple codes (see [this article](https://www.codasecurity.co.uk/articles/mfa-testing#case-study---brute-forcing-totp) for the calculations behind the table).
+Les codes TOTP sont généralement valides pendant 30 secondes, mais certaines applications choisissent d'accepter plusieurs codes (tels que les codes précédents, actuels et suivants) afin de gérer les différences entre l'heure système sur le serveur et sur l'appareil de l'utilisateur. Certaines applications peuvent autoriser plusieurs codes de part et d'autre du code actuel, ce qui peut permettre à un attaquant de deviner ou de forcer le code plus facilement. Le tableau ci-dessous montre les chances de forcer avec succès un code OTP basé sur un attaquant capable de faire 10 requêtes par seconde, pour les applications qui acceptent soit uniquement le code actuel, soit plusieurs codes (voir [cet article](https:/ /www.codasecurity.co.uk/articles/mfa-testing#case-study---brute-forcing-totp) pour les calculs derrière le tableau).
 
-| Valid Codes | Success rate after 1 hour | Success rate after 4 hours | Success rate after 12 hours | Success rate after 24 hours |
-|-------------|---------------------------|----------------------------|-----------------------------|-----------------------------|
-| 1 | 4%  | 13% | 35% | 58% |
+| Codes valides | Taux de réussite après 1 heure | Taux de réussite après 4 heures | Taux de réussite après 12 heures | Taux de réussite après 24 heures |
+|------------|---------------------------|------- ---------------------|------------------------------------------ -|------------------------------------------|
+| 1 | 4% | 13% | 35% | 58% |
 | 3 | 10% | 35% | 72% | 92% |
 | 5 | 16% | 51% | 88% | 99% |
 | 7 | 22% | 63% | 95% | 99% |
 
-#### Email, SMS, and Phone
+#### Courriel, SMS et téléphone
 
-Where codes are generated by the server and sent to the client, the following areas should be considered:
+Lorsque les codes sont générés par le serveur et envoyés au client, les domaines suivants doivent être pris en compte :
 
-- Is the transport mechanism (email, SMS, or voice) secure enough for the application?
-- Are the codes sufficiently long and complex?
-- Are the codes generated using a [secure random function](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation)?
-- How long are the codes valid for?
-- Are multiple codes valid at once, or does generating a new code invalidate the previous one?
-    - Could this be used to block access to an account by repeatedly requesting codes?
-- Is there sufficient rate-limiting to prevent an attacker requesting large numbers of codes?
-    - Large numbers of emailed code may get the server blocked for sending spam.
-    - Large numbers of SMS or voice calls may cost money, or be used to harass a user.
+- Le mécanisme de transport (email, SMS ou voix) est-il suffisamment sécurisé pour l'application ?
+- Les codes sont-ils suffisamment longs et complexes ?
+- Les codes sont-ils générés à l'aide d'une [fonction aléatoire sécurisée](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html#secure-random-number-generation) ?
+- Combien de temps les codes sont-ils valables ?
+- Plusieurs codes sont-ils valides à la fois ou est-ce que la génération d'un nouveau code invalide le précédent ?
+    - Cela pourrait-il être utilisé pour bloquer l'accès à un compte en demandant à plusieurs reprises des codes ?
+- Existe-t-il une limitation de débit suffisante pour empêcher un attaquant de demander un grand nombre de codes ?
+    - Un grand nombre de code envoyé par e-mail peut bloquer le serveur pour l'envoi de spam.
+    - Un grand nombre de SMS ou d'appels vocaux peut coûter de l'argent ou être utilisé pour harceler un utilisateur.
 
-### Mobile Apps and Push Notifications
+### Applications mobiles et notifications push
 
-An alternative approach to OTP codes is to send a push notification to the user's mobile phone, which they can either approve or deny. This method is less common, as it requires the user to install an application-specific authenticator.
+Une approche alternative aux codes OTP consiste à envoyer une notification push au téléphone mobile de l'utilisateur, qu'il peut approuver ou refuser. Cette méthode est moins courante, car elle nécessite que l'utilisateur installe un authentificateur spécifique à l'application.
 
-Properly evaluating the security of this requires the scope of testing to be expanded to cover both the mobile app, and any supporting APIs or services used by it; meaning that it would often be outside of the scope of a traditional web application test. However, there are a couple of simple checks that can be performed without testing the mobile app, including:
+Pour évaluer correctement la sécurité de cela, il faut étendre la portée des tests pour couvrir à la fois l'application mobile et toutes les API ou services de support utilisés par celle-ci ; ce qui signifie qu'il sortirait souvent du cadre d'un test d'application Web traditionnel. Cependant, il existe quelques vérifications simples qui peuvent être effectuées sans tester l'application mobile, notamment :
 
-- Does the notification provide sufficient context (IP addresses, location, etc) for the user to make an informed decision about whether to approve or deny it?
-- Is there any kind of challenge and response mechanism (such as providing a code on the website that the user needs to enter into the app - often called "number matching" or "number challenge")?
-- Is there any rate limiting or mechanisms to prevent the user from being spammed with notifications in the hope that they will just blindly accept one?
+- La notification fournit-elle suffisamment de contexte (adresses IP, emplacement, etc.) pour que l'utilisateur puisse décider en connaissance de cause s'il doit l'approuver ou la refuser ?
+- Existe-t-il un type de mécanisme de défi et de réponse (comme fournir un code sur le site Web que l'utilisateur doit saisir dans l'application - souvent appelé « correspondance de numéros » ou « défi de numéros ») ?
+- Existe-t-il une limitation du débit ou des mécanismes pour empêcher l'utilisateur d'être spammé avec des notifications dans l'espoir qu'il en acceptera une aveuglément ?
 
-### IP Address and Location Filtering
+### Filtrage des adresses IP et des emplacements
 
-One of the factors that is sometimes used with MFA is location ("somewhere you are"), although whether this constitutes a proper authentication factor is debatable. In the context of a web application, this typically means restricting access to specific IP addresses, or not prompting the user for a second factor as long as they are connecting from a specific trusted IP address. A common scenario for this would be to authenticate users with just their password when connecting from the office IP ranges, but requiring an OTP code when they connect from elsewhere.
+L'un des facteurs parfois utilisés avec MFA est l'emplacement ("quelque part où vous êtes"), bien que la question de savoir si cela constitue un facteur d'authentification approprié est discutable. Dans le contexte d'une application Web, cela signifie généralement restreindre l'accès à des adresses IP spécifiques ou ne pas demander à l'utilisateur un deuxième facteur tant qu'il se connecte à partir d'une adresse IP de confiance spécifique. Un scénario courant pour cela serait d'authentifier les utilisateurs avec uniquement leur mot de passe lorsqu'ils se connectent à partir des plages IP du bureau, mais en exigeant un code OTP lorsqu'ils se connectent d'ailleurs.
 
-Depending on the implementation, it may be possible for a user to spoof a trusted IP address by setting the `X-Forwarded-For` header, which could allow them to bypass this check. Note that if the application does not correctly sanitize the contents of this header, it may also be possible to carry out attack such as SQL injection here. If the application supports IPv6, then this should also be checked to ensure that appropriate restrictions are applied to those connections.
+Selon l'implémentation, il peut être possible pour un utilisateur d'usurper une adresse IP de confiance en définissant l'en-tête "X-Forwarded-For", ce qui pourrait lui permettre de contourner cette vérification. Notez que si l'application ne nettoie pas correctement le contenu de cet en-tête, il peut également être possible de mener une attaque telle qu'une injection SQL ici. Si l'application prend en charge IPv6, cela doit également être vérifié pour s'assurer que les restrictions appropriées sont appliquées à ces connexions.
 
-Additionally, the trusted IP addresses should be reviewed to ensure that they do not present any weaknesses, such as if they include:
+De plus, les adresses IP de confiance doivent être examinées pour s'assurer qu'elles ne présentent aucune faiblesse, par exemple si elles incluent :
 
-- IP addresses that could be accessible by untrusted users (such as the guest wireless networks in an office).
-- Dynamically assigned IP address that could change.
-- Public network ranges where an attacker could host their own system (such as Azure or AWS).
+- Adresses IP qui pourraient être accessibles par des utilisateurs non fiables (tels que les réseaux sans fil invités dans un bureau).
+- Adresse IP attribuée dynamiquement qui pourrait changer.
+- Plages de réseaux publics où un attaquant pourrait héberger son propre système (comme Azure ou AWS).
 
-### Certificates and Smartcards
+### Certificats et cartes à puce
 
-Transport Layer Security (TLS) is commonly used to encrypt traffic between the client and the server, and to provide a mechanism for the client to confirm the identity of the server (by comparing Common Name (CN) or Subject Alternative Name (SAN) on the certificate to the requested domain). However, it can also provide a mechanism for the server to confirm the identity of the client, known as client certificate authentication or mutual TLS (mTLS). A full discussion of client certificate authentication is outside of the scope of this guide, but the key principle is that the user presents a digital certificate (stored either on their machine or on a smartcard), which is validated by the server.
+Transport Layer Security (TLS) est couramment utilisé pour crypter le trafic entre le client et le serveur, et pour fournir un mécanisme permettant au client de confirmer l'identité du serveur (en comparant le nom commun (CN) ou le nom alternatif du sujet (SAN) sur le certificat au domaine demandé). Cependant, il peut également fournir un mécanisme permettant au serveur de confirmer l'identité du client, appelé authentification par certificat client ou TLS mutuel (mTLS). Une discussion complète de l'authentification par certificat client sort du cadre de ce guide, mais le principe clé est que l'utilisateur présente un certificat numérique (stocké sur sa machine ou sur une carte à puce), qui est validé par le serveur.
 
-The first step when testing is to determine whether the target application restricts the Certificate Authorities (CAs) that are trusted to issue certificates. This information can be obtained using various tools, or by manually examining the TLS handshake. The simplest way is to use OpenSSL's `s_client`:
+La première étape du test consiste à déterminer si l'application cible restreint les autorités de certification (CA) approuvées pour émettre des certificats. Ces informations peuvent être obtenues à l'aide de divers outils ou en examinant manuellement la poignée de main TLS. Le moyen le plus simple consiste à utiliser le `s_client` d'OpenSSL :
 
 ```bash
 $ openssl s_client -connect example:443
@@ -188,26 +188,26 @@ C = US, ST = Example, L = Example, O = Example Org, CN = Example Org Root Certif
 Client Certificate Types: RSA sign, DSA sign, ECDSA sign
 ```
 
-If there are no restrictions, then it may be possible to authenticate using a certificate from a different CA. If there are restrictions but they are badly implemented, it may be possible to create a local CA with the correct name ("Example Org Root Certificate Authority" in the example above), and to use this new CA to sign client certificates.
+S'il n'y a pas de restrictions, il peut être possible de s'authentifier à l'aide d'un certificat d'une autre autorité de certification. S'il y a des restrictions mais qu'elles sont mal implémentées, il peut être possible de créer une CA locale avec le nom correct ("Example Org Root Certificate Authority" dans l'exemple ci-dessus), et d'utiliser cette nouvelle CA pour signer les certificats clients.
 
-If a valid certificate can be obtained, then it should also be verified that the certificate can only be used for the user that it is issued for (i.e, that you can't use a certificate issued to Alice to authenticate on Bob's account). Additionally, certificates should be checked to ensure that they have neither expired nor been revoked.
+Si un certificat valide peut être obtenu, il convient également de vérifier que le certificat ne peut être utilisé que pour l'utilisateur pour lequel il est délivré (c'est-à-dire que vous ne pouvez pas utiliser un certificat délivré à Alice pour vous authentifier sur le compte de Bob). De plus, les certificats doivent être vérifiés pour s'assurer qu'ils n'ont ni expiré ni été révoqués.
 
-## Related Test Cases
+## Cas de test associés
 
-- [Testing for Weak Lock Out Mechanism](03-Testing_for_Weak_Lock_Out_Mechanism.md)
-- [Testing for Weak Password Change or Reset Functionalities](09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md)
+- [Test du mécanisme de verrouillage faible] (03-Testing_for_Weak_Lock_Out_Mechanism.md)
+- [Test des fonctionnalités de changement ou de réinitialisation de mot de passe faibles] (09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md)
 
-## Remediation
+## Correction
 
-Ensure that:
+Veiller à ce que:
 
-- MFA is implemented for all relevant accounts and functionality on the applications.
-- The support MFA methods are appropriate for the application.
-- The mechanisms used to implement MFA are appropriately secured and protected against brute-force attacks.
-- There is appropriate auditing and logging for all MFA-related activity.
+- MFA est mis en œuvre pour tous les comptes et fonctionnalités pertinents sur les applications.
+- Les méthodes de support MFA sont adaptées à l'application.
+- Les mécanismes utilisés pour mettre en œuvre la MFA sont correctement sécurisés et protégés contre les attaques par force brute.
+- Il existe un audit et une journalisation appropriés pour toutes les activités liées à MFA.
 
-See the [OWASP Multi-Factor Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html) for further recommendations.
+Consultez l'[Aide-mémoire sur l'authentification multifacteur OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html) pour plus de recommandations.
 
-## References
+## Références
 
-- [OWASP Multi-Factor Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html)
+- [Aide-mémoire d'authentification multifacteur OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Multifactor_Authentication_Cheat_Sheet.html)

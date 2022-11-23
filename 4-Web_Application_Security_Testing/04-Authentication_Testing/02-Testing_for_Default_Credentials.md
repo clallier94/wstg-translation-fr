@@ -1,73 +1,73 @@
-# Testing for Default Credentials
+# Test des informations d'identification par défaut
 
 |ID          |
 |------------|
 |WSTG-ATHN-02|
 
-## Summary
+## Sommaire
 
-Many web applications and hardware devices have default passwords for the built-in administrative account. Although in some cases these can be randomly generated, they are often static, meaning that they can be easily guessed or obtained by an attacker.
+De nombreuses applications Web et périphériques matériels ont des mots de passe par défaut pour le compte administratif intégré. Bien que dans certains cas, ceux-ci puissent être générés de manière aléatoire, ils sont souvent statiques, ce qui signifie qu'ils peuvent être facilement devinés ou obtenus par un attaquant.
 
-Additionally, when new users are created on the applications, these may have predefined passwords set. These could either be generated automatically by the application, or manually created by staff. In both cases, if they are not generated in a secure manner, the passwords may be possible for an attacker to guess.
+De plus, lorsque de nouveaux utilisateurs sont créés sur les applications, ceux-ci peuvent avoir des mots de passe prédéfinis. Ceux-ci peuvent être soit générés automatiquement par l'application, soit créés manuellement par le personnel. Dans les deux cas, s'ils ne sont pas générés de manière sécurisée, les mots de passe peuvent être devinés par un attaquant.
 
-## Test Objectives
+## Objectifs des tests
 
-- Determine whether the application has any user accounts with default passwords.
-- Review whether new user accounts are created with weak or predictable passwords.
+- Déterminez si l'application possède des comptes d'utilisateurs avec des mots de passe par défaut.
+- Vérifiez si de nouveaux comptes d'utilisateurs sont créés avec des mots de passe faibles ou prévisibles.
 
-## How to Test
+## Comment tester
 
-### Testing for Vendor Default Credentials
+### Test des informations d'identification par défaut du fournisseur
 
-The first step to identifying default passwords is to identify the software that is in use. This is covered in detail in the [Information Gathering](../01-Information_Gathering/README.md) section of the guide.
+La première étape pour identifier les mots de passe par défaut consiste à identifier le logiciel utilisé. Ceci est couvert en détail dans la section [La collecte d'informations](../01-Information_Gathering/README.md) du guide.
 
-Once the software has been identified, try to find whether it uses default passwords, and if so, what they are. This should include:
+Une fois le logiciel identifié, essayez de savoir s'il utilise des mots de passe par défaut, et si oui, quels sont-ils. Cela devrait inclure :
 
-- Searching for "[SOFTWARE] default password".
-- Reviewing the manual or vendor documentation.
-- Checking common default password databases, such as [CIRT.net](https://cirt.net/passwords), [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/Default-Credentials) or [DefaultCreds-cheat-sheet](https://github.com/ihebski/DefaultCreds-cheat-sheet/blob/main/DefaultCreds-Cheat-Sheet.csv).
-- Inspecting the application source code (if available).
-- Installing the application on a virtual machine and inspecting it.
-- Inspecting the physical hardware for stickers (often present on network devices).
+- Recherche du "[LOGICIEL] mot de passe par défaut".
+- Examiner le manuel ou la documentation du fournisseur.
+- Vérification des bases de données de mots de passe par défaut courantes, telles que [CIRT.net](https://cirt.net/passwords), [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/ Default-Credentials) ou [DefaultCreds-cheat-sheet](https://github.com/ihebski/DefaultCreds-cheat-sheet/blob/main/DefaultCreds-Cheat-Sheet.csv).
+- Inspecter le code source de l'application (si disponible).
+- Installer l'application sur une machine virtuelle et l'inspecter.
+- Inspecter le matériel physique pour les autocollants (souvent présents sur les périphériques réseau).
 
-If a default password can't be found, try common options such as:
+Si un mot de passe par défaut est introuvable, essayez les options courantes telles que :
 
-- "admin", "password", "12345", or other [common default passwords](https://github.com/nixawk/fuzzdb/blob/master/bruteforce/passwds/default_devices_users%2Bpasswords.txt).
-- An empty or blank password.
-- The serial number or MAC address of the device.
+- "admin", "password", "12345", ou d'autres [mots de passe par défaut communs](https://github.com/nixawk/fuzzdb/blob/master/bruteforce/passwds/default_devices_users%2Bpasswords.txt).
+- Un mot de passe vide ou vide.
+- Le numéro de série ou l'adresse MAC de l'appareil.
 
-If the username is unknown, there are various options for enumerating users, discussed in the [Testing for Account Enumeration](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md) guide. Alternatively, try common options such as "admin", "root", or "system".
+Si le nom d'utilisateur est inconnu, il existe différentes options pour énumérer les utilisateurs, décrites dans le guide [Test de l'énumération des comptes](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md). Vous pouvez également essayer des options courantes telles que "admin", "root" ou "system".
 
-### Testing for Organization Default Passwords
+### Test des mots de passe par défaut de l'organisation
 
-When staff within an organization manually create passwords for new accounts, they may do so in a predictable way. This can often be:
+Lorsque le personnel d'une organisation crée manuellement des mots de passe pour de nouveaux comptes, il peut le faire de manière prévisible. Cela peut souvent être :
 
-- A single common password such as "Password1".
-- Organization specific details, such as the organization name or address.
-- Passwords that follow a simple pattern, such as "Monday123" if account is created on a Monday.
+- Un seul mot de passe commun tel que "Password1".
+- Détails spécifiques à l'organisation, tels que le nom ou l'adresse de l'organisation.
+- Les mots de passe qui suivent un modèle simple, comme "Monday123" si le compte est créé un lundi.
 
-These types of passwords are often difficult to identify from a black-box perspective, unless they can successfully be guessed or brute-forced. However, they are easy to identify when performing grey-box or white-box testing.
+Ces types de mots de passe sont souvent difficiles à identifier du point de vue de la boîte noire, à moins qu'ils ne puissent être devinés ou forcés avec succès. Cependant, ils sont faciles à identifier lors de l'exécution de tests en boîte grise ou en boîte blanche.
 
-### Testing for Application Generated Default Passwords
+### Test des mots de passe par défaut générés par l'application
 
-If the application automatically generates passwords for new user accounts, these may also be predictable. In order to test these, create multiple accounts on the application with similar details at the same time, and compare the passwords that are given for them.
+Si l'application génère automatiquement des mots de passe pour les nouveaux comptes d'utilisateurs, ceux-ci peuvent également être prévisibles. Afin de les tester, créez plusieurs comptes sur l'application avec des détails similaires en même temps et comparez les mots de passe qui leur sont attribués.
 
-The passwords may be based on:
+Les mots de passe peuvent être basés sur :
 
-- A single static string shared between accounts.
-- A hashed or obfuscated part of the account details, such as `md5($username)`.
-- A time-based algorithm.
-- A weak pseudo-random number generator (PRNG).
+- Une seule chaîne statique partagée entre les comptes.
+- Une partie hachée ou masquée des détails du compte, telle que `md5($username)`.
+- Un algorithme basé sur le temps.
+- Un générateur de nombres pseudo-aléatoires faibles (PRNG).
 
-This type of issue of often difficult to identify from a black-box perspective.
+Ce type de problème est souvent difficile à identifier du point de vue de la boîte noire.
 
-## Tools
+## Outils
 
-- [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intruder)
+- [Burp Intruder] (https://portswigger.net/burp/documentation/desktop/tools/intrus)
 - [THC Hydra](https://github.com/vanhauser-thc/thc-hydra)
-- [Nikto 2](https://www.cirt.net/nikto2)
+- [Nikto2](https://www.cirt.net/nikto2)
 
-## References
+## Références
 
 - [CIRT](https://cirt.net/passwords)
 - [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/Default-Credentials)

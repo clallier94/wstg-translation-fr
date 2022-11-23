@@ -1,188 +1,188 @@
-# Testing for Weak Password Change or Reset Functionalities
+# Test des fonctionnalités de changement ou de réinitialisation de mot de passe faibles
 
 |ID          |
 |------------|
 |WSTG-ATHN-09|
 
-## Summary
+## Sommaire
 
-For any application that requires the user to authenticate with a password, there must be a mechanism by which the user can regain access to their account if they forget their password. Although this can sometimes be a manual process that involves contacting the owner of the website or a support team, users are frequently allowed to carry out a self-service password reset, and to regain access to their account by providing some other evidence of their identity.
+Pour toute application qui demande à l'utilisateur de s'authentifier avec un mot de passe, il doit y avoir un mécanisme par lequel l'utilisateur peut retrouver l'accès à son compte s'il oublie son mot de passe. Bien que cela puisse parfois être un processus manuel qui implique de contacter le propriétaire du site Web ou une équipe d'assistance, les utilisateurs sont souvent autorisés à effectuer une réinitialisation de mot de passe en libre-service et à retrouver l'accès à leur compte en fournissant d'autres preuves de leur identité. .
 
-As this functionality provides a direct route to compromise the user's account, it is crucial that it is implemented securely.
+Étant donné que cette fonctionnalité fournit un moyen direct de compromettre le compte de l'utilisateur, il est crucial qu'elle soit implémentée en toute sécurité.
 
-## Test Objectives
+## Objectifs des tests
 
-- Determine whether the password change and reset functionality allows accounts to be compromised.
+- Déterminez si la fonctionnalité de modification et de réinitialisation du mot de passe permet de compromettre les comptes.
 
-## How to Test
+## Comment tester
 
-### Information Gathering
+### La collecte d'informations
 
-The first step is to gather information about what mechanisms are available to allow the user to reset their password on the application. If there are multiple interfaces on the same site (such as a web interface, mobile application, and API) then these should all be reviewed, in case they provide different functionality.
+La première étape consiste à recueillir des informations sur les mécanismes disponibles pour permettre à l'utilisateur de réinitialiser son mot de passe sur l'application. S'il existe plusieurs interfaces sur le même site (telles qu'une interface Web, une application mobile et une API), elles doivent toutes être examinées, au cas où elles fourniraient des fonctionnalités différentes.
 
-Once this has been established, determine what information is required in order for a user to initiate a password reset. This can be the username or email address (both of which may be obtained from public information), but it could also be an internally-generated user ID.
+Une fois que cela a été établi, déterminez quelles informations sont requises pour qu'un utilisateur lance une réinitialisation de mot de passe. Il peut s'agir du nom d'utilisateur ou de l'adresse e-mail (qui peuvent tous deux être obtenus à partir d'informations publiques), mais il peut également s'agir d'un identifiant d'utilisateur généré en interne.
 
-### General Concerns
+### Préoccupations générales
 
-Regardless of the specific methods used to reset passwords, there are a number of common areas that need to be considered:
+Quelles que soient les méthodes spécifiques utilisées pour réinitialiser les mots de passe, il existe un certain nombre de domaines communs qui doivent être pris en compte :
 
-- Is the password reset process weaker than the authentication process?
+- Le processus de réinitialisation du mot de passe est-il plus faible que le processus d'authentification ?
 
-  The password reset process provides an alternative mechanism to access a user's account, and so should be at least as secure as the usual authentication process. However, it can provide an easier way to compromise the account, especially if it uses weaker authentication factors such as security questions.
+  Le processus de réinitialisation du mot de passe fournit un mécanisme alternatif pour accéder au compte d'un utilisateur et doit donc être au moins aussi sécurisé que le processus d'authentification habituel. Cependant, cela peut fournir un moyen plus simple de compromettre le compte, en particulier s'il utilise des facteurs d'authentification plus faibles tels que des questions de sécurité.
 
-  Additionally, the password reset process may bypass the requirement to use Multi-Factor Authentication (MFA), which can substantially reduce the security of the application.
+  De plus, le processus de réinitialisation du mot de passe peut contourner l'obligation d'utiliser l'authentification multifacteur (MFA), ce qui peut réduire considérablement la sécurité de l'application.
 
-- Is there rate limiting or other protection against automated attacks?
+- Existe-t-il une limitation du débit ou une autre protection contre les attaques automatisées ?
 
-  As with any authentication mechanism, the password reset process should have protection against automated or brute-force attacks. There are a variety of different methods that can be used to achieve this, such as rate limiting or the use of CAPTCHA. These are particularly important on functionality that triggers external actions (such as sending an email or SMS), or when the user is entering a password reset token.
+  Comme pour tout mécanisme d'authentification, le processus de réinitialisation du mot de passe doit être protégé contre les attaques automatisées ou par force brute. Il existe une variété de méthodes différentes qui peuvent être utilisées pour y parvenir, telles que la limitation du débit ou l'utilisation de CAPTCHA. Celles-ci sont particulièrement importantes pour les fonctionnalités qui déclenchent des actions externes (telles que l'envoi d'un e-mail ou d'un SMS), ou lorsque l'utilisateur saisit un jeton de réinitialisation de mot de passe.
 
-  It is also possible to protect against brute-force attacks by locking out the account from the password reset process after a certain number of consecutive attempts. This could also prevent a legitimate user from being able to reset their password and regain access to their account, however.
+  Il est également possible de se protéger contre les attaques par force brute en excluant le compte du processus de réinitialisation du mot de passe après un certain nombre de tentatives consécutives. Cependant, cela pourrait également empêcher un utilisateur légitime de réinitialiser son mot de passe et de retrouver l'accès à son compte.
 
-- Is it vulnerable to common attacks?
+- Est-il vulnérable aux attaques courantes ?
 
-  As well as the specific areas discussed in this guide, it's also important to check for other common vulnerabilities such as SQL injection or cross-site scripting.
+  Outre les domaines spécifiques abordés dans ce guide, il est également important de rechercher d'autres vulnérabilités courantes telles que l'injection SQL ou les scripts intersites.
 
-- Does the reset process allow user enumeration?
+- Le processus de réinitialisation permet-il l'énumération des utilisateurs ?
 
-  See the [Testing for Account Enumeration](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md) guide for further information.
+  Consultez le guide [Test d'énumération de compte](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md) pour plus d'informations.
 
-### Email - New Password Sent
+### E-mail - Nouveau mot de passe envoyé
 
-In this model, the user is sent a new password via email once they have proved their identity. This is considered less secure for two main reasons:
+Dans ce modèle, l'utilisateur reçoit un nouveau mot de passe par e-mail une fois qu'il a prouvé son identité. Ceci est considéré comme moins sûr pour deux raisons principales :
 
-- The password is sent to the user in an unencrypted form.
-- The password for the account is changed when the request is made, effectively locking the user out of their account until they receive the email. By making repeated requests, it is possible to prevent a user from being able to access their account.
+- Le mot de passe est envoyé à l'utilisateur sous une forme non cryptée.
+- Le mot de passe du compte est modifié lorsque la demande est faite, bloquant ainsi l'accès de l'utilisateur à son compte jusqu'à ce qu'il reçoive l'e-mail. En faisant des demandes répétées, il est possible d'empêcher un utilisateur de pouvoir accéder à son compte.
 
-Where this approach is used, the following areas should be reviewed:
+Lorsque cette approche est utilisée, les domaines suivants doivent être examinés :
 
-- Is the user forced to change the password on initial login?
+- L'utilisateur est-il obligé de changer de mot de passe lors de la première connexion ?
 
-  The new password is sent over unencrypted email, and may sit in the user's inbox indefinitely if they don't delete the email. As such, the user should be required to change the password as soon as they log in for the first time.
+  Le nouveau mot de passe est envoyé par e-mail non crypté et peut rester indéfiniment dans la boîte de réception de l'utilisateur s'il ne supprime pas l'e-mail. En tant que tel, l'utilisateur devrait être tenu de changer le mot de passe dès qu'il se connecte pour la première fois.
 
-- Is the password securely generated?
+- Le mot de passe est-il généré de manière sécurisée ?
 
-  The password should be generated using a Cryptographically Secure Pseudo-Random Number Generator (CSPRNG), and should be sufficiently long to prevent password guessing or brute-force attacks. For a secure user-friendly experience, it should be generated using a secure passphrase-style approach (i.e, combining multiple words), rather than a string of random characters.
+  Le mot de passe doit être généré à l'aide d'un générateur de nombres pseudo-aléatoires cryptographiquement sécurisés (CSPRNG) et doit être suffisamment long pour empêcher la devinette du mot de passe ou les attaques par force brute. Pour une expérience utilisateur sécurisée et conviviale, il doit être généré à l'aide d'une approche de type phrase de passe sécurisée (c'est-à-dire en combinant plusieurs mots), plutôt qu'une chaîne de caractères aléatoires.
 
-- Is the user's existing password sent to them?
+- Le mot de passe existant de l'utilisateur lui est-il envoyé ?
 
-  Rather than generating a new password for the user, some applications will send the user their existing password. This is a very insecure approach, as it exposes their current password over unencrypted email. Additionally, if the site is able to recover the existing password, this implies that passwords are either stored using reversible encryption, or (more likely) in unencrypted plain text, both of which represent a serious security weakness.
+  Plutôt que de générer un nouveau mot de passe pour l'utilisateur, certaines applications enverront à l'utilisateur leur mot de passe existant. Il s'agit d'une approche très peu sécurisée, car elle expose leur mot de passe actuel sur des e-mails non cryptés. De plus, si le site est capable de récupérer le mot de passe existant, cela implique que les mots de passe sont soit stockés à l'aide d'un cryptage réversible, soit (plus probablement) en texte brut non crypté, les deux représentant une grave faiblesse de sécurité.
 
-- Are the emails sent from a domain with anti-spoofing protection?
+- Les e-mails sont-ils envoyés depuis un domaine avec une protection anti-spoofing ?
 
-  The domain should implement SPF, DKIM, and DMARC to prevent attackers from spoofing emails from it, which could be used as part of a social engineering attack.
+  Le domaine doit implémenter SPF, DKIM et DMARC pour empêcher les attaquants d'usurper ses e-mails, ce qui pourrait être utilisé dans le cadre d'une attaque d'ingénierie sociale.
 
-- Is email considered sufficiently secure?
+- Le courrier électronique est-il considéré comme suffisamment sécurisé ?
 
-  Emails are typically sent unencrypted, and in many cases the user's email account will not be protected by MFA. It may also be shared between multiple individuals, particularly in a corporate environment.
+  Les e-mails sont généralement envoyés non chiffrés et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protégé par MFA. Il peut également être partagé entre plusieurs personnes, en particulier dans un environnement d'entreprise.
 
-  Consider whether email-based password reset functionality is appropriate, based on the context of the application that is being tested.
+  Déterminez si la fonctionnalité de réinitialisation du mot de passe par e-mail est appropriée, en fonction du contexte de l'application testée.
 
-### Email - Link Sent
+### E-mail - Lien envoyé
 
-In this model, the user is emailed a link that contains a token. They can then click this link, and are prompted to enter a new password on the site. This is the most common approach used for password reset, but is more complex to implement than the previously discussed approach. The key areas to test are:
+Dans ce modèle, l'utilisateur reçoit par e-mail un lien contenant un jeton. Ils peuvent alors cliquer sur ce lien, et sont invités à entrer un nouveau mot de passe sur le site. Il s'agit de l'approche la plus couramment utilisée pour la réinitialisation du mot de passe, mais elle est plus complexe à mettre en œuvre que l'approche décrite précédemment. Les principaux domaines à tester sont :
 
-- Does the link use HTTPS?
+- Le lien utilise-t-il HTTPS ?
 
-  If the token is sent over unencrypted HTTP, it may be possible for an attacker to intercept it.
+  Si le jeton est envoyé via HTTP non chiffré, il peut être possible pour un attaquant de l'intercepter.
 
-- Can the link be used multiple times?
+- Le lien peut-il être utilisé plusieurs fois ?
 
-  Links should expire after they are used, otherwise they provide a persistent backdoor for the account.
+  Les liens doivent expirer après leur utilisation, sinon ils fournissent une porte dérobée persistante pour le compte.
 
-- Does the link expire if it remains unused?
+- Le lien expire-t-il s'il reste inutilisé ?
 
-  Links should be time limited. Exactly how long is appropriate will depend on the site, but it should rarely be more than an hour.
+  Les liens doivent être limités dans le temps. La durée exacte dépendra du site, mais elle devrait rarement dépasser une heure.
 
-- Is the token sufficiently long and random?
+- Le jeton est-il suffisamment long et aléatoire ?
 
-  The security of the process is entirely reliant on an attacker not being able to guess or brute-force a token. The tokens should be generated with a Cryptographically Secure Pseudo-Random Number Generator (CSPRNG), and should be sufficiently long that it is impractical for an attacker to guess or brute-force. At least 128 bits (or 32 hex characters) is a sufficient minimum to make such an online attack impractical.
+  La sécurité du processus dépend entièrement de l'incapacité d'un attaquant à deviner ou à forcer brutalement un jeton. Les jetons doivent être générés avec un générateur de nombres pseudo-aléatoires cryptographiquement sécurisés (CSPRNG) et doivent être suffisamment longs pour qu'il soit impossible pour un attaquant de deviner ou de forcer brutalement. Au moins 128 bits (ou 32 caractères hexadécimaux) est un minimum suffisant pour rendre une telle attaque en ligne impraticable.
 
-  Tokens should never be generated based on known values, such as by taking the MD5 hash of the user's email with `md5($email)`, or using GUIDs which may use insecure PRNG functions, or may not even be random depending on the type.
+  Les jetons ne doivent jamais être générés sur la base de valeurs connues, comme en prenant le hachage MD5 de l'e-mail de l'utilisateur avec `md5($email)`, ou en utilisant des GUID qui peuvent utiliser des fonctions PRNG non sécurisées, ou peuvent même ne pas être aléatoires selon le type .
 
-  An alternative approach to random tokens is to use a cryptographically signed token such as a JWT. In this case, the usual JWT checks should be carried out (is the signature verified, can the "nONe" algorithm be used, can the HMAC key be brute-forced, etc). See the [Testing JSON Web Tokens](../06-Session_Management_Testing/10-Testing_JSON_Web_Tokens.md) guide for further information.
+  Une approche alternative aux jetons aléatoires consiste à utiliser un jeton signé cryptographiquement tel qu'un JWT. Dans ce cas, les vérifications JWT habituelles doivent être effectuées (la signature est-elle vérifiée, l'algorithme "nONe" peut-il être utilisé, la clé HMAC peut-elle être brute-forcée, etc.). Consultez le guide [Test des jetons Web JSON](../06-Session_Management_Testing/10-Testing_JSON_Web_Tokens.md) pour plus d'informations.
 
-- Does the link contain a user ID?
+- Le lien contient-il un ID utilisateur ?
 
-  Sometimes the password reset link may include a user ID as well as a token, such as `reset.php?userid=1&token=123456`. In this case, it may be possible to modify the `userid` parameter to reset other users' passwords.
+  Parfois, le lien de réinitialisation du mot de passe peut inclure un ID utilisateur ainsi qu'un jeton, tel que `reset.php?userid=1&token=123456`. Dans ce cas, il peut être possible de modifier le paramètre `userid` pour réinitialiser les mots de passe des autres utilisateurs.
 
-- Can you inject a different host header?
+- Pouvez-vous injecter un en-tête d'hôte différent ?
 
-  If the application trusts the value of the `Host` header and uses this to generate the password reset link, it may be possible to steal tokens by injecting a modified `Host` header into the request. See the [Testing for Host Header Injection](../07-Input_Validation_Testing/17-Testing_for_Host_Header_Injection.md) guide for further information.
+  Si l'application fait confiance à la valeur de l'en-tête "Host" et l'utilise pour générer le lien de réinitialisation du mot de passe, il peut être possible de voler des jetons en injectant un en-tête "Host" modifié dans la requête. Consultez le guide [Test pour l'injection d'en-tête d'hôte](../07-Input_Validation_Testing/17-Testing_for_Host_Header_Injection.md) pour plus d'informations.
 
-- Is the link exposed to third parties?
+- Le lien est-il exposé à des tiers ?
 
-  If the page that the user is taken to includes content from other parties (such as loading scripts from other domains), then the reset token in the URL may be exposed in the HTTP `Referer` header sent in these requests. The `Referrer-Policy` HTTP header can be used to protect against this, so check if one is defined for the page.
+  Si la page vers laquelle l'utilisateur est redirigé inclut du contenu d'autres parties (comme le chargement de scripts à partir d'autres domaines), le jeton de réinitialisation dans l'URL peut être exposé dans l'en-tête HTTP "Referer" envoyé dans ces requêtes. L'en-tête HTTP "Referrer-Policy" peut être utilisé pour se protéger contre cela, alors vérifiez si un est défini pour la page.
 
-  Additionally, if the page includes any tracking, analytics or advertising scripts, the token will also be exposed to them.
+  De plus, si la page comprend des scripts de suivi, d'analyse ou de publicité, le jeton leur sera également exposé.
 
-- Are the emails sent from a domain with anti-spoofing protection?
+- Les e-mails sont-ils envoyés depuis un domaine avec une protection anti-spoofing ?
 
-  The domain should implement SPF, DKIM, and DMARC to prevent attackers from spoofing emails from it, which could be used as part of a social engineering attack.
+  Le domaine doit implémenter SPF, DKIM et DMARC pour empêcher les attaquants d'usurper ses e-mails, ce qui pourrait être utilisé dans le cadre d'une attaque d'ingénierie sociale.
 
-- Is email considered sufficiently secure?
+- Le courrier électronique est-il considéré comme suffisamment sécurisé ?
 
-  Emails are typically sent unencrypted, and in many cases the user's email account will not be protected by MFA. It may also be shared between multiple individuals, particularly in a corporate environment.
+  Les e-mails sont généralement envoyés non chiffrés et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protégé par MFA. Il peut également être partagé entre plusieurs personnes, en particulier dans un environnement d'entreprise.
 
-  Consider whether email-based password reset functionality is appropriate, based on the context of the application that is being tested.
+  Déterminez si la fonctionnalité de réinitialisation du mot de passe par e-mail est appropriée, en fonction du contexte de l'application testée.
 
-### Tokens Sent Over SMS or Phone Call
+### Jetons envoyés par SMS ou appel téléphonique
 
-Rather than sending a token in an email, an alternative approach is to send it via SMS or an automated phone call, which the user will then enter on the application. The key areas to test are:
+Plutôt que d'envoyer un jeton dans un e-mail, une approche alternative consiste à l'envoyer via SMS ou un appel téléphonique automatisé, que l'utilisateur saisira ensuite sur l'application. Les principaux domaines à tester sont :
 
-- Is the token sufficiently long and random?
+- Le jeton est-il suffisamment long et aléatoire ?
 
-  Tokens sent this way are typically shorter, as they are intended to be manually typed by the user, rather than being embedded in a link. It's fairly common for applications to use six numeric digits, which only provides ~20 bits of security (feasible for an online brute-force attack), rather than the typically longer email token.
+  Les jetons envoyés de cette manière sont généralement plus courts, car ils sont destinés à être saisis manuellement par l'utilisateur, plutôt que d'être intégrés dans un lien. Il est assez courant que les applications utilisent six chiffres numériques, ce qui ne fournit qu'environ 20 bits de sécurité (réalisable pour une attaque par force brute en ligne), plutôt que le jeton d'e-mail généralement plus long.
 
-  This makes it much more important that the password reset functionality is protected against brute-force attacks.
+  Il est donc beaucoup plus important que la fonctionnalité de réinitialisation du mot de passe soit protégée contre les attaques par force brute.
 
-- Can the token be used multiple times?
+- Le jeton peut-il être utilisé plusieurs fois ?
 
-  Tokens should be invalidated after they are used, otherwise they provide a persistent backdoor for the account.
+  Les jetons doivent être invalidés après leur utilisation, sinon ils fournissent une porte dérobée persistante pour le compte.
 
-- Does the token expire if it remains unused?
+- Le jeton expire-t-il s'il reste inutilisé ?
 
-  As the shorter tokens are more susceptible to brute-force attacks, a shorter expiration time should be implemented to limit the window available for an attacker to carry out an attack.
+  Comme les jetons plus courts sont plus sensibles aux attaques par force brute, un délai d'expiration plus court doit être mis en œuvre pour limiter la fenêtre disponible pour qu'un attaquant puisse mener une attaque.
 
-- Are appropriate rate limiting and restrictions in place?
+- Existe-t-il des limites et des restrictions de débit appropriées ?
 
-  Sending an SMS or triggering an automated phone call to a user is significantly more disruptive than sending an email, and could be used to harass a user, or even carry out a denial of service attack against their phone. The application should implement rate limiting to prevent this.
+  L'envoi d'un SMS ou le déclenchement d'un appel téléphonique automatisé à un utilisateur est nettement plus perturbateur que l'envoi d'un e-mail, et pourrait être utilisé pour harceler un utilisateur, voire mener une attaque par déni de service contre son téléphone. L'application doit implémenter une limitation de débit pour éviter cela.
 
-  Additionally, SMS messages and phone calls often incur financial costs for the sending party. If an attacker is able to cause a large number of messages to be sent, this could result in significant costs for the website operator. This is especially true if they are sent to international or premium rate numbers. However, allowing international numbers may be a requirement of the application.
+  De plus, les SMS et les appels téléphoniques entraînent souvent des coûts financiers pour l'expéditeur. Si un attaquant est capable de provoquer l'envoi d'un grand nombre de messages, cela pourrait entraîner des coûts importants pour l'opérateur du site Web. Cela est particulièrement vrai s'ils sont envoyés vers des numéros internationaux ou surtaxés. Cependant, l'autorisation des numéros internationaux peut être une exigence de l'application.
 
-- Is SMS or a phone call considered sufficiently secure?
+- Un SMS ou un appel téléphonique est-il considéré comme suffisamment sécurisé ?
 
-  [A variety of attacks](https://www.ncsc.gov.uk/guidance/protecting-sms-messages-used-in-critical-business-processes#section_4) have been demonstrated that would allow an attacker to effectively hijack SMS messages, there are conflicting views about whether SMS is sufficiently secure to be used as an authentication factor.
+  [Une variété d'attaques](https://www.ncsc.gov.uk/guidance/protecting-sms-messages-used-in-critical-business-processes#section_4) ont été démontrées et permettraient à un attaquant de détourner efficacement SMS, les points de vue divergent quant à savoir si le SMS est suffisamment sécurisé pour être utilisé comme facteur d'authentification.
 
-  It is usually possible to answer an automated phone call with physical access to a device, without needing any kind of PIN or fingerprint to unlock the phone. In some circumstances (such as a shared office environment), this could allow an internal attacker to trivially reset another user's password by walking over to their desk when they are out of office.
+  Il est généralement possible de répondre à un appel téléphonique automatisé avec un accès physique à un appareil, sans avoir besoin d'un code PIN ou d'une empreinte digitale pour déverrouiller le téléphone. Dans certaines circonstances (comme un environnement de bureau partagé), cela pourrait permettre à un attaquant interne de réinitialiser de manière triviale le mot de passe d'un autre utilisateur en se dirigeant vers son bureau lorsqu'il n'est pas au bureau.
 
-  Consider whether SMS or automated phone calls are appropriate, based on the context of the application that is being tested.
+  Déterminez si les SMS ou les appels téléphoniques automatisés sont appropriés, en fonction du contexte de l'application testée.
 
-### Security Questions
+### Questions de sécurité
 
-Rather than sending them a link or new password, security questions can be used as a mechanism to authenticate the user. This is considered to be a weak approach, and should not be used if better options are available.
+Plutôt que de leur envoyer un lien ou un nouveau mot de passe, les questions de sécurité peuvent être utilisées comme mécanisme pour authentifier l'utilisateur. Cette approche est considérée comme faible et ne doit pas être utilisée si de meilleures options sont disponibles.
 
-See the [Testing for Weak Security Questions](08-Testing_for_Weak_Security_Question_Answer.md) guide for further information.
+Consultez le guide [Test des questions de sécurité faible](08-Testing_for_Weak_Security_Question_Answer.md) pour plus d'informations.
 
-### Authenticated Password Changes
+### Changements de mot de passe authentifiés
 
-Once the user has proved their identity (either through a password reset link, a recovery code, or by logging in on the application) they should be able to change their password. The key area to test are:
+Une fois que l'utilisateur a prouvé son identité (soit par un lien de réinitialisation de mot de passe, un code de récupération, soit en se connectant sur l'application), il devrait pouvoir changer son mot de passe. Les principaux domaines à tester sont :
 
-- When setting the password, can you specify the user ID?
+- Lors de la définition du mot de passe, pouvez-vous spécifier l'ID utilisateur ?
 
-  If the user ID is included in the password reset request and is not validated, it may be possible to modify it and change other users' passwords.
+  Si l'ID utilisateur est inclus dans la demande de réinitialisation du mot de passe et n'est pas validé, il peut être possible de le modifier et de changer les mots de passe des autres utilisateurs.
 
-- Is the user required to re-authenticate?
+- L'utilisateur doit-il se ré-authentifier ?
 
-  If a logged-in user tries to change their password, they should be asked to re-authenticate with their current password in order to protect against an attacker gaining temporary access to an unattended session. If the user has MFA enabled, then they would typically re-authenticate with that, rather than their password.
+  Si un utilisateur connecté essaie de changer son mot de passe, il doit être invité à se ré-authentifier avec son mot de passe actuel afin de se protéger contre un attaquant obtenant un accès temporaire à une session sans surveillance. Si l'authentification MFA est activée pour l'utilisateur, il se réauthentifiera généralement avec cela, plutôt qu'avec son mot de passe.
 
-- Is the password change form vulnerable to CSRF?
+- Le formulaire de changement de mot de passe est-il vulnérable au CSRF ?
 
-  If the user isn't required to re-authenticate, then it may be possible to carry out a CSRF attack against the password reset form, allowing their account to be compromised. See the [Testing for Cross-Site Request Forgery](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md) guide for further information.
+  Si l'utilisateur n'est pas tenu de se ré-authentifier, il peut alors être possible d'effectuer une attaque CSRF contre le formulaire de réinitialisation du mot de passe, permettant à son compte d'être compromis. Pour plus d'informations, consultez le guide [Testing for Cross-Site Request Forgery](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md).
 
-- Is a strong and effective password policy applied?
+- Une politique de mot de passe forte et efficace est-elle appliquée ?
 
-  The password policy should be consistent across the registration, password change, and password reset functionality. See the [Testing for Weak Password Policy](07-Testing_for_Weak_Password_Policy.md) guide for further information.
+  La politique de mot de passe doit être cohérente pour l'ensemble des fonctionnalités d'enregistrement, de changement de mot de passe et de réinitialisation du mot de passe. Consultez le guide [Testing for Weak Password Policy](07-Testing_for_Weak_Password_Policy.md) pour plus d'informations.
 
-## References
+## Références
 
-- [OWASP Forgot Password Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)
+- [Feuille de triche de mot de passe oublié OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)

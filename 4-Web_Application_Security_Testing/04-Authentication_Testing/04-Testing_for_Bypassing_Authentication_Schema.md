@@ -1,46 +1,46 @@
-# Testing for Bypassing Authentication Schema
+# Test de contournement du schéma d'authentification
 
 |ID          |
 |------------|
 |WSTG-ATHN-04|
 
-## Summary
+## Sommaire
 
-In computer security, authentication is the process of attempting to verify the digital identity of the sender of a communication. A common example of such a process is the log on process. Testing the authentication schema means understanding how the authentication process works and using that information to circumvent the authentication mechanism.
+En sécurité informatique, l'authentification est le processus consistant à tenter de vérifier l'identité numérique de l'expéditeur d'une communication. Un exemple courant d'un tel processus est le processus de connexion. Tester le schéma d'authentification signifie comprendre le fonctionnement du processus d'authentification et utiliser ces informations pour contourner le mécanisme d'authentification.
 
-While most applications require authentication to gain access to private information or to execute tasks, not every authentication method is able to provide adequate security. Negligence, ignorance, or simple understatement of security threats often result in authentication schemes that can be bypassed by simply skipping the log in page and directly calling an internal page that is supposed to be accessed only after authentication has been performed.
+Alors que la plupart des applications nécessitent une authentification pour accéder à des informations privées ou pour exécuter des tâches, toutes les méthodes d'authentification ne sont pas en mesure de fournir une sécurité adéquate. La négligence, l'ignorance ou la simple sous-estimation des menaces de sécurité entraînent souvent des schémas d'authentification qui peuvent être contournés en sautant simplement la page de connexion et en appelant directement une page interne qui est censée être accessible uniquement après l'authentification.
 
-In addition, it is often possible to bypass authentication measures by tampering with requests and tricking the application into thinking that the user is already authenticated. This can be accomplished either by modifying the given URL parameter, by manipulating the form, or by counterfeiting sessions.
+De plus, il est souvent possible de contourner les mesures d'authentification en falsifiant les requêtes et en faisant croire à l'application que l'utilisateur est déjà authentifié. Cela peut être accompli soit en modifiant le paramètre d'URL donné, soit en manipulant le formulaire, soit en contrefaisant des sessions.
 
-Problems related to the authentication schema can be found at different stages of the software development life cycle (SDLC), like the design, development, and deployment phases:
+Les problèmes liés au schéma d'authentification peuvent se trouver à différentes étapes du cycle de vie du développement logiciel (SDLC), comme les phases de conception, de développement et de déploiement :
 
-- In the design phase errors can include a wrong definition of application sections to be protected, the choice of not applying strong encryption protocols for securing the transmission of credentials, and many more.
-- In the development phase errors can include the incorrect implementation of input validation functionality or not following the security best practices for the specific language.
-- In the application deployment phase, there may be issues during the application setup (installation and configuration activities) due to a lack in required technical skills or due to the lack of good documentation.
+- Dans la phase de conception, les erreurs peuvent inclure une mauvaise définition des sections d'application à protéger, le choix de ne pas appliquer de protocoles de cryptage forts pour sécuriser la transmission des informations d'identification, et bien d'autres.
+- Dans la phase de développement, les erreurs peuvent inclure la mise en œuvre incorrecte de la fonctionnalité de validation des entrées ou le non-respect des meilleures pratiques de sécurité pour le langage spécifique.
+- Dans la phase de déploiement de l'application, il peut y avoir des problèmes lors de la configuration de l'application (activités d'installation et de configuration) en raison d'un manque de compétences techniques requises ou d'un manque de bonne documentation.
 
-## Test Objectives
+## Objectifs des tests
 
-- Ensure that authentication is applied across all services that require it.
+- Assurez-vous que l'authentification est appliquée à tous les services qui en ont besoin.
 
-## How to Test
+## Comment tester
 
-There are several methods of bypassing the authentication schema that is used by a web application:
+Il existe plusieurs méthodes pour contourner le schéma d'authentification utilisé par une application Web :
 
-- Direct page request ([forced browsing](https://owasp.org/www-community/attacks/Forced_browsing))
-- Parameter modification
-- Session ID prediction
-- SQL injection
+- Demande de page directe ([navigation forcée](https://owasp.org/www-community/attacks/Forced_browsing))
+- Modification des paramètres
+- Prédiction d'ID de session
+- Injection SQL
 
-### Direct Page Request
+### Demande de page directe
 
-If a web application implements access control only on the log in page, the authentication schema could be bypassed. For example, if a user directly requests a different page via forced browsing, that page may not check the credentials of the user before granting access. Attempt to directly access a protected page through the address bar in your browser to test using this method.
+Si une application Web implémente le contrôle d'accès uniquement sur la page de connexion, le schéma d'authentification peut être contourné. Par exemple, si un utilisateur demande directement une autre page via la navigation forcée, cette page peut ne pas vérifier les informations d'identification de l'utilisateur avant d'accorder l'accès. Essayez d'accéder directement à une page protégée via la barre d'adresse de votre navigateur pour tester cette méthode.
 
-![Direct Request to Protected Page](images/Basm-directreq.jpg)\
-*Figure 4.4.4-1: Direct Request to Protected Page*
+![Demande directe à la page protégée](images/Basm-directreq.jpg)\
+*Figure 4.4.4-1 : Demande directe à la page protégée*
 
-### Parameter Modification
+### Modification des paramètres
 
-Another problem related to authentication design is when the application verifies a successful log in on the basis of a fixed value parameters. A user could modify these parameters to gain access to the protected areas without providing valid credentials. In the example below, the "authenticated" parameter is changed to a value of "yes", which allows the user to gain access. In this example, the parameter is in the URL, but a proxy could also be used to modify the parameter, especially when the parameters are sent as form elements in a POST request or when the parameters are stored in a cookie.
+Un autre problème lié à la conception de l'authentification est lorsque l'application vérifie une connexion réussie sur la base de paramètres à valeur fixe. Un utilisateur pourrait modifier ces paramètres pour accéder aux zones protégées sans fournir d'informations d'identification valides. Dans l'exemple ci-dessous, le paramètre « authentifié » est remplacé par la valeur « oui », ce qui permet à l'utilisateur d'avoir accès. Dans cet exemple, le paramètre est dans l'URL, mais un proxy peut également être utilisé pour modifier le paramètre, en particulier lorsque les paramètres sont envoyés sous forme d'éléments de formulaire dans une requête POST ou lorsque les paramètres sont stockés dans un cookie.
 
 ```html
 http://www.site.com/page.asp?authenticated=no
@@ -61,40 +61,40 @@ Content-Type: text/html; charset=iso-8859-1
 </BODY></HTML>
 ```
 
-![Parameter Modified Request](images/Basm-parammod.jpg)\
-*Figure 4.4.4-2: Parameter Modified Request*
+![Demande de modification de paramètre](images/Basm-parammod.jpg)\
+*Figure 4.4.4-2 : Requête de modification de paramètre*
 
-### Session ID Prediction
+### Prédiction d'ID de session
 
-Many web applications manage authentication by using session identifiers (session IDs). Therefore, if session ID generation is predictable, a malicious user could be able to find a valid session ID and gain unauthorized access to the application, impersonating a previously authenticated user.
+De nombreuses applications Web gèrent l'authentification à l'aide d'identificateurs de session (ID de session). Par conséquent, si la génération d'ID de session est prévisible, un utilisateur malveillant pourrait être en mesure de trouver un ID de session valide et d'obtenir un accès non autorisé à l'application, en se faisant passer pour un utilisateur précédemment authentifié.
 
-In the following figure, values inside cookies increase linearly, so it could be easy for an attacker to guess a valid session ID.
+Dans la figure suivante, les valeurs à l'intérieur des cookies augmentent de manière linéaire, il pourrait donc être facile pour un attaquant de deviner un ID de session valide.
 
-![Cookie Values Over Time](images/Basm-sessid.jpg)\
-*Figure 4.4.4-3: Cookie Values Over Time*
+![Valeurs des cookies au fil du temps](images/Basm-sessid.jpg)\
+*Figure 4.4.4-3 : Valeurs des cookies au fil du temps*
 
-In the following figure, values inside cookies change only partially, so it's possible to restrict a brute force attack to the defined fields shown below.
+Dans la figure suivante, les valeurs à l'intérieur des cookies ne changent que partiellement, il est donc possible de restreindre une attaque par force brute aux champs définis indiqués ci-dessous.
 
-![Partially Changed Cookie Values](images/Basm-sessid2.jpg)\
-*Figure 4.4.4-4: Partially Changed Cookie Values*
+![Valeurs des cookies partiellement modifiées](images/Basm-sessid2.jpg)\
+*Figure 4.4.4-4 : Valeurs de cookies partiellement modifiées*
 
-### SQL Injection (HTML Form Authentication)
+### Injection SQL (authentification par formulaire HTML)
 
-SQL Injection is a widely known attack technique. This section is not going to describe this technique in detail as there are several sections in this guide that explain injection techniques beyond the scope of this section.
+L'injection SQL est une technique d'attaque largement connue. Cette section ne va pas décrire cette technique en détail car il y a plusieurs sections dans ce guide qui expliquent les techniques d'injection au-delà de la portée de cette section.
 
-![SQL Injection](images/Basm-sqlinj.jpg)\
-*Figure 4.4.4-5: SQL Injection*
+![Injection SQL](images/Basm-sqlinj.jpg)\
+*Figure 4.4.4-5 : Injection SQL*
 
-The following figure shows that with a simple SQL injection attack, it is sometimes possible to bypass the authentication form.
+La figure suivante montre qu'avec une simple attaque par injection SQL, il est parfois possible de contourner le formulaire d'authentification.
 
-![Simple SQL Injection Attack](images/Basm-sqlinj2.gif)\
-*Figure 4.4.4-6: Simple SQL Injection Attack*
+![Attaque par injection SQL simple](images/Basm-sqlinj2.gif)\
+*Figure 4.4.4-6 : Attaque par injection SQL simple*
 
-### PHP Loose Comparison
+### Comparaison simplifiée de PHP
 
-If an attacker has been able to retrieve the application source code by exploiting a previously discovered vulnerability (e.g., directory traversal), or from a web repository (Open Source Applications), it could be possible to perform refined attacks against the implementation of the authentication process.
+Si un attaquant a pu récupérer le code source de l'application en exploitant une vulnérabilité précédemment découverte (par exemple, la traversée de répertoires) ou à partir d'un référentiel Web (applications Open Source), il pourrait être possible d'effectuer des attaques raffinées contre la mise en œuvre de l'authentification. traiter.
 
-In the following example (PHPBB 2.0.12 - Authentication Bypass Vulnerability), at line 2 the `unserialize()` function parses a user supplied cookie and sets values inside the `$sessiondata` array. At line 7, the user's MD5 password hash stored inside the back end database (`$auto_login_key`) is compared to the one supplied (`$sessiondata['autologinid']`) by the user.
+Dans l'exemple suivant (PHPBB 2.0.12 - Vulnérabilité de contournement d'authentification), à la ligne 2, la fonction `unserialize()` analyse un cookie fourni par l'utilisateur et définit des valeurs dans le tableau `$sessiondata`. À la ligne 7, le hachage du mot de passe MD5 de l'utilisateur stocké dans la base de données principale (`$auto_login_key`) est comparé à celui fourni (`$sessiondata['autologinid']`) par l'utilisateur.
 
 ```php
 1. if (isset($HTTP_COOKIE_VARS[$cookiename . '_sid'])) {
@@ -112,23 +112,23 @@ In the following example (PHPBB 2.0.12 - Authentication Bypass Vulnerability), a
 
 ```
 
-In PHP, a comparison between a string value and a `true` boolean value is always `true` (because the string contains a value), so by supplying the following string to the `unserialize()` function, it is possible to bypass the authentication control and log in as administrator, whose `userid` is 2:
+En PHP, une comparaison entre une valeur de chaîne et une valeur booléenne `true` est toujours `true` (car la chaîne contient une valeur), donc en fournissant la chaîne suivante à la fonction `unserialize()`, il est possible de contourner le contrôle d'authentification et connectez-vous en tant qu'administrateur, dont l'`userid` est 2 :
 
 ```php
 a:2:{s:11:"autologinid";b:1;s:6:"userid";s:1:"2";}  // original value: a:2:{s:11:"autologinid";s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a";s:6:"userid";s:4:"1337";}
 ```
 
-Let's disassemble what we did in this string:
+Démontons ce que nous avons fait dans cette chaîne :
 
-1. `autologinid` is now a boolean set to `true`: this can be seen by replacing the MD5 value of the password hash (`s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a"`) with `b:1`
-2. `userid` is now set to the admin id: this can be seen in the last piece of the string, where we replaced our regular user ID (`s:4:"1337"`) with `s:1:"2"`
+1. `autologinid` est maintenant un booléen défini sur `true` : cela peut être vu en remplaçant la valeur MD5 du hachage du mot de passe (`s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a"`) par `b:1`
+2. `userid` est maintenant défini sur l'ID administrateur : cela peut être vu dans le dernier morceau de la chaîne, où nous avons remplacé notre ID utilisateur habituel (`s:4:"1337"`) par `s:1:" 2"`
 
-## Tools
+## Outils
 
 - [WebGoat](https://owasp.org/www-project-webgoat/)
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
 
-## References
+## Références
 
-- [Niels Teusink: phpBB 2.0.12 authentication bypass](http://blog.teusink.net/2008/12/classic-bug-phpbb-2012-authentication.html)
-- [David Endler: "Session ID Brute Force Exploitation and Prediction"](https://www.cgisecurity.com/lib/SessionIDs.pdf)
+- [Niels Teusink : contournement de l'authentification phpBB 2.0.12](http://blog.teusink.net/2008/12/classic-bug-phpbb-2012-authentication.html)
+- [David Endler : "Exploitation et prédiction de la force brute de l'identifiant de session"](https://www.cgisecurity.com/lib/SessionIDs.pdf)

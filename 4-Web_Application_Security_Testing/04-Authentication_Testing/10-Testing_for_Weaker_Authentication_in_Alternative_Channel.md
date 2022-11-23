@@ -1,89 +1,89 @@
-# Testing for Weaker Authentication in Alternative Channel
+# Test d'authentification plus faible dans un canal alternatif
 
 |ID          |
 |------------|
 |WSTG-ATHN-10|
 
-## Summary
+## Sommaire
 
-Even if the primary authentication mechanisms do not include any vulnerabilities, it may be that vulnerabilities exist in alternative legitimate authentication user channels for the same user accounts. Tests should be undertaken to identify alternative channels and, subject to test scoping, identify vulnerabilities.
+Même si les mécanismes d'authentification primaires n'incluent aucune vulnérabilité, il se peut que des vulnérabilités existent dans d'autres canaux d'utilisateurs légitimes d'authentification pour les mêmes comptes d'utilisateurs. Des tests doivent être entrepris pour identifier les canaux alternatifs et, sous réserve de la portée des tests, identifier les vulnérabilités.
 
-The alternative user interaction channels could be utilized to circumvent the primary channel, or expose information that can then be used to assist an attack against the primary channel. Some of these channels may themselves be separate web applications using different hostnames or paths. For example:
+Les canaux d'interaction utilisateur alternatifs pourraient être utilisés pour contourner le canal principal ou exposer des informations qui peuvent ensuite être utilisées pour assister une attaque contre le canal principal. Certains de ces canaux peuvent eux-mêmes être des applications Web distinctes utilisant des noms d'hôte ou des chemins différents. Par exemple:
 
-- Standard website
-- Mobile, or specific device, optimized website
-- Accessibility optimized website
-- Alternative country and language websites
-- Parallel websites that utilize the same user accounts (e.g. another website offering different functionally of the same organization, a partner website with which user accounts are shared)
-- Development, test, UAT and staging versions of the standard website
+- Site Web standard
+- Mobile, ou appareil spécifique, site Web optimisé
+- Site Web optimisé pour l'accessibilité
+- Sites Web alternatifs de pays et de langue
+- Sites Web parallèles qui utilisent les mêmes comptes d'utilisateurs (par exemple, un autre site Web offrant des fonctionnalités différentes de la même organisation, un site Web partenaire avec lequel les comptes d'utilisateurs sont partagés)
+- Développement, test, UAT et versions staging du site standard
 
-But they could also be other types of application or business processes:
+Mais il peut également s'agir d'autres types d'applications ou de processus métier :
 
-- Mobile device app
-- Desktop application
-- Call center operators
-- Interactive voice response or phone tree systems
+- Application pour appareil mobile
+- Application de bureau
+- Opérateurs de centres d'appels
+- Systèmes interactifs de réponse vocale ou d'arborescence téléphonique
 
-Note that the focus of this test is on alternative channels; some authentication alternatives might appear as different content delivered via the same website and would almost certainly be in scope for testing. These are not discussed further here, and should have been identified during information gathering and primary authentication testing. For example:
+Notez que ce test se concentre sur les canaux alternatifs ; certaines alternatives d'authentification peuvent apparaître comme des contenus différents diffusés via le même site Web et seraient presque certainement susceptibles d'être testées. Celles-ci ne sont pas décrites plus en détail ici et auraient dû être identifiées lors de la collecte d'informations et des tests d'authentification primaire. Par exemple:
 
-- Progressive enrichment and graceful degradation that change functionality
-- Site use without cookies
-- Site use without JavaScript
-- Site use without plugins such as for Flash and Java
+- Enrichissement progressif et dégradation gracieuse qui modifient les fonctionnalités
+- Utilisation du site sans cookies
+- Utilisation du site sans JavaScript
+- Utilisation du site sans plugins comme pour Flash et Java
 
-Even if the scope of the test does not allow the alternative channels to be tested, their existence should be documented. These may undermine the degree of assurance in the authentication mechanisms and may be a precursor to additional testing.
+Même si le périmètre du test ne permet pas de tester les canaux alternatifs, leur existence doit être documentée. Ceux-ci peuvent miner le degré d'assurance dans les mécanismes d'authentification et peuvent être un précurseur de tests supplémentaires.
 
-## Example
+## Exemple
 
-The primary website is `http://www.example.com` and authentication functions always take place on pages using TLS `https://www.example.com/myaccount/`.
+Le site Web principal est `http://www.exemple.com` et les fonctions d'authentification ont toujours lieu sur les pages utilisant TLS `https://www.exemple.com/myaccount/`.
 
-However, a separate mobile-optimized website exists that does not use TLS at all, and has a weaker password recovery mechanism `http://m.example.com/myaccount/`.
+Cependant, il existe un site Web distinct optimisé pour les mobiles qui n'utilise pas du tout TLS et qui dispose d'un mécanisme de récupération de mot de passe plus faible `http://m.exemple.com/myaccount/`.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify alternative authentication channels.
-- Assess the security measures used and if any bypasses exists on the alternative channels.
+- Identifier les canaux d'authentification alternatifs.
+- Évaluer les mesures de sécurité utilisées et s'il existe des contournements sur les canaux alternatifs.
 
-## How to Test
+## Comment tester
 
-### Understand the Primary Mechanism
+### Comprendre le mécanisme principal
 
-Fully test the website's primary authentication functions. This should identify how accounts are issued, created or changed and how passwords are recovered, reset, or changed. Additionally knowledge of any elevated privilege authentication and authentication protection measures should be known. These precursors are necessary to be able to compare with any alternative channels.
+Testez entièrement les principales fonctions d'authentification du site Web. Cela devrait identifier comment les comptes sont émis, créés ou modifiés et comment les mots de passe sont récupérés, réinitialisés ou modifiés. De plus, la connaissance de toute authentification à privilèges élevés et des mesures de protection de l'authentification doit être connue. Ces précurseurs sont nécessaires pour pouvoir comparer avec d'éventuelles voies alternatives.
 
-### Identify Other Channels
+### Identifier d'autres chaînes
 
-Other channels can be found by using the following methods:
+D'autres canaux peuvent être trouvés en utilisant les méthodes suivantes :
 
-- Reading site content, especially the home page, contact us, help pages, support articles and FAQs, T&Cs, privacy notices, the robots.txt file and any sitemap.xml files.
-- Searching HTTP proxy logs, recorded during previous information gathering and testing, for strings such as "mobile", "android", blackberry", "ipad", "iphone", "mobile app", "e-reader", "wireless", "auth", "sso", "single sign on" in URL paths and body content.
-- Use search engines to find different websites from the same organization, or using the same domain name, that have similar home page content or which also have authentication mechanisms.
+- Lire le contenu du site, en particulier la page d'accueil, nous contacter, les pages d'aide, les articles de support et les FAQ, les CGU, les avis de confidentialité, le fichier robots.txt et tous les fichiers sitemap.xml.
+- Recherche dans les journaux de proxy HTTP, enregistrés lors de la collecte et des tests d'informations précédents, pour des chaînes telles que "mobile", "android", blackberry", "ipad", "iphone", "application mobile", "e-reader", "sans fil ", "auth", "sso", "single sign on" dans les chemins d'URL et le contenu du corps.
+- Utilisez les moteurs de recherche pour trouver différents sites Web de la même organisation, ou utilisant le même nom de domaine, qui ont un contenu de page d'accueil similaire ou qui ont également des mécanismes d'authentification.
 
-For each possible channel confirm whether user accounts are shared across these, or provide access to the same or similar functionality.
+Pour chaque canal possible, confirmez si les comptes d'utilisateurs sont partagés entre ceux-ci ou permettent d'accéder à la même fonctionnalité ou à une fonctionnalité similaire.
 
-### Enumerate Authentication Functionality
+### Enumérer la fonctionnalité d'authentification
 
-For each alternative channel where user accounts or functionality are shared, identify if all the authentication functions of the primary channel are available, and if anything extra exists. It may be useful to create a grid like the one below:
+Pour chaque canal alternatif où les comptes d'utilisateurs ou les fonctionnalités sont partagés, identifiez si toutes les fonctions d'authentification du canal principal sont disponibles et s'il existe des éléments supplémentaires. Il peut être utile de créer une grille comme celle ci-dessous :
 
-  | Primary | Mobile  |  Call Center | Partner Website |
-  |---------|---------|--------------|-----------------|
-  | Register| Yes     |     -        |       -         |
-  | Log in  | Yes     |    Yes       |    Yes(SSO)     |
-  | Log out |   -     |     -        |       -         |
-  |Password reset |   Yes  |   Yes   |       -         |
-  | -       | Change password |   -  |       -         |
+  |             Primaire             | Mobile | Centre d'appels | Site Web partenaire |
+  |----------------------------------|--------|-----------------|---------------------|
+  | Inscrivez-vous                   |  Oui   |        -        |          -          |
+  | Se connecter                     |  Oui   |       Oui       |       Oui(SSO)      |
+  | Déconnectez-vous                 |   -    |        -        |          -          |
+  | Réinitialisation du mot de passe |  Oui   |       Oui       |          -          |
+  | Changer le mot de passe          |        |        -        |          -          |
 
-In this example, mobile has an extra function "change password" but does not offer "log out". A limited number of tasks are also possible by phoning the call center. Call centers can be interesting, because their identity confirmation checks might be weaker than the website's, allowing this channel to be used to aid an attack against a user's account.
+Dans cet exemple, le mobile a une fonction supplémentaire "changer le mot de passe" mais n'offre pas la "déconnexion". Un nombre limité de tâches est également possible en téléphonant au centre d'appels. Les centres d'appels peuvent être intéressants, car leurs contrôles de confirmation d'identité peuvent être plus faibles que ceux du site Web, ce qui permet d'utiliser ce canal pour faciliter une attaque contre le compte d'un utilisateur.
 
-While enumerating these it is worth taking note of how session management is undertaken, in case there is overlap across any channels (e.g. cookies scoped to the same parent domain name, concurrent sessions allowed across channels, but not on the same channel).
+Tout en les énumérant, il convient de prendre note de la façon dont la gestion des sessions est entreprise, en cas de chevauchement entre les canaux (par exemple, les cookies étendus au même nom de domaine parent, les sessions simultanées autorisées sur les canaux, mais pas sur le même canal).
 
-### Review and Test
+### Examen et test
 
-Alternative channels should be mentioned in the testing report, even if they are marked as "information only" or "out of scope". In some cases the test scope might include the alternative channel (e.g. because it is just another path on the target host name), or may be added to the scope after discussion with the owners of all the channels. If testing is permitted and authorized, all the other authentication tests in this guide should then be performed, and compared against the primary channel.
+Les canaux alternatifs doivent être mentionnés dans le rapport de test, même s'ils sont marqués comme "informations uniquement" ou "hors champ". Dans certains cas, la portée du test peut inclure le canal alternatif (par exemple, parce qu'il s'agit simplement d'un autre chemin sur le nom d'hôte cible), ou peut être ajoutée à la portée après discussion avec les propriétaires de tous les canaux. Si les tests sont autorisés et autorisés, tous les autres tests d'authentification de ce guide doivent alors être effectués et comparés au canal principal.
 
-## Related Test Cases
+## Cas de test associés
 
-The test cases for all the other authentication tests should be utilized.
+Les cas de test pour tous les autres tests d'authentification doivent être utilisés.
 
-## Remediation
+## Correction
 
-Ensure a consistent authentication policy is applied across all channels so that they are equally secure.
+Assurez-vous qu'une politique d'authentification cohérente est appliquée sur tous les canaux afin qu'ils soient également sécurisés.

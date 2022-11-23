@@ -1,46 +1,46 @@
-# Testing for Browser Cache Weaknesses
+# Test des faiblesses du cache du navigateur
 
 |ID          |
 |------------|
 |WSTG-ATHN-06|
 
-## Summary
+## Sommaire
 
-In this phase the tester checks that the application correctly instructs the browser to not retain sensitive data.
+Dans cette phase, le testeur vérifie que l'application indique correctement au navigateur de ne pas conserver les données sensibles.
 
-Browsers can store information for purposes of caching and history. Caching is used to improve performance, so that previously displayed information doesn't need to be downloaded again. History mechanisms are used for user convenience, so the user can see exactly what they saw at the time when the resource was retrieved. If sensitive information is displayed to the user (such as their address, credit card details, Social Security Number, or username), then this information could be stored for purposes of caching or history, and therefore retrievable through examining the browser's cache or by simply pressing the browser's **Back** button.
+Les navigateurs peuvent stocker des informations à des fins de mise en cache et d'historique. La mise en cache est utilisée pour améliorer les performances, afin que les informations précédemment affichées n'aient pas besoin d'être téléchargées à nouveau. Les mécanismes d'historique sont utilisés pour la commodité de l'utilisateur, afin que l'utilisateur puisse voir exactement ce qu'il a vu au moment où la ressource a été récupérée. Si des informations sensibles sont présentées à l'utilisateur (telles que son adresse, les détails de sa carte de crédit, son numéro de sécurité sociale ou son nom d'utilisateur), ces informations peuvent être stockées à des fins de mise en cache ou d'historique, et donc récupérables en examinant le cache du navigateur ou simplement en en appuyant sur le bouton **Précédent** du navigateur.
 
-## Test Objectives
+## Objectifs des tests
 
-- Review if the application stores sensitive information on the client-side.
-- Review if access can occur without authorization.
+- Vérifiez si l'application stocke des informations sensibles côté client.
+- Vérifiez si l'accès peut se produire sans autorisation.
 
-## How to Test
+## Comment tester
 
-### Browser History
+### Historique du navigateur
 
-Technically, the **Back** button is a history and not a cache (see [Caching in HTTP: History Lists](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13)). The cache and the history are two different entities. However, they share the same weakness of presenting previously displayed sensitive information.
+Techniquement, le bouton **Retour** est un historique et non un cache (voir [Mise en cache dans HTTP : Listes d'historique](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13 )). Le cache et l'historique sont deux entités différentes. Cependant, ils partagent la même faiblesse de présenter des informations sensibles précédemment affichées.
 
-The first and simplest test consists of entering sensitive information into the application and logging out. Then the tester clicks the **Back** button of the browser to check whether previously displayed sensitive information can be accessed whilst unauthenticated.
+Le premier test, le plus simple, consiste à entrer des informations sensibles dans l'application et à se déconnecter. Ensuite, le testeur clique sur le bouton **Retour** du navigateur pour vérifier si les informations sensibles précédemment affichées sont accessibles sans authentification.
 
-If by pressing the **Back** button the tester can access previous pages but not access new ones, then it is not an authentication issue, but a browser history issue. If these pages contain sensitive data, it means that the application did not forbid the browser from storing it.
+Si, en appuyant sur le bouton **Retour**, le testeur peut accéder aux pages précédentes mais pas aux nouvelles, il ne s'agit pas d'un problème d'authentification, mais d'un problème d'historique du navigateur. Si ces pages contiennent des données sensibles, cela signifie que l'application n'a pas interdit au navigateur de les stocker.
 
-Authentication does not necessarily need to be involved in the testing. For example, when a user enters their email address in order to sign up to a newsletter, this information could be retrievable if not properly handled.
+L'authentification n'a pas nécessairement besoin d'être impliquée dans les tests. Par exemple, lorsqu'un utilisateur saisit son adresse e-mail pour s'inscrire à une newsletter, cette information peut être récupérable si elle n'est pas correctement gérée.
 
-The **Back** button can be stopped from showing sensitive data. This can be done by:
+Le bouton **Retour** peut être empêché d'afficher des données sensibles. Cela peut être fait par :
 
 - Delivering the page over HTTPS.
 - Setting `Cache-Control: must-revalidate`
 
-### Browser Cache
+### Cache du navigateur
 
-Here testers check that the application does not leak any sensitive data into the browser cache. In order to do that, they can use a proxy (such as OWASP ZAP) and search through the server responses that belong to the session, checking that for every page that contains sensitive information the server instructed the browser not to cache any data. Such a directive can be issued in the HTTP response headers with the following directives:
+Ici, les testeurs vérifient que l'application ne divulgue aucune donnée sensible dans le cache du navigateur. Pour ce faire, ils peuvent utiliser un proxy (tel que OWASP ZAP) et rechercher dans les réponses du serveur appartenant à la session, en vérifiant que pour chaque page contenant des informations sensibles, le serveur a demandé au navigateur de ne mettre aucune donnée en cache. Une telle directive peut être émise dans les en-têtes de réponse HTTP avec les directives suivantes :
 
 - `Cache-Control: no-cache, no-store`
 - `Expires: 0`
 - `Pragma: no-cache`
 
-These directives are generally robust, although additional flags may be necessary for the `Cache-Control` header in order to better prevent persistently linked files on the file system. These include:
+Ces directives sont généralement robustes, bien que des drapeaux supplémentaires puissent être nécessaires pour l'en-tête `Cache-Control` afin de mieux empêcher les fichiers liés de manière persistante sur le système de fichiers. Ceux-ci inclus :
 
 - `Cache-Control: must-revalidate, max-age=0, s-maxage=0`
 
@@ -55,9 +55,9 @@ Pragma: no-cache
 Expires: "past date or illegal value (e.g., 0)"
 ```
 
-For instance, if testers are testing an e-commerce application, they should look for all pages that contain a credit card number or some other financial information, and check that all those pages enforce the `no-cache` directive. If they find pages that contain critical information but that fail to instruct the browser not to cache their content, they know that sensitive information will be stored on the disk, and they can double-check this simply by looking for the page in the browser cache.
+Par exemple, si les testeurs testent une application de commerce électronique, ils doivent rechercher toutes les pages contenant un numéro de carte de crédit ou d'autres informations financières, et vérifier que toutes ces pages appliquent la directive "no-cache". S'ils trouvent des pages qui contiennent des informations critiques mais qui ne demandent pas au navigateur de ne pas mettre en cache leur contenu, ils savent que des informations sensibles seront stockées sur le disque, et ils peuvent vérifier cela simplement en recherchant la page dans le cache du navigateur.
 
-The exact location where that information is stored depends on the client operating system and on the browser that has been used. Here are some examples:
+L'emplacement exact où ces informations sont stockées dépend du système d'exploitation client et du navigateur utilisé. Voici quelques exemples :
 
 - Mozilla Firefox:
     - Unix/Linux: `~/.cache/mozilla/firefox/`
@@ -68,28 +68,28 @@ The exact location where that information is stored depends on the client operat
     - Windows: `C:\Users\<user_name>\AppData\Local\Google\Chrome\User Data\Default\Cache`
     - Unix/Linux: `~/.cache/google-chrome`
 
-#### Reviewing Cached Information
+#### Examen des informations mises en cache
 
-Firefox provides functionality for viewing cached information, which may be to your benefit as a tester. Of course the industry has also produced various extensions, and external apps which you may prefer or need for Chrome, Internet Explorer, or Edge.
+Firefox fournit une fonctionnalité pour afficher les informations mises en cache, ce qui peut être à votre avantage en tant que testeur. Bien sûr, l'industrie a également produit diverses extensions et applications externes que vous préférez ou dont vous avez peut-être besoin pour Chrome, Internet Explorer ou Edge.
 
-Cache details are also available via developer tools in most modern browsers, such as [Firefox](https://developer.mozilla.org/en-US/docs/Tools/Storage_Inspector#Cache_Storage), [Chrome](https://developers.google.com/web/tools/chrome-devtools/storage/cache), and Edge. With Firefox it is also possible to use the URL `about:cache` to check cache details.
+Les détails du cache sont également disponibles via des outils de développement dans la plupart des navigateurs modernes, tels que [Firefox](https://developer.mozilla.org/en-US/docs/Tools/Storage_Inspector#Cache_Storage), [Chrome](https:// développeurs.google.com/web/tools/chrome-devtools/storage/cache) et Edge. Avec Firefox, il est également possible d'utiliser l'URL `about:cache` pour vérifier les détails du cache.
 
-#### Check Handling for Mobile Browsers
+#### Traitement des vérifications pour les navigateurs mobiles
 
-Handling of cache directives may be completely different for mobile browsers. Therefore, testers should start a new browsing session with clean caches and take advantage of features like Chrome's [Device Mode](https://developers.google.com/web/tools/chrome-devtools/device-mode) or Firefox's [Responsive Design Mode](https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode) to re-test or separately test the concepts outlined above.
+La gestion des directives de cache peut être complètement différente pour les navigateurs mobiles. Par conséquent, les testeurs doivent démarrer une nouvelle session de navigation avec des caches propres et profiter de fonctionnalités telles que le [mode appareil] de Chrome(https://developers.google.com/web/tools/chrome-devtools/device-mode) ou le [mode réactif] de Firefox. Design Mode] (https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode) pour tester à nouveau ou tester séparément les concepts décrits ci-dessus.
 
-Additionally, personal proxies such as ZAP and Burp Suite allow the tester to specify which `User-Agent` should be sent by their spiders/crawlers. This could be set to match a mobile browser `User-Agent` string and used to see which caching directives are sent by the application being tested.
+De plus, les proxys personnels tels que ZAP et Burp Suite permettent au testeur de spécifier quel `User-Agent` doit être envoyé par ses spiders/crawlers. Cela peut être défini pour correspondre à une chaîne `User-Agent` de navigateur mobile et utilisé pour voir quelles directives de mise en cache sont envoyées par l'application testée.
 
-### Gray-Box Testing
+### Test de la boîte grise
 
-The methodology for testing is equivalent to the black-box case, as in both scenarios testers have full access to the server response headers and to the HTML code. However, with gray-box testing, the tester may have access to account credentials that will allow them to test sensitive pages that are accessible only to authenticated users.
+La méthodologie de test est équivalente au cas de la boîte noire, car dans les deux scénarios, les testeurs ont un accès complet aux en-têtes de réponse du serveur et au code HTML. Cependant, avec les tests en boîte grise, le testeur peut avoir accès aux informations d'identification du compte qui lui permettront de tester des pages sensibles accessibles uniquement aux utilisateurs authentifiés.
 
-## Tools
+## Outils
 
-- [OWASP Zed Attack Proxy](https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP] (https://www.zaproxy.org)
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
-- [Caching in HTTP](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html)
+- [Mise en cache en HTTP](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html)

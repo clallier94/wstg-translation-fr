@@ -1,95 +1,95 @@
-# Testing for Weak Lock Out Mechanism
+# Test du mécanisme de verrouillage faible
 
 |ID          |
 |------------|
 |WSTG-ATHN-03|
 
-## Summary
+## Sommaire
 
-Account lockout mechanisms are used to mitigate brute force attacks. Some of the attacks that can be defeated by using lockout mechanism:
+Des mécanismes de verrouillage de compte sont utilisés pour atténuer les attaques par force brute. Certaines des attaques qui peuvent être vaincues en utilisant le mécanisme de verrouillage :
 
-- Login password or username guessing attack.
-- Code guessing on any 2FA functionality or Security Questions.
+- Attaque de mot de passe de connexion ou de devinette de nom d'utilisateur.
+- Devinette de code sur toute fonctionnalité 2FA ou questions de sécurité.
 
-Account lockout mechanisms require a balance between protecting accounts from unauthorized access and protecting users from being denied authorized access. Accounts are typically locked after 3 to 5 unsuccessful attempts and can only be unlocked after a predetermined period of time, via a self-service unlock mechanism, or intervention by an administrator.
+Les mécanismes de verrouillage de compte nécessitent un équilibre entre la protection des comptes contre les accès non autorisés et la protection des utilisateurs contre le refus d'un accès autorisé. Les comptes sont généralement verrouillés après 3 à 5 tentatives infructueuses et ne peuvent être déverrouillés qu'après une période de temps prédéterminée, via un mécanisme de déverrouillage en libre-service ou l'intervention d'un administrateur.
 
-Despite it being easy to conduct brute force attacks, the result of a successful attack is dangerous as the attacker will have full access on the user account and with it all the functionality and services they have access to.
+Bien qu'il soit facile de mener des attaques par force brute, le résultat d'une attaque réussie est dangereux car l'attaquant aura un accès complet au compte d'utilisateur et avec lui toutes les fonctionnalités et tous les services auxquels il a accès.
 
-## Test Objectives
+## Objectifs des tests
 
-- Evaluate the account lockout mechanism's ability to mitigate brute force password guessing.
-- Evaluate the unlock mechanism's resistance to unauthorized account unlocking.
+- Évaluez la capacité du mécanisme de verrouillage de compte à atténuer la devinette de mot de passe par force brute.
+- Évaluer la résistance du mécanisme de déverrouillage au déverrouillage non autorisé de compte.
 
-## How to Test
+## Comment tester
 
-### Lockout Mechanism
+### Mécanisme de verrouillage
 
-To test the strength of lockout mechanisms, you will need access to an account that you are willing or can afford to lock. If you have only one account with which you can log on to the web application, perform this test at the end of your test plan to avoid losing testing time by being locked out.
+Pour tester la solidité des mécanismes de verrouillage, vous aurez besoin d'accéder à un compte que vous souhaitez ou pouvez vous permettre de verrouiller. Si vous n'avez qu'un seul compte avec lequel vous pouvez vous connecter à l'application Web, effectuez ce test à la fin de votre plan de test pour éviter de perdre du temps de test en étant bloqué.
 
-To evaluate the account lockout mechanism's ability to mitigate brute force password guessing, attempt an invalid log in by using the incorrect password a number of times, before using the correct password to verify that the account was locked out. An example test may be as follows:
+Pour évaluer la capacité du mécanisme de verrouillage de compte à atténuer la tentative de deviner un mot de passe par force brute, tentez une connexion non valide en utilisant le mot de passe incorrect un certain nombre de fois, avant d'utiliser le mot de passe correct pour vérifier que le compte a été verrouillé. Un exemple de test peut être le suivant :
 
-1. Attempt to log in with an incorrect password 3 times.
-2. Successfully log in with the correct password, thereby showing that the lockout mechanism doesn't trigger after 3 incorrect authentication attempts.
-3. Attempt to log in with an incorrect password 4 times.
-4. Successfully log in with the correct password, thereby showing that the lockout mechanism doesn't trigger after 4 incorrect authentication attempts.
-5. Attempt to log in with an incorrect password 5 times.
-6. Attempt to log in with the correct password. The application returns "Your account is locked out.", thereby confirming that the account is locked out after 5 incorrect authentication attempts.
-7. Attempt to log in with the correct password 5 minutes later. The application returns "Your account is locked out.", thereby showing that the lockout mechanism does not automatically unlock after 5 minutes.
-8. Attempt to log in with the correct password 10 minutes later. The application returns "Your account is locked out.", thereby showing that the lockout mechanism does not automatically unlock after 10 minutes.
-9. Successfully log in with the correct password 15 minutes later, thereby showing that the lockout mechanism automatically unlocks after a 10 to 15 minute period.
+1. Essayez de vous connecter 3 fois avec un mot de passe incorrect.
+2. Connectez-vous avec succès avec le mot de passe correct, montrant ainsi que le mécanisme de verrouillage ne se déclenche pas après 3 tentatives d'authentification incorrectes.
+3. Essayez de vous connecter avec un mot de passe incorrect 4 fois.
+4. Connectez-vous avec succès avec le mot de passe correct, montrant ainsi que le mécanisme de verrouillage ne se déclenche pas après 4 tentatives d'authentification incorrectes.
+5. Essayez de vous connecter 5 fois avec un mot de passe incorrect.
+6. Essayez de vous connecter avec le mot de passe correct. L'application renvoie "Votre compte est verrouillé.", confirmant ainsi que le compte est verrouillé après 5 tentatives d'authentification incorrectes.
+7. Essayez de vous connecter avec le mot de passe correct 5 minutes plus tard. L'application renvoie "Votre compte est verrouillé.", indiquant ainsi que le mécanisme de verrouillage ne se déverrouille pas automatiquement après 5 minutes.
+8. Essayez de vous connecter avec le mot de passe correct 10 minutes plus tard. L'application renvoie "Votre compte est verrouillé.", indiquant ainsi que le mécanisme de verrouillage ne se déverrouille pas automatiquement après 10 minutes.
+9. Connectez-vous avec succès avec le mot de passe correct 15 minutes plus tard, montrant ainsi que le mécanisme de verrouillage se déverrouille automatiquement après une période de 10 à 15 minutes.
 
-A CAPTCHA may hinder brute force attacks, but they can come with their own set of weaknesses, and should not replace a lockout mechanism. A CAPTCHA mechanism may be bypassed if implemented incorrectly. CAPTCHA flaws include:
+Un CAPTCHA peut entraver les attaques par force brute, mais il peut s'accompagner de ses propres faiblesses et ne doit pas remplacer un mécanisme de verrouillage. Un mécanisme CAPTCHA peut être contourné s'il est mal implémenté. Les failles CAPTCHA incluent :
 
-1. Easily defeated challenge, such as arithmetic or limited question set.
-2. CAPTCHA checks for HTTP response code instead of response success.
-3. CAPTCHA server-side logic defaults to a successful solve.
-4. CAPTCHA challenge result is never validated server-side.
-5. CAPTCHA input field or parameter is manually processed, and is improperly validated or escaped.
+1. Défi facilement vaincu, tel que l'arithmétique ou un ensemble de questions limité.
+2. CAPTCHA vérifie le code de réponse HTTP au lieu du succès de la réponse.
+3. La logique côté serveur CAPTCHA est par défaut une résolution réussie.
+4. Le résultat du défi CAPTCHA n'est jamais validé côté serveur.
+5. Le champ ou le paramètre de saisie CAPTCHA est traité manuellement et n'est pas correctement validé ou échappé.
 
-To evaluate CAPTCHA effectiveness:
+Pour évaluer l'efficacité du CAPTCHA :
 
-1. Assess CAPTCHA challenges and attempt automating solutions depending on difficulty.
-2. Attempt to submit request without solving CAPTCHA via the normal UI mechanism(s).
-3. Attempt to submit request with intentional CAPTCHA challenge failure.
-4. Attempt to submit request without solving CAPTCHA (assuming some default values may be passed by client-side code, etc) while using a testing proxy (request submitted directly server-side).
-5. Attempt to fuzz CAPTCHA data entry points (if present) with common injection payloads or special characters sequences.
-6. Check if the solution to the CAPTCHA might be the alt-text of the image(s), filename(s), or a value in an associated hidden field.
-7. Attempt to re-submit previously identified known good responses.
-8. Check if clearing cookies causes the CAPTCHA to be bypassed (for example if the CAPTCHA is only shown after a number of failures).
-9. If the CAPTCHA is part of a multi-step process, attempt to simply access or complete a step beyond the CAPTCHA (for example if CAPTCHA is the first step in a login process, try simply submitting the second step [username and password]).
-10. Check for alternative methods that might not have CAPTCHA enforced, such as an API endpoint meant to facilitate mobile app access.
+1. Évaluez les défis CAPTCHA et tentez d'automatiser les solutions en fonction de la difficulté.
+2. Essayez de soumettre une demande sans résoudre le CAPTCHA via le(s) mécanisme(s) d'interface utilisateur normal(s).
+3. Tentative de soumission d'une demande avec échec intentionnel du test CAPTCHA.
+4. Essayez de soumettre une demande sans résoudre CAPTCHA (en supposant que certaines valeurs par défaut peuvent être transmises par le code côté client, etc.) tout en utilisant un proxy de test (demande soumise directement côté serveur).
+5. Essayez de fuzzer les points d'entrée de données CAPTCHA (le cas échéant) avec des charges utiles d'injection communes ou des séquences de caractères spéciaux.
+6. Vérifiez si la solution au CAPTCHA peut être le texte alternatif de l'image ou des noms de fichier ou une valeur dans un champ masqué associé.
+7. Essayez de soumettre à nouveau les bonnes réponses connues précédemment identifiées.
+8. Vérifiez si la suppression des cookies entraîne le contournement du CAPTCHA (par exemple, si le CAPTCHA ne s'affiche qu'après un certain nombre d'échecs).
+9. Si le CAPTCHA fait partie d'un processus en plusieurs étapes, essayez simplement d'accéder ou de compléter une étape au-delà du CAPTCHA (par exemple, si le CAPTCHA est la première étape d'un processus de connexion, essayez simplement de soumettre la deuxième étape [nom d'utilisateur et mot de passe] ).
+10. Recherchez d'autres méthodes qui pourraient ne pas appliquer CAPTCHA, comme un point de terminaison d'API destiné à faciliter l'accès aux applications mobiles.
 
-Repeat this process to every possible functionality that could require a lockout mechanism.
+Répétez ce processus pour toutes les fonctionnalités possibles qui pourraient nécessiter un mécanisme de verrouillage.
 
-### Unlock Mechanism
+### Mécanisme de déverrouillage
 
-To evaluate the unlock mechanism's resistance to unauthorized account unlocking, initiate the unlock mechanism and look for weaknesses. Typical unlock mechanisms may involve secret questions or an emailed unlock link. The unlock link should be a unique one-time link, to stop an attacker from guessing or replaying the link and performing brute force attacks in batches.
+Pour évaluer la résistance du mécanisme de déverrouillage au déverrouillage de compte non autorisé, lancez le mécanisme de déverrouillage et recherchez les faiblesses. Les mécanismes de déverrouillage typiques peuvent impliquer des questions secrètes ou un lien de déverrouillage envoyé par e-mail. Le lien de déverrouillage doit être un lien unique unique, pour empêcher un attaquant de deviner ou de rejouer le lien et d'effectuer des attaques par force brute par lots.
 
-Note that an unlock mechanism should only be used for unlocking accounts. It is not the same as a password recovery mechanism, yet could follow the same security practices.
+Notez qu'un mécanisme de déverrouillage ne doit être utilisé que pour déverrouiller des comptes. Ce n'est pas la même chose qu'un mécanisme de récupération de mot de passe, mais pourrait suivre les mêmes pratiques de sécurité.
 
-## Remediation
+## Correction
 
-Apply account unlock mechanisms depending on the risk level. In order from lowest to highest assurance:
+Appliquez des mécanismes de déverrouillage de compte en fonction du niveau de risque. Dans l'ordre de l'assurance la plus faible à la plus élevée :
 
-1. Time-based lockout and unlock.
-2. Self-service unlock (sends unlock email to registered email address).
-3. Manual administrator unlock.
-4. Manual administrator unlock with positive user identification.
+1. Verrouillage et déverrouillage basés sur le temps.
+2. Déverrouillage en libre-service (envoie un e-mail de déverrouillage à l'adresse e-mail enregistrée).
+3. Déverrouillage manuel de l'administrateur.
+4. Déverrouillage manuel de l'administrateur avec identification positive de l'utilisateur.
 
-Factors to consider when implementing an account lockout mechanism:
+Facteurs à prendre en compte lors de la mise en œuvre d'un mécanisme de verrouillage de compte :
 
-1. What is the risk of brute force password guessing against the application?
-2. Is a CAPTCHA sufficient to mitigate this risk?
-3. Is a client-side lockout mechanism being used (e.g., JavaScript)? (If so, disable the client-side code to test.)
-4. Number of unsuccessful log in attempts before lockout. If the lockout threshold is to low then valid users may be locked out too often. If the lockout threshold is to high then the more attempts an attacker can make to brute force the account before it will be locked. Depending on the application's purpose, a range of 5 to 10 unsuccessful attempts is typical lockout threshold.
-5. How will accounts be unlocked?
-    1. Manually by an administrator: this is the most secure lockout method, but may cause inconvenience to users and take up the administrator's "valuable" time.
-        1. Note that the administrator should also have a recovery method in case his account gets locked.
-        2. This unlock mechanism may lead to a denial-of-service attack if an attacker's goal is to lock the accounts of all users of the web application.
-    2. After a period of time: What is the lockout duration? Is this sufficient for the application being protected? E.g. a 5 to 30 minute lockout duration may be a good compromise between mitigating brute force attacks and inconveniencing valid users.
-    3. Via a self-service mechanism: As stated before, this self-service mechanism must be secure enough to avoid that the attacker can unlock accounts himself.
+1. Quel est le risque de deviner un mot de passe par force brute contre l'application ?
+2. Un CAPTCHA est-il suffisant pour atténuer ce risque ?
+3. Un mécanisme de verrouillage côté client est-il utilisé (par exemple, JavaScript) ? (Si c'est le cas, désactivez le code côté client à tester.)
+4. Nombre de tentatives de connexion infructueuses avant le verrouillage. Si le seuil de verrouillage est trop bas, les utilisateurs valides peuvent être verrouillés trop souvent. Si le seuil de verrouillage est trop élevé, plus un attaquant peut tenter de forcer brutalement le compte avant qu'il ne soit verrouillé. Selon l'objectif de l'application, une plage de 5 à 10 tentatives infructueuses est un seuil de verrouillage typique.
+5. Comment les comptes seront-ils déverrouillés ?
+    1. Manuellement par un administrateur : il s'agit de la méthode de verrouillage la plus sécurisée, mais elle peut causer des désagréments aux utilisateurs et accaparer le temps "précieux" de l'administrateur.
+        1. Notez que l'administrateur doit également disposer d'une méthode de récupération au cas où son compte serait verrouillé.
+        2. Ce mécanisme de déverrouillage peut conduire à une attaque par déni de service si l'objectif d'un attaquant est de verrouiller les comptes de tous les utilisateurs de l'application Web.
+    2. Après un certain temps : Quelle est la durée du blocage ? Est-ce suffisant pour que l'application soit protégée ? Par exemple. une durée de verrouillage de 5 à 30 minutes peut être un bon compromis entre atténuer les attaques par force brute et gêner les utilisateurs valides.
+    3. Via un mécanisme de libre-service : Comme indiqué précédemment, ce mécanisme de libre-service doit être suffisamment sécurisé pour éviter que l'attaquant puisse déverrouiller lui-même les comptes.
 
-## References
+## Références
 
-- See the OWASP article on [Brute Force](https://owasp.org/www-community/attacks/Brute_force_attack) Attacks.
-- [Forgot Password CS](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).
+- Voir l'article de l'OWASP sur les attaques [Brute Force](https://owasp.org/www-community/attacks/Brute_force_attack).
+- [Mot de passe oublié CS] (https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).

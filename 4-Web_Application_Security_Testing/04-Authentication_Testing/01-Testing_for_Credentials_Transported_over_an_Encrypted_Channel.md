@@ -1,7 +1,7 @@
-# Testing for Credentials Transported over an Encrypted Channel
+# Test des informations d'identification transportées sur un canal crypté
 
 |ID          |
 |------------|
 |WSTG-ATHN-01|
 
-This content has been merged into: [Testing for Sensitive Information Sent via Unencrypted Channels](../09-Testing_for_Weak_Cryptography/03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels.md)
+Ce contenu a été fusionné dans : [Test des informations sensibles envoyées via des canaux non cryptés](../09-Testing_for_Weak_Cryptography/03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels.md)

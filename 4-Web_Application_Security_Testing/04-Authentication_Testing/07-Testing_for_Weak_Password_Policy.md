@@ -1,33 +1,33 @@
-# Testing for Weak Password Policy
+# Test de la politique de mot de passe faible
 
 |ID          |
 |------------|
 |WSTG-ATHN-07|
 
-## Summary
+## Sommaire
 
-The most prevalent and most easily administered authentication mechanism is a static password. The password represents the keys to the kingdom, but is often subverted by users in the name of usability. In each of the recent high profile hacks that have revealed user credentials, it is lamented that most common passwords are still: `123456`, `password` and `qwerty`.
+Le mécanisme d'authentification le plus répandu et le plus facilement administré est un mot de passe statique. Le mot de passe représente les clés du royaume, mais est souvent détourné par les utilisateurs au nom de la convivialité. Dans chacun des hacks récents de haut niveau qui ont révélé les informations d'identification des utilisateurs, il est déploré que les mots de passe les plus courants soient toujours : `123456`, `password` et `qwerty`.
 
-## Test Objectives
+## Objectifs des tests
 
-- Determine the resistance of the application against brute force password guessing using available password dictionaries by evaluating the length, complexity, reuse, and aging requirements of passwords.
+- Déterminer la résistance de l'application contre la force brute de deviner les mots de passe à l'aide des dictionnaires de mots de passe disponibles en évaluant la longueur, la complexité, la réutilisation et les exigences de vieillissement des mots de passe.
 
-## How to Test
+## Comment tester
 
-1. What characters are permitted and forbidden for use within a password? Is the user required to use characters from different character sets such as lower and uppercase letters, digits and special symbols?
-2. How often can a user change their password? How quickly can a user change their password after a previous change? Users may bypass password history requirements by changing their password 5 times in a row so that after the last password change they have configured their initial password again.
-3. When must a user change their password?
-    - Both [NIST](https://pages.nist.gov/800-63-3/sp800-63b.html#memsecretver) and [NCSC](https://www.ncsc.gov.uk/collection/passwords/updating-your-approach#PasswordGuidance:UpdatingYourApproach-Don'tenforceregularpasswordexpiry) recommend **against** forcing regular password expiry, although it may be required by standards such as PCI DSS.
-4. How often can a user reuse a password? Does the application maintain a history of the user's previous used 8 passwords?
-5. How different must the next password be from the last password?
-6. Is the user prevented from using his username or other account information (such as first or last name) in the password?
-7. What are the minimum and maximum password lengths that can be set, and are they appropriate for the sensitivity of the account and application?
-8. Is it possible to set common passwords such as `Password1` or `123456`?
+1. Quels caractères sont autorisés et interdits dans un mot de passe ? L'utilisateur doit-il utiliser des caractères de différents jeux de caractères tels que des lettres minuscules et majuscules, des chiffres et des symboles spéciaux ?
+2. À quelle fréquence un utilisateur peut-il changer son mot de passe ? Dans quel délai un utilisateur peut-il changer son mot de passe après un changement précédent ? Les utilisateurs peuvent contourner les exigences d'historique de mot de passe en modifiant leur mot de passe 5 fois de suite afin qu'après le dernier changement de mot de passe, ils aient à nouveau configuré leur mot de passe initial.
+3. Quand un utilisateur doit-il changer son mot de passe ?
+    - À la fois [NIST](https://pages.nist.gov/800-63-3/sp800-63b.html#memsecretver) et [NCSC](https://www.ncsc.gov.uk/collection/passwords/updating-your-approach#PasswordGuidance:UpdatingYourApproach-Don'tenforceregularpasswordexpiry) recommande **contre** de forcer l'expiration régulière du mot de passe, bien que cela puisse être requis par des normes telles que PCI DSS.
+4. À quelle fréquence un utilisateur peut-il réutiliser un mot de passe ? L'application conserve-t-elle un historique des 8 derniers mots de passe utilisés par l'utilisateur ?
+5. Dans quelle mesure le prochain mot de passe doit-il être différent du dernier mot de passe ?
+6. L'utilisateur est-il empêché d'utiliser son nom d'utilisateur ou d'autres informations de compte (comme le prénom ou le nom) dans le mot de passe ?
+7. Quelles sont les longueurs de mot de passe minimale et maximale pouvant être définies, et sont-elles adaptées à la sensibilité du compte et de l'application ?
+8. Est-il possible de définir des mots de passe communs tels que `Password1` ou `123456` ?
 
-## Remediation
+## Correction
 
-To mitigate the risk of easily guessed passwords facilitating unauthorized access there are two solutions: introduce additional authentication controls (i.e. two-factor authentication) or introduce a strong password policy. The simplest and cheapest of these is the introduction of a strong password policy that ensures password length, complexity, reuse and aging; although ideally both of them should be implemented.
+Pour atténuer le risque que des mots de passe faciles à deviner facilitent un accès non autorisé, il existe deux solutions : introduire des contrôles d'authentification supplémentaires (c'est-à-dire une authentification à deux facteurs) ou introduire une politique de mots de passe forts. La plus simple et la moins chère d'entre elles est l'introduction d'une politique de mot de passe forte qui garantit la longueur, la complexité, la réutilisation et le vieillissement du mot de passe ; même si idéalement les deux devraient être mis en œuvre.
 
-## References
+## Références
 
-- [Brute Force Attacks](https://owasp.org/www-community/attacks/Brute_force_attack)
+- [Attaques par force brute] (https://owasp.org/www-community/attacks/Brute_force_attack)
