@@ -1,49 +1,49 @@
-# Testing for Privilege Escalation
+# Test d'élévation de privilèges
 
 |ID          |
 |------------|
 |WSTG-ATHZ-03|
 
-## Summary
+## Sommaire
 
-This section describes the issue of escalating privileges from one stage to another. During this phase, the tester should verify that it is not possible for a user to modify their privileges or roles inside the application in ways that could allow privilege escalation attacks.
+Cette section décrit le problème de l'escalade des privilèges d'une étape à l'autre. Au cours de cette phase, le testeur doit vérifier qu'il n'est pas possible pour un utilisateur de modifier ses privilèges ou ses rôles dans l'application d'une manière qui pourrait permettre des attaques par escalade de privilèges.
 
-Privilege escalation occurs when a user gets access to more resources or functionality than they are normally allowed, and such elevation or changes should have been prevented by the application. This is usually caused by a flaw in the application. The result is that the application performs actions with more privileges than those intended by the developer or system administrator.
+L'élévation des privilèges se produit lorsqu'un utilisateur a accès à plus de ressources ou de fonctionnalités qu'il n'est normalement autorisé, et une telle élévation ou modification aurait dû être empêchée par l'application. Ceci est généralement causé par une faille dans l'application. Le résultat est que l'application effectue des actions avec plus de privilèges que ceux prévus par le développeur ou l'administrateur système.
 
-The degree of escalation depends on what privileges the attacker is authorized to possess, and what privileges can be obtained in a successful exploit. For example, a programming error that allows a user to gain extra privilege after successful authentication limits the degree of escalation, because the user is already authorized to hold some privilege. Likewise, a remote attacker gaining superuser privilege without any authentication presents a greater degree of escalation.
+Le degré d'escalade dépend des privilèges que l'attaquant est autorisé à posséder et des privilèges qui peuvent être obtenus lors d'un exploit réussi. Par exemple, une erreur de programmation qui permet à un utilisateur d'obtenir des privilèges supplémentaires après une authentification réussie limite le degré d'escalade, car l'utilisateur est déjà autorisé à détenir certains privilèges. De même, un attaquant distant obtenant le privilège de superutilisateur sans aucune authentification présente un plus grand degré d'escalade.
 
-Usually, people refer to *vertical escalation* when it is possible to access resources granted to more privileged accounts (e.g., acquiring administrative privileges for the application), and to *horizontal escalation* when it is possible to access resources granted to a similarly configured account (e.g., in an online banking application, accessing information related to a different user).
+Habituellement, les gens se réfèrent à *escalade verticale* lorsqu'il est possible d'accéder à des ressources accordées à des comptes plus privilégiés (par exemple, acquérir des privilèges administratifs pour l'application), et à *escalade horizontale* lorsqu'il est possible d'accéder à des ressources accordées à un utilisateur configuré de manière similaire. compte (par exemple, dans une application bancaire en ligne, accéder à des informations relatives à un autre utilisateur).
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify injection points related to privilege manipulation.
-- Fuzz or otherwise attempt to bypass security measures.
+- Identifier les points d'injection liés à la manipulation des privilèges.
+- Fuzz ou tentative de contournement des mesures de sécurité.
 
-## How to Test
+## Comment tester
 
-### Testing for Role/Privilege Manipulation
+### Test de la manipulation des rôles/privilèges
 
-In every portion of the application where a user can create information in the database (e.g., making a payment, adding a contact, or sending a message), can receive information (statement of account, order details, etc.), or delete information (drop users, messages, etc.), it is necessary to record that functionality. The tester should try to access such functions as another user in order to verify if it is possible to access a function that should not be permitted by the user's role/privilege (but might be permitted as another user).
+Dans chaque partie de l'application où un utilisateur peut créer des informations dans la base de données (par exemple, effectuer un paiement, ajouter un contact ou envoyer un message), peut recevoir des informations (relevé de compte, détails de la commande, etc.) ou supprimer des informations (déposer des utilisateurs, des messages, etc.), il est nécessaire d'enregistrer cette fonctionnalité. Le testeur doit essayer d'accéder à ces fonctions en tant qu'un autre utilisateur afin de vérifier s'il est possible d'accéder à une fonction qui ne devrait pas être autorisée par le rôle/privilège de l'utilisateur (mais qui pourrait être autorisée en tant qu'un autre utilisateur).
 
-#### Manipulation of User Group
+#### Manipulation du groupe d'utilisateurs
 
-For example:
-The following HTTP POST allows the user that belongs to `grp001` to access order #0001:
+Par exemple:
+Le HTTP POST suivant permet à l'utilisateur qui appartient à `grp001` d'accéder à la commande n° 0001 :
 
 ```http
 POST /user/viewOrder.jsp HTTP/1.1
-Host: www.example.com
+Host: www.exemple.com
 ...
 
 groupID=grp001&orderID=0001
 ```
 
-Verify if a user that does not belong to `grp001` can modify the value of the parameters `groupID` and `orderID` to gain access to that privileged data.
+Vérifiez si un utilisateur qui n'appartient pas à `grp001` peut modifier la valeur des paramètres `groupID` et `orderID` pour accéder à ces données privilégiées.
 
-#### Manipulation of User Profile
+#### Manipulation du profil utilisateur
 
-For example:
-The following server's answer shows a hidden field in the HTML returned to the user after a successful authentication.
+Par exemple:
+La réponse suivante du serveur montre un champ masqué dans le code HTML renvoyé à l'utilisateur après une authentification réussie.
 
 ```html
 HTTP/1.1 200 OK
@@ -66,66 +66,66 @@ Connection: close
 </tr>
 ```
 
-What if the tester modifies the value of the variable `profile` to `SysAdmin`? Is it possible to become **administrator**?
+Que se passe-t-il si le testeur modifie la valeur de la variable `profile` en `SysAdmin` ? Est-il possible de devenir **administrateur** ?
 
-#### Manipulation of Condition Value
+#### Manipulation de la valeur de condition
 
-For example:
-In an environment where the server sends an error message contained as a value in a specific parameter in a set of answer codes, as the following:
+Par exemple:
+Dans un environnement où le serveur envoie un message d'erreur contenu sous la forme d'une valeur dans un paramètre spécifique d'un ensemble de codes de réponse, comme suit :
 
 ```text
 @0`1`3`3``0`UC`1`Status`OK`SEC`5`1`0`ResultSet`0`PVValid`-1`0`0` Notifications`0`0`3`Command  Manager`0`0`0` StateToolsBar`0`0`0`
 StateExecToolBar`0`0`0`FlagsToolBar`0
 ```
 
-The server gives an implicit trust to the user. It believes that the user will answer with the above message closing the session.
+Le serveur donne une confiance implicite à l'utilisateur. Il pense que l'utilisateur répondra avec le message ci-dessus fermant la session.
 
-In this condition, verify that it is not possible to escalate privileges by modifying the parameter values. In this particular example, by modifying the `PVValid` value from `-1` to `0` (no error conditions), it may be possible to authenticate as administrator to the server.
+Dans cette condition, vérifiez qu'il n'est pas possible d'élever les privilèges en modifiant les valeurs des paramètres. Dans cet exemple particulier, en modifiant la valeur `PVValid` de `-1` à `0` (aucune condition d'erreur), il peut être possible de s'authentifier en tant qu'administrateur auprès du serveur.
 
-#### Manipulation of IP Address
+#### Manipulation de l'adresse IP
 
-Some websites limit access or count the number of failed login attempts based on IP address.
+Certains sites Web limitent l'accès ou comptent le nombre de tentatives de connexion infructueuses en fonction de l'adresse IP.
 
-For example:
+Par exemple:
 
 ```text
 X-Forwarded-For: 8.1.1.1
 ```
 
-In this case, if the website uses the value of `X-forwarded-For` as client IP address, tester may change the IP value of the `X-forwarded-For` HTTP header to workaround the IP source identification.
+Dans ce cas, si le site Web utilise la valeur de `X-forwarded-For` comme adresse IP client, le testeur peut modifier la valeur IP de l'en-tête HTTP `X-forwarded-For` pour contourner l'identification de la source IP.
 
-### Testing for Vertical Bypassing Authorization Schema
+### Test du schéma d'autorisation de contournement vertical
 
-A vertical authorization bypass is specific to the case that an attacker obtains a role higher than their own. Testing for this bypass focuses on verifying how the vertical authorization schema has been implemented for each role. For every function, page, specific role, or request that the application executes, it is necessary to verify if it is possible to:
+Un contournement d'autorisation vertical est spécifique au cas où un attaquant obtient un rôle supérieur au sien. Le test de ce contournement se concentre sur la vérification de la manière dont le schéma d'autorisation vertical a été implémenté pour chaque rôle. Pour chaque fonction, page, rôle spécifique ou demande que l'application exécute, il est nécessaire de vérifier s'il est possible de :
 
-- Access resources that should be accessible only to a higher role user.
-- Operate functions on resources that should be operative only by a user that holds a higher or specific role identity.
+- Accéder aux ressources qui ne devraient être accessibles qu'à un utilisateur de rôle supérieur.
+- Exploiter des fonctions sur des ressources qui ne devraient être opérationnelles que par un utilisateur qui détient une identité de rôle supérieure ou spécifique.
 
-For each role:
+Pour chaque rôle :
 
-1. Register a user.
-2. Establish and maintain two different sessions based on the two different roles.
-3. For every request, change the session identifier from the original to another role's session identifier and evaluate the responses for each.
-4. An application will be considered vulnerable if the weaker privileged session contains the same data, or indicate successful operations on higher privileged functions.
+1. Enregistrez un utilisateur.
+2. Établir et maintenir deux sessions différentes basées sur les deux rôles différents.
+3. Pour chaque demande, remplacez l'identifiant de session de l'original par l'identifiant de session d'un autre rôle et évaluez les réponses pour chacune.
+4. Une application sera considérée comme vulnérable si la session privilégiée la plus faible contient les mêmes données ou indique des opérations réussies sur des fonctions privilégiées plus élevées.
 
-#### Banking Site Roles Scenario
+#### Scénario des rôles sur le site bancaire
 
-The following table illustrates the system roles on a banking site. Each role binds with specific permissions for the event menu functionality:
+Le tableau suivant illustre les rôles système sur un site bancaire. Chaque rôle est lié à des autorisations spécifiques pour la fonctionnalité du menu des événements :
 
-|      ROLE     |     PERMISSION    | ADDITIONAL PERMISSION |
-|---------------|-------------------|-----------------------|
-| Administrator | Full Control      | Delete                |
-| Manager       | Modify, Add, Read | Add                   |
-| Staff         | Read, Modify      | Modify                |
-| Customer      | Read Only         |                       |
+|      ROLE      |        AUTORISATION     | AUTORISATION SUPPLÉMENTAIRE |
+|----------------|-------------------------|-----------------------------|
+| Administrateur | Contrôle total          | Supprimer                   |
+| Gérant         | Modifier, Ajouter, Lire | Ajouter                     |
+| Personnel      | Lire, Modifier          | Modifier                    |
+| Client         | Lecture seule           |                             |
 
-The application will be considered vulnerable if the:
+L'application sera considérée comme vulnérable si :
 
-1. Customer could operate administrator, manager or staff functions;
-2. Staff user could operate manager or administrator functions;
-3. Manager could operate administrator functions.
+1. Le client peut exploiter des fonctions d'administrateur, de gestionnaire ou de personnel ;
+2. L'utilisateur du personnel peut exploiter les fonctions de gestionnaire ou d'administrateur ;
+3. Le gestionnaire peut exploiter les fonctions d'administrateur.
 
-Suppose that the `deleteEvent` function is part of the administrator account menu of the application, and it is possible to access it by requesting the following URL: `https://www.example.com/account/deleteEvent`. Then, the following HTTP request is generated when calling the `deleteEvent` function:
+Supposons que la fonction `deleteEvent` fasse partie du menu du compte administrateur de l'application, et qu'il soit possible d'y accéder en demandant l'URL suivante : `https://www.exemple.com/account/deleteEvent`. Ensuite, la requête HTTP suivante est générée lors de l'appel de la fonction `deleteEvent` :
 
 ```http
 POST /account/deleteEvent HTTP/1.1
@@ -136,7 +136,7 @@ Cookie: SessionID=ADMINISTRATOR_USER_SESSION
 EventID=1000001
 ```
 
-The valid response:
+La réponse valide :
 
 ```http
 HTTP/1.1 200 OK
@@ -145,55 +145,55 @@ HTTP/1.1 200 OK
 {"message": "Event was deleted"}
 ```
 
-The attacker may try and execute the same request:
+L'attaquant peut tenter d'exécuter la même requête :
 
 ```http
 POST /account/deleteEvent HTTP/1.1
-Host: www.example.com
+Host: www.exemple.com
 [other HTTP headers]
 Cookie: SessionID=CUSTOMER_USER_SESSION
 
 EventID=1000002
 ```
 
-If the response of the attacker’s request contains the same data `{"message": "Event was deleted"}` the application is vulnerable.
+Si la réponse de la requête de l'attaquant contient les mêmes données `{"message": "L'événement a été supprimé"}` l'application est vulnérable.
 
-#### Administrator Page Access
+#### Accès à la page administrateur
 
-Suppose that the administrator menu is part of the administrator account.
+Supposons que le menu administrateur fasse partie du compte administrateur.
 
-The application will be considered vulnerable if any role other than administrator could access the administrator menu. Sometimes, developers perform authorization validation at the GUI level only, and leave the functions without authorization validation, thus potentially resulting in a vulnerability.
+L'application sera considérée comme vulnérable si un rôle autre que l'administrateur peut accéder au menu administrateur. Parfois, les développeurs effectuent une validation d'autorisation uniquement au niveau de l'interface graphique et laissent les fonctions sans validation d'autorisation, ce qui peut entraîner une vulnérabilité.
 
-### URL Traversal
+### Parcours d'URL
 
-Try to traverse the website and check if some of pages that may miss the authorization check.
+Essayez de parcourir le site Web et vérifiez si certaines des pages peuvent manquer la vérification d'autorisation.
 
-For example:
+Par exemple :
 
 ```text
 /../.././userInfo.html
 ```
 
-### WhiteBox
+### Boîte blanche
 
-If the URL authorization check is only done by partial URL match, then it's likely testers or hackers may workaround the authorization by URL encoding techniques.
+Si la vérification de l'autorisation d'URL n'est effectuée que par correspondance partielle d'URL, il est probable que des testeurs ou des pirates puissent contourner l'autorisation par des techniques de codage d'URL.
 
-For example:
+Par exemple :
 
 ```text
 startswith(), endswith(), contains(), indexOf()
 ```
 
-### Weak SessionID
+### ID de session faible
 
-Weak Session ID has algorithm may be vulnerable to brute Force attack. For example, one website is using `MD5(Password + UserID)` as sessionID. Then, testers may guess or generate the sessionID for other users.
+L'ID de session faible a un algorithme peut être vulnérable à une attaque par force brute. Par exemple, un site Web utilise `MD5 (Mot de passe + ID utilisateur)` comme ID de session. Ensuite, les testeurs peuvent deviner ou générer le sessionID pour les autres utilisateurs.
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
-- [Wikipedia - Privilege Escalation](https://en.wikipedia.org/wiki/Privilege_escalation)
+- [Wikipédia - Augmentation des privilèges](https://en.wikipedia.org/wiki/Privilege_escalation)
 
-## Tools
+## Outils
 
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org)
+- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org)

@@ -1,48 +1,48 @@
-# Testing for Bypassing Authorization Schema
+# Test du schéma d'autorisation de contournement
 
 |ID          |
 |------------|
 |WSTG-ATHZ-02|
 
-## Summary
+## Sommaire
 
-This kind of test focuses on verifying how the authorization schema has been implemented for each role or privilege to get access to reserved functions and resources.
+Ce type de test se concentre sur la vérification de la manière dont le schéma d'autorisation a été implémenté pour chaque rôle ou privilège afin d'accéder aux fonctions et ressources réservées.
 
-For every specific role the tester holds during the assessment and for every function and request that the application executes during the post-authentication phase, it is necessary to verify:
+Pour chaque rôle spécifique tenu par le testeur lors de l'évaluation et pour chaque fonction et demande que l'application exécute lors de la phase de post-authentification, il est nécessaire de vérifier :
 
-- Is it possible to access that resource even if the user is not authenticated?
-- Is it possible to access that resource after the log-out?
-- Is it possible to access functions and resources that should be accessible to a user that holds a different role or privilege?
+- Est-il possible d'accéder à cette ressource même si l'utilisateur n'est pas authentifié ?
+- Est-il possible d'accéder à cette ressource après la déconnexion ?
+- Est-il possible d'accéder à des fonctions et des ressources qui devraient être accessibles à un utilisateur qui détient un rôle ou un privilège différent ?
 
-Try to access the application as an administrative user and track all the administrative functions.
+Essayez d'accéder à l'application en tant qu'utilisateur administratif et suivez toutes les fonctions administratives.
 
-- Is it possible to access administrative functions if the tester is logged in as a non-admin user?
-- Is it possible to use these administrative functions as a user with a different role and for whom that action should be denied?
+- Est-il possible d'accéder aux fonctions d'administration si le testeur est connecté en tant qu'utilisateur non administrateur ?
+- Est-il possible d'utiliser ces fonctions d'administration en tant qu'utilisateur avec un rôle différent et pour qui cette action doit être refusée ?
 
-## Test Objectives
+## Objectifs des tests
 
-- Assess if horizontal or vertical access is possible.
+- Évaluer si un accès horizontal ou vertical est possible.
 
-## How to Test
+## Comment tester
 
-- Access resources and conduct operations horizontally.
-- Access resources and conduct operations vertically.
+- Accéder aux ressources et mener les opérations horizontalement.
+- Accéder aux ressources et mener les opérations verticalement.
 
-### Testing for Horizontal Bypassing Authorization Schema
+### Test du schéma d'autorisation de contournement horizontal
 
-For every function, specific role, or request that the application executes, it is necessary to verify:
+Pour chaque fonction, rôle spécifique ou demande que l'application exécute, il est nécessaire de vérifier :
 
-- Is it possible to access resources that should be accessible to a user that holds a different identity with the same role or privilege?
-- Is it possible to operate functions on resources that should be accessible to a user that holds a different identity?
+- Est-il possible d'accéder à des ressources qui devraient être accessibles à un utilisateur qui détient une identité différente avec le même rôle ou privilège ?
+- Est-il possible d'opérer des fonctions sur des ressources qui devraient être accessibles à un utilisateur qui détient une identité différente ?
 
-For each role:
+Pour chaque rôle :
 
-1. Register or generate two users with identical privileges.
-2. Establish and keep two different sessions active (one for each user).
-3. For every request, change the relevant parameters and the session identifier from token one to token two and diagnose the responses for each token.
-4. An application will be considered vulnerable if the responses are the same, contain same private data or indicate successful operation on other users' resource or data.
+1. Enregistrez ou générez deux utilisateurs avec des privilèges identiques.
+2. Établissez et maintenez actives deux sessions différentes (une pour chaque utilisateur).
+3. Pour chaque demande, modifiez les paramètres pertinents et l'identifiant de session du jeton un au jeton deux et diagnostiquez les réponses pour chaque jeton.
+4. Une application sera considérée comme vulnérable si les réponses sont identiques, contiennent les mêmes données privées ou indiquent une opération réussie sur les ressources ou les données d'autres utilisateurs.
 
-For example, suppose that the `viewSettings` function is part of every account menu of the application with the same role, and it is possible to access it by requesting the following URL: `https://www.example.com/account/viewSettings`. Then, the following HTTP request is generated when calling the `viewSettings` function:
+Par exemple, supposons que la fonction `viewSettings` fasse partie de chaque menu de compte de l'application avec le même rôle, et qu'il soit possible d'y accéder en demandant l'URL suivante : `https://www.exemple.com/account/viewSettings`. Ensuite, la requête HTTP suivante est générée lors de l'appel de la fonction `viewSettings` :
 
 ```http
 POST /account/viewSettings HTTP/1.1
@@ -53,7 +53,7 @@ Cookie: SessionID=USER_SESSION
 username=example_user
 ```
 
-Valid and legitimate response:
+Réponse valide et légitime :
 
 ```html
 HTTP1.1 200 OK
@@ -66,7 +66,7 @@ HTTP1.1 200 OK
 }
 ```
 
-The attacker may try and execute that request with the same `username` parameter:
+L'attaquant peut essayer d'exécuter cette requête avec le même paramètre `username` :
 
 ```html
 POST /account/viewCCpincode HTTP/1.1
@@ -77,13 +77,13 @@ Cookie: SessionID=ATTACKER_SESSION
 username=example_user
 ```
 
-If the attacker's response contain the data of the `example_user`, then the application is vulnerable for lateral movement attacks, where a user can read or write other user's data.
+Si la réponse de l'attaquant contient les données de `example_user`, alors l'application est vulnérable aux attaques de mouvement latéral, où un utilisateur peut lire ou écrire les données d'un autre utilisateur.
 
-### Testing for Access to Administrative Functions
+### Test d'accès aux fonctions d'administration
 
-For example, suppose that the `addUser` function is part of the administrative menu of the application, and it is possible to access it by requesting the following URL `https://www.example.com/admin/addUser`.
+Par exemple, supposons que la fonction `addUser` fasse partie du menu administratif de l'application, et qu'il soit possible d'y accéder en demandant l'URL suivante `https://www.example.com/admin/addUser`.
 
-Then, the following HTTP request is generated when calling the `addUser` function:
+Ensuite, la requête HTTP suivante est générée lors de l'appel de la fonction "addUser" :
 
 ```http
 POST /admin/addUser HTTP/1.1
@@ -93,29 +93,29 @@ Host: www.example.com
 userID=fakeuser&role=3&group=grp001
 ```
 
-Further questions or considerations would go in the following direction:
+D'autres questions ou considérations iraient dans le sens suivant :
 
-- What happens if a non-administrative user tries to execute that request?
-- Will the user be created?
-- If so, can the new user use their privileges?
+- Que se passe-t-il si un utilisateur non administrateur tente d'exécuter cette requête ?
+- L'utilisateur sera-t-il créé ?
+- Si oui, le nouvel utilisateur peut-il utiliser ses privilèges ?
 
-### Testing for Access to Resources Assigned to a Different Role
+### Test d'accès aux ressources affectées à un rôle différent
 
-Various applications setup resource controls based on user roles. Let's take an example resumes or CVs (curriculum vitae) uploaded on a careers form to an S3 bucket.
+Diverses applications configurent des contrôles de ressources en fonction des rôles d'utilisateur. Prenons un exemple de CV ou de CV (curriculum vitae) téléchargé sur un formulaire de carrière vers un compartiment S3.
 
-As a normal user, try accessing the location of those files. If you are able to retrieve them, modify them, or delete them, then the application is vulnerable.
+En tant qu'utilisateur normal, essayez d'accéder à l'emplacement de ces fichiers. Si vous parvenez à les récupérer, les modifier ou les supprimer, alors l'application est vulnérable.
 
-### Testing for Special Request Header Handling
+### Test de la gestion des en-têtes de demande spéciale
 
-Some applications support non-standard headers such as `X-Original-URL` or `X-Rewrite-URL` in order to allow overriding the target URL in requests with the one specified in the header value.
+Certaines applications prennent en charge les en-têtes non standard tels que `X-Original-URL` ou `X-Rewrite-URL` afin de permettre de remplacer l'URL cible dans les requêtes par celle spécifiée dans la valeur de l'en-tête.
 
-This behavior can be leveraged in a situation in which the application is behind a component that applies access control restriction based on the request URL.
+Ce comportement peut être exploité dans une situation où l'application se trouve derrière un composant qui applique une restriction de contrôle d'accès en fonction de l'URL de la demande.
 
-The kind of access control restriction based on the request URL can be, for example, blocking access from Internet to an administration console exposed on `/console` or `/admin`.
+Le type de restriction de contrôle d'accès basé sur l'URL de la requête peut être, par exemple, le blocage de l'accès depuis Internet à une console d'administration exposée sur `/console` ou `/admin`.
 
-To detect the support for the header `X-Original-URL` or `X-Rewrite-URL`, the following steps can be applied.
+Pour détecter la prise en charge de l'en-tête `X-Original-URL` ou `X-Rewrite-URL`, les étapes suivantes peuvent être appliquées.
 
-#### 1. Send a Normal Request without Any X-Original-Url or X-Rewrite-Url Header
+#### 1. Envoyer une requête normale sans en-tête X-Original-Url ou X-Rewrite-Url
 
 ```http
 GET / HTTP/1.1
@@ -123,7 +123,7 @@ Host: www.example.com
 [...]
 ```
 
-#### 2. Send a Request with an X-Original-Url Header Pointing to a Non-Existing Resource
+#### 2. Envoyer une requête avec un en-tête X-Original-Url pointant vers une ressource inexistante
 
 ```html
 GET / HTTP/1.1
@@ -132,7 +132,7 @@ X-Original-URL: /donotexist1
 [...]
 ```
 
-#### 3. Send a Request with an X-Rewrite-Url Header Pointing to a Non-Existing Resource
+#### 3. Envoyer une requête avec un en-tête X-Rewrite-Url pointant vers une ressource inexistante
 
 ```html
 GET / HTTP/1.1
@@ -141,45 +141,45 @@ X-Rewrite-URL: /donotexist2
 [...]
 ```
 
-If the response for either request contains markers that the resource was not found, this indicates that the application supports the special request headers. These markers may include the HTTP response status code 404, or a "resource not found" message in the response body.
+Si la réponse à l'une ou l'autre des requêtes contient des marqueurs indiquant que la ressource n'a pas été trouvée, cela indique que l'application prend en charge les en-têtes de requête spéciale. Ces marqueurs peuvent inclure le code d'état de réponse HTTP 404 ou un message "ressource introuvable" dans le corps de la réponse.
 
-Once the support for the header `X-Original-URL` or `X-Rewrite-URL` was validated then the tentative of bypass against the access control restriction can be leveraged by sending the expected request to the application but specifying a URL "allowed" by the front-end component as the main request URL and specifying the real target URL in the `X-Original-URL` or `X-Rewrite-URL` header depending on the one supported. If both are supported then try one after the other to verify for which header the bypass is effective.
+Une fois que la prise en charge de l'en-tête `X-Original-URL` ou `X-Rewrite-URL` a été validée, la tentative de contournement de la restriction de contrôle d'accès peut être exploitée en envoyant la requête attendue à l'application mais en spécifiant une URL "autorisée " par le composant frontal comme URL de requête principale et en spécifiant l'URL cible réelle dans l'en-tête `X-Original-URL` ou `X-Rewrite-URL` selon celui pris en charge. Si les deux sont pris en charge, essayez l'un après l'autre pour vérifier pour quel en-tête le contournement est effectif.
 
-#### 4. Other Headers to Consider
+#### 4. Autres en-têtes à prendre en compte
 
-Often admin panels or administrative related bits of functionality are only accessible to clients on local networks, therefore it may be possible to abuse various proxy or forwarding related HTTP headers to gain access. Some headers and values to test with are:
+Souvent, les panneaux d'administration ou les éléments de fonctionnalité liés à l'administration ne sont accessibles qu'aux clients sur les réseaux locaux, il peut donc être possible d'abuser de divers en-têtes HTTP liés au proxy ou au transfert pour y accéder. Certains en-têtes et valeurs à tester sont :
 
-- Headers:
+- En-têtes :
     - `X-Forwarded-For`
     - `X-Forward-For`
     - `X-Remote-IP`
     - `X-Originating-IP`
     - `X-Remote-Addr`
     - `X-Client-IP`
-- Values
-    - `127.0.0.1` (or anything in the `127.0.0.0/8` or `::1/128` address spaces)
+- Valeurs
+    - `127.0.0.1` (ou n'importe quoi dans les espaces d'adressage `127.0.0.0/8` ou `::1/128`)
     - `localhost`
-    - Any [RFC1918](https://tools.ietf.org/html/rfc1918) address:
+    - Toute adresse [RFC1918](https://tools.ietf.org/html/rfc1918) :
         - `10.0.0.0/8`
         - `172.16.0.0/12`
         - `192.168.0.0/16`
-    - Link local addresses: `169.254.0.0/16`
+    - Adresses locales du lien : `169.254.0.0/16`
 
-Note: Including a port element along with the address or hostname may also help bypass edge protections such as web application firewalls, etc.
-For example: `127.0.0.4:80`, `127.0.0.4:443`, `127.0.0.4:43982`
+Remarque : L'inclusion d'un élément de port avec l'adresse ou le nom d'hôte peut également aider à contourner les protections périphériques telles que les pare-feu d'applications Web, etc.
+Par exemple : `127.0.0.4:80`, `127.0.0.4:443`, `127.0.0.4:43982`
 
-## Remediation
+## Correction
 
-Employ the least privilege principles on the users, roles, and resources to ensure that no unauthorized access occurs.
+Utilisez les principes du moindre privilège sur les utilisateurs, les rôles et les ressources pour vous assurer qu'aucun accès non autorisé ne se produit.
 
-## Tools
+## Outils
 
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org/)
-    - [ZAP add-on: Access Control Testing](https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
-- [Port Swigger Burp Suite](https://portswigger.net/burp)
-    - [Burp extension: AuthMatrix](https://github.com/SecurityInnovation/AuthMatrix/)
-    - [Burp extension: Autorize](https://github.com/Quitten/Autorize)
+- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org/)
+     - [Module complémentaire ZAP : test de contrôle d'accès] (https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
+- [Suite Port Swigger Burp] (https://portswigger.net/burp)
+     - [Extension Burp : AuthMatrix](https://github.com/SecurityInnovation/AuthMatrix/)
+     - [Extension Burp : Autorize] (https://github.com/Quitten/Autorize)
 
-## References
+## Références
 
-[OWASP Application Security Verification Standard 4.0.1](https://github.com/OWASP/ASVS/tree/master/4.0), v4.0.1-1, v4.0.1-4, v4.0.1-9, v4.0.1-16
+[Norme de vérification de la sécurité des applications OWASP 4.0.1](https://github.com/OWASP/ASVS/tree/master/4.0), v4.0.1-1, v4.0.1-4, v4.0.1-9, v4. 0.1-16

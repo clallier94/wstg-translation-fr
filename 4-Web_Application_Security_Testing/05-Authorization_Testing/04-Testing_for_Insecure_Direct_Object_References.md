@@ -1,75 +1,75 @@
-# Testing for Insecure Direct Object References
+# Test des références d'objets directes non sécurisées
 
 |ID          |
 |------------|
 |WSTG-ATHZ-04|
 
-## Summary
+## Sommaire
 
-Insecure Direct Object References (IDOR) occur when an application provides direct access to objects based on user-supplied input. As a result of this vulnerability attackers can bypass authorization and access resources in the system directly, for example database records or files.
-Insecure Direct Object References allow attackers to bypass authorization and access resources directly by modifying the value of a parameter used to directly point to an object. Such resources can be database entries belonging to other users, files in the system, and more. This is caused by the fact that the application takes user supplied input and uses it to retrieve an object without performing sufficient authorization checks.
+Des références directes d'objets non sécurisées (IDOR) se produisent lorsqu'une application fournit un accès direct à des objets en fonction d'une entrée fournie par l'utilisateur. En raison de cette vulnérabilité, les attaquants peuvent contourner l'autorisation et accéder directement aux ressources du système, par exemple les enregistrements ou les fichiers de la base de données.
+Les références d'objet directes non sécurisées permettent aux attaquants de contourner l'autorisation et d'accéder directement aux ressources en modifiant la valeur d'un paramètre utilisé pour pointer directement vers un objet. Ces ressources peuvent être des entrées de base de données appartenant à d'autres utilisateurs, des fichiers du système, etc. Cela est dû au fait que l'application prend l'entrée fournie par l'utilisateur et l'utilise pour récupérer un objet sans effectuer suffisamment de vérifications d'autorisation.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify points where object references may occur.
-- Assess the access control measures and if they're vulnerable to IDOR.
+- Identifiez les points où les références d'objets peuvent se produire.
+- Évaluer les mesures de contrôle d'accès et si elles sont vulnérables à IDOR.
 
-## How to Test
+## Comment tester
 
-To test for this vulnerability the tester first needs to map out all locations in the application where user input is used to reference objects directly. For example, locations where user input is used to access a database row, a file, application pages and more. Next the tester should modify the value of the parameter used to reference objects and assess whether it is possible to retrieve objects belonging to other users or otherwise bypass authorization.
+Pour tester cette vulnérabilité, le testeur doit d'abord cartographier tous les emplacements de l'application où l'entrée de l'utilisateur est utilisée pour référencer directement les objets. Par exemple, les emplacements où l'entrée de l'utilisateur est utilisée pour accéder à une ligne de base de données, un fichier, des pages d'application et plus encore. Ensuite, le testeur doit modifier la valeur du paramètre utilisé pour référencer les objets et évaluer s'il est possible de récupérer des objets appartenant à d'autres utilisateurs ou de contourner l'autorisation.
 
-The best way to test for direct object references would be by having at least two (often more) users to cover different owned objects and functions. For example two users each having access to different objects (such as purchase information, private messages, etc.), and (if relevant) users with different privileges (for example administrator users) to see whether there are direct references to application functionality. By having multiple users the tester saves valuable testing time in guessing different object names as he can attempt to access objects that belong to the other user.
+La meilleure façon de tester les références d'objets directes serait d'avoir au moins deux utilisateurs (souvent plus) pour couvrir différents objets et fonctions possédés. Par exemple, deux utilisateurs ayant chacun accès à des objets différents (tels que des informations d'achat, des messages privés, etc.) et (le cas échéant) des utilisateurs avec des privilèges différents (par exemple des utilisateurs administrateurs) pour voir s'il existe des références directes aux fonctionnalités de l'application. En ayant plusieurs utilisateurs, le testeur gagne un temps de test précieux en devinant différents noms d'objets car il peut tenter d'accéder aux objets qui appartiennent à l'autre utilisateur.
 
-Below are several typical scenarios for this vulnerability and the methods to test for each:
+Vous trouverez ci-dessous plusieurs scénarios typiques pour cette vulnérabilité et les méthodes à tester pour chacun :
 
-### The Value of a Parameter Is Used Directly to Retrieve a Database Record
+### La valeur d'un paramètre est utilisée directement pour récupérer un enregistrement de base de données
 
-Sample request:
+Demande d'échantillon :
 
 ```text
 http://foo.bar/somepage?invoice=12345
 ```
 
-In this case, the value of the *invoice* parameter is used as an index in an invoices table in the database. The application takes the value of this parameter and uses it in a query to the database. The application then returns the invoice information to the user.
+Dans ce cas, la valeur du paramètre *invoice* est utilisée comme index dans une table des factures de la base de données. L'application prend la valeur de ce paramètre et l'utilise dans une requête à la base de données. L'application renvoie ensuite les informations de facturation à l'utilisateur.
 
-Since the value of *invoice* goes directly into the query, by modifying the value of the parameter it is possible to retrieve any invoice object, regardless of the user to whom the invoice belongs. To test for this case the tester should obtain the identifier of an invoice belonging to a different test user (ensuring he is not supposed to view this information per application business logic), and then check whether it is possible to access objects without authorization.
+Comme la valeur de *facture* va directement dans la requête, en modifiant la valeur du paramètre il est possible de récupérer n'importe quel objet facture, quel que soit l'utilisateur auquel appartient la facture. Pour tester ce cas, le testeur doit obtenir l'identifiant d'une facture appartenant à un autre utilisateur de test (en s'assurant qu'il n'est pas censé afficher ces informations par logique métier d'application), puis vérifier s'il est possible d'accéder aux objets sans autorisation.
 
-### The Value of a Parameter Is Used Directly to Perform an Operation in the System
+### La valeur d'un paramètre est utilisée directement pour effectuer une opération dans le système
 
-Sample request:
+Demande d'échantillon :
 
 ```text
 http://foo.bar/changepassword?user=someuser
 ```
 
-In this case, the value of the `user` parameter is used to tell the application for which user it should change the password. In many cases this step will be a part of a wizard, or a multi-step operation. In the first step the application will get a request stating for which user's password is to be changed, and in the next step the user will provide a new password (without asking for the current one).
+Dans ce cas, la valeur du paramètre `user` est utilisée pour dire à l'application pour quel utilisateur elle doit changer le mot de passe. Dans de nombreux cas, cette étape fera partie d'un assistant ou d'une opération en plusieurs étapes. Dans la première étape, l'application recevra une demande indiquant pour quel utilisateur le mot de passe doit être modifié, et à l'étape suivante, l'utilisateur fournira un nouveau mot de passe (sans demander l'actuel).
 
-The `user` parameter is used to directly reference the object of the user for whom the password change operation will be performed. To test for this case the tester should attempt to provide a different test username than the one currently logged in, and check whether it is possible to modify the password of another user.
+Le paramètre `user` est utilisé pour référencer directement l'objet de l'utilisateur pour lequel l'opération de changement de mot de passe sera effectuée. Pour tester ce cas, le testeur doit essayer de fournir un nom d'utilisateur de test différent de celui actuellement connecté et vérifier s'il est possible de modifier le mot de passe d'un autre utilisateur.
 
-### The Value of a Parameter Is Used Directly to Retrieve a File System Resource
+### La valeur d'un paramètre est utilisée directement pour récupérer une ressource du système de fichiers
 
-Sample request:
+Demande d'échantillon :
 
 ```text
 http://foo.bar/showImage?img=img00011
 ```
 
-In this case, the value of the `file` parameter is used to tell the application what file the user intends to retrieve. By providing the name or identifier of a different file (for example file=image00012.jpg) the attacker will be able to retrieve objects belonging to other users.
+Dans ce cas, la valeur du paramètre `file` est utilisée pour indiquer à l'application quel fichier l'utilisateur a l'intention de récupérer. En fournissant le nom ou l'identifiant d'un fichier différent (par exemple file=image00012.jpg) l'attaquant pourra récupérer des objets appartenant à d'autres utilisateurs.
 
-To test for this case, the tester should obtain a reference the user is not supposed to be able to access and attempt to access it by using it as the value of `file` parameter. Note: This vulnerability is often exploited in conjunction with a directory/path traversal vulnerability (see [Testing for Path Traversal](01-Testing_Directory_Traversal_File_Include.md))
+Pour tester ce cas, le testeur doit obtenir une référence à laquelle l'utilisateur n'est pas censé pouvoir accéder et tenter d'y accéder en l'utilisant comme valeur du paramètre `file`. Remarque : Cette vulnérabilité est souvent exploitée en conjonction avec une vulnérabilité de traversée de répertoire/chemin (voir [Testing for Path Traversal](01-Testing_Directory_Traversal_File_Include.md))
 
-### The Value of a Parameter Is Used Directly to Access Application Functionality
+### La valeur d'un paramètre est utilisée directement pour accéder à la fonctionnalité de l'application
 
-Sample request:
+Demande d'échantillon :
 
 ```text
 http://foo.bar/accessPage?menuitem=12
 ```
 
-In this case, the value of the `menuitem` parameter is used to tell the application which menu item (and therefore which application functionality) the user is attempting to access. Assume the user is supposed to be restricted and therefore has links available only to access to menu items 1, 2 and 3. By modifying the value of `menuitem` parameter it is possible to bypass authorization and access additional application functionality. To test for this case the tester identifies a location where application functionality is determined by reference to a menu item, maps the values of menu items the given test user can access, and then attempts other menu items.
+Dans ce cas, la valeur du paramètre `menuitem` est utilisée pour indiquer à l'application à quel élément de menu (et donc à quelle fonctionnalité de l'application) l'utilisateur tente d'accéder. Supposons que l'utilisateur est censé être restreint et dispose donc de liens disponibles uniquement pour accéder aux éléments de menu 1, 2 et 3. En modifiant la valeur du paramètre `menuitem`, il est possible de contourner l'autorisation et d'accéder à des fonctionnalités supplémentaires de l'application. Pour tester ce cas, le testeur identifie un emplacement où la fonctionnalité de l'application est déterminée par référence à un élément de menu, mappe les valeurs des éléments de menu auxquels l'utilisateur de test donné peut accéder, puis tente d'autres éléments de menu.
 
-In the above examples the modification of a single parameter is sufficient. However, sometimes the object reference may be split between more than one parameter, and testing should be adjusted accordingly.
+Dans les exemples ci-dessus la modification d'un seul paramètre est suffisante. Cependant, la référence de l'objet peut parfois être divisée entre plusieurs paramètres et les tests doivent être ajustés en conséquence.
 
-## References
+## Références
 
 [Top 10 2013-A4-Insecure Direct Object References](https://owasp.org/www-project-top-ten/2017/Release_Notes)
