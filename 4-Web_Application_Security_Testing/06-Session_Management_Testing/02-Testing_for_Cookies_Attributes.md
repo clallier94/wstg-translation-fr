@@ -33,7 +33,7 @@ Ci-dessous, une description de chaque attribut et préfixe sera discutée. Le te
 
 ### Attributs des cookies
 
-#### Attribut sécurisé
+#### Attribut Secure
 
 L'attribut [`Secure`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#Secure) indique au navigateur de n'envoyer le cookie que si la demande est envoyée via un canal sécurisé tel que "HTTPS". Cela aidera à empêcher le cookie d'être transmis dans des requêtes non chiffrées. Si l'application est accessible à la fois via `HTTP` et `HTTPS`, un attaquant pourrait être en mesure de rediriger l'utilisateur pour qu'il envoie son cookie dans le cadre de requêtes non protégées.
 
@@ -88,7 +88,7 @@ La valeur `Lax` est moins restrictive que `Strict`. Le cookie sera envoyé si l'
 
 ##### Aucune valeur
 
-La valeur `None` spécifie que le navigateur enverra le cookie dans tous les contextes, y compris les requêtes intersites (le comportement normal avant la mise en œuvre de `SameSite`). Si `Samesite=None` est défini, alors l'attribut Secure doit être défini, sinon les navigateurs modernes ignoreront l'attribut SameSite, _e.g._ `SameSite=None; Sécurisé`.
+La valeur `None` spécifie que le navigateur enverra le cookie dans tous les contextes, y compris les requêtes intersites (le comportement normal avant la mise en œuvre de `SameSite`). Si `Samesite=None` est défini, alors l'attribut Secure doit être défini, sinon les navigateurs modernes ignoreront l'attribut SameSite, _e.g._ `SameSite=None; Secure`.
 
 ### Préfixes de cookies
 
