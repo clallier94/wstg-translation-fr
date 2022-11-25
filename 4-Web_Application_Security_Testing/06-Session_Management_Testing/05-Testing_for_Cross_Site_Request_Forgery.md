@@ -1,130 +1,130 @@
-# Testing for Cross Site Request Forgery
+# Test de falsification de requête intersite
 
 |ID          |
 |------------|
 |WSTG-SESS-05|
 
-## Summary
+## Sommaire
 
-Cross-Site Request Forgery ([CSRF](https://owasp.org/www-community/attacks/csrf)) is an attack that forces an end user to execute unintended actions on a web application in which they are currently authenticated. With a little social engineering help (like sending a link via email or chat), an attacker may force the users of a web application to execute actions of the attacker's choosing. A successful CSRF exploit can compromise end user data and operation when it targets a normal user. If the targeted end user is the administrator account, a CSRF attack can compromise the entire web application.
+Cross-Site Request Forgery ([CSRF](https://owasp.org/www-community/attacks/csrf)) est une attaque qui oblige un utilisateur final à exécuter des actions involontaires sur une application Web dans laquelle il est actuellement authentifié. Avec un peu d'aide d'ingénierie sociale (comme l'envoi d'un lien par e-mail ou chat), un attaquant peut forcer les utilisateurs d'une application Web à exécuter les actions de son choix. Un exploit CSRF réussi peut compromettre les données et le fonctionnement de l'utilisateur final lorsqu'il cible un utilisateur normal. Si l'utilisateur final ciblé est le compte administrateur, une attaque CSRF peut compromettre l'ensemble de l'application Web.
 
-CSRF relies on:
+Le CSRF s'appuie sur :
 
-1. Web browser behavior regarding the handling of session-related information such as cookies and HTTP authentication information.
-2. An attacker's knowledge of valid web application URLs, requests, or functionality.
-3. Application session management relying only on information known by the browser.
-4. Existence of HTML tags whose presence cause immediate access to an HTTP[S] resource; for example the image tag `img`.
+1. Comportement du navigateur Web concernant le traitement des informations liées à la session telles que les cookies et les informations d'authentification HTTP.
+2. La connaissance par un attaquant des URL, requêtes ou fonctionnalités valides des applications Web.
+3. Gestion des sessions applicatives reposant uniquement sur les informations connues du navigateur.
+4. Existence de balises HTML dont la présence provoque un accès immédiat à une ressource HTTP[S] ; par exemple la balise d'image `img`.
 
-Points 1, 2, and 3 are essential for the vulnerability to be present, while point 4 facilitates the actual exploitation, but is not strictly required.
+Les points 1, 2 et 3 sont essentiels pour que la vulnérabilité soit présente, tandis que le point 4 facilite l'exploitation réelle, mais n'est pas strictement requis.
 
-1. Browsers automatically send information used to identify a user session. Suppose *site* is a site hosting a web application, and the user *victim* has just authenticated to *site*. In response, *site* sends *victim* a cookie that identifies requests sent by *victim* as belonging to *victim’s* authenticated session. Once the browser receives the cookie set by *site*, it will automatically send it along with any further requests directed to *site*.
-2. If the application does not make use of session-related information in URLs, then the application URLs, their parameters, and legitimate values may be identified. This may be accomplished by code analysis or by accessing the application and taking note of forms and URLs embedded in the HTML or JavaScript.
-3. "Known by the browser" refers to information such as cookies or HTTP-based authentication information (such as Basic Authentication and not form-based authentication), that are stored by the browser and subsequently present at each request directed towards an application area requesting that authentication. The vulnerabilities discussed next apply to applications that rely entirely on this kind of information to identify a user session.
+1. Les navigateurs envoient automatiquement les informations utilisées pour identifier une session utilisateur. Supposons que *site* est un site hébergeant une application Web et que l'utilisateur *victime* vient de s'authentifier sur *site*. En réponse, *site* envoie à *victime* un cookie qui identifie les requêtes envoyées par *victime* comme appartenant à la session authentifiée de *victime*. Une fois que le navigateur reçoit le cookie défini par *site*, il l'enverra automatiquement avec toute autre demande adressée à *site*.
+2. Si l'application n'utilise pas d'informations relatives à la session dans les URL, les URL de l'application, leurs paramètres et leurs valeurs légitimes peuvent être identifiés. Cela peut être accompli par une analyse de code ou en accédant à l'application et en prenant note des formulaires et des URL intégrés dans le code HTML ou JavaScript.
+3. "Connu par le navigateur" fait référence à des informations telles que des cookies ou des informations d'authentification basées sur HTTP (telles que l'authentification de base et non l'authentification par formulaire), qui sont stockées par le navigateur et présentes par la suite à chaque requête dirigée vers une zone d'application demandant cette authentification. Les vulnérabilités décrites ci-dessous s'appliquent aux applications qui reposent entièrement sur ce type d'informations pour identifier une session utilisateur.
 
-For simplicity's sake, consider GET-accessible URLs (though the discussion applies as well to POST requests). If *victim* has already authenticated themselves, submitting another request causes the cookie to be automatically sent with it. The figure below illustrates the user accessing an application on `www.example.com`.
+Par souci de simplicité, considérez les URL accessibles par GET (bien que la discussion s'applique également aux requêtes POST). Si la *victime* s'est déjà authentifiée, la soumission d'une autre demande entraîne l'envoi automatique du cookie avec celle-ci. La figure ci-dessous illustre l'utilisateur accédant à une application sur `www.exemple.com`.
 
 ![Session Riding](images/Session_riding.GIF)\
-*Figure 4.6.5-1: Session Riding*
+*Figure 4.6.5-1 : Séance de conduite*
 
-The GET request could be sent by the user in several different ways:
+La requête GET peut être envoyée par l'utilisateur de plusieurs manières différentes :
 
-- Using the web application
-- Typing the URL directly in the browser
-- Following an external link that points to the URL
+- Utilisation de l'application Web
+- Taper l'URL directement dans le navigateur
+- Suite à un lien externe qui pointe vers l'URL
 
-These invocations are indistinguishable by the application. In particular, the third may be quite dangerous. There are a number of techniques and vulnerabilities that can disguise the real properties of a link. The link can be embedded in an email message, appear in a malicious website to which the user is lured, or appear in content hosted by a third-party (such as another web site or HTML email) and point to a resource of the application. If the user clicks on the link, since they are already authenticated by the web application on *site*, the browser will issue a GET request to the web application, accompanied by authentication information (the session ID cookie). This results in a valid operation being performed on the web application that the user does not expect; for example, a funds transfer on a web banking application.
+Ces invocations ne peuvent pas être distinguées par l'application. En particulier, le troisième peut être assez dangereux. Il existe un certain nombre de techniques et de vulnérabilités qui peuvent masquer les propriétés réelles d'un lien. Le lien peut être intégré dans un e-mail, apparaître sur un site Web malveillant vers lequel l'utilisateur est attiré ou apparaître dans un contenu hébergé par un tiers (tel qu'un autre site Web ou un e-mail HTML) et pointer vers une ressource de l'application. . Si l'utilisateur clique sur le lien, puisqu'il est déjà authentifié par l'application Web sur *site*, le navigateur émettra une requête GET à l'application Web, accompagnée d'informations d'authentification (le cookie d'identification de session). Cela se traduit par une opération valide effectuée sur l'application Web à laquelle l'utilisateur ne s'attend pas ; par exemple, un virement sur une application web banking.
 
-By using a tag such as `img`, as specified in point 4 above, it is not even necessary that the user follows a particular link. Suppose the attacker sends the user an email inducing them to visit a URL referring to a page containing the following (oversimplified) HTML.
+En utilisant une balise telle que `img`, comme précisé au point 4 ci-dessus, il n'est même pas nécessaire que l'utilisateur suive un lien particulier. Supposons que l'attaquant envoie à l'utilisateur un e-mail l'incitant à visiter une URL renvoyant à une page contenant le code HTML (simplifié) suivant.
 
 ```html
 <html>
     <body>
 ...
-<img src="https://www.company.example/action" width="0" height="0">
+<img src="https://www.company.exemple/action" width="0" height="0">
 ...
     </body>
 </html>
 ```
 
-When the browser displays this page, it will try to display the specified zero-dimension (thus, invisible) image from `https://www.company.example` as well. This results in a request being automatically sent to the web application hosted on *site*. It is not important that the image URL does not refer to a proper image, as its presence will trigger the request `action` specified in the `src` field anyway. This happens provided that image download is not disabled in the browser. Most browsers do not have image downloads disabled since that would cripple most web applications beyond usability.
+Lorsque le navigateur affichera cette page, il essaiera d'afficher également l'image de dimension zéro spécifiée (donc invisible) de `https://www.company.exemple`. Cela se traduit par l'envoi automatique d'une requête à l'application Web hébergée sur *site*. Il n'est pas important que l'URL de l'image ne fasse pas référence à une image appropriée, car sa présence déclenchera de toute façon la requête "action" spécifiée dans le champ "src". Cela se produit à condition que le téléchargement d'images ne soit pas désactivé dans le navigateur. La plupart des navigateurs n'ont pas de téléchargements d'images désactivés car cela paralyserait la plupart des applications Web au-delà de la convivialité.
 
-The problem here is a consequence of:
+Le problème ici est une conséquence de:
 
-- HTML tags on the page resulting in automatic HTTP request execution (`img` being one of those).
-- The browser having no way to tell that the resource referenced by `img` is not a legitimate image.
-- Image loading that happens regardless of the location of the alleged image source, i.e., the form and the image itself need not be located on the same host or even the same domain.
+- Balises HTML sur la page entraînant l'exécution automatique de la requête HTTP (`img` étant l'une d'entre elles).
+- Le navigateur n'ayant aucun moyen de dire que la ressource référencée par `img` n'est pas une image légitime.
+- Chargement d'image qui se produit quel que soit l'emplacement de la source d'image présumée, c'est-à-dire que le formulaire et l'image elle-même n'ont pas besoin d'être situés sur le même hôte ou même le même domaine.
 
-The fact that HTML content unrelated to the web application may refer to components in the application, and the fact that the browser automatically composes a valid request towards the application, allows this kind of attack. There is no way to prohibit this behavior unless it is made impossible for the attacker to interact with application functionality.
+Le fait que du contenu HTML non lié à l'application web puisse faire référence à des composants de l'application, et le fait que le navigateur compose automatiquement une requête valide vers l'application, permet ce type d'attaque. Il n'existe aucun moyen d'interdire ce comportement à moins qu'il soit rendu impossible pour l'attaquant d'interagir avec les fonctionnalités de l'application.
 
-In integrated mail/browser environments, simply displaying an email message containing the image reference would result in the execution of the request to the web application with the associated browser cookie. Email messages may reference seemingly valid image URLs such as:
+Dans les environnements de messagerie/navigateur intégrés, le simple affichage d'un message électronique contenant la référence de l'image entraînerait l'exécution de la requête à l'application Web avec le cookie de navigateur associé. Les e-mails peuvent faire référence à des URL d'image apparemment valides, telles que :
 
 ```html
 <img src="https://[attacker]/picture.gif" width="0" height="0">
 ```
 
-In this example, `[attacker]` is a site controlled by the attacker. By utilizing a redirect mechanism, the malicious site may use `http://[attacker]/picture.gif` to direct the victim to `http://[thirdparty]/action` and trigger the `action`.
+Dans cet exemple, `[attaquant]` est un site contrôlé par l'attaquant. En utilisant un mécanisme de redirection, le site malveillant peut utiliser `http://[attaquant]/picture.gif` pour diriger la victime vers `http://[tiers]/action` et déclencher l'`action`.
 
-Cookies are not the only example involved in this kind of vulnerability. Web applications whose session information is entirely supplied by the browser are vulnerable too. This includes applications relying on HTTP authentication mechanisms alone, since the authentication information is known by the browser and is sent automatically upon each request. This does not include form-based authentication, which occurs just once and generates some form of session-related information, usually a cookie.
+Les cookies ne sont pas le seul exemple impliqué dans ce type de vulnérabilité. Les applications Web dont les informations de session sont entièrement fournies par le navigateur sont également vulnérables. Cela inclut les applications reposant uniquement sur les mécanismes d'authentification HTTP, puisque les informations d'authentification sont connues du navigateur et sont envoyées automatiquement à chaque requête. Cela n'inclut pas l'authentification basée sur un formulaire, qui ne se produit qu'une seule fois et génère une certaine forme d'informations liées à la session, généralement un cookie.
 
-Let’s suppose that the victim is logged on to a firewall web management console. To log in, a user has to authenticate themselves and session information is stored in a cookie.
+Supposons que la victime soit connectée à une console de gestion Web du pare-feu. Pour se connecter, un utilisateur doit s'authentifier et les informations de session sont stockées dans un cookie.
 
-Let's suppose the firewall web management console has a function that allows an authenticated user to delete a rule specified by its numerical ID, or all the rules in the configuration if the user specifies `*` (a dangerous feature in reality, but one that makes for a more interesting example). The delete page is shown next. Let’s suppose that the form – for the sake of simplicity – issues a GET request. To delete rule number one:
+Supposons que la console de gestion Web du pare-feu dispose d'une fonction permettant à un utilisateur authentifié de supprimer une règle spécifiée par son ID numérique, ou toutes les règles de la configuration si l'utilisateur spécifie `*` (une fonctionnalité dangereuse en réalité, mais qui rend pour un exemple plus intéressant). La page de suppression s'affiche ensuite. Supposons que le formulaire - pour des raisons de simplicité - émette une requête GET. Pour supprimer la règle numéro un :
 
 ```text
 https://[target]/fwmgt/delete?rule=1
 ```
 
-To delete all rules:
+Pour supprimer toutes les règles :
 
 ```text
 https://[target]/fwmgt/delete?rule=*
 ```
 
-This example is intentionally naive, but shows in a simplified way the dangers of CSRF.
+Cet exemple est volontairement naïf, mais montre de manière simplifiée les dangers de CSRF.
 
 ![Session Riding Firewall Management](images/Session_Riding_Firewall_Management.gif)\
-*Figure 4.6.5-2: Session Riding Firewall Management*
+*Figure 4.6.5-2 : Gestion du pare-feu de session Riding*
 
-Using the form pictured in the figure above, entering the value `*` and clicking the Delete button will submit the following GET request:
+En utilisant le formulaire illustré dans la figure ci-dessus, entrez la valeur `*` et cliquez sur le bouton Supprimer pour soumettre la requête GET suivante :
 
 ```text
-https://www.company.example/fwmgt/delete?rule=*
+https://www.company.exemple/fwmgt/delete?rule=*
 ```
 
-This would delete all firewall rules.
+Cela supprimerait toutes les règles de pare-feu.
 
 ![Session Riding Firewall Management 2](images/Session_Riding_Firewall_Management_2.gif)\
-*Figure 4.6.5-3: Session Riding Firewall Management 2*
+*Figure 4.6.5-3 : Session Riding Firewall Management 2*
 
-The user might also have accomplished the same results by manually submitting the URL:
+L'utilisateur peut également avoir obtenu les mêmes résultats en envoyant manuellement l'URL :
 
 ```text
 https://[target]/fwmgt/delete?rule=*
 ```
 
-Or by following a link pointing, directly or via a redirection, to the above URL. Or, again, by accessing an HTML page with an embedded `img` tag pointing to the same URL.
+Soit en suivant un lien pointant, directement ou via une redirection, vers l'URL ci-dessus. Ou, encore une fois, en accédant à une page HTML avec une balise "img" intégrée pointant vers la même URL.
 
-In all of these cases, if the user is currently logged in to the firewall management application, the request will succeed and will modify the configuration of the firewall. One can imagine attacks targeting sensitive applications and making automatic auction bids, money transfers, orders, changing the configuration of critical software components, etc.
+Dans tous ces cas, si l'utilisateur est actuellement connecté à l'application de gestion du pare-feu, la requête aboutira et modifiera la configuration du pare-feu. On peut imaginer des attaques ciblant des applications sensibles et faisant des enchères automatiques, des transferts d'argent, des commandes, modifiant la configuration de composants logiciels critiques, etc.
 
-An interesting thing is that these vulnerabilities may be exercised behind a firewall; i.e. it is sufficient that the link being attacked be reachable by the victim and not directly by the attacker. In particular, it can be any intranet web server; for example, in the firewall management scenario mentioned before, which is unlikely to be exposed to the Internet.
+Une chose intéressante est que ces vulnérabilités peuvent être exercées derrière un pare-feu ; c'est-à-dire qu'il suffit que le lien attaqué soit accessible par la victime et non directement par l'attaquant. En particulier, il peut s'agir de n'importe quel serveur Web intranet ; par exemple, dans le scénario de gestion de pare-feu mentionné précédemment, qui est peu susceptible d'être exposé à Internet.
 
-Self-vulnerable applications, i.e. applications that are used both as attack vector and target (such as web mail applications), make things worse. Since users are logged in when they read their email messages, a vulnerable application of this type can allow attackers to perform actions such as deleting messages or sending messages that appear to originate from the victim.
+Les applications auto-vulnérables, c'est-à-dire les applications qui sont utilisées à la fois comme vecteur d'attaque et comme cible (telles que les applications de messagerie Web), aggravent les choses. Étant donné que les utilisateurs sont connectés lorsqu'ils lisent leurs messages électroniques, une application vulnérable de ce type peut permettre aux attaquants d'effectuer des actions telles que la suppression de messages ou l'envoi de messages qui semblent provenir de la victime.
 
-## Test Objectives
+## Objectifs des tests
 
-- Determine whether it is possible to initiate requests on a user's behalf that are not initiated by the user.
+- Déterminer s'il est possible d'initier des demandes au nom d'un utilisateur qui ne sont pas initiées par l'utilisateur.
 
-## How to Test
+## Comment tester
 
-Audit the application to ascertain if its session management is vulnerable. If session management relies only on client-side values (information available to the browser), then the application is vulnerable. "Client-side values" refers to cookies and HTTP authentication credentials (Basic Authentication and other forms of HTTP authentication; not form-based authentication, which is an application-level authentication).
+Auditez l'application pour déterminer si sa gestion de session est vulnérable. Si la gestion de session repose uniquement sur des valeurs côté client (informations disponibles pour le navigateur), alors l'application est vulnérable. Les "valeurs côté client" font référence aux cookies et aux identifiants d'authentification HTTP (authentification de base et autres formes d'authentification HTTP ; pas l'authentification basée sur un formulaire, qui est une authentification au niveau de l'application).
 
-Resources accessible via HTTP GET requests are easily vulnerable, though POST requests can be automated via JavaScript and are vulnerable as well; therefore, the use of POST alone is not enough to correct the occurrence of CSRF vulnerabilities.
+Les ressources accessibles via les requêtes HTTP GET sont facilement vulnérables, bien que les requêtes POST puissent être automatisées via JavaScript et soient également vulnérables ; par conséquent, l'utilisation de POST seul n'est pas suffisante pour corriger l'occurrence des vulnérabilités CSRF.
 
-In case of POST, the following sample can be used.
+En cas de POST, l'exemple suivant peut être utilisé.
 
-1. Create an HTML page similar to that shown below
-2. Host the HTML on a malicious or third-party site
-3. Send the link for the page to the victim(s) and induce them to click it.
+1. Créez une page HTML similaire à celle illustrée ci-dessous
+2. Héberger le HTML sur un site malveillant ou tiers
+3. Envoyez le lien de la page à la ou aux victimes et incitez-les à cliquer dessus.
 
 ```html
 <html>
@@ -139,7 +139,7 @@ In case of POST, the following sample can be used.
 </html>
 ```
 
-In case of web applications in which developers are utilizing JSON for browser to server communication, a problem may arise with the fact that there are no query parameters with the JSON format, which are a must with self-submitting forms. To bypass this case, we can use a self-submitting form with JSON payloads including hidden input to exploit CSRF. We'll have to change the encoding type (`enctype`) to `text/plain` to ensure the payload is delivered as-is. The exploit code will look like the following:
+Dans le cas d'applications Web dans lesquelles les développeurs utilisent JSON pour la communication entre le navigateur et le serveur, un problème peut survenir avec le fait qu'il n'y a pas de paramètres de requête avec le format JSON, qui sont indispensables avec les formulaires à soumission automatique. Pour contourner ce cas, nous pouvons utiliser un formulaire d'auto-soumission avec des charges utiles JSON comprenant une entrée masquée pour exploiter CSRF. Nous devrons changer le type d'encodage (`enctype`) en `text/plain` pour nous assurer que la charge utile est livrée telle quelle. Le code d'exploitation ressemblera à ceci :
 
 ```html
 <html>
@@ -153,7 +153,7 @@ In case of web applications in which developers are utilizing JSON for browser t
 </html>
 ```
 
-The POST request will be as follow:
+La requête POST sera la suivante :
 
 ```http
 POST / HTTP/1.1
@@ -163,24 +163,24 @@ Content-Type: text/plain
 {"name":"hacked","password":"hacked","padding":"=something"}
 ```
 
-When this data is sent as a POST request, the server will happily accept the name and password fields and ignore the one with the name padding as it does not need it.
+Lorsque ces données sont envoyées sous forme de requête POST, le serveur acceptera volontiers les champs de nom et de mot de passe et ignorera celui avec le rembourrage de nom car il n'en a pas besoin.
 
-## Remediation
+## Correction
 
-- See the [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) for prevention measures.
+- Voir le [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html) pour les mesures de prévention.
 
-## Tools
+## Outils
 
 - [OWASP ZAP](https://www.zaproxy.org/)
-- [CSRF Tester](https://wiki.owasp.org/index.php/Category:OWASP_CSRFTester_Project)
+- [Testeur CSRF](https://wiki.owasp.org/index.php/Category:OWASP_CSRFTester_Project)
 - [Pinata-csrf-tool](https://code.google.com/archive/p/pinata-csrf-tool/)
 
-## References
+## Références
 
-- [Peter W: "Cross-Site Request Forgeries"](https://web.archive.org/web/20160303230910/http://www.tux.org/~peterw/csrf.txt)
-- [Thomas Schreiber: "Session Riding"](https://web.archive.org/web/20160304001446/http://www.securenet.de/papers/Session_Riding.pdf)
-- [Oldest known post](https://web.archive.org/web/20000622042229/http://www.zope.org/Members/jim/ZopeSecurity/ClientSideTrojan)
-- [Cross-site Request Forgery FAQ](https://www.cgisecurity.com/csrf-faq.html)
-- [A Most-Neglected Fact About Cross Site Request Forgery (CSRF)](http://yehg.net/lab/pr0js/view.php/A_Most-Neglected_Fact_About_CSRF.pdf)
+- [Peter W : "Cross-Site Request Forgeries"](https://web.archive.org/web/20160303230910/http://www.tux.org/~peterw/csrf.txt)
+- [Thomas Schreiber : "Session Riding"](https://web.archive.org/web/20160304001446/http://www.securenet.de/papers/Session_Riding.pdf)
+- [Message connu le plus ancien](https://web.archive.org/web/20000622042229/http://www.zope.org/Members/jim/ZopeSecurity/ClientSideTrojan)
+- [FAQ sur la falsification de requêtes intersites](https://www.cgisecurity.com/csrf-faq.html)
+- [Un fait le plus négligé concernant la falsification de requête intersite (CSRF)](http://yehg.net/lab/pr0js/view.php/A_Most-Neglected_Fact_About_CSRF.pdf)
 - [Multi-POST CSRF](https://www.lanmaster53.com/2013/07/17/multi-post-csrf/)
-- [SANS Pen Test Webcast: Complete Application pwnage via Multi POST XSRF](https://www.youtube.com/watch?v=EOs5PZiiwug)
+- [Webcast SANS Pen Test : Complétez le pwnage de l'application via Multi POST XSRF](https://www.youtube.com/watch?v=EOs5PZiiwug)

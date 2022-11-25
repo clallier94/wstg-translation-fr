@@ -1,59 +1,59 @@
-# Testing for Exposed Session Variables
+# Test des variables de session exposées
 
 |ID          |
 |------------|
 |WSTG-SESS-04|
 
-## Summary
+## Sommaire
 
-The Session Tokens (Cookie, SessionID, Hidden Field), if exposed, will usually enable an attacker to impersonate a victim and access the application illegitimately. It is important that they are protected from eavesdropping at all times, particularly whilst in transit between the client browser and the application servers.
+Les jetons de session (Cookie, SessionID, champ caché), s'ils sont exposés, permettront généralement à un attaquant de se faire passer pour une victime et d'accéder à l'application de manière illégitime. Il est important qu'ils soient protégés à tout moment contre les écoutes clandestines, en particulier pendant leur transit entre le navigateur client et les serveurs d'application.
 
-The information here relates to how transport security applies to the transfer of sensitive Session ID data rather than data in general, and may be stricter than the caching and transport policies applied to the data served by the site.
+Les informations ici concernent la manière dont la sécurité du transport s'applique au transfert de données sensibles d'ID de session plutôt qu'aux données en général, et peuvent être plus strictes que les politiques de mise en cache et de transport appliquées aux données servies par le site.
 
-Using a personal proxy, it is possible to ascertain the following about each request and response:
+À l'aide d'un proxy personnel, il est possible de vérifier les éléments suivants concernant chaque demande et réponse :
 
-- Protocol used (e.g., HTTP vs. HTTPS)
-- HTTP Headers
-- Message Body (e.g., POST or page content)
+- Protocole utilisé (par exemple, HTTP vs HTTPS)
+- En-têtes HTTP
+- Corps du message (par exemple, POST ou contenu de la page)
 
-Each time Session ID data is passed between the client and the server, the protocol, cache, and privacy directives and body should be examined. Transport security here refers to Session IDs passed in GET or POST requests, message bodies, or other means over valid HTTP requests.
+Chaque fois que des données d'ID de session sont transmises entre le client et le serveur, les directives et le corps du protocole, du cache et de la confidentialité doivent être examinés. La sécurité du transport fait ici référence aux ID de session transmis dans les requêtes GET ou POST, les corps de message ou d'autres moyens via des requêtes HTTP valides.
 
-## Test Objectives
+## Objectifs des tests
 
-- Ensure that proper encryption is implemented.
-- Review the caching configuration.
-- Assess the channel and methods' security.
+- Assurez-vous que le cryptage approprié est mis en œuvre.
+- Vérifiez la configuration de la mise en cache.
+- Évaluer la sécurité du canal et des méthodes.
 
-## How to Test
+## Comment tester
 
-### Testing for Encryption & Reuse of Session Tokens Vulnerabilities
+### Test des vulnérabilités de chiffrement et de réutilisation des jetons de session
 
-Protection from eavesdropping is often provided by TLS encryption, but may incorporate other tunneling or encryption. It should be noted that encryption or cryptographic hashing of the Session ID should be considered separately from transport encryption, as it is the Session ID itself being protected, not the data that may be represented by it.
+La protection contre les écoutes clandestines est souvent assurée par le cryptage TLS, mais peut incorporer d'autres tunnels ou cryptages. Il convient de noter que le cryptage ou le hachage cryptographique de l'identifiant de session doit être considéré séparément du cryptage de transport, car c'est l'identifiant de session lui-même qui est protégé, et non les données qui peuvent être représentées par celui-ci.
 
-If the Session ID could be presented by an attacker to the application to gain access, then it must be protected in transit to mitigate that risk. It should therefore be ensured that encryption is both the default and enforced for any request or response where the Session ID is passed, regardless of the mechanism used (e.g., a hidden form field). Simple checks such as replacing `https://` with `http://` during interaction with the application should be performed, together with modification of form posts to determine if adequate segregation between the secure and non-secure sites is implemented.
+Si l'ID de session peut être présenté par un attaquant à l'application pour y accéder, il doit être protégé en transit pour atténuer ce risque. Il convient donc de s'assurer que le chiffrement est à la fois la valeur par défaut et appliqué pour toute demande ou réponse où l'ID de session est transmis, quel que soit le mécanisme utilisé (par exemple, un champ de formulaire masqué). Des vérifications simples telles que le remplacement de `https://` par `http://` lors de l'interaction avec l'application doivent être effectuées, ainsi que la modification des messages de formulaire pour déterminer si une séparation adéquate entre les sites sécurisés et non sécurisés est mise en œuvre.
 
-Note that if there is also an element to the site where the user is tracked with Session IDs but security is not present (e.g., noting which public documents a registered user downloads) it is essential that a different Session ID is used. The Session ID should therefore be monitored as the client switches from the secure to non-secure elements to ensure a different one is used.
+Notez que s'il existe également un élément sur le site où l'utilisateur est suivi avec des ID de session mais que la sécurité n'est pas présente (par exemple, en notant les documents publics qu'un utilisateur enregistré télécharge), il est essentiel qu'un ID de session différent soit utilisé. L'ID de session doit donc être surveillé lorsque le client passe des éléments sécurisés aux éléments non sécurisés pour s'assurer qu'un autre est utilisé.
 
-> Every time the authentication is successful, the user should expect to receive:
+> Chaque fois que l'authentification est réussie, l'utilisateur doit s'attendre à recevoir :
 >
-> - A different session token
-> - A token sent via encrypted channel every time they make an HTTP Request
+> - Un jeton de session différent
+> - Un jeton envoyé via un canal crypté chaque fois qu'ils font une requête HTTP
 
-### Testing for Proxies & Caching Vulnerabilities
+### Test des proxies et des vulnérabilités de mise en cache
 
-Proxies must also be considered when reviewing application security. In many cases, clients will access the application through corporate, ISP, or other proxies or protocol aware gateways (e.g., Firewalls). The HTTP protocol provides directives to control the behavior of downstream proxies, and the correct implementation of these directives should also be assessed.
+Les proxys doivent également être pris en compte lors de l'examen de la sécurité des applications. Dans de nombreux cas, les clients accéderont à l'application par le biais d'une entreprise, d'un FAI ou d'autres proxys ou passerelles compatibles avec le protocole (par exemple, des pare-feu). Le protocole HTTP fournit des directives pour contrôler le comportement des proxys en aval, et la mise en œuvre correcte de ces directives doit également être évaluée.
 
-In general, the Session ID should never be sent over unencrypted transport and should never be cached. The application should be examined to ensure that encrypted communications are both the default and enforced for any transfer of Session IDs. Furthermore, whenever the Session ID is passed, directives should be in place to prevent its caching by intermediate and even local caches.
+En général, l'ID de session ne doit jamais être envoyé via un transport non chiffré et ne doit jamais être mis en cache. L'application doit être examinée pour s'assurer que les communications cryptées sont à la fois la valeur par défaut et appliquées pour tout transfert d'ID de session. De plus, chaque fois que l'ID de session est transmis, des directives doivent être en place pour empêcher sa mise en cache par des caches intermédiaires et même locaux.
 
-The application should also be configured to secure data in caches over both HTTP/1.0 and HTTP/1.1 – RFC 2616 discusses the appropriate controls with reference to HTTP. HTTP/1.1 provides a number of cache control mechanisms. `Cache-Control: no-cache` indicates that a proxy must not re-use any data. Whilst `Cache-Control: Private` appears to be a suitable directive, this still allows a non-shared proxy to cache data. In the case of web-cafes or other shared systems, this presents a clear risk. Even with single-user workstations the cached Session ID may be exposed through a compromise of the file-system or where network stores are used. HTTP/1.0 caches do not recognise the `Cache-Control: no-cache` directive.
+L'application doit également être configurée pour sécuriser les données dans les caches sur HTTP/1.0 et HTTP/1.1 - RFC 2616 traite des contrôles appropriés en référence à HTTP. HTTP/1.1 fournit un certain nombre de mécanismes de contrôle du cache. `Cache-Control: no-cache` indique qu'un proxy ne doit réutiliser aucune donnée. Bien que `Cache-Control: Private` semble être une directive appropriée, cela permet toujours à un proxy non partagé de mettre en cache des données. Dans le cas des cybercafés ou d'autres systèmes partagés, cela présente un risque évident. Même avec des postes de travail mono-utilisateur, l'ID de session mis en cache peut être exposé via une compromission du système de fichiers ou lorsque des magasins réseau sont utilisés. Les caches HTTP/1.0 ne reconnaissent pas la directive `Cache-Control: no-cache`.
 
-> The `Expires: 0` and `Cache-Control: max-age=0` directives should be used to further ensure caches do not expose the data. Each request/response passing Session ID data should be examined to ensure appropriate cache directives are in use.
+> Les directives `Expires : 0` et `Cache-Control : max-age=0` doivent être utilisées pour garantir que les caches n'exposent pas les données. Chaque demande/réponse transmettant des données d'ID de session doit être examinée pour s'assurer que les directives de cache appropriées sont utilisées.
 
-### Testing for GET & POST Vulnerabilities
+### Test des vulnérabilités GET et POST
 
-In general, GET requests should not be used, as the Session ID may be exposed in Proxy or Firewall logs. They are also far more easily manipulated than other types of transport, although it should be noted that almost any mechanism can be manipulated by the client with the right tools. Furthermore, [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) attacks are most easily exploited by sending a specially constructed link to the victim. This is far less likely if data is sent from the client as POSTs.
+En général, les requêtes GET ne doivent pas être utilisées, car l'ID de session peut être exposé dans les journaux du proxy ou du pare-feu. Ils sont également beaucoup plus faciles à manipuler que d'autres types de transport, même s'il convient de noter que presque tous les mécanismes peuvent être manipulés par le client avec les bons outils. De plus, les attaques [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) sont plus facilement exploitées en envoyant un lien spécialement construit à la victime. Cela est beaucoup moins probable si les données sont envoyées depuis le client sous forme de POST.
 
-All server-side code receiving data from POST requests should be tested to ensure it does not accept the data if sent as a GET. For example, consider the following POST request (`http://owaspapp.com/login.asp`) generated by a log in page.
+Tout code côté serveur recevant des données à partir de requêtes POST doit être testé pour s'assurer qu'il n'accepte pas les données si elles sont envoyées en tant que GET. Par exemple, considérons la requête POST suivante (`http://owaspapp.com/login.asp`) générée par une page de connexion.
 
 ```http
 POST /login.asp HTTP/1.1
@@ -65,25 +65,25 @@ Content-Length: 51
 Login=Username&password=Password&SessionID=12345678
 ```
 
-If login.asp is badly implemented, it may be possible to log in using the following URL: `http://owaspapp.com/login.asp?Login=Username&password=Password&SessionID=12345678`
+Si login.asp est mal implémenté, il peut être possible de se connecter en utilisant l'URL suivante : `http://owaspapp.com/login.asp?Login=Username&password=Password&SessionID=12345678`
 
-Potentially insecure server-side scripts may be identified by checking each POST in this way.
+Les scripts côté serveur potentiellement non sécurisés peuvent être identifiés en vérifiant chaque POST de cette manière.
 
-### Testing for Transport Vulnerabilities
+### Test des vulnérabilités de transport
 
-All interaction between the Client and Application should be tested at least against the following criteria.
+Toute interaction entre le Client et l'Application doit être testée au moins par rapport aux critères suivants.
 
-- How are Session IDs transferred? e.g., GET, POST, Form Field (including hidden fields)
-- Are Session IDs always sent over encrypted transport by default?
-- Is it possible to manipulate the application to send Session IDs unencrypted? e.g., by changing HTTPS to HTTP?
-- What cache-control directives are applied to requests/responses passing Session IDs?
-- Are these directives always present? If not, where are the exceptions?
-- Are GET requests incorporating the Session ID used?
-- If POST is used, can it be interchanged with GET?
+- Comment les identifiants de session sont-ils transférés ? par exemple, GET, POST, Champ de formulaire (y compris les champs masqués)
+- Les identifiants de session sont-ils toujours envoyés via un transport chiffré par défaut ?
+- Est-il possible de manipuler l'application pour envoyer des identifiants de session non cryptés ? par exemple, en changeant HTTPS en HTTP ?
+- Quelles directives de contrôle de cache sont appliquées aux requêtes/réponses passant des identifiants de session ?
+- Ces directives sont-elles toujours présentes ? Si non, où sont les exceptions ?
+- Les requêtes GET incorporant l'ID de session sont-elles utilisées ?
+- Si POST est utilisé, peut-il être échangé avec GET ?
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
-- [RFCs 2109 & 2965 – HTTP State Management Mechanism [D. Kristol, L. Montulli]](https://www.ietf.org/rfc/rfc2965.txt)
-- [RFC 2616 – Hypertext Transfer Protocol - HTTP/1.1](https://www.ietf.org/rfc/rfc2616.txt)
+- [RFCs 2109 & 2965 – Mécanisme de gestion d'état HTTP [D. Kristol, L. Montulli]](https://www.ietf.org/rfc/rfc2965.txt)
+- [RFC 2616 – Protocole de transfert hypertexte - HTTP/1.1](https://www.ietf.org/rfc/rfc2616.txt)

@@ -1,50 +1,51 @@
-# Testing Session Timeout
+# Test du délai d'expiration de la session
 
 |ID          |
 |------------|
 |WSTG-SESS-07|
 
-## Summary
+## Sommaire
 
-In this phase testers check that the application automatically logs out a user when that user has been idle for a certain amount of time, ensuring that it is not possible to "reuse" the same session and that no sensitive data remains stored in the browser cache.
+Dans cette phase, les testeurs vérifient que l'application déconnecte automatiquement un utilisateur lorsque cet utilisateur a été inactif pendant un certain temps, en s'assurant qu'il n'est pas possible de "réutiliser" la même session et qu'aucune donnée sensible ne reste stockée dans le cache du navigateur .
 
-All applications should implement an idle or inactivity timeout for sessions. This timeout defines the amount of time a session will remain active in case there is no activity by the user, closing and invalidating the session upon the defined idle period since the last HTTP request received by the web application for a given session ID. The most appropriate timeout should be a balance between security (shorter timeout) and usability (longer timeout) and heavily depends on the sensitivity level of the data handled by the application. For example, a 60 minute log out time for a public forum can be acceptable, but such a long time would be too much in a home banking application (where a maximum timeout of 15 minutes is recommended). In any case, any application that does not enforce a timeout-based log out should be considered not secure, unless such behavior is required by a specific functional requirement.
+Toutes les applications doivent implémenter un délai d'inactivité ou d'inactivité pour les sessions. Ce délai d'attente définit la durée pendant laquelle une session restera active en cas d'absence d'activité de l'utilisateur, fermant et invalidant la session sur la période d'inactivité définie depuis la dernière requête HTTP reçue par l'application Web pour un ID de session donné. Le délai d'expiration le plus approprié doit être un équilibre entre la sécurité (délai d'expiration plus court) et la convivialité (délai d'expiration plus long) et dépend fortement du niveau de sensibilité des données traitées par l'application. Par exemple, un délai de déconnexion de 60 minutes pour un forum public peut être acceptable, mais un délai aussi long serait trop long dans une application de banque à domicile (où un délai maximum de 15 minutes est recommandé). Dans tous les cas, toute application qui n'applique pas une déconnexion basée sur le délai d'attente doit être considérée comme non sécurisée, à moins qu'un tel comportement ne soit requis par une exigence fonctionnelle spécifique.
 
-The idle timeout limits the chances that an attacker has to guess and use a valid session ID from another user, and under certain circumstances could protect public computers from session reuse. However, if the attacker is able to hijack a given session, the idle timeout does not limit the attacker’s actions, as he can generate activity on the session periodically to keep the session active for longer periods of time.
+Le délai d'inactivité limite les chances qu'un attaquant doive deviner et utiliser un ID de session valide d'un autre utilisateur et, dans certaines circonstances, peut protéger les ordinateurs publics de la réutilisation de session. Cependant, si l'attaquant est capable de détourner une session donnée, le délai d'inactivité ne limite pas les actions de l'attaquant, car il peut générer périodiquement une activité sur la session pour maintenir la session active pendant de plus longues périodes.
 
-Session timeout management and expiration must be enforced server-side. If some data under the control of the client is used to enforce the session timeout, for example using cookie values or other client parameters to track time references (e.g. number of minutes since log in time), an attacker could manipulate these to extend the session duration. So the application has to track the inactivity time server-side and, after the timeout is expired, automatically invalidate the current user's session and delete every data stored on the client.
+La gestion et l'expiration du délai d'expiration de la session doivent être appliquées côté serveur. Si certaines données sous le contrôle du client sont utilisées pour appliquer le délai d'expiration de la session, par exemple en utilisant des valeurs de cookie ou d'autres paramètres du client pour suivre les références temporelles (par exemple, le nombre de minutes depuis l'heure de connexion), un attaquant pourrait les manipuler pour prolonger la session durée. L'application doit donc suivre le temps d'inactivité côté serveur et, une fois le délai expiré, invalider automatiquement la session de l'utilisateur actuel et supprimer toutes les données stockées sur le client.
 
-Both actions must be implemented carefully, in order to avoid introducing weaknesses that could be exploited by an attacker to gain unauthorized access if the user forgot to log out from the application. More specifically, as for the log out function, it is important to ensure that all session tokens (e.g. cookies) are properly destroyed or made unusable, and that proper controls are enforced server-side to prevent the reuse of session tokens. If such actions are not properly carried out, an attacker could replay these session tokens in order to "resurrect" the session of a legitimate user and impersonate him/her (this attack is usually known as 'cookie replay'). Of course, a mitigating factor is that the attacker needs to be able to access those tokens (which are stored on the victim's PC), but, in a variety of cases, this may not be impossible or particularly difficult.
+Ces deux actions doivent être implémentées avec soin, afin d'éviter d'introduire des faiblesses qui pourraient être exploitées par un attaquant pour obtenir un accès non autorisé si l'utilisateur oubliait de se déconnecter de l'application. Plus précisément, en ce qui concerne la fonction de déconnexion, il est important de s'assurer que tous les jetons de session (par exemple, les cookies) sont correctement détruits ou rendus inutilisables, et que des contrôles appropriés sont appliqués côté serveur pour empêcher la réutilisation des jetons de session. Si de telles actions ne sont pas correctement effectuées, un attaquant pourrait rejouer ces jetons de session afin de « ressusciter » la session d'un utilisateur légitime et se faire passer pour lui (cette attaque est généralement connue sous le nom de « cookie replay »). Bien sûr, un facteur atténuant est que l'attaquant doit pouvoir accéder à ces jetons (qui sont stockés sur le PC de la victime), mais, dans une variété de cas, cela peut ne pas être impossible ou particulièrement difficile.
 
-The most common scenario for this kind of attack is a public computer that is used to access some private information (e.g., web mail, online bank account). If the user moves away from the computer without explicitly logging out and the session timeout is not implemented on the application, then an attacker could access to the same account by simply pressing the "back" button of the browser.
+Le scénario le plus courant pour ce type d'attaque est un ordinateur public utilisé pour accéder à certaines informations privées (par exemple, messagerie Web, compte bancaire en ligne). Si l'utilisateur s'éloigne de l'ordinateur sans se déconnecter explicitement et que le délai d'expiration de la session n'est pas implémenté sur l'application, alors un attaquant pourrait accéder au même compte en appuyant simplement sur le bouton "retour" du navigateur.
 
-## Test Objectives
+## Objectifs des tests
 
-- Validate that a hard session timeout exists.
+- Valider qu'un délai d'expiration de session dur existe.
 
-## How to Test
+## Comment tester
 
-### Black-Box Testing
+### Test de la boîte noire
 
-The same approach seen in the [Testing for logout functionality](06-Testing_for_Logout_Functionality.md) section can be applied when measuring the timeout log out.
-The testing methodology is very similar. First, testers have to check whether a timeout exists, for instance, by logging in and waiting for the timeout log out to be triggered. As in the log out function, after the timeout has passed, all session tokens should be destroyed or be unusable.
+La même approche vue dans la section [Test de la fonctionnalité de déconnexion](06-Testing_for_Logout_Functionality.md) peut être appliquée lors de la mesure du délai de déconnexion.
+La méthodologie de test est très similaire. Tout d'abord, les testeurs doivent vérifier s'il existe un délai d'attente, par exemple en se connectant et en attendant que le délai de déconnexion soit déclenché. Comme dans la fonction de déconnexion, une fois le délai d'expiration écoulé, tous les jetons de session doivent être détruits ou être inutilisables.
 
-Then, if the timeout is configured, testers need to understand whether the timeout is enforced by the client or by the server (or both). If the session cookie is non-persistent (or, more in general, the session cookie does not store any data about the time), testers can assume that the timeout is enforced by the server. If the session cookie contains some time related data (e.g., log in time, or last access time, or expiration date for a persistent cookie), then it's possible that the client is involved in the timeout enforcing. In this case, testers could try to modify the cookie (if it's not cryptographically protected) and see what happens to the session. For instance, testers can set the cookie expiration date far in the future and see whether the session can be prolonged.
+Ensuite, si le délai d'attente est configuré, les testeurs doivent comprendre si le délai d'attente est appliqué par le client ou par le serveur (ou les deux). Si le cookie de session n'est pas persistant (ou, plus généralement, le cookie de session ne stocke aucune donnée sur l'heure), les testeurs peuvent supposer que le délai d'attente est appliqué par le serveur. Si le cookie de session contient des données liées au temps (par exemple, l'heure de connexion, l'heure du dernier accès ou la date d'expiration d'un cookie persistant), il est possible que le client soit impliqué dans l'application du délai d'attente. Dans ce cas, les testeurs pourraient essayer de modifier le cookie (s'il n'est pas protégé cryptographiquement) et voir ce qu'il advient de la session. Par exemple, les testeurs peuvent définir la date d'expiration du cookie loin dans le futur et voir si la session peut être prolongée.
 
-As a general rule, everything should be checked server-side and it should not be possible, by re-setting the session cookies to previous values, to access the application again.
+En règle générale, tout doit être vérifié côté serveur et il ne doit pas être possible, en réinitialisant les cookies de session aux valeurs précédentes, d'accéder à nouveau à l'application.
 
-### Gray-Box Testing
+### Test de la boîte grise
 
-The tester needs to check that:
+Le testeur doit vérifier que :
 
-- The log out function effectively destroys all session token, or at least renders them unusable,
-- The server performs proper checks on the session state, disallowing an attacker to replay previously destroyed session identifiers
-- A timeout is enforced and it is properly enforced by the server. If the server uses an expiration time that is read from a session token that is sent by the client (but this is not advisable), then the token must be cryptographically protected from tampering.
+- La fonction de déconnexion détruit effectivement tous les jetons de session, ou du moins les rend inutilisables,
+- Le serveur effectue des vérifications appropriées sur l'état de la session, empêchant un attaquant de rejouer les identifiants de session précédemment détruits
+- Un délai d'attente est appliqué et il est correctement appliqué par le serveur. Si le serveur utilise un délai d'expiration qui est lu à partir d'un jeton de session envoyé par le client (mais ce n'est pas conseillé), alors le jeton doit être protégé cryptographiquement contre la falsification.
 
-Note that the most important thing is for the application to invalidate the session on the server-side. Generally this means that the code must invoke the appropriate methods, e.g. `HttpSession.invalidate()` in Java and `Session.abandon()` in .NET. Clearing the cookies from the browser is advisable, but is not strictly necessary, since if the session is properly invalidated on the server, having the cookie in the browser will not help an attacker.
+Notez que le plus important est que l'application invalide la session côté serveur. Généralement, cela signifie que le code doit invoquer les méthodes appropriées, par ex. `HttpSession.invalidate()` en Java et `Session.abandon()` en .NET. Effacer les cookies du navigateur est conseillé, mais n'est pas strictement nécessaire, car si la session est correctement invalidée sur le serveur, avoir le cookie dans le navigateur n'aidera pas un attaquant.
 
-## References
+## Références
 
-### OWASP Resources
+### Ressources OWASP
 
-- [Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+- [Aide-mémoire de gestion de session](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)
+
