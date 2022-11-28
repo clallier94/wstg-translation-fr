@@ -1,27 +1,27 @@
-# Testing for Host Header Injection
+# Test de l'injection d'en-tête d'hôte
 
 |ID          |
 |------------|
 |WSTG-INPV-17|
 
-## Summary
+## Sommaire
 
-A web server commonly hosts several web applications on the same IP address, referring to each application via the virtual host. In an incoming HTTP request, web servers often dispatch the request to the target virtual host based on the value supplied in the Host header. Without proper validation of the header value, the attacker can supply invalid input to cause the web server to:
+Un serveur Web héberge généralement plusieurs applications Web sur la même adresse IP, se référant à chaque application via l'hôte virtuel. Dans une requête HTTP entrante, les serveurs Web envoient souvent la requête à l'hôte virtuel cible en fonction de la valeur fournie dans l'en-tête Host. Sans une validation correcte de la valeur de l'en-tête, l'attaquant peut fournir une entrée non valide pour amener le serveur Web à :
 
-- Dispatch requests to the first virtual host on the list.
-- Perform a redirect to an attacker-controlled domain.
-- Perform web cache poisoning.
-- Manipulate password reset functionality.
-- Allow access to virtual hosts that were not intended to be externally accessible.
+- Envoi des demandes au premier hôte virtuel de la liste.
+- Effectuer une redirection vers un domaine contrôlé par un attaquant.
+- Effectuer un empoisonnement du cache Web.
+- Manipuler la fonctionnalité de réinitialisation du mot de passe.
+- Autoriser l'accès aux hôtes virtuels qui n'étaient pas destinés à être accessibles de l'extérieur.
 
-## Test Objectives
+## Objectifs des tests
 
-- Assess if the Host header is being parsed dynamically in the application.
-- Bypass security controls that rely on the header.
+- Évaluer si l'en-tête Host est analysé dynamiquement dans l'application.
+- Contourner les contrôles de sécurité qui reposent sur l'en-tête.
 
-## How to Test
+## Comment tester
 
-Initial testing is as simple as supplying another domain (i.e. `attacker.com`) into the Host header field. It is how the web server processes the header value that dictates the impact. The attack is valid when the web server processes the input to send the request to an attacker-controlled host that resides at the supplied domain, and not to an internal virtual host that resides on the web server.
+Le test initial est aussi simple que de fournir un autre domaine (c'est-à-dire "attaquant.com") dans le champ d'en-tête Host. C'est la façon dont le serveur Web traite la valeur d'en-tête qui dicte l'impact. L'attaque est valide lorsque le serveur Web traite l'entrée pour envoyer la demande à un hôte contrôlé par l'attaquant qui réside dans le domaine fourni, et non à un hôte virtuel interne qui réside sur le serveur Web.
 
 ```http
 GET / HTTP/1.1
@@ -29,7 +29,7 @@ Host: www.attacker.com
 [...]
 ```
 
-In the simplest case, this may cause a 302 redirect to the supplied domain.
+Dans le cas le plus simple, cela peut provoquer une redirection 302 vers le domaine fourni.
 
 ```http
 HTTP/1.1 302 Found
@@ -38,20 +38,20 @@ Location: http://www.attacker.com/login.php
 
 ```
 
-Alternatively, the web server may send the request to the first virtual host on the list.
+Alternativement, le serveur Web peut envoyer la demande au premier hôte virtuel de la liste.
 
-### X-Forwarded Host Header Bypass
+### Contournement d'en-tête d'hôte transmis par X
 
-In the event that Host header injection is mitigated by checking for invalid input injected via the Host header, you can supply the value to the `X-Forwarded-Host` header.
+Dans le cas où l'injection d'en-tête Host est atténuée en vérifiant les entrées non valides injectées via l'en-tête Host, vous pouvez fournir la valeur à l'en-tête `X-Forwarded-Host`.
 
 ```http
 GET / HTTP/1.1
-Host: www.example.com
+Host: www.exemple.com
 X-Forwarded-Host: www.attacker.com
 [...]
 ```
 
-Potentially producing client-side output such as:
+Produisant potentiellement une sortie côté client telle que :
 
 ```html
 [...]
@@ -59,11 +59,11 @@ Potentially producing client-side output such as:
 [...]
 ```
 
-Once again, this depends on how the web server processes the header value.
+Encore une fois, cela dépend de la façon dont le serveur Web traite la valeur d'en-tête.
 
-### Web Cache Poisoning
+### Empoisonnement du cache Web
 
-Using this technique, an attacker can manipulate a web-cache to serve poisoned content to anyone who requests it. This relies on the ability to poison the caching proxy run by the application itself, CDNs, or other downstream providers. As a result, the victim will have no control over receiving the malicious content when requesting the vulnerable application.
+En utilisant cette technique, un attaquant peut manipuler un cache Web pour fournir un contenu empoisonné à toute personne qui en fait la demande. Cela repose sur la capacité d'empoisonner le proxy de mise en cache exécuté par l'application elle-même, les CDN ou d'autres fournisseurs en aval. Par conséquent, la victime n'aura aucun contrôle sur la réception du contenu malveillant lors de la demande de l'application vulnérable.
 
 ```http
 GET / HTTP/1.1
@@ -71,7 +71,7 @@ Host: www.attacker.com
 [...]
 ```
 
-The following will be served from the web cache, when a victim visits the vulnerable application.
+Les éléments suivants seront servis à partir du cache Web, lorsqu'une victime visite l'application vulnérable.
 
 ```html
 [...]
@@ -79,28 +79,28 @@ The following will be served from the web cache, when a victim visits the vulner
 [...]
 ```
 
-### Password Reset Poisoning
+### Empoisonnement de réinitialisation de mot de passe
 
-It is common for password reset functionality to include the Host header value when creating password reset links that use a generated secret token. If the application processes an attacker-controlled domain to create a password reset link, the victim may click on the link in the email and allow the attacker to obtain the reset token, thus resetting the victim's password.
+Il est courant que la fonctionnalité de réinitialisation de mot de passe inclue la valeur d'en-tête Host lors de la création de liens de réinitialisation de mot de passe qui utilisent un jeton secret généré. Si l'application traite un domaine contrôlé par l'attaquant pour créer un lien de réinitialisation du mot de passe, la victime peut cliquer sur le lien dans l'e-mail et permettre à l'attaquant d'obtenir le jeton de réinitialisation, réinitialisant ainsi le mot de passe de la victime.
 
-The example below shows a password reset link that is generated in PHP using the value of `$_SERVER['HTTP_HOST']`, which is set based on the contents of the HTTP Host header:
+L'exemple ci-dessous montre un lien de réinitialisation de mot de passe généré en PHP à l'aide de la valeur de `$_SERVER['HTTP_HOST']`, qui est définie en fonction du contenu de l'en-tête HTTP Host :
 
 ```php
 $reset_url = "https://" . $_SERVER['HTTP_HOST'] . "/reset.php?token=" .$token;
 send_reset_email($email,$rset_url);
 ```
 
-By making a HTTP request to the password reset page with a tampered Host header, we can modify where the URL points:
+En faisant une requête HTTP à la page de réinitialisation du mot de passe avec un en-tête Host falsifié, nous pouvons modifier l'endroit où pointe l'URL :
 
 ```http
 POST /request_password_reset.php HTTP/1.1
 Host: www.attacker.com
 [...]
 
-email=user@example.org
+email=user@exemple.org
 ```
 
-The specified domain (`www.attacker.com`) will then be used in the reset link, which is emailed to the user. When the user clicks this link, the attacker can steal the token and compromise their account.
+Le domaine spécifié ("www.attacker.com") sera alors utilisé dans le lien de réinitialisation, qui est envoyé par e-mail à l'utilisateur. Lorsque l'utilisateur clique sur ce lien, l'attaquant peut voler le jeton et compromettre son compte.
 
 ```text
 ... Email snippet ...
@@ -112,20 +112,20 @@ https://www.attacker.com/reset.php?token=12345
 ... Email snippet ...
 ```
 
-### Accessing Private Virtual Hosts
+### Accès aux hôtes virtuels privés
 
-In some cases a server may have virtual hosts that are not intended to be externally accessible. This is most common with a [split-horizon](https://en.wikipedia.org/wiki/Split-horizon_DNS) DNS setup (where internal and external DNS servers return different records for the same domain).
+Dans certains cas, un serveur peut avoir des hôtes virtuels qui ne sont pas destinés à être accessibles de l'extérieur. Ceci est plus courant avec une configuration DNS [split-horizon](https://en.wikipedia.org/wiki/Split-horizon_DNS) (où les serveurs DNS internes et externes renvoient des enregistrements différents pour le même domaine).
 
-For example, an organization may have a single webserver on their internal network, which hosts both their public website (on `www.example.org`) and their internal Intranet (on `intranet.example.org`, but that record only exists on the internal DNS server). Although it would not be possible to browse directly to `intranet.example.org` from outside the network (as the domain would not resolve), it may be possible to access to Intranet by making a request from outside with the following `Host` header:
+Par exemple, une organisation peut avoir un seul serveur Web sur son réseau interne, qui héberge à la fois son site Web public (sur `www.exemple.org`) et son intranet interne (sur `intranet.exemple.org`, mais cet enregistrement n'existe que sur le serveur DNS interne). Bien qu'il ne soit pas possible de naviguer directement vers `intranet.exemple.org` depuis l'extérieur du réseau (car le domaine ne serait pas résolu), il peut être possible d'accéder à l'intranet en faisant une demande depuis l'extérieur avec l'`Hôte` suivant entête:
 
-```http
-Host: intranet.example.org
+``` http
+Hébergeur : intranet.exemple.org
 ```
 
-This could also be achieved by adding an entry for `intranet.example.org` to your hosts file with the public IP address of `www.example.org`, or by overriding DNS resolution in your testing tool.
+Cela peut également être réalisé en ajoutant une entrée pour `intranet.exemple.org` à votre fichier hosts avec l'adresse IP publique de `www.exemple.org`, ou en remplaçant la résolution DNS dans votre outil de test.
 
-## References
+## Références
 
-- [What is a Host Header Attack?](https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/)
+- [Qu'est-ce qu'une attaque d'en-tête d'hôte ?] (https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/)
 - [Host Header Attack](https://www.briskinfosec.com/blogs/blogsdetail/Host-Header-Attack)
-- [HTTP Host header attacks](https://portswigger.net/web-security/host-header)
+- [Attaques d'en-tête d'hôte HTTP] (https://portswigger.net/web-security/host-header)

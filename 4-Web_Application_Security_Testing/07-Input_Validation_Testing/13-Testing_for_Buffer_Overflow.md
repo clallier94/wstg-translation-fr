@@ -1,7 +1,7 @@
-# Testing for Buffer Overflow
+# Test de débordement de tampon
 
 |ID          |
 |------------|
 |WSTG-INPV-13|
 
-This content has been removed
+Ce contenu a été supprimé

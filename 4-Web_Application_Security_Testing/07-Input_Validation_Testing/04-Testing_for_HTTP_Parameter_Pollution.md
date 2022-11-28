@@ -1,30 +1,30 @@
-# Testing for HTTP Parameter Pollution
+# Test de la pollution des paramètres HTTP
 
 |ID          |
 |------------|
 |WSTG-INPV-04|
 
-## Summary
+## Sommaire
 
-HTTP Parameter Pollution tests the applications response to receiving multiple HTTP parameters with the same name; for example, if the parameter `username` is included in the GET or POST parameters twice.
+HTTP Parameter Pollution teste la réponse des applications à la réception de plusieurs paramètres HTTP portant le même nom ; par exemple, si le paramètre `username` est inclus deux fois dans les paramètres GET ou POST.
 
-Supplying multiple HTTP parameters with the same name may cause an application to interpret values in unanticipated ways. By exploiting these effects, an attacker may be able to bypass input validation, trigger application errors or modify internal variables values. As HTTP Parameter Pollution (in short *HPP*) affects a building block of all web technologies, server and client-side attacks exist.
+La fourniture de plusieurs paramètres HTTP avec le même nom peut amener une application à interpréter des valeurs de manière imprévue. En exploitant ces effets, un attaquant peut être en mesure de contourner la validation des entrées, de déclencher des erreurs d'application ou de modifier les valeurs des variables internes. Étant donné que la pollution des paramètres HTTP (en abrégé * HPP *) affecte un élément constitutif de toutes les technologies Web, des attaques côté serveur et côté client existent.
 
-Current HTTP standards do not include guidance on how to interpret multiple input parameters with the same name. For instance, [RFC 3986](https://www.ietf.org/rfc/rfc3986.txt) simply defines the term *Query String* as a series of field-value pairs and [RFC 2396](https://www.ietf.org/rfc/rfc2396.txt) defines classes of reversed and unreserved query string characters. Without a standard in place, web application components handle this edge case in a variety of ways (see the table below for details).
+Les normes HTTP actuelles n'incluent pas de conseils sur la façon d'interpréter plusieurs paramètres d'entrée portant le même nom. Par exemple, [RFC 3986](https://www.ietf.org/rfc/rfc3986.txt) définit simplement le terme *Query String* comme une série de paires champ-valeur et [RFC 2396](https:// www.ietf.org/rfc/rfc2396.txt) définit les classes de caractères de chaîne de requête inversés et non réservés. Sans norme en place, les composants d'application Web gèrent ce cas marginal de différentes manières (voir le tableau ci-dessous pour plus de détails).
 
-By itself, this is not necessarily an indication of vulnerability. However, if the developer is not aware of the problem, the presence of duplicated parameters may produce an anomalous behavior in the application that can be potentially exploited by an attacker. As often in security, unexpected behaviors are a usual source of weaknesses that could lead to HTTP Parameter Pollution attacks in this case. To better introduce this class of vulnerabilities and the outcome of HPP attacks, it is interesting to analyze some real-life examples that have been discovered in the past.
+En soi, ce n'est pas nécessairement une indication de vulnérabilité. Cependant, si le développeur n'est pas conscient du problème, la présence de paramètres dupliqués peut produire un comportement anormal dans l'application qui peut être potentiellement exploité par un attaquant. Comme souvent en sécurité, les comportements inattendus sont une source habituelle de faiblesses pouvant conduire dans ce cas à des attaques HTTP Parameter Pollution. Pour mieux présenter cette classe de vulnérabilités et le résultat des attaques HPP, il est intéressant d'analyser quelques exemples réels qui ont été découverts dans le passé.
 
-### Input Validation and Filters Bypass
+### Validation des entrées et contournement des filtres
 
-In 2009, immediately after the publication of the first research on HTTP Parameter Pollution, the technique received attention from the security community as a possible way to bypass web application firewalls.
+En 2009, immédiatement après la publication de la première recherche sur la pollution des paramètres HTTP, la technique a attiré l'attention de la communauté de la sécurité comme un moyen possible de contourner les pare-feu des applications Web.
 
-One of these flaws, affecting *ModSecurity SQL Injection Core Rules*, represents a perfect example of the impedance mismatch between applications and filters. The ModSecurity filter would correctly apply a deny list for the following string: `select 1,2,3 from table`, thus blocking this example URL from being processed by the web server: `/index.aspx?page=select 1,2,3 from table`. However, by exploiting the concatenation of multiple HTTP parameters, an attacker could cause the application server to concatenate the string after the ModSecurity filter already accepted the input. As an example, the URL `/index.aspx?page=select 1&page=2,3` from table would not trigger the ModSecurity filter, yet the application layer would concatenate the input back into the full malicious string.
+L'une de ces failles, affectant *ModSecurity SQL Injection Core Rules*, représente un exemple parfait de l'inadéquation d'impédance entre les applications et les filtres. Le filtre ModSecurity appliquerait correctement une liste de refus pour la chaîne suivante : `select 1,2,3 from table`, empêchant ainsi le traitement de cet exemple d'URL par le serveur Web : `/index.aspx?page=select 1,2 ,3 du tableau`. Cependant, en exploitant la concaténation de plusieurs paramètres HTTP, un attaquant pourrait amener le serveur d'applications à concaténer la chaîne après que le filtre ModSecurity ait déjà accepté l'entrée. Par exemple, l'URL `/index.aspx?page=select 1&page=2,3` de la table ne déclencherait pas le filtre ModSecurity, mais la couche application concaténerait l'entrée dans la chaîne malveillante complète.
 
-Another HPP vulnerability turned out to affect *Apple Cups*, the well-known printing system used by many UNIX systems. Exploiting HPP, an attacker could easily trigger a Cross-Site Scripting vulnerability using the following URL: `http://127.0.0.1:631/admin/?kerberos=onmouseover=alert(1)&kerberos`. The application validation checkpoint could be bypassed by adding an extra `kerberos` argument having a valid string (e.g. empty string). As the validation checkpoint would only consider the second occurrence, the first `kerberos` parameter was not properly sanitized before being used to generate dynamic HTML content. Successful exploitation would result in JavaScript code execution under the context of the hosting web site.
+Une autre vulnérabilité HPP s'est avérée affecter *Apple Cups*, le système d'impression bien connu utilisé par de nombreux systèmes UNIX. En exploitant HPP, un attaquant pourrait facilement déclencher une vulnérabilité de type "Cross-Site Scripting" en utilisant l'URL suivante : `http://127.0.0.1:631/admin/?kerberos=onmouseover=alert(1)&kerberos`. Le point de contrôle de validation de l'application peut être contourné en ajoutant un argument supplémentaire "kerberos" ayant une chaîne valide (par exemple, une chaîne vide). Comme le point de contrôle de validation ne prendrait en compte que la deuxième occurrence, le premier paramètre `kerberos` n'a pas été correctement filtré avant d'être utilisé pour générer du contenu HTML dynamique. Une exploitation réussie entraînerait l'exécution de code JavaScript dans le contexte du site Web d'hébergement.
 
-### Authentication Bypass
+### Contournement de l'authentification
 
-An even more critical HPP vulnerability was discovered in *Blogger*, the popular blogging platform. The bug allowed malicious users to take ownership of the victim’s blog by using the following HTTP request (`https://www.blogger.com/add-authors.do`):
+Une vulnérabilité HPP encore plus critique a été découverte dans *Blogger*, la plate-forme de blogs populaire. Le bogue permettait à des utilisateurs malveillants de s'approprier le blog de la victime en utilisant la requête HTTP suivante (`https://www.blogger.com/add-authors.do`) :
 
 ```html
 POST /add-authors.do HTTP/1.1
@@ -33,105 +33,105 @@ POST /add-authors.do HTTP/1.1
 security_token=attackertoken&blogID=attackerblogidvalue&blogID=victimblogidvalue&authorsList=goldshlager19test%40gmail.com(attacker email)&ok=Invite
 ```
 
-The flaw resided in the authentication mechanism used by the web application, as the security check was performed on the first `blogID` parameter, whereas the actual operation used the second occurrence.
+La faille résidait dans le mécanisme d'authentification utilisé par l'application Web, car le contrôle de sécurité était effectué sur le premier paramètre `blogID`, alors que l'opération réelle utilisait la seconde occurrence.
 
-### Expected Behavior by Application Server
+### Comportement attendu par le serveur d'applications
 
-The following table illustrates how different web technologies behave in presence of multiple occurrences of the same HTTP parameter.
+Le tableau suivant illustre le comportement de différentes technologies Web en présence de plusieurs occurrences du même paramètre HTTP.
 
-Given the URL and querystring: `http://example.com/?color=red&color=blue`
+Étant donné l'URL et la chaîne de requête : `http://example.com/?color=red&color=blue`
 
-  | Web Application Server Backend | Parsing Result | Example |
-  |--------------------------------|----------------|--------|
-  | ASP.NET / IIS | All occurrences concatenated with a comma |  color=red,blue |
-  | ASP / IIS     | All occurrences concatenated with a comma | color=red,blue |
-  | .NET Core 3.1 / Kestrel | All occurrences concatenated with a comma | color=red,blue |
-  | .NET 5 / Kestrel | All occurrences concatenated with a comma | color=red,blue |
-  | PHP / Apache  | Last occurrence only | color=blue |
-  | PHP / Zeus | Last occurrence only | color=blue |
-  | JSP, Servlet / Apache Tomcat | First occurrence only | color=red |
-  | JSP, Servlet / Oracle Application Server 10g | First occurrence only | color=red |
-  | JSP, Servlet / Jetty  | First occurrence only | color=red |
-  | IBM Lotus Domino | Last occurrence only | color=blue |
-  | IBM HTTP Server | First occurrence only | color=red |
-  | node.js / express | First occurrence only | color=red |
-  | mod_perl, libapreq2 / Apache | First occurrence only | color=red |
-  | Perl CGI / Apache | First occurrence only | color=red |
-  | mod_wsgi (Python) / Apache | First occurrence only | color=red |
-  | Python / Zope | All occurrences in List data type | color=['red','blue'] |
+  | Backend du serveur d'applications Web | Résultat d'analyse | Exemple |
+  |---------------------------------------|--------------------|---------|
+  | ASP.NET / IIS | Toutes les occurrences concaténées avec une virgule | couleur=rouge,bleu |
+  | ASP/IIS | Toutes les occurrences concaténées avec une virgule | couleur=rouge,bleu |
+  | .NET Core 3.1 / Crécerelle | Toutes les occurrences concaténées avec une virgule | couleur=rouge,bleu |
+  | .NET 5 / Crécerelle | Toutes les occurrences concaténées avec une virgule | couleur=rouge,bleu |
+  | PHP/Apache | Dernière occurrence uniquement | couleur=bleu |
+  | PHP / Zeus | Dernière occurrence uniquement | couleur=bleu |
+  | JSP, Servlet / Apache Tomcat | Première occurrence uniquement | couleur=rouge |
+  | JSP, servlet/serveur d'application Oracle 10g | Première occurrence uniquement | couleur=rouge |
+  | JSP, Servlet / Jetty | Première occurrence uniquement | couleur=rouge |
+  | IBMLotus Domino | Dernière occurrence uniquement | couleur=bleu |
+  | Serveur HTTP IBM | Première occurrence uniquement | couleur=rouge |
+  | nœud.js / express | Première occurrence uniquement | couleur=rouge |
+  | mod_perl, libapreq2 / Apache | Première occurrence uniquement | couleur=rouge |
+  | CGI Perl / Apache | Première occurrence uniquement | couleur=rouge |
+  | mod_wsgi (Python) / Apache | Première occurrence uniquement | couleur=rouge |
+  | Python / Zopé | Toutes les occurrences dans le type de données List | couleur=['rouge','bleu'] |
 
-(source: [Appsec EU 2009 Carettoni & Paola](https://owasp.org/www-pdf-archive/AppsecEU09_CarettoniDiPaola_v0.8.pdf))
+(source : [Appsec EU 2009 Carettoni & Paola](https://owasp.org/www-pdf-archive/AppsecEU09_CarettoniDiPaola_v0.8.pdf))
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify the backend and the parsing method used.
-- Assess injection points and try bypassing input filters using HPP.
+- Identifier le backend et la méthode d'analyse utilisée.
+- Évaluez les points d'injection et essayez de contourner les filtres d'entrée à l'aide de HPP.
 
-## How to Test
+## Comment tester
 
-Luckily, because the assignment of HTTP parameters is typically handled via the web application server, and not the application code itself, testing the response to parameter pollution should be standard across all pages and actions. However, as in-depth business logic knowledge is necessary, testing HPP requires manual testing. Automatic tools can only partially assist auditors as they tend to generate too many false positives. In addition, HPP can manifest itself in client-side and server-side components.
+Heureusement, étant donné que l'attribution des paramètres HTTP est généralement gérée via le serveur d'applications Web, et non le code d'application lui-même, le test de la réponse à la pollution des paramètres doit être standard sur toutes les pages et actions. Cependant, comme une connaissance approfondie de la logique métier est nécessaire, tester HPP nécessite des tests manuels. Les outils automatiques ne peuvent aider que partiellement les auditeurs car ils ont tendance à générer trop de faux positifs. De plus, HPP peut se manifester dans les composants côté client et côté serveur.
 
-### Server-Side HPP
+### HPP côté serveur
 
-To test for HPP vulnerabilities, identify any form or action that allows user-supplied input. Query string parameters in HTTP GET requests are easy to tweak in the navigation bar of the browser. If the form action submits data via POST, the tester will need to use an intercepting proxy to tamper with the POST data as it is sent to the server. Having identified a particular input parameter to test, one can edit the GET or POST data by intercepting the request, or change the query string after the response page loads. To test for HPP vulnerabilities simply append the same parameter to the GET or POST data but with a different value assigned.
+Pour tester les vulnérabilités HPP, identifiez tout formulaire ou action qui autorise la saisie fournie par l'utilisateur. Les paramètres de chaîne de requête dans les requêtes HTTP GET sont faciles à modifier dans la barre de navigation du navigateur. Si l'action de formulaire soumet des données via POST, le testeur devra utiliser un proxy d'interception pour falsifier les données POST lorsqu'elles sont envoyées au serveur. Après avoir identifié un paramètre d'entrée particulier à tester, on peut modifier les données GET ou POST en interceptant la requête, ou modifier la chaîne de requête après le chargement de la page de réponse. Pour tester les vulnérabilités HPP, ajoutez simplement le même paramètre aux données GET ou POST mais avec une valeur différente attribuée.
 
-For example: if testing the `search_string` parameter in the query string, the request URL would include that parameter name and value:
+Par exemple : si vous testez le paramètre `search_string` dans la chaîne de requête, l'URL de la requête inclura le nom et la valeur de ce paramètre :
 
 ```text
 http://example.com/?search_string=kittens
 ```
 
-The particular parameter might be hidden among several other parameters, but the approach is the same; leave the other parameters in place and append the duplicate:
+Le paramètre particulier peut être caché parmi plusieurs autres paramètres, mais l'approche est la même ; laissez les autres paramètres en place et ajoutez le duplicata :
 
 ```text
 http://example.com/?mode=guest&search_string=kittens&num_results=100
 ```
 
-Append the same parameter with a different value:
+Ajoutez le même paramètre avec une valeur différente :
 
 ```text
 http://example.com/?mode=guest&search_string=kittens&num_results=100&search_string=puppies
 ```
 
-and submit the new request.
+et soumettre la nouvelle demande.
 
-Analyze the response page to determine which value(s) were parsed. In the above example, the search results may show `kittens`, `puppies`, some combination of both (`kittens,puppies` or `kittens~puppies` or `['kittens','puppies']`), may give an empty result, or error page.
+Analysez la page de réponse pour déterminer quelles valeurs ont été analysées. Dans l'exemple ci-dessus, les résultats de la recherche peuvent afficher `chatons`, `chiots`, une combinaison des deux (`chatons, chiots` ou `chatons~chiots` ou `['chatons','chiots']`), peut donner un résultat vide ou une page d'erreur.
 
-This behavior, whether using the first, last, or combination of input parameters with the same name, is very likely to be consistent across the entire application. Whether or not this default behavior reveals a potential vulnerability depends on the specific input validation and filtering specific to a particular application. As a general rule: if existing input validation and other security mechanisms are sufficient on single inputs, and if the server assigns only the first or last polluted parameters, then parameter pollution does not reveal a vulnerability. If the duplicate parameters are concatenated, different web application components use different occurrences or testing generates an error, there is an increased likelihood of being able to use parameter pollution to trigger security vulnerabilities.
+Ce comportement, qu'il s'agisse d'utiliser le premier, le dernier ou une combinaison de paramètres d'entrée portant le même nom, est très susceptible d'être cohérent dans l'ensemble de l'application. Que ce comportement par défaut révèle ou non une vulnérabilité potentielle dépend de la validation d'entrée et du filtrage spécifiques à une application particulière. En règle générale : si la validation des entrées existantes et d'autres mécanismes de sécurité sont suffisants sur des entrées uniques, et si le serveur n'affecte que le premier ou le dernier paramètre pollué, alors la pollution des paramètres ne révèle pas de vulnérabilité. Si les paramètres en double sont concaténés, que différents composants d'application Web utilisent des occurrences différentes ou que les tests génèrent une erreur, il y a une probabilité accrue de pouvoir utiliser la pollution des paramètres pour déclencher des vulnérabilités de sécurité.
 
-A more in-depth analysis would require three HTTP requests for each HTTP parameter:
+Une analyse plus approfondie nécessiterait trois requêtes HTTP pour chaque paramètre HTTP :
 
-1. Submit an HTTP request containing the standard parameter name and value, and record the HTTP response. E.g. `page?par1=val1`
-2. Replace the parameter value with a tampered value, submit and record the HTTP response. E.g. `page?par1=HPP_TEST1`
-3. Send a new request combining step (1) and (2). Again, save the HTTP response. E.g. `page?par1=val1&par1=HPP_TEST1`
-4. Compare the responses obtained during all previous steps. If the response from (3) is different from (1) and the response from (3) is also different from (2), there is an impedance mismatch that may be eventually abused to trigger HPP vulnerabilities.
+1. Soumettez une requête HTTP contenant le nom et la valeur du paramètre standard et enregistrez la réponse HTTP. Par exemple. `page?par1=val1`
+2. Remplacez la valeur du paramètre par une valeur falsifiée, soumettez et enregistrez la réponse HTTP. Par exemple. `page?par1=HPP_TEST1`
+3. Envoyez une nouvelle requête combinant les étapes (1) et (2). Encore une fois, enregistrez la réponse HTTP. Par exemple. `page?par1=val1&par1=HPP_TEST1`
+4. Comparez les réponses obtenues lors de toutes les étapes précédentes. Si la réponse de (3) est différente de (1) et que la réponse de (3) est également différente de (2), il existe une inadéquation d'impédance qui peut éventuellement être abusée pour déclencher des vulnérabilités HPP.
 
-Crafting a full exploit from a parameter pollution weakness is beyond the scope of this text. See the references for examples and details.
+Créer un exploit complet à partir d'une faiblesse de pollution de paramètres dépasse le cadre de ce texte. Voir les références pour des exemples et des détails.
 
-### Client-Side HPP
+### HPP côté client
 
-Similarly to server-side HPP, manual testing is the only reliable technique to audit web applications in order to detect parameter pollution vulnerabilities affecting client-side components. While in the server-side variant the attacker leverages a vulnerable web application to access protected data or to perform actions that either not permitted or not supposed to be executed, client-side attacks aim at subverting client-side components and technologies.
+Comme pour HPP côté serveur, les tests manuels sont la seule technique fiable pour auditer les applications Web afin de détecter les vulnérabilités de pollution des paramètres affectant les composants côté client. Alors que dans la variante côté serveur, l'attaquant exploite une application Web vulnérable pour accéder à des données protégées ou pour effectuer des actions qui ne sont pas autorisées ou ne sont pas censées être exécutées, les attaques côté client visent à subvertir les composants et technologies côté client.
 
-To test for HPP client-side vulnerabilities, identify any form or action that allows user input and shows a result of that input back to the user. A search page is ideal, but a login box might not work (as it might not show an invalid username back to the user).
+Pour tester les vulnérabilités côté client HPP, identifiez tout formulaire ou action qui autorise la saisie de l'utilisateur et affiche le résultat de cette saisie à l'utilisateur. Une page de recherche est idéale, mais une boîte de connexion peut ne pas fonctionner (car elle peut ne pas afficher un nom d'utilisateur invalide à l'utilisateur).
 
-Similarly to server-side HPP, pollute each HTTP parameter with `%26HPP_TEST` and look for *url-decoded* occurrences of the user-supplied payload:
+Comme pour HPP côté serveur, polluez chaque paramètre HTTP avec `%26HPP_TEST` et recherchez les occurrences *url-decodé* de la charge utile fournie par l'utilisateur :
 
 - `&HPP_TEST`
 - `&amp;HPP_TEST`
 - etc.
 
-In particular, pay attention to responses having HPP vectors within `data`, `src`, `href` attributes or forms actions. Again, whether or not this default behavior reveals a potential vulnerability depends on the specific input validation, filtering and application business logic. In addition, it is important to notice that this vulnerability can also affect query string parameters used in XMLHttpRequest (XHR), runtime attribute creation and other plugin technologies (e.g. Adobe Flash’s flashvars variables).
+En particulier, faites attention aux réponses ayant des vecteurs HPP dans les attributs `data`, `src`, `href` ou les actions de formulaires. Là encore, le fait que ce comportement par défaut révèle ou non une vulnérabilité potentielle dépend de la validation d'entrée spécifique, du filtrage et de la logique métier de l'application. En outre, il est important de noter que cette vulnérabilité peut également affecter les paramètres de chaîne de requête utilisés dans XMLHttpRequest (XHR), la création d'attributs d'exécution et d'autres technologies de plug-in (par exemple, les variables flashvars d'Adobe Flash).
 
-## Tools
+## Outils
 
-- [OWASP ZAP Passive/Active Scanners](https://www.zaproxy.org)
+- [Analyseurs passifs/actifs OWASP ZAP] (https://www.zaproxy.org)
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
-- [HTTP Parameter Pollution - Luca Carettoni, Stefano di Paola](https://owasp.org/www-pdf-archive/AppsecEU09_CarettoniDiPaola_v0.8.pdf)
-- [Client-side HTTP Parameter Pollution Example (Yahoo! Classic Mail flaw) - Stefano di Paola](https://blog.mindedsecurity.com/2009/05/client-side-http-parameter-pollution.html)
-- [How to Detect HTTP Parameter Pollution Attacks - Chrysostomos Daniel](https://www.acunetix.com/blog/whitepaper-http-parameter-pollution/)
-- [CAPEC-460: HTTP Parameter Pollution (HPP) - Evgeny Lebanidze](https://capec.mitre.org/data/definitions/460.html)
-- [Automated Discovery of Parameter Pollution Vulnerabilities in Web Applications - Marco Balduzzi, Carmen Torrano Gimenez, Davide Balzarotti, Engin Kirda](http://s3.eurecom.fr/docs/ndss11_hpp.pdf)
+- [Pollution des paramètres HTTP - Luca Carettoni, Stefano di Paola](https://owasp.org/www-pdf-archive/AppsecEU09_CarettoniDiPaola_v0.8.pdf)
+- [Exemple de pollution des paramètres HTTP côté client (défaut Yahoo! Classic Mail) - Stefano di Paola](https://blog.mindedsecurity.com/2009/05/client-side-http-parameter-pollution.html)
+- [Comment détecter les attaques par pollution des paramètres HTTP - Chrysostomos Daniel](https://www.acunetix.com/blog/whitepaper-http-parameter-pollution/)
+- [CAPEC-460 : Pollution des paramètres HTTP (HPP) - Evgeny Lebanidze](https://capec.mitre.org/data/definitions/460.html)
+- [Découverte automatisée des vulnérabilités de pollution des paramètres dans les applications Web - Marco Balduzzi, Carmen Torrano Gimenez, Davide Balzarotti, Engin Kirda](http://s3.eurecom.fr/docs/ndss11_hpp.pdf)

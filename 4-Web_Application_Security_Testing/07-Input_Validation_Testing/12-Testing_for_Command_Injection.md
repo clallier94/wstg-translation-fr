@@ -1,46 +1,46 @@
-# Testing for Command Injection
+# Test pour l'injection de commande
 
 |ID          |
 |------------|
 |WSTG-INPV-12|
 
-## Summary
+## Sommaire
 
-This article describes how to test an application for OS command injection. The tester will try to inject an OS command through an HTTP request to the application.
+Cet article explique comment tester une application pour l'injection de commandes de système d'exploitation. Le testeur essaiera d'injecter une commande du système d'exploitation via une requête HTTP à l'application.
 
-OS command injection is a technique used via a web interface in order to execute OS commands on a web server. The user supplies operating system commands through a web interface in order to execute OS commands. Any web interface that is not properly sanitized is subject to this exploit. With the ability to execute OS commands, the user can upload malicious programs or even obtain passwords. OS command injection is preventable when security is emphasized during the design and development of applications.
+L'injection de commandes OS est une technique utilisée via une interface web afin d'exécuter des commandes OS sur un serveur web. L'utilisateur fournit des commandes de système d'exploitation via une interface Web afin d'exécuter des commandes de système d'exploitation. Toute interface Web qui n'est pas correctement nettoyée est sujette à cet exploit. Avec la possibilité d'exécuter des commandes du système d'exploitation, l'utilisateur peut télécharger des programmes malveillants ou même obtenir des mots de passe. L'injection de commandes du système d'exploitation peut être évitée lorsque la sécurité est mise en avant lors de la conception et du développement d'applications.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify and assess the command injection points.
+- Identifier et évaluer les points d'injection de commandes.
 
-## How to Test
+## Comment tester
 
-When viewing a file in a web application, the filename is often shown in the URL. Perl allows piping data from a process into an open statement. The user can simply append the Pipe symbol `|` onto the end of the filename.
+Lors de l'affichage d'un fichier dans une application Web, le nom du fichier est souvent affiché dans l'URL. Perl permet de diriger les données d'un processus vers une instruction ouverte. L'utilisateur peut simplement ajouter le symbole Pipe `|` à la fin du nom de fichier.
 
-Example URL before alteration:
+Exemple d'URL avant modification :
 
 `http://sensitive/cgi-bin/userData.pl?doc=user1.txt`
 
-Example URL modified:
+Exemple d'URL modifiée :
 
 `http://sensitive/cgi-bin/userData.pl?doc=/bin/ls|`
 
-This will execute the command `/bin/ls`.
+Cela exécutera la commande `/bin/ls`.
 
-Appending a semicolon to the end of a URL for a .PHP page followed by an operating system command, will execute the command. `%3B` is URL encoded and decodes to semicolon
+L'ajout d'un point-virgule à la fin d'une URL pour une page .PHP suivi d'une commande du système d'exploitation exécutera la commande. `% 3B` est encodé en URL et décodé en point-virgule
 
-Example:
+exemple :
 
 `http://sensitive/something.php?dir=%3Bcat%20/etc/passwd`
 
-### Example
+### exemple
 
-Consider the case of an application that contains a set of documents that you can browse from the Internet. If you fire up a personal proxy (such as ZAP or Burp Suite), you can obtain a POST HTTP like the following (`http://www.example.com/public/doc`):
+Prenons le cas d'une application qui contient un ensemble de documents que vous pouvez parcourir à partir d'Internet. Si vous lancez un proxy personnel (tel que ZAP ou Burp Suite), vous pouvez obtenir un POST HTTP comme celui-ci (`http://www.exemple.com/public/doc`):
 
 ```txt
 POST /public/doc HTTP/1.1
-Host: www.example.com
+Host: www.exemple.com
 [...]
 Referer: http://127.0.0.1/WebGoat/attack?Screen=20
 Cookie: JSESSIONID=295500AD2AAEEBEDC9DB86E34F24A0A5
@@ -51,11 +51,11 @@ Content-length: 33
 Doc=Doc1.pdf
 ```
 
-In this post request, we notice how the application retrieves the public documentation. Now we can test if it is possible to add an operating system command to inject in the POST HTTP. Try the following (`http://www.example.com/public/doc`):
+Dans cette requête de publication, nous remarquons comment l'application récupère la documentation publique. Nous pouvons maintenant tester s'il est possible d'ajouter une commande du système d'exploitation à injecter dans le POST HTTP. Essayez ce qui suit (`http://www.exemple.com/public/doc`):
 
 ```txt
 POST /public/doc HTTP/1.1
-Host: www.example.com
+Host: www.exemple.com
 [...]
 Referer: http://127.0.0.1/WebGoat/attack?Screen=20
 Cookie: JSESSIONID=295500AD2AAEEBEDC9DB86E34F24A0A5
@@ -66,7 +66,7 @@ Content-length: 33
 Doc=Doc1.pdf+|+Dir c:\
 ```
 
-If the application doesn't validate the request, we can obtain the following result:
+Si l'application ne valide pas la requête, nous pouvons obtenir le résultat suivant :
 
 ```txt
     Exec Results for 'cmd.exe /c type "C:\httpd\public\doc\"Doc=Doc1.pdf+|+Dir c:\'
@@ -102,24 +102,24 @@ If the application doesn't validate the request, we can obtain the following res
                                 Return code: 0
 ```
 
-In this case, we have successfully performed an OS injection attack.
+Dans ce cas, nous avons effectué avec succès une attaque par injection de système d'exploitation.
 
-## Special Characters for Command Injection
+## Caractères spéciaux pour l'injection de commande
 
-The following special character can be used for command injection such as `|` `;` `&` `$` `>` `<` `'` `!`
+Le caractère spécial suivant peut être utilisé pour l'injection de commande tel que `|` `;` `&` `$` `>` `<` `'` `!`
 
-- `cmd1|cmd2` : Uses of `|` will make command 2 to be executed whether command 1 execution is successful or not.
-- `cmd1;cmd2` : Uses of `;` will make command 2 to be executed whether command 1 execution is successful or not.
-- `cmd1||cmd2` : Command 2 will only be executed if command 1 execution fails.
-- `cmd1&&cmd2` : Command 2 will only be executed if command 1 execution succeeds.
-- `$(cmd)` : For example, `echo $(whoami)` or `$(touch test.sh; echo 'ls' > test.sh)`
-- `cmd` : It's used to execute a specific command. For example, `whoami`
+- `cmd1|cmd2` : les utilisations de `|` feront que la commande 2 sera exécutée, que l'exécution de la commande 1 soit réussie ou non.
+- `cmd1;cmd2` : L'utilisation de `;` fera en sorte que la commande 2 soit exécutée, que l'exécution de la commande 1 soit réussie ou non.
+- `cmd1||cmd2` : La commande 2 ne sera exécutée que si l'exécution de la commande 1 échoue.
+- `cmd1&&cmd2` : la commande 2 ne sera exécutée que si l'exécution de la commande 1 réussit.
+- `$(cmd)` : Par exemple, `echo $(whoami)` ou `$(touch test.sh; echo 'ls' > test.sh)`
+- `cmd` : Il est utilisé pour exécuter une commande spécifique. Par exemple, "whoami"
 - `>(cmd)`: `>(ls)`
 - `<(cmd)`: `<(ls)`
 
-## Code Review Dangerous API
+## Code Review API dangereuse
 
-Be aware of the uses of following API as it may introduce the command injection risks.
+Soyez conscient des utilisations de l'API suivante car cela peut introduire des risques d'injection de commande.
 
 ### Java
 
@@ -148,29 +148,29 @@ Be aware of the uses of following API as it may introduce the command injection 
 - `proc_open`
 - `eval`
 
-## Remediation
+## Correction
 
-### Sanitization
+### Assainissement
 
-The URL and form data needs to be sanitized for invalid characters. A deny list of characters is an option but it may be difficult to think of all of the characters to validate against. Also there may be some that were not discovered as of yet. An allow list containing only allowable characters or command list should be created to validate the user input. Characters that were missed, as well as undiscovered threats, should be eliminated by this list.
+L'URL et les données de formulaire doivent être filtrées pour les caractères non valides. Une liste de refus de caractères est une option, mais il peut être difficile de penser à tous les caractères à valider. Il se peut aussi que certains n'aient pas encore été découverts. Une liste d'autorisation contenant uniquement des caractères autorisés ou une liste de commandes doit être créée pour valider l'entrée de l'utilisateur. Les personnages qui ont été manqués, ainsi que les menaces non découvertes, doivent être éliminés de cette liste.
 
-General deny list to be included for command injection can be `|` `;` `&` `$` `>` `<` `'` `\` `!` `>>` `#`
+La liste de refus générale à inclure pour l'injection de commande peut être `|` `;` `&` `$` `>` `<` `'` `\` `!` `>>` `#`
 
-Escape or filter special characters for windows,   `(` `)` `<` `>` `&` `*` `‘` `|` `=` `?` `;` `[` `]` `^` `~` `!` `.` `"` `%` `@` `/` `\` `:` `+` `,`  ``` ` ```
-Escape or filter special characters for Linux, `{` `}` `(` `)` `>` `<` `&` `*` `‘` `|` `=` `?` `;` `[` `]` `$` `–` `#` `~` `!` `.` `"` `%`  `/` `\` `:` `+` `,` ``` ` ```
+Échappez ou filtrez les caractères spéciaux pour Windows,   `(` `)` `<` `>` `&` `*` `'` `|` `=` `?` `;` `[` `]` `^` `~` `!` `.` `"` `%` `@` `/` `\` `:` `+` `,` ``` ` ```
+Échappez ou filtrez les caractères spéciaux pour Linux, `{` `}` `(` `)` `>` `<` `&` `*` `'` `|` `=` `?` `;` `[` `]` `$` `–` `#` `~` `!` `.` `"` `%`  `/` `\` `:` `+` `,` ``` ` ```
 
-### Permissions
+### Autorisations
 
-The web application and its components should be running under strict permissions that do not allow operating system command execution. Try to verify all this information to test from a gray-box testing point of view.
+L'application Web et ses composants doivent être exécutés avec des autorisations strictes qui n'autorisent pas l'exécution de commandes du système d'exploitation. Essayez de vérifier toutes ces informations pour tester d'un point de vue de test de boîte grise.
 
-## Tools
+## Outils
 
 - OWASP [WebGoat](https://owasp.org/www-project-webgoat/)
 - [Commix](https://github.com/commixproject/commix)
 
-## References
+## Références
 
-- [Penetration Testing for Web Applications (Part Two)](https://www.symantec.com/connect/articles/penetration-testing-web-applications-part-two)
-- [OS Commanding](http://projects.webappsec.org/w/page/13246950/OS%20Commanding)
-- [CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')](https://cwe.mitre.org/data/definitions/78.html)
-- [ENV33-C. Do not call system()](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152177)
+- [Tests d'intrusion pour les applications Web (deuxième partie)](https://www.symantec.com/connect/articles/penetration-testing-web-applications-part-two)
+- [Commande du système d'exploitation] (http://projects.webappsec.org/w/page/13246950/OS%20Commanding)
+- [CWE-78 : Neutralisation incorrecte d'éléments spéciaux utilisés dans une commande de système d'exploitation ("injection de commande de système d'exploitation")](https://cwe.mitre.org/data/definitions/78.html)
+- [ENV33-C. Ne pas appeler system()](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152177)

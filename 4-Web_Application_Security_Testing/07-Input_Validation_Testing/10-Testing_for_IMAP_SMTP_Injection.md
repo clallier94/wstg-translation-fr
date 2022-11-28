@@ -1,100 +1,100 @@
-# Testing for IMAP SMTP Injection
+# Test de l'injection IMAP SMTP
 
 |ID          |
 |------------|
 |WSTG-INPV-10|
 
-## Summary
+## Sommaire
 
-This threat affects all applications that communicate with mail servers (IMAP/SMTP), generally webmail applications. The aim of this test is to verify the capacity to inject arbitrary IMAP/SMTP commands into the mail servers, due to input data not being properly sanitized.
+Cette menace affecte toutes les applications qui communiquent avec les serveurs de messagerie (IMAP/SMTP), généralement les applications de messagerie Web. Le but de ce test est de vérifier la capacité à injecter des commandes IMAP/SMTP arbitraires dans les serveurs de messagerie, du fait que les données d'entrée ne sont pas correctement filtrées.
 
-The IMAP/SMTP Injection technique is more effective if the mail server is not directly accessible from Internet. Where full communication with the backend mail server is possible, it is recommended to conduct direct testing.
+La technique d'injection IMAP/SMTP est plus efficace si le serveur de messagerie n'est pas directement accessible depuis Internet. Lorsqu'une communication complète avec le serveur de messagerie principal est possible, il est recommandé d'effectuer des tests directs.
 
-An IMAP/SMTP Injection makes it possible to access a mail server which otherwise would not be directly accessible from the Internet. In some cases, these internal systems do not have the same level of infrastructure security and hardening that is applied to the front-end web servers. Therefore, mail server results may be more vulnerable to attacks by end users (see the scheme presented in Figure 1).
+Une injection IMAP/SMTP permet d'accéder à un serveur de messagerie qui autrement ne serait pas directement accessible depuis Internet. Dans certains cas, ces systèmes internes n'ont pas le même niveau de sécurité et de renforcement de l'infrastructure que celui appliqué aux serveurs Web frontaux. Par conséquent, les résultats du serveur de messagerie peuvent être plus vulnérables aux attaques des utilisateurs finaux (voir le schéma présenté à la figure 1).
 
-![IMAP SMTP Injection](images/Imap-smtp-injection.png)\
-*Figure 4.7.10-1: Communication with the mail servers using the IMAP/SMTP Injection technique*
+![Injection SMTP IMAP](images/Imap-smtp-injection.png)\
+*Figure 4.7.10-1 : Communication avec les serveurs de messagerie utilisant la technique d'injection IMAP/SMTP*
 
-Figure 1 depicts the flow of traffic generally seen when using webmail technologies. Step 1 and 2 is the user interacting with the webmail client, whereas step 2 is the tester bypassing the webmail client and interacting with the back-end mail servers directly.
+La figure 1 illustre le flux de trafic généralement observé lors de l'utilisation des technologies de messagerie Web. Les étapes 1 et 2 correspondent à l'interaction de l'utilisateur avec le client de messagerie Web, tandis que l'étape 2 correspond au testeur qui contourne le client de messagerie Web et interagit directement avec les serveurs de messagerie principaux.
 
-This technique allows a wide variety of actions and attacks. The possibilities depend on the type and scope of injection and the mail server technology being tested.
+Cette technique permet une grande variété d'actions et d'attaques. Les possibilités dépendent du type et de la portée de l'injection et de la technologie de serveur de messagerie testée.
 
-Some examples of attacks using the IMAP/SMTP Injection technique are:
+Voici quelques exemples d'attaques utilisant la technique d'injection IMAP/SMTP :
 
-- Exploitation of vulnerabilities in the IMAP/SMTP protocol
-- Application restrictions evasion
-- Anti-automation process evasion
-- Information leaks
-- Relay/SPAM
+- Exploitation des vulnérabilités du protocole IMAP/SMTP
+- Contournement des restrictions d'application
+- Évasion des processus anti-automatisation
+- Fuites d'informations
+- Relais/SPAM
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify IMAP/SMTP injection points.
-- Understand the data flow and deployment structure of the system.
-- Assess the injection impacts.
+- Identifier les points d'injection IMAP/SMTP.
+- Comprendre le flux de données et la structure de déploiement du système.
+- Évaluer les impacts de l'injection.
 
-## How to Test
+## Comment tester
 
-### Identifying Vulnerable Parameters
+### Identification des paramètres vulnérables
 
-In order to detect vulnerable parameters, the tester has to analyze the application's ability in handling input. Input validation testing requires the tester to send bogus, or malicious, requests to the server and analyse the response. In a secure application, the response should be an error with some corresponding action telling the client that something has gone wrong. In a vulnerable application, the malicious request may be processed by the back-end application that will answer with a `HTTP 200 OK` response message.
+Afin de détecter les paramètres vulnérables, le testeur doit analyser la capacité de l'application à gérer les entrées. Les tests de validation des entrées nécessitent que le testeur envoie des requêtes erronées ou malveillantes au serveur et analyse la réponse. Dans une application sécurisée, la réponse doit être une erreur avec une action correspondante indiquant au client que quelque chose s'est mal passé. Dans une application vulnérable, la requête malveillante peut être traitée par l'application dorsale qui répondra par un message de réponse "HTTP 200 OK".
 
-It is important to note that the requests being sent should match the technology being tested. Sending SQL injection strings for Microsoft SQL server when a MySQL server is being used will result in false positive responses. In this case, sending malicious IMAP commands is modus operandi since IMAP is the underlying protocol being tested.
+Il est important de noter que les demandes envoyées doivent correspondre à la technologie testée. L'envoi de chaînes d'injection SQL pour le serveur Microsoft SQL lorsqu'un serveur MySQL est utilisé entraînera des réponses faussement positives. Dans ce cas, l'envoi de commandes IMAP malveillantes est un modus operandi puisque IMAP est le protocole sous-jacent testé.
 
-IMAP special parameters that should be used are:
+Les paramètres spéciaux IMAP qui doivent être utilisés sont :
 
-| On the IMAP server     | On the SMTP server |
-|------------------------|--------------------|
-| Authentication         | Emissor email     |
-| operations with mail boxes (list, read, create, delete, rename) | Destination email |
-| operations with messages (read, copy, move, delete) | Subject   |
-| Disconnection          | Message body       |
-|                        | Attached files     |
+| Sur le serveur IMAP | Sur le serveur SMTP |
+|----------------------|--------------------|
+| Authentification | Courriel de l'émetteur |
+| opérations avec les boîtes aux lettres (lister, lire, créer, supprimer, renommer) | E-mail de destination |
+| opérations avec des messages (lire, copier, déplacer, supprimer) | Objet |
+| Déconnexion | Corps du message |
+| | Fichiers joints |
 
-In this example, the "mailbox" parameter is being tested by manipulating all requests with the parameter in:
+Dans cet exemple, le paramètre "mailbox" est testé en manipulant toutes les requêtes avec le paramètre dans :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX&passed_id=46106&startMessage=1`
 
-The following examples can be used.
+Les exemples suivants peuvent être utilisés.
 
-- Assign a null value to the parameter:
+- Attribuez une valeur nulle au paramètre :
 
 `http://<webmail>/src/read_body.php?mailbox=&passed_id=46106&startMessage=1`
 
-- Substitute the value with a random value:
+- Remplacez la valeur par une valeur aléatoire :
 
 `http://<webmail>/src/read_body.php?mailbox=NOTEXIST&passed_id=46106&startMessage=1`
 
-- Add other values to the parameter:
+- Ajoutez d'autres valeurs au paramètre :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX PARAMETER2&passed_id=46106&startMessage=1`
 
-- Add non-standard special characters (i.e.: `\`, `'`, `"`, `@`, `#`, `!`, `|`):
+- Ajoutez des caractères spéciaux non standard (par exemple : `\`, `'`, `"`, `@`, `#`, ` !`, `|`) :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX"&passed_id=46106&startMessage=1`
 
-- Eliminate the parameter:
+- Supprimer le paramètre :
 
 `http://<webmail>/src/read_body.php?passed_id=46106&startMessage=1`
 
-The final result of the above testing gives the tester three possible situations:
-S1 - The application returns a error code/message
-S2 - The application does not return an error code/message, but it does not realize the requested operation
-S3 - The application does not return an error code/message and realizes the operation requested normally
+Le résultat final des tests ci-dessus donne au testeur trois situations possibles :
+S1 - L'application renvoie un code/message d'erreur
+S2 - L'application ne renvoie pas de code/message d'erreur, mais elle ne réalise pas l'opération demandée
+S3 - L'application ne renvoie pas de code/message d'erreur et réalise normalement l'opération demandée
 
-Situations S1 and S2 represent successful IMAP/SMTP injection.
+Les situations S1 et S2 représentent une injection IMAP/SMTP réussie.
 
-An attacker's aim is receiving the S1 response, as it is an indicator that the application is vulnerable to injection and further manipulation.
+L'objectif d'un attaquant est de recevoir la réponse S1, car c'est un indicateur que l'application est vulnérable à l'injection et à d'autres manipulations.
 
-Let's suppose that a user retrieves the email headers using the following HTTP request:
+Supposons qu'un utilisateur récupère les en-têtes des e-mails à l'aide de la requête HTTP suivante :
 
 `http://<webmail>/src/view_header.php?mailbox=INBOX&passed_id=46105&passed_ent_id=0`
 
-An attacker might modify the value of the parameter INBOX by injecting the character `"` (%22 using URL encoding):
+Un attaquant pourrait modifier la valeur du paramètre INBOX en injectant le caractère `"` (%22 utilisant l'encodage URL) :
 
 `http://<webmail>/src/view_header.php?mailbox=INBOX%22&passed_id=46105&passed_ent_id=0`
 
-In this case, the application answer may be:
+Dans ce cas, la réponse de l'application peut être :
 
 ```txt
 ERROR: Bad or malformed request.
@@ -102,28 +102,28 @@ Query: SELECT "INBOX""
 Server responded: Unexpected extra arguments to Select
 ```
 
-The situation S2 is harder to test successfully. The tester needs to use blind command injection in order to determine if the server is vulnerable.
+La situation S2 est plus difficile à tester avec succès. Le testeur doit utiliser l'injection de commande aveugle afin de déterminer si le serveur est vulnérable.
 
-On the other hand, the last situation (S3) is not relevant in this paragraph.
+En revanche, la dernière situation (S3) n'est pas pertinente dans ce paragraphe.
 
-> List of vulnerable parameters
+> Liste des paramètres vulnérables
 >
-> - Affected functionality
-> - Type of possible injection (IMAP/SMTP)
+> - Fonctionnalité affectée
+> - Type d'injection possible (IMAP/SMTP)
 
-### Understanding the Data Flow and Deployment Structure of the Client
+### Comprendre le flux de données et la structure de déploiement du client
 
-After identifying all vulnerable parameters (for example, `passed_id`), the tester needs to determine what level of injection is possible and then design a testing plan to further exploit the application.
+Après avoir identifié tous les paramètres vulnérables (par exemple, `passed_id`), le testeur doit déterminer quel niveau d'injection est possible, puis concevoir un plan de test pour exploiter davantage l'application.
 
-In this test case, we have detected that the application's `passed_id` parameter is vulnerable and is used in the following request:
+Dans ce cas de test, nous avons détecté que le paramètre `passed_id` de l'application est vulnérable et est utilisé dans la requête suivante :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX&passed_id=46225&startMessage=1`
 
-Using the following test case (providing an alphabetical value when a numerical value is required):
+En utilisant le cas de test suivant (fournissant une valeur alphabétique lorsqu'une valeur numérique est requise) :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX&passed_id=test&startMessage=1`
 
-will generate the following error message:
+générera le message d'erreur suivant :
 
 ```txt
 ERROR : Bad or malformed request.
@@ -131,46 +131,46 @@ Query: FETCH test:test BODY[HEADER]
 Server responded: Error in IMAP command received by server.
 ```
 
-In this example, the error message returned the name of the executed command and the corresponding parameters.
+Dans cet exemple, le message d'erreur renvoyait le nom de la commande exécutée et les paramètres correspondants.
 
-In other situations, the error message (`not controlled` by the application) contains the name of the executed command, but reading the suitable [RFC](#references) allows the tester to understand what other possible commands can be executed.
+Dans d'autres situations, le message d'erreur ('non contrôlé' par l'application) contient le nom de la commande exécutée, mais la lecture de la [RFC](#references) appropriée permet au testeur de comprendre quelles autres commandes possibles peuvent être exécutées.
 
-If the application does not return descriptive error messages, the tester needs to analyze the affected functionality to deduce all the possible commands (and parameters) associated with the above mentioned functionality. For example, if a vulnerable parameter has been detected in the create mailbox functionality, it is logical to assume that the affected IMAP command is `CREATE`. According to the RFC, the `CREATE` command accepts one parameter which specifies the name of the mailbox to create.
+Si l'application ne renvoie pas de messages d'erreur descriptifs, le testeur doit analyser la fonctionnalité affectée pour en déduire toutes les commandes (et paramètres) possibles associées à la fonctionnalité mentionnée ci-dessus. Par exemple, si un paramètre vulnérable a été détecté dans la fonctionnalité de création de boîte aux lettres, il est logique de supposer que la commande IMAP affectée est `CREATE`. Selon la RFC, la commande `CREATE` accepte un paramètre qui spécifie le nom de la boîte aux lettres à créer.
 
-> List of IMAP/SMTP commands affected
+> Liste des commandes IMAP/SMTP concernées
 >
-> - Type, value, and number of parameters expected by the affected IMAP/SMTP commands
+> - Type, valeur et nombre de paramètres attendus par les commandes IMAP/SMTP concernées
 
-### IMAP/SMTP Command Injection
+### Injection de commandes IMAP/SMTP
 
-Once the tester has identified vulnerable parameters and has analyzed the context in which they are executed, the next stage is exploiting the functionality.
+Une fois que le testeur a identifié les paramètres vulnérables et a analysé le contexte dans lequel ils sont exécutés, l'étape suivante consiste à exploiter la fonctionnalité.
 
-This stage has two possible outcomes:
+Cette étape a deux issues possibles :
 
-1. The injection is possible in an unauthenticated state: the affected functionality does not require the user to be authenticated. The injected (IMAP) commands available are limited to: `CAPABILITY`, `NOOP`, `AUTHENTICATE`, `LOGIN`, and `LOGOUT`.
-2. The injection is only possible in an authenticated state: the successful exploitation requires the user to be fully authenticated before testing can continue.
+1. L'injection est possible dans un état non authentifié : la fonctionnalité concernée ne nécessite pas l'authentification de l'utilisateur. Les commandes injectées (IMAP) disponibles sont limitées à : `CAPABILITY`, `NOOP`, `AUTHENTICATE`, `LOGIN` et `LOGOUT`.
+2. L'injection n'est possible que dans un état authentifié : l'exploitation réussie nécessite que l'utilisateur soit complètement authentifié avant que les tests puissent continuer.
 
-In any case, the typical structure of an IMAP/SMTP Injection is as follows:
+Dans tous les cas, la structure typique d'une injection IMAP/SMTP est la suivante :
 
-- Header: ending of the expected command;
-- Body: injection of the new command;
-- Footer: beginning of the expected command.
+- En-tête : fin de la commande attendue ;
+- Corps : injection de la nouvelle commande ;
+- Pied de page : début de la commande attendue.
 
-It is important to remember that, in order to execute an IMAP/SMTP command, the previous command must be terminated with the CRLF (`%0d%0a`) sequence.
+Il est important de se rappeler que, pour exécuter une commande IMAP/SMTP, la commande précédente doit se terminer par la séquence CRLF (`%0d%0a`).
 
-Let's suppose that in the [Identifying vulnerable parameters](#identifying-vulnerable-parameters) stage, the attacker detects that the parameter `message_id` in the following request is vulnerable:
+Supposons qu'à l'étape [Identification des paramètres vulnérables](#identifying-vulnerable-parameters), l'attaquant détecte que le paramètre `message_id` dans la requête suivante est vulnérable :
 
 `http://<webmail>/read_email.php?message_id=4791`
 
-Let's suppose also that the outcome of the analysis performed in the stage 2 ("Understanding the data flow and deployment structure of the client") has identified the command and arguments associated with this parameter as:
+Supposons également que le résultat de l'analyse effectuée à l'étape 2 ("Comprendre le flux de données et la structure de déploiement du client") a identifié la commande et les arguments associés à ce paramètre comme :
 
 `FETCH 4791 BODY[HEADER]`
 
-In this scenario, the IMAP injection structure would be:
+Dans ce scénario, la structure d'injection IMAP serait :
 
 `http://<webmail>/read_email.php?message_id=4791 BODY[HEADER]%0d%0aV100 CAPABILITY%0d%0aV101 FETCH 4791`
 
-Which would generate the following commands:
+Ce qui générerait les commandes suivantes :
 
 ```sql
 ???? FETCH 4791 BODY[HEADER]
@@ -186,14 +186,14 @@ Body   = %0d%0aV100 CAPABILITY%0d%0a
 Footer = V101 FETCH 4791
 ```
 
-> List of IMAP/SMTP commands affected
+> Liste des commandes IMAP/SMTP concernées
 >
-> - Arbitrary IMAP/SMTP command injection
+> - Injection arbitraire de commandes IMAP/SMTP
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
-- [RFC 0821 "Simple Mail Transfer Protocol"](https://tools.ietf.org/html/rfc821)
-- [RFC 3501 "Internet Message Access Protocol - Version 4rev1"](https://tools.ietf.org/html/rfc3501)
-- [Vicente Aguilera Díaz: "MX Injection: Capturing and Exploiting Hidden Mail Servers"](http://www.webappsec.org/projects/articles/121106.pdf)
+- [RFC 0821 "Protocole de transfert de courrier simple"](https://tools.ietf.org/html/rfc821)
+- [RFC 3501 "Protocole d'accès aux messages Internet - Version 4rev1"](https://tools.ietf.org/html/rfc3501)
+- [Vicente Aguilera Díaz : " Injection MX : Capturer et exploiter des serveurs de messagerie cachés"] (http://www.webappsec.org/projects/articles/121106.pdf)

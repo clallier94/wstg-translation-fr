@@ -1,59 +1,59 @@
-# Testing for SSI Injection
+# Test pour l'injection SSI
 
 |ID          |
 |------------|
 |WSTG-INPV-08|
 
-## Summary
+## Sommaire
 
-Web servers usually give developers the ability to add small pieces of dynamic code inside static HTML pages, without having to deal with full-fledged server-side or client-side languages. This feature is provided by [Server-Side Includes](https://owasp.org/www-community/attacks/Server-Side_Includes_%28SSI%29_Injection)(SSI).
+Les serveurs Web donnent généralement aux développeurs la possibilité d'ajouter de petits morceaux de code dynamique dans des pages HTML statiques, sans avoir à gérer des langages complets côté serveur ou côté client. Cette fonctionnalité est fournie par [Server-Side Include](https://owasp.org/www-community/attacks/Server-Side_Includes_%28SSI%29_Injection)(SSI).
 
-Server-Side Includes are directives that the web server parses before serving the page to the user. They represent an alternative to writing CGI programs or embedding code using server-side scripting languages, when there's only need to perform very simple tasks. Common SSI implementations provide directives (commands) to include external files, to set and print web server CGI environment variables, or to execute external CGI scripts or system commands.
+Les inclusions côté serveur sont des directives que le serveur Web analyse avant de servir la page à l'utilisateur. Ils représentent une alternative à l'écriture de programmes CGI ou à l'intégration de code à l'aide de langages de script côté serveur, lorsqu'il suffit d'effectuer des tâches très simples. Les implémentations SSI courantes fournissent des directives (commandes) pour inclure des fichiers externes, pour définir et imprimer des variables d'environnement CGI de serveur Web ou pour exécuter des scripts CGI externes ou des commandes système.
 
-SSI can lead to a Remote Command Execution (RCE), however most webservers have the `exec` directive disabled by default.
+SSI peut conduire à une exécution de commande à distance (RCE), mais la directive "exec" est désactivée par défaut sur la plupart des serveurs Web.
 
-This is a vulnerability very similar to a classical scripting language injection vulnerability. One mitigation is that the web server needs to be configured to allow SSI. On the other hand, SSI injection vulnerabilities are often simpler to exploit, since SSI directives are easy to understand and, at the same time, quite powerful, e.g., they can output the content of files and execute system commands.
+Il s'agit d'une vulnérabilité très similaire à une vulnérabilité d'injection de langage de script classique. Une atténuation est que le serveur Web doit être configuré pour autoriser SSI. D'autre part, les vulnérabilités d'injection SSI sont souvent plus simples à exploiter, car les directives SSI sont faciles à comprendre et, en même temps, assez puissantes, par exemple, elles peuvent afficher le contenu des fichiers et exécuter des commandes système.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify SSI injection points.
-- Assess the severity of the injection.
+- Identifier les points d'injection SSI.
+- Évaluer la sévérité de l'injection.
 
-## How to Test
+## Comment tester
 
-To test for exploitable SSI, inject SSI directives as user input. If SSI are enabled and user input validation has not been properly implemented, the server will execute the directive. This is very similar to a classical scripting language injection vulnerability in that it occurs when user input is not properly validated and sanitized.
+Pour tester les SSI exploitables, injectez des directives SSI en tant qu'entrée utilisateur. Si les SSI sont activés et que la validation des entrées utilisateur n'a pas été correctement implémentée, le serveur exécutera la directive. Ceci est très similaire à une vulnérabilité d'injection de langage de script classique en ce sens qu'elle se produit lorsque l'entrée de l'utilisateur n'est pas correctement validée et filtrée.
 
-First determine if the web server supports SSI directives. Often, the answer is yes, as SSI support is quite common. To determine if SSI directives are supported, discover the type of web server that the target is running using information gathering techniques (see [Fingerprint Web Server](../01-Information_Gathering/02-Fingerprint_Web_Server.md)). If you have access to the code, determine if SSI directives are used by searching through the webserver configuration files for specific keywords.
+Déterminez d'abord si le serveur Web prend en charge les directives SSI. Souvent, la réponse est oui, car le support SSI est assez courant. Pour déterminer si les directives SSI sont prises en charge, découvrez le type de serveur Web que la cible exécute à l'aide de techniques de collecte d'informations (voir [Fingerprint Web Server](../01-Information_Gathering/02-Fingerprint_Web_Server.md)). Si vous avez accès au code, déterminez si les directives SSI sont utilisées en recherchant dans les fichiers de configuration du serveur Web des mots-clés spécifiques.
 
-Another way of verifying that SSI directives are enabled is by checking for pages with the `.shtml` extension, which is associated with SSI directives. The use of the `.shtml` extension is not mandatory, so not having found any `.shtml` files doesn't necessarily mean that the target is not vulnerable to SSI injection attacks.
+Une autre façon de vérifier que les directives SSI sont activées consiste à vérifier les pages avec l'extension `.shtml`, qui est associée aux directives SSI. L'utilisation de l'extension `.shtml` n'est pas obligatoire, donc ne pas avoir trouvé de fichiers `.shtml` ne signifie pas nécessairement que la cible n'est pas vulnérable aux attaques par injection SSI.
 
-The next step is determining all the possible user input vectors and testing to see if the SSI injection is exploitable.
+L'étape suivante consiste à déterminer tous les vecteurs d'entrée utilisateur possibles et à tester pour voir si l'injection SSI est exploitable.
 
-First find all the pages where user input is allowed. Possible input vectors may also include headers and cookies. Determine how the input is stored and used, i.e if the input is returned as an error message or page element and if it was modified in some way. Access to the source code can help you to more easily determine where the input vectors are and how input is handled.
+Recherchez d'abord toutes les pages où la saisie de l'utilisateur est autorisée. Les vecteurs d'entrée possibles peuvent également inclure des en-têtes et des cookies. Déterminez comment l'entrée est stockée et utilisée, c'est-à-dire si l'entrée est renvoyée sous forme de message d'erreur ou d'élément de page et si elle a été modifiée d'une manière ou d'une autre. L'accès au code source peut vous aider à déterminer plus facilement où se trouvent les vecteurs d'entrée et comment l'entrée est gérée.
 
-Once you have a list of potential injection points, you may determine if the input is correctly validated. Ensure it is possible to inject characters used in SSI directives such as `<!#=/."->` and `[a-zA-Z0-9]`
+Une fois que vous avez une liste de points d'injection potentiels, vous pouvez déterminer si l'entrée est correctement validée. Assurez-vous qu'il est possible d'injecter des caractères utilisés dans les directives SSI telles que `<!#=/."->` et `[a-zA-Z0-9]`
 
-The below example returns the value of the variable. The [references](#references) section has helpful links with server-specific documentation to help you better assess a particular system.
+L'exemple ci-dessous renvoie la valeur de la variable. La section [references](#references) contient des liens utiles avec une documentation spécifique au serveur pour vous aider à mieux évaluer un système particulier.
 
 ```html
 <!--#echo var="VAR" -->
 ```
 
-When using the `include` directive, if the supplied file is a CGI script, this directive will include the output of the CGI script. This directive may also be used to include the content of a file or list files in a directory:
+Lors de l'utilisation de la directive `include`, si le fichier fourni est un script CGI, cette directive inclura la sortie du script CGI. Cette directive peut également être utilisée pour inclure le contenu d'un fichier ou lister les fichiers d'un répertoire :
 
 ```html
 <!--#include virtual="FILENAME" -->
 ```
 
-To return the output of a system command:
+Pour renvoyer la sortie d'une commande système :
 
 ```html
 <!--#exec cmd="OS_COMMAND" -->
 ```
 
-If the application is vulnerable, the directive is injected and it would be interpreted by the server the next time the page is served.
+Si l'application est vulnérable, la directive est injectée et elle sera interprétée par le serveur la prochaine fois que la page sera servie.
 
-The SSI directives can also be injected in the HTTP headers, if the web application is using that data to build a dynamically generated page:
+Les directives SSI peuvent également être injectées dans les en-têtes HTTP, si l'application Web utilise ces données pour créer une page générée dynamiquement :
 
 ```text
 GET / HTTP/1.1
@@ -62,19 +62,19 @@ Referer: <!--#exec cmd="/bin/ps ax"-->
 User-Agent: <!--#include virtual="/proc/version"-->
 ```
 
-## Tools
+## Outils
 
-- [Web Proxy Burp Suite](https://portswigger.net/burp/communitydownload)
+- [Suite Web Proxy Burp] (https://portswigger.net/burp/communitydownload)
 - [OWASP ZAP](https://www.zaproxy.org/)
-- [String searcher: grep](https://www.gnu.org/software/grep)
+- [Chercheur de chaîne : grep](https://www.gnu.org/software/grep)
 
-## References
+## Références
 
-- [Nginx SSI module](http://nginx.org/en/docs/http/ngx_http_ssi_module.html)
-- [Apache: Module mod_include](https://httpd.apache.org/docs/current/mod/mod_include.html)
-- [IIS: Server Side Includes directives](https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525185%28v=vs.90%29)
-- [Apache Tutorial: Introduction to Server Side Includes](https://httpd.apache.org/docs/current/howto/ssi.html)
-- [Apache: Security Tips for Server Configuration](https://httpd.apache.org/docs/current/misc/security_tips.html#ssi)
-- [SSI Injection instead of JavaScript Malware](https://jeremiahgrossman.blogspot.com/2006/08/ssi-injection-instead-of-javascript.html)
-- [IIS: Notes on Server-Side Includes (SSI) syntax](https://blogs.iis.net/robert_mcmurray/archive/2010/12/28/iis-notes-on-server-side-includes-ssi-syntax-kb-203064-revisited.aspx)
+- [Module Nginx SSI](http://nginx.org/en/docs/http/ngx_http_ssi_module.html)
+- [Apache : Module mod_include](https://httpd.apache.org/docs/current/mod/mod_include.html)
+- [IIS : directives côté serveur inclus](https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525185%28v=vs.90%29)
+- [Tutoriel Apache : Introduction aux ajouts côté serveur](https://httpd.apache.org/docs/current/howto/ssi.html)
+- [Apache : Conseils de sécurité pour la configuration du serveur] (https://httpd.apache.org/docs/current/misc/security_tips.html#ssi)
+- [Injection SSI au lieu de JavaScript Malware](https://jeremiahgrossman.blogspot.com/2006/08/ssi-injection-instead-of-javascript.html)
+- [IIS : Syntaxe des notes sur le côté serveur (SSI)] (https://blogs.iis.net/robert_mcmurray/archive/2010/12/28/iis-notes-on-server-side-includes-ssi-syntaxe-kb-203064-revisited.aspx)
 - [Header Based Exploitation](https://www.cgisecurity.com/papers/header-based-exploitation.txt)

@@ -1,30 +1,30 @@
-# Testing for Format String Injection
+# Test de l'injection de chaîne de format
 
 |ID          |
 |------------|
 |WSTG-INPV-13|
 
-## Summary
+## Sommaire
 
-A format string is a null-terminated character sequence that also contains conversion specifiers interpreted or converted at runtime. If server-side code [concatenates a user's input with a format string](https://www.netsparker.com/blog/web-security/string-concatenation-format-string-vulnerabilities/), an attacker can append additional conversion specifiers to cause a runtime error, information disclosure, or buffer overflow.
+Une chaîne de format est une séquence de caractères à terminaison nulle qui contient également des spécificateurs de conversion interprétés ou convertis au moment de l'exécution. Si le code côté serveur [concatène l'entrée d'un utilisateur avec une chaîne de format](https://www.netsparker.com/blog/web-security/string-concatenation-format-string-vulnerabilities/), un attaquant peut ajouter une conversion supplémentaire spécificateurs pour provoquer une erreur d'exécution, la divulgation d'informations ou un dépassement de mémoire tampon.
 
-The worst case for format strings vulnerabilities occur in languages that don't check arguments and also include a `%n` specifier that writes to memory. These functions, if exploited by an attacker modifying a format string, could cause [information disclosure and code execution](https://www.veracode.com/security/format-string):
+Le pire des cas pour les vulnérabilités des chaînes de format se produit dans les langages qui ne vérifient pas les arguments et incluent également un spécificateur `%n` qui écrit en mémoire. Ces fonctions, si elles sont exploitées par un attaquant modifiant une chaîne de format, pourraient entraîner [la divulgation d'informations et l'exécution de code](https://www.veracode.com/security/format-string) :
 
-- C and C++ [printf](https://en.cppreference.com/w/c/io/fprintf) and similar methods fprintf, sprintf, snprintf
-- Perl [printf](https://perldoc.perl.org/functions/printf.html) and sprintf
+- C et C++ [printf](https://en.cppreference.com/w/c/io/fprintf) et méthodes similaires fprintf, sprintf, snprintf
+- Perl [printf](https://perldoc.perl.org/functions/printf.html) et sprintf
 
-These format string functions cannot write to memory, but attackers can still cause information disclosure by changing format strings to output values the developers did not intend to send:
+Ces fonctions de chaîne de format ne peuvent pas écrire dans la mémoire, mais les attaquants peuvent toujours provoquer la divulgation d'informations en modifiant les chaînes de format en valeurs de sortie que les développeurs n'avaient pas l'intention d'envoyer :
 
-- Python 2.6 and 2.7 [str.format](https://docs.python.org/2/library/string.html) and Python 3 unicode [str.format](https://docs.python.org/3/library/stdtypes.html#str.format) can be modified by injecting strings that can point to [other variables](https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/) in memory
+- Python 2.6 et 2.7 [str.format](https://docs.python.org/2/library/string.html) et Python 3 unicode [str.format](https://docs.python.org/3 /library/stdtypes.html#str.format) peut être modifié en injectant des chaînes pouvant pointer vers [d'autres variables](https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/ ) en mémoire
 
-The following format string functions can cause runtime errors if the attacker adds conversion specifiers:
+Les fonctions de chaîne de format suivantes peuvent provoquer des erreurs d'exécution si l'attaquant ajoute des spécificateurs de conversion :
 
-- Java [String.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#format%28java.util.Locale%2Cjava.lang.String%2Cjava.lang.Object...%29) and [PrintStream.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintStream.html#format%2528java.util.Locale%252Cjava.lang.String%252Cjava.lang.Object...%2529)
+- Java [String.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#format%28java.util.Locale% 2Cjava.lang.String%2Cjava.lang.Object...%29) et [PrintStream.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/ java/io/PrintStream.html#format%2528java.util.Locale%252Cjava.lang.String%252Cjava.lang.Object...%2529)
 - PHP [printf](https://www.php.net/manual/es/function.printf.php)
 
-The code pattern that causes a format string vulnerability is a call to a string format function that contains unsanitized user input. The following example shows how a debug `printf` could make a program vulnerable:
+Le modèle de code qui provoque une vulnérabilité de chaîne de format est un appel à une fonction de format de chaîne qui contient une entrée utilisateur non filtrée. L'exemple suivant montre comment un "printf" de débogage peut rendre un programme vulnérable :
 
-The example in C:
+L'exemple en C :
 
 ```c
 char *userName = /* input from user controlled field */;
@@ -34,7 +34,7 @@ printf("DEBUG Current user: ");
 printf(userName);
 ```
 
-The example in Java:
+L'exemple en Java :
 
 ```java
 final String userName = /* input from user controlled field */;
@@ -44,57 +44,57 @@ System.out.printf("DEBUG Current user: ");
 System.out.printf(userName);
 ```
 
-In this particular example, if the attacker set their `userName` to have one or more conversion specifiers, there would be unwanted behavior. The C example would [print out memory contents](https://www.defcon.org/images/defcon-18/dc-18-presentations/Haas/DEFCON-18-Haas-Adv-Format-String-Attacks.pdf) if `userName` contained `%p%p%p%p%p`, and it can corrupt memory contents if there is a `%n` in the string. In the Java example, a `username` containing any specifier that needs an input (including `%x` or `%s`) would cause the program to crash with `IllegalFormatException`. Although the examples are still subject to other problems, the vulnerability can be fixed by printf arguments of `printf("DEBUG Current user: %s", userName)`.
+Dans cet exemple particulier, si l'attaquant définissait son `userName` pour avoir un ou plusieurs spécificateurs de conversion, il y aurait un comportement indésirable. L'exemple C [imprimerait le contenu de la mémoire] (https://www.defcon.org/images/defcon-18/dc-18-presentations/Haas/DEFCON-18-Haas-Adv-Format-String-Attacks.pdf ) si `userName` contenait `%p%p%p%p%p`, et il peut corrompre le contenu de la mémoire s'il y a un `%n` dans la chaîne. Dans l'exemple Java, un `username` contenant n'importe quel spécificateur nécessitant une entrée (y compris `%x` ou `%s`) entraînerait le plantage du programme avec `IllegalFormatException`. Bien que les exemples soient toujours sujets à d'autres problèmes, la vulnérabilité peut être corrigée par les arguments printf de `printf("DEBUG Current user: %s", userName)`.
 
-## Test Objectives
+## Objectifs des tests
 
-- Assess whether injecting format string conversion specifiers into user-controlled fields causes undesired behavior from the application.
+- Évaluer si l'injection de spécificateurs de conversion de chaîne de format dans des champs contrôlés par l'utilisateur provoque un comportement indésirable de l'application.
 
-## How to Test
+## Comment tester
 
-Tests include analysis of the code and injecting conversion specifiers as user input to the application under test.
+Les tests incluent l'analyse du code et l'injection de spécificateurs de conversion en tant qu'entrée utilisateur dans l'application testée.
 
-### Static Analysis
+### Analyse statique
 
-Static analysis tools can find format string vulnerabilities in either the code or in binaries. Examples of tools include:
+Les outils d'analyse statique peuvent trouver des vulnérabilités de chaîne de format dans le code ou dans les binaires. Voici des exemples d'outils :
 
-- C and C++: [Flawfinder](https://dwheeler.com/flawfinder/)
-- Java: FindSecurityBugs rule [FORMAT_STRING_MANIPULATION](https://find-sec-bugs.github.io/bugs.htm#FORMAT_STRING_MANIPULATION)
-- PHP: String formatter Analyzer in [phpsa](https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater)
+- C et C++ : [Flawfinder](https://dwheeler.com/flawfinder/)
+- Java : règle FindSecurityBugs [FORMAT_STRING_MANIPULATION](https://find-sec-bugs.github.io/bugs.htm#FORMAT_STRING_MANIPULATION)
+- PHP : Analyseur de formatage de chaînes dans [phpsa] (https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater)
 
-### Manual Code Inspection
+### Inspection manuelle des codes
 
-Static analysis may miss more subtle cases including format strings generated by complex code. To look for vulnerabilities manually in a codebase, a tester can look for all calls in the codebase that accept a format string and trace back to make sure untrusted input cannot change the format string.
+L'analyse statique peut manquer des cas plus subtils, notamment des chaînes de format générées par un code complexe. Pour rechercher manuellement des vulnérabilités dans une base de code, un testeur peut rechercher tous les appels dans la base de code qui acceptent une chaîne de format et retracer pour s'assurer que les entrées non fiables ne peuvent pas modifier la chaîne de format.
 
-### Conversion Specifier Injection
+### Injection du spécificateur de conversion
 
-Testers can check at the unit test or full system test level by sending conversion specifiers in any string input. [Fuzz](https://owasp.org/www-community/Fuzzing) the program using all of the conversion specifiers for all languages the system under test uses. See the [OWASP Format string attack](https://owasp.org/www-community/attacks/Format_string_attack) page for possible inputs to use. If the test fails, the program will crash or display an unexpected output. If the test passes, the attempt to send a conversion specifier should be blocked, or the string should go through the system with no issues as with any other valid input.
+Les testeurs peuvent vérifier au niveau du test unitaire ou du test système complet en envoyant des spécificateurs de conversion dans n'importe quelle entrée de chaîne. [Fuzz](https://owasp.org/www-community/Fuzzing) le programme utilisant tous les spécificateurs de conversion pour toutes les langues utilisées par le système testé. Consultez la page [Attaque de chaîne de format OWASP](https://owasp.org/www-community/attacks/Format_string_attack) pour les entrées possibles à utiliser. Si le test échoue, le programme plantera ou affichera une sortie inattendue. Si le test réussit, la tentative d'envoi d'un spécificateur de conversion doit être bloquée, ou la chaîne doit passer par le système sans problème comme avec toute autre entrée valide.
 
-The examples in the following subsections have a URL of this form:
+Les exemples dans les sous-sections suivantes ont une URL de cette forme :
 
 `https://vulnerable_host/userinfo?username=x`
 
-- The user-controlled value is `x` (for the `username` parameter).
+- La valeur contrôlée par l'utilisateur est `x` (pour le paramètre `username`).
 
-#### Manual Injection
+#### Injection manuelle
 
-Testers can perform a manual test using a web browser or other web API debugging tools. Browse to the web application or site such that the query has conversion specifiers. Note that most conversion specifiers need [encoding](https://tools.ietf.org/html/rfc3986#section-2.1) if sent inside a URL because they contain special characters including `%` and `{`. The test can introduce a string of specifiers `%s%s%s%n` by browsing with the following URL:
+Les testeurs peuvent effectuer un test manuel à l'aide d'un navigateur Web ou d'autres outils de débogage d'API Web. Accédez à l'application Web ou au site de sorte que la requête comporte des spécificateurs de conversion. Notez que la plupart des spécificateurs de conversion nécessitent [encoding](https://tools.ietf.org/html/rfc3986#section-2.1) s'ils sont envoyés dans une URL, car ils contiennent des caractères spéciaux, notamment `%` et `{`. Le test peut introduire une chaîne de spécificateurs `%s%s%s%n` en naviguant avec l'URL suivante :
 
 `https://vulnerable_host/userinfo?username=%25s%25s%25s%25n`
 
-If the web site is vulnerable, the browser or tool should receive an error, which may include a timeout or an HTTP return code 500.
+Si le site Web est vulnérable, le navigateur ou l'outil devrait recevoir une erreur, qui peut inclure un délai d'attente ou un code de retour HTTP 500.
 
-The Java code returns the error
+Le code Java renvoie l'erreur
 
 `java.util.MissingFormatArgumentException: Format specifier '%s'`
 
-Depending on the C implementation, the process may crash completely with `Segmentation Fault`.
+Selon l'implémentation C, le processus peut se bloquer complètement avec `Segmentation Fault`.
 
-#### Tool Assisted Fuzzing
+#### Fuzzing assisté par outil
 
-Fuzzing tools including [wfuzz](https://github.com/xmendez/wfuzz) can automate injection tests. For wfuzz, start with a text file (fuzz.txt in this example) with one input per line:
+Les outils de fuzzing, dont [wfuzz](https://github.com/xmendez/wfuzz), peuvent automatiser les tests d'injection. Pour wfuzz, commencez par un fichier texte (fuzz.txt dans cet exemple) avec une entrée par ligne :
 
-fuzz.txt:
+fuzz.txt :
 
 ```text
 alice
@@ -103,19 +103,19 @@ alice
 {event.__init__.__globals__[CONFIG][SECRET_KEY]}
 ```
 
-The `fuzz.txt` file contains the following:
+Le fichier `fuzz.txt` contient les éléments suivants :
 
-- A valid input `alice` to verify the application can process a normal input
-- Two strings with C-like conversion specifiers
-- One Python conversion specifier to attempt to read global variables
+- Une entrée valide "alice" pour vérifier que l'application peut traiter une entrée normale
+- Deux chaînes avec des spécificateurs de conversion de type C
+- Un spécificateur de conversion Python pour tenter de lire les variables globales
 
-To send the fuzzing input file to the web application under test, use the following command:
+Pour envoyer le fichier d'entrée de fuzzing à l'application Web testée, utilisez la commande suivante :
 
 `wfuzz -c -z file,fuzz.txt,urlencode https://vulnerable_host/userinfo?username=FUZZ`
 
-In the above call, the `urlencode` argument enables the appropriate escaping for the strings and `FUZZ` (with the capital letters) tells the tool where to introduce the inputs.
+Dans l'appel ci-dessus, l'argument `urlencode` active l'échappement approprié pour les chaînes et `FUZZ` (avec les lettres majuscules) indique à l'outil où introduire les entrées.
 
-An example output is as follows
+Un exemple de sortie est le suivant
 
 ```text
 ID           Response   Lines    Word     Chars       Payload
@@ -127,4 +127,4 @@ ID           Response   Lines    Word     Chars       Payload
 000000001:   200        0 L      1 W      5 Ch        "alice"
 ```
 
-The above result validates the application's weakness to the injection of C-like conversion specifiers `%s` and `%p`.
+Le résultat ci-dessus valide la faiblesse de l'application face à l'injection de spécificateurs de conversion de type C `%s` et `%p`.

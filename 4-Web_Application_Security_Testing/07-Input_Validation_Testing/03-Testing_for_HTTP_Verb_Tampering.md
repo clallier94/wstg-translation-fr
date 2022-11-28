@@ -1,7 +1,7 @@
-# Testing for HTTP Verb Tampering
+# Test de falsification de verbe HTTP
 
 |ID          |
 |------------|
 |WSTG-INPV-03|
 
-This content has been merged into: [Test HTTP Methods](../02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods.md)
+Ce contenu a été fusionné dans : [Test HTTP Methods](../02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods.md)
