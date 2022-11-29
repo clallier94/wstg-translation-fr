@@ -1,85 +1,85 @@
-# Testing for Padding Oracle
+# Test de rembourrage Oracle
 
 |ID          |
 |------------|
 |WSTG-CRYP-02|
 
-## Summary
+## Sommaire
 
-A padding oracle is a function of an application which decrypts encrypted data provided by the client, e.g. internal session state stored on the client, and leaks the state of the validity of the padding after decryption. The existence of a padding oracle allows an attacker to decrypt encrypted data and encrypt arbitrary data without knowledge of the key used for these cryptographic operations. This can lead to leakage of sensitive data or to privilege escalation vulnerabilities, if integrity of the encrypted data is assumed by the application.
+Un oracle de remplissage est une fonction d'une application qui décrypte les données cryptées fournies par le client, par ex. l'état de session interne stocké sur le client, et divulgue l'état de la validité du bourrage après déchiffrement. L'existence d'un oracle de remplissage permet à un attaquant de déchiffrer des données chiffrées et de chiffrer des données arbitraires sans connaître la clé utilisée pour ces opérations cryptographiques. Cela peut conduire à une fuite de données sensibles ou à des vulnérabilités d'escalade de privilèges, si l'intégrité des données chiffrées est assumée par l'application.
 
-Block ciphers encrypt data only in blocks of certain sizes. Block sizes used by common ciphers are 8 and 16 bytes. Data where the size doesn't match a multiple of the block size of the used cipher has to be padded in a specific manner so the decryptor is able to strip the padding. A commonly used padding scheme is PKCS#7. It fills the remaining bytes with the value of the padding length.
+Les chiffrements par blocs chiffrent les données uniquement dans des blocs de certaines tailles. Les tailles de bloc utilisées par les chiffrements courants sont de 8 et 16 octets. Les données dont la taille ne correspond pas à un multiple de la taille de bloc du chiffrement utilisé doivent être rembourrées d'une manière spécifique afin que le décrypteur puisse supprimer le remplissage. Un schéma de remplissage couramment utilisé est PKCS#7. Il remplit les octets restants avec la valeur de la longueur de remplissage.
 
-### Example 1
+### Exemple 1
 
-If the padding has the length of 5 bytes, the byte value `0x05` is repeated five times after the plain text.
+Si le remplissage a une longueur de 5 octets, la valeur d'octet « 0x05 » est répétée cinq fois après le texte brut.
 
-An error condition is present if the padding doesn't match the syntax of the used padding scheme. A padding oracle is present if an application leaks this specific padding error condition for encrypted data provided by the client. This can happen by exposing exceptions (e.g. `BadPaddingException` in Java) directly, by subtle differences in the responses sent to the client or by another side-channel like timing behavior.
+Une condition d'erreur est présente si le remplissage ne correspond pas à la syntaxe du schéma de remplissage utilisé. Un oracle de remplissage est présent si une application divulgue cette condition d'erreur de remplissage spécifique pour les données chiffrées fournies par le client. Cela peut se produire en exposant directement des exceptions (par exemple, `BadPaddingException` en Java), par des différences subtiles dans les réponses envoyées au client ou par un autre canal latéral comme le comportement de synchronisation.
 
-Certain modes of operation of cryptography allow bit-flipping attacks, where flipping of a bit in the cipher text causes that the bit is also flipped in the plain text. Flipping a bit in the n-th block of CBC encrypted data causes that the same bit in the (n+1)-th block is flipped in the decrypted data. The n-th block of the decrypted cipher text is garbaged by this manipulation.
+Certains modes de fonctionnement de la cryptographie permettent des attaques par retournement de bits, où le retournement d'un bit dans le texte chiffré fait que le bit est également retourné dans le texte en clair. Le basculement d'un bit dans le n-ième bloc de données cryptées CBC fait que le même bit dans le (n+1)-ième bloc est basculé dans les données décryptées. Le n-ième bloc du texte chiffré déchiffré est effacé par cette manipulation.
 
-The padding oracle attack enables an attacker to decrypt encrypted data without knowledge of the encryption key and used cipher by sending skillful manipulated cipher texts to the padding oracle and observing of the results returned by it. This causes loss of confidentiality of the encrypted data. E.g. in the case of session data stored on the client-side the attacker can gain information about the internal state and structure of the application.
+L'attaque oracle de remplissage permet à un attaquant de déchiffrer des données chiffrées sans connaître la clé de chiffrement et le chiffrement utilisé en envoyant des textes chiffrés habilement manipulés à l'oracle de remplissage et en observant les résultats renvoyés par celui-ci. Cela entraîne une perte de confidentialité des données cryptées. Par exemple. dans le cas de données de session stockées côté client, l'attaquant peut obtenir des informations sur l'état interne et la structure de l'application.
 
-A padding oracle attack also enables an attacker to encrypt arbitrary plain texts without knowledge of the used key and cipher. If the application assumes that integrity and authenticity of the decrypted data is given, an attacker could be able to manipulate internal session state and possibly gain higher privileges.
+Une attaque oracle de remplissage permet également à un attaquant de chiffrer des textes bruts arbitraires sans connaître la clé et le chiffrement utilisés. Si l'application suppose que l'intégrité et l'authenticité des données déchiffrées sont données, un attaquant pourrait être en mesure de manipuler l'état de la session interne et éventuellement d'obtenir des privilèges plus élevés.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify encrypted messages that rely on padding.
-- Attempt to break the padding of the encrypted messages and analyze the returned error messages for further analysis.
+- Identifiez les messages chiffrés qui reposent sur le remplissage.
+- Essayez de casser le rembourrage des messages chiffrés et analysez les messages d'erreur renvoyés pour une analyse plus approfondie.
 
-## How to Test
+## Comment tester
 
-### Black-Box Testing
+### Test de la boîte noire
 
-First the possible input points for padding oracles must be identified. Generally the following conditions must be met:
+Tout d'abord, les points d'entrée possibles pour les oracles de remplissage doivent être identifiés. En règle générale, les conditions suivantes doivent être remplies :
 
-1. The data is encrypted. Good candidates are values which appear to be random.
-2. A block cipher is used. The length of the decoded (Base64 is used often) cipher text is a multiple of common cipher block sizes like 8 or 16 bytes. Different cipher texts (e.g. gathered by different sessions or manipulation of session state) share a common divisor in the length.
+1. Les données sont cryptées. Les bons candidats sont des valeurs qui semblent aléatoires.
+2. Un chiffrement par blocs est utilisé. La longueur du texte chiffré décodé (Base64 est souvent utilisé) est un multiple des tailles de bloc de chiffrement courantes, comme 8 ou 16 octets. Différents textes chiffrés (par exemple, rassemblés par différentes sessions ou manipulation de l'état de la session) partagent un diviseur commun dans la longueur.
 
-#### Example 2
+#### Exemple 2
 
-`Dg6W8OiWMIdVokIDH15T/A==` results after Base64 decoding in `0e 0e 96 f0 e8 96 30 87 55 a2 42 03 1f 5e 53 fc`. This seems to be random and 16 byte long.
+`Dg6W8OiWMIdVokIDH15T/A==` donne après décodage Base64 `0e ??0e 96 f0 e8 96 30 87 55 a2 42 03 1f 5e 53 fc`. Cela semble être aléatoire et long de 16 octets.
 
-If such an input value candidate is identified, the behavior of the application to bit-wise tampering of the encrypted value should be verified. Normally this Base64 encoded value will include the initialization vector (IV) prepended to the cipher text. Given a plaintext *`p`* and a cipher with a block size *`n`*, the number of blocks will be *`b = ceil( length(b) / n)`*. The length of the encrypted string will be *`y=(b+1)*n`* due to the initialization vector. To verify the presence of the oracle, decode the string, flip the last bit of the second-to-last block *`b-1`* (the least significant bit of the byte at *`y-n-1`*), re-encode and send. Next, decode the original string, flip the last bit of the block *`b-2`* (the least significant bit of the byte at *`y-2*n-1`*), re-encode and send.
+Si un tel candidat de valeur d'entrée est identifié, le comportement de l'application à la falsification bit à bit de la valeur cryptée doit être vérifié. Normalement, cette valeur encodée en Base64 inclura le vecteur d'initialisation (IV) ajouté au texte chiffré. Étant donné un texte en clair *`p`* et un chiffrement avec une taille de bloc *`n`*, le nombre de blocs sera *`b = ceil( length(b) / n)`*. La longueur de la chaîne chiffrée sera *`y=(b+1)*n`* en raison du vecteur d'initialisation. Pour vérifier la présence de l'oracle, décodez la chaîne, retournez le dernier bit de l'avant-dernier bloc *`b-1`* (le bit le moins significatif de l'octet à *`y-n-1`*), re -encoder et envoyer. Ensuite, décodez la chaîne d'origine, retournez le dernier bit du bloc *`b-2`* (le bit le moins significatif de l'octet à *`y-2*n-1`*), réencodez et envoyez.
 
-If it is known that the encrypted string is a single block (the IV is stored on the server or the application is using a bad practice hardcoded IV), several bit flips must be performed in turn. An alternative approach could be to prepend a random block, and flip bits in order to make the last byte of the added block take all possible values (0 to 255).
+Si l'on sait que la chaîne cryptée est un bloc unique (l'IV est stocké sur le serveur ou l'application utilise une mauvaise pratique d'IV codée en dur), plusieurs retournements de bits doivent être effectués à tour de rôle. Une autre approche pourrait consister à ajouter un bloc aléatoire au début et à inverser les bits afin que le dernier octet du bloc ajouté prenne toutes les valeurs possibles (0 à 255).
 
-The tests and the base value should at least cause three different states while and after decryption:
+Les tests et la valeur de base doivent au moins provoquer trois états différents pendant et après le déchiffrement :
 
-- Cipher text gets decrypted, resulting data is correct.
-- Cipher text gets decrypted, resulting data is garbled and causes some exception or error handling in the application logic.
-- Cipher text decryption fails due to padding errors.
+- Le texte chiffré est déchiffré, les données résultantes sont correctes.
+- Le texte chiffré est déchiffré, les données résultantes sont brouillées et provoquent une gestion des exceptions ou des erreurs dans la logique de l'application.
+- Le déchiffrement du texte chiffré échoue en raison d'erreurs de remplissage.
 
-Compare the responses carefully. Search especially for exceptions and messages which state that something is wrong with the padding. If such messages appear, the application contains a padding oracle. If the three different states described above are observable implicitly (different error messages, timing side-channels), there is a high probability that there is a padding oracle present at this point. Try to perform the padding oracle attack to ensure this.
+Comparez soigneusement les réponses. Recherchez en particulier les exceptions et les messages qui indiquent que quelque chose ne va pas avec le rembourrage. Si de tels messages apparaissent, l'application contient un oracle de remplissage. Si les trois états différents décrits ci-dessus sont observables implicitement (différents messages d'erreur, canaux latéraux de synchronisation), il y a une forte probabilité qu'un oracle de remplissage soit présent à ce stade. Essayez d'effectuer l'attaque oracle de rembourrage pour vous en assurer.
 
-##### Example 3
+##### Exemple 3
 
-- ASP.NET throws `System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.` if padding of a decrypted cipher text is broken.
-- In Java a `javax.crypto.BadPaddingException` is thrown in this case.
-- Decryption errors or similar can be possible padding oracles.
+- ASP.NET lève `System.Security.Cryptography.CryptographicException: Padding is invalid and cannot be removed.` si le rembourrage d'un texte chiffré déchiffré est rompu.
+- En Java, une `javax.crypto.BadPaddingException` est lancée dans ce cas.
+- Des erreurs de déchiffrement ou similaires peuvent être des oracles de remplissage possibles.
 
-> A secure implementation will check for integrity and cause only two responses: `ok` and `failed`. There are no side channels which can be used to determine internal error states.
+> Une implémentation sécurisée vérifiera l'intégrité et ne provoquera que deux réponses : `ok` et `failed`. Il n'y a pas de canaux latéraux qui peuvent être utilisés pour déterminer les états d'erreur internes.
 
-### Gray-Box Testing
+### Test de la boîte grise
 
-Verify that all places where encrypted data from the client, that should only be known by the server, is decrypted. The following conditions should be met by such code:
+Vérifiez que tous les endroits où les données chiffrées du client, qui ne doivent être connues que du serveur, sont déchiffrées. Les conditions suivantes doivent être remplies par un tel code :
 
-1. The integrity of the cipher text should be verified by a secure mechanism, like HMAC or authenticated cipher operation modes like GCM or CCM.
-2. All error states while decryption and further processing are handled uniformly.
+1. L'intégrité du texte chiffré doit être vérifiée par un mécanisme sécurisé, comme HMAC ou des modes de fonctionnement chiffrés authentifiés comme GCM ou CCM.
+2. Tous les états d'erreur lors du déchiffrement et du traitement ultérieur sont traités de manière uniforme.
 
-### Example 4
+### Exemple 4
 
-[Visualization of the decryption process](https://erlend.oftedal.no/blog/poet/)
+[Visualisation du processus de décryptage](https://erlend.oftedal.no/blog/poet/)
 
-## Tools
+## Outils
 
 - [Bletchley](https://code.blindspotsecurity.com/trac/bletchley)
 - [PadBuster](https://github.com/GDSSecurity/PadBuster)
-- [Padding Oracle Exploitation Tool (POET)](http://netifera.com/research/)
+- [Outil d'exploitation d'Oracle de rembourrage (POET)] (http://netifera.com/research/)
 - [Poracle](https://github.com/iagox86/Poracle)
 - [python-paddingoracle](https://github.com/mwielgoszewski/python-paddingoracle)
 
-## References
+## Références
 
-- [Wikipedia - Padding Oracle Attack](https://en.wikipedia.org/wiki/Padding_oracle_attack)
+- [Wikipédia - Padding Oracle Attack](https://en.wikipedia.org/wiki/Padding_oracle_attack)
 - [Juliano Rizzo, Thai Duong, "Practical Padding Oracle Attacks"](https://www.usenix.org/event/woot10/tech/full_papers/Rizzo.pdf)

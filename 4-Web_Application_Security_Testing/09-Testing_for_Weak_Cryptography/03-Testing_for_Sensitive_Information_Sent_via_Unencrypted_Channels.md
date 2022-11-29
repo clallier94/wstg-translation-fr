@@ -1,47 +1,47 @@
-# Testing for Sensitive Information Sent via Unencrypted Channels
+# Test des informations sensibles envoyées via des canaux non cryptés
 
 |ID          |
 |------------|
 |WSTG-CRYP-03|
 
-## Summary
+## Sommaire
 
-Sensitive data must be protected when it is transmitted through the network. If data is transmitted over HTTPS or encrypted in another way the protection mechanism must not have limitations or vulnerabilities, as explained in the broader article [Testing for Weak Transport Layer Security](01-Testing_for_Weak_Transport_Layer_Security.md) and in other OWASP documentation:
+Les données sensibles doivent être protégées lorsqu'elles sont transmises sur le réseau. Si les données sont transmises via HTTPS ou cryptées d'une autre manière, le mécanisme de protection ne doit pas avoir de limitations ou de vulnérabilités, comme expliqué dans l'article plus large [Testing for Weak Transport Layer Security](01-Testing_for_Weak_Transport_Layer_Security.md) et dans d'autres documentations OWASP :
 
 - [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure).
-- [OWASP ASVS - Verification V9](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x17-V9-Communications.md).
-- [Transport Layer Protection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
+- [OWASP ASVS - Vérification V9](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x17-V9-Communications.md).
+- [Aide-mémoire sur la protection de la couche de transport] (https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
 
-As a rule of thumb if data must be protected when it is stored, this data must also be protected during transmission. Some examples for sensitive data are:
+En règle générale, si les données doivent être protégées lors de leur stockage, ces données doivent également être protégées lors de leur transmission. Voici quelques exemples de données sensibles :
 
-- Information used in authentication (e.g. Credentials, PINs, Session identifiers, Tokens, Cookies…)
-- Information protected by laws, regulations or specific organizational policy (e.g. Credit Cards, Customers data)
+- Informations utilisées pour l'authentification (par exemple, identifiants, codes PIN, identifiants de session, jetons, cookies…)
+- Informations protégées par des lois, des réglementations ou une politique organisationnelle spécifique (par exemple, cartes de crédit, données clients)
 
-If the application transmits sensitive information via unencrypted channels - e.g. HTTP - it is considered a security risk. Attackers can take over accounts by [sniffing network traffic](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack). Some examples are Basic authentication which sends authentication credentials in plain-text over HTTP, form based authentication credentials sent via HTTP, or plain-text transmission of any other information considered sensitive due to regulations, laws, organizational policy or application business logic.
+Si l'application transmet des informations sensibles via des canaux non cryptés - par ex. HTTP - il est considéré comme un risque pour la sécurité. Les attaquants peuvent prendre le contrôle des comptes en [reniflant le trafic réseau](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack). Quelques exemples sont l'authentification de base qui envoie des identifiants d'authentification en texte brut sur HTTP, des identifiants d'authentification basés sur un formulaire envoyés via HTTP ou la transmission en texte brut de toute autre information considérée comme sensible en raison de réglementations, de lois, de politiques organisationnelles ou de la logique métier de l'application.
 
-Examples for Personal Identifying Information (PII) are:
+Exemples d'informations d'identification personnelle (PII) :
 
-- Social security numbers
-- Bank account numbers
-- Passport information
-- Healthcare related information
-- Medical insurance information
-- Student information
-- Credit and debit card numbers
-- Driver's license and State ID information
+- Numéros de sécurité sociale
+- Numéros de compte bancaire
+- Informations sur le passeport
+- Informations liées à la santé
+- Informations sur l'assurance médicale
+- Informations étudiantes
+- Numéros de carte de crédit et de débit
+- Permis de conduire et informations d'identification d'État
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify sensitive information transmitted through the various channels.
-- Assess the privacy and security of the channels used.
+- Identifier les informations sensibles transmises par les différents canaux.
+- Évaluer la confidentialité et la sécurité des canaux utilisés.
 
-## How to Test
+## Comment tester
 
-Various types of information that must be protected, could be transmitted by the application in clear text. To check if this information is transmitted over HTTP instead of HTTPS, capture traffic between a client and web application server that needs credentials. For any message containing sensitive data, verify the exchange occurred using HTTPS. See more information about insecure transmission of credentials [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure) or [Transport Layer Protection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
+Divers types d'informations devant être protégées pourraient être transmises par l'application en clair. Pour vérifier si ces informations sont transmises via HTTP au lieu de HTTPS, capturez le trafic entre un client et un serveur d'applications Web nécessitant des informations d'identification. Pour tout message contenant des données sensibles, vérifiez que l'échange s'est produit à l'aide de HTTPS. Voir plus d'informations sur la transmission non sécurisée des identifiants [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure) ou [Transport Layer Protection Cheat Sheet] (https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
 
-### Example 1: Basic Authentication over HTTP
+### Exemple 1 : Authentification de base sur HTTP
 
-A typical example is the usage of Basic Authentication over HTTP. When using Basic Authentication, user credentials are encoded rather than encrypted, and are sent as HTTP headers. In the example below the tester uses [curl](https://curl.haxx.se/) to test for this issue. Note how the application uses Basic authentication, and HTTP rather than HTTPS.
+Un exemple typique est l'utilisation de l'authentification de base sur HTTP. Lors de l'utilisation de l'authentification de base, les informations d'identification de l'utilisateur sont codées plutôt que chiffrées et sont envoyées sous forme d'en-têtes HTTP. Dans l'exemple ci-dessous, le testeur utilise [curl](https://curl.haxx.se/) pour tester ce problème. Notez comment l'application utilise l'authentification de base et HTTP plutôt que HTTPS.
 
 ```bash
 $ curl -kis http://example.com/restricted/
@@ -56,9 +56,9 @@ Content-Type: text/html
 <body bgcolor=white> <h1>401 Authorization Required</h1>  Invalid login credentials!  </body></html>
 ```
 
-### Example 2: Form-Based Authentication Performed over HTTP
+### Exemple 2 : Authentification basée sur un formulaire effectuée sur HTTP
 
-Another typical example is authentication forms which transmit user authentication credentials over HTTP. In the example below one can see HTTP being used in the `action` attribute of the form. It is also possible to see this issue by examining the HTTP traffic with an interception proxy.
+Un autre exemple typique est celui des formulaires d'authentification qui transmettent les identifiants d'authentification de l'utilisateur via HTTP. Dans l'exemple ci-dessous, on peut voir HTTP utilisé dans l'attribut `action` du formulaire. Il est également possible de voir ce problème en examinant le trafic HTTP avec un proxy d'interception.
 
 ```html
 <form action="http://example.com/login">
@@ -68,9 +68,9 @@ Another typical example is authentication forms which transmit user authenticati
 </form>
 ```
 
-### Example 3: Cookie Containing Session ID Sent over HTTP
+### Exemple 3 : Cookie contenant l'ID de session envoyé via HTTP
 
-The Session ID Cookie must be transmitted over protected channels. If the cookie does not have the [secure flag](../06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md) set, it is permitted for the application to transmit it unencrypted. Note below the setting of the cookie is done without the Secure flag, and the entire log in process is performed in HTTP and not HTTPS.
+Le cookie d'identification de session doit être transmis sur des canaux protégés. Si le cookie n'a pas le [drapeau sécurisé](../06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md) défini, il est permis à l'application de le transmettre en clair. Notez ci-dessous que la configuration du cookie est effectuée sans l'indicateur Secure et que l'intégralité du processus de connexion est effectuée en HTTP et non en HTTPS.
 
 ```http
 https://secure.example.com/login
@@ -106,39 +106,39 @@ Content-Length: 730
 Date: Tue, 25 Dec 2013 00:00:00 GMT
 ```
 
-### Example 4: Password Reset, Change Password or Other Account Manipulation over HTTP
+### Exemple 4 : Réinitialisation du mot de passe, modification du mot de passe ou autre manipulation de compte via HTTP
 
-If the web application has features that allow a user to change an account or call a different service with credentials, verify all of those interactions use HTTPS. The interactions to test include the following:
+Si l'application Web dispose de fonctionnalités permettant à un utilisateur de modifier un compte ou d'appeler un service différent avec des informations d'identification, vérifiez que toutes ces interactions utilisent HTTPS. Les interactions à tester incluent les éléments suivants :
 
-- Forms that allow users to handle a forgotten password or other credentials
-- Forms that allow users to edit credentials
-- Forms that require the user to authenticate with another provider (for example, payment processing)
+- Formulaires permettant aux utilisateurs de gérer un mot de passe oublié ou d'autres informations d'identification
+- Formulaires permettant aux utilisateurs de modifier les informations d'identification
+- Formulaires qui demandent à l'utilisateur de s'authentifier auprès d'un autre fournisseur (par exemple, traitement des paiements)
 
-### Example 5: Testing Password Sensitive Information in Source Code or Logs
+### Exemple 5 : test des informations sensibles au mot de passe dans le code source ou les journaux
 
-Use one of the following techniques to search for sensitive information.
+Utilisez l'une des techniques suivantes pour rechercher des informations sensibles.
 
-Checking if password or encryption key is hardcoded in the source code or configuration files.
+Vérifier si le mot de passe ou la clé de cryptage est codé en dur dans le code source ou les fichiers de configuration.
 
 `grep -r –E "Pass | password | pwd |user | guest| admin | encry | key | decrypt | sharekey " ./PathToSearch/`
 
-Checking if logs or source code may contain phone number, email address, ID or any other PII. Change the regular expression based on the format of the PII.
+Vérifier si les journaux ou le code source peuvent contenir un numéro de téléphone, une adresse e-mail, un identifiant ou toute autre PII. Modifiez l'expression régulière en fonction du format des PII.
 
 `grep -r " {2\}[0-9]\{6\} "  ./PathToSearch/`
 
-## Remediation
+## Correction
 
-Use HTTPS for the whole web site and redirect any HTTP requests to HTTPS.
+Utilisez HTTPS pour l'ensemble du site Web et redirigez toutes les requêtes HTTP vers HTTPS.
 
-## Tools
+## Outils
 
 - [curl](https://curl.haxx.se/)
 - [grep](http://man7.org/linux/man-pages/man1/egrep.1.html)
 - [Wireshark](https://www.wireshark.org/)
 - [TCPDUMP](https://www.tcpdump.org/)
 
-## References
+## Références
 
-- [OWASP Insecure Transport](https://owasp.org/www-community/vulnerabilities/Insecure_Transport)
-- [OWASP HTTP Strict Transport Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html)
-- [Let's Encrypt](https://letsencrypt.org)
+- [Transport non sécurisé OWASP](https://owasp.org/www-community/vulnerabilities/Insecure_Transport)
+- [Aide-mémoire sur la sécurité du transport strict HTTP OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html)
+- [Encryptons] (https://letsencrypt.org)
