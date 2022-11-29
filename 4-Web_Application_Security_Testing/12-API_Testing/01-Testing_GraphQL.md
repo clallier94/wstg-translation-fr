@@ -1,38 +1,38 @@
-# Testing GraphQL
+# Tester GraphQL
 
 |ID          |
 |------------|
 |WSTG-APIT-01|
 
-## Summary
+## Sommaire
 
-GraphQL has become very popular in modern APIs. It provides simplicity and nested objects, which facilitate faster development. While every technology has advantages, it can also expose the application to new attack surfaces. The purpose of this scenario is to provide some common misconfigurations and attack vectors on applications that utilize GraphQL. Some vectors are unique to GraphQL (e.g. [Introspection Query](#introspection-queries)) and some are generic to APIs (e.g. [SQL injection](#sql-injection)).
+GraphQL est devenu très populaire dans les API modernes. Il offre une simplicité et des objets imbriqués, qui facilitent un développement plus rapide. Bien que chaque technologie présente des avantages, elle peut également exposer l'application à de nouvelles surfaces d'attaque. Le but de ce scénario est de fournir des erreurs de configuration et des vecteurs d'attaque courants sur les applications qui utilisent GraphQL. Certains vecteurs sont propres à GraphQL (par exemple [Introspection Query](#introspection-queries)) et certains sont génériques pour les API (par exemple [SQL injection](#sql-injection)).
 
-Examples in this section will be based on a vulnerable GraphQL application [poc-graphql](https://github.com/righettod/poc-graphql), which is run in a docker container that maps `localhost:8080/GraphQL` as the vulnerable GraphQL node.
+Les exemples de cette section seront basés sur une application GraphQL vulnérable [poc-graphql](https://github.com/righettod/poc-graphql), qui est exécutée dans un conteneur docker qui mappe `localhost:8080/GraphQL` comme le nœud GraphQL vulnérable.
 
-## Test Objectives
+## Objectifs des tests
 
-- Assess that a secure and production-ready configuration is deployed.
-- Validate all input fields against generic attacks.
-- Ensure that proper access controls are applied.
+- Évaluer qu'une configuration sécurisée et prête pour la production est déployée.
+- Validez tous les champs de saisie contre les attaques génériques.
+- S'assurer que les contrôles d'accès appropriés sont appliqués.
 
-## How to Test
+## Comment tester
 
-Testing GraphQL nodes is not very different than testing other API technologies. Consider the following steps:
+Le test des nœuds GraphQL n'est pas très différent du test d'autres technologies API. Considérez les étapes suivantes :
 
-### Introspection Queries
+### Requêtes d'introspection
 
-Introspection queries are the method by which GraphQL lets you ask what queries are supported, which data types are available, and many more details you will need when approaching a test of a GraphQL deployment.
+Les requêtes d'introspection sont la méthode par laquelle GraphQL vous permet de demander quelles requêtes sont prises en charge, quels types de données sont disponibles et bien d'autres détails dont vous aurez besoin à l'approche d'un test de déploiement GraphQL.
 
-The [GraphQL website describes Introspection](https://graphql.org/learn/introspection/):
+Le [site Web de GraphQL décrit l'introspection] (https://graphql.org/learn/introspection/) :
 
-> "It's often useful to ask a GraphQL schema for information about what queries it supports. GraphQL allows us to do so using the introspection system!"
+> "Il est souvent utile de demander à un schéma GraphQL des informations sur les requêtes qu'il prend en charge. GraphQL nous permet de le faire en utilisant le système d'introspection !"
 
-There are a couple of ways to extract this information and visualize the output, as follows.
+Il existe plusieurs façons d'extraire ces informations et de visualiser le résultat, comme suit.
 
-#### Using Native GraphQL Introspection
+#### Utilisation de l'introspection native GraphQL
 
-The most straightforward way is to send an HTTP request (using a personal proxy) with the following payload, taken from an article on [Medium](https://medium.com/@the.bilal.rizwan/graphql-common-vulnerabilities-how-to-exploit-them-464f9fdce696):
+Le moyen le plus simple consiste à envoyer une requête HTTP (à l'aide d'un proxy personnel) avec la charge utile suivante, tirée d'un article sur [Medium](https://medium.com/@the.bilal.rizwan/graphql-common-vulnerabilities-how-to-exploit-them-464f9fdce696):
 
 ```graphql
 query IntrospectionQuery {
@@ -133,9 +133,9 @@ fragment TypeRef on __Type {
 }
 ```
 
-The result will usually be very long (and hence has been shortened here), and it will contain the entire schema of the GraphQL deployment.
+Le résultat sera généralement très long (et a donc été raccourci ici), et il contiendra l'intégralité du schéma du déploiement de GraphQL.
 
-Response:
+Réponse :
 
 ```json
 {
@@ -192,57 +192,57 @@ Response:
 }
 ```
 
-A tool such as [GraphQL Voyager](https://apis.guru/graphql-voyager/) can be used to get a better understanding of the GraphQL endpoint:
+Un outil tel que [GraphQL Voyager](https://apis.guru/graphql-voyager/) peut être utilisé pour mieux comprendre le point de terminaison GraphQL :
 
 ![GraphQL Voyager](images/Voyager.png)\
-*Figure 12.1-1: GraphQL Voyager*
+*Figure 12.1-1 : GraphQL Voyager*
 
-This tool creates an Entity Relationship Diagram (ERD) representation of the GraphQL schema, allowing you to get a better look into the moving parts of the system you're testing. Extracting information from the drawing allows you to see you can query the Dog table for example. It also shows which properties a Dog has:
+Cet outil crée une représentation Entity Relationship Diagram (ERD) du schéma GraphQL, vous permettant de mieux voir les parties mobiles du système que vous testez. L'extraction des informations du dessin vous permet de voir que vous pouvez interroger la table Dog par exemple. Il montre également les propriétés d'un chien :
 
 - ID
-- name
-- veterinary (ID)
+- Nom
+- vétérinaire (ID)
 
-There is one downside to using this method: GraphQL Voyager does not display everything that can be done with GraphQL. For example, the mutations available are not listed in the drawing above. A better strategy would be to use both Voyager and one of the methods listed below.
+Il y a un inconvénient à utiliser cette méthode : GraphQL Voyager n'affiche pas tout ce qui peut être fait avec GraphQL. Par exemple, les mutations disponibles ne sont pas répertoriées dans le dessin ci-dessus. Une meilleure stratégie consisterait à utiliser à la fois Voyager et l'une des méthodes répertoriées ci-dessous.
 
-#### Using GraphiQL
+#### Utiliser GraphiQL
 
-[GraphiQL](https://github.com/graphql/graphiql) is a web-based IDE for GraphQL. It is part of the GraphQL project, and it is mainly used for debugging or development purposes. The best practice is to not allow users to access it on production deployments. If you are testing a staging environment, you might have access to it and can thus save some time when working with introspection queries (although you can, of course, use introspection in the GraphiQL interface).
+[GraphiQL](https://github.com/graphql/graphiql) est un IDE basé sur le Web pour GraphQL. Il fait partie du projet GraphQL et est principalement utilisé à des fins de débogage ou de développement. La meilleure pratique consiste à ne pas autoriser les utilisateurs à y accéder sur les déploiements de production. Si vous testez un environnement intermédiaire, vous pouvez y avoir accès et ainsi gagner du temps lorsque vous travaillez avec des requêtes d'introspection (bien que vous puissiez, bien sûr, utiliser l'introspection dans l'interface GraphiQL).
 
-GraphiQL has a documentation section, which uses the data from the schema in order to create a document of the GraphQL instance that is being used. This document contains the data types, mutations, and basically every piece of information that can be extracted using introspection.
+GraphiQL a une section de documentation, qui utilise les données du schéma afin de créer un document de l'instance GraphQL qui est utilisée. Ce document contient les types de données, les mutations et essentiellement toutes les informations pouvant être extraites à l'aide de l'introspection.
 
-#### Using GraphQL Playground
+#### Utilisation de GraphQL Playground
 
-[GraphQL Playground](https://github.com/graphql/graphql-playground) is a GraphQL client. It can be used to test different queries, as well as divide GraphQL IDEs into different playgrounds, and group them by theme or by assigning a name to them. Much like GraphiQL, Playground can create documentation for you without the need for manually sending introspection queries and processing the response(s). It has another great advantage: It doesn't need the GraphiQL interface to be available. You can direct the tool to the GraphQL node via a URL, or use it locally with a data file. GraphQL Playground can be used to test for vulnerabilities directly, so you don't need to use a personal proxy to send HTTP requests. This means you can use this tool for simple interaction with and assessment of GraphQL. For other more advanced payloads, use a personal proxy.
+[GraphQL Playground](https://github.com/graphql/graphql-playground) est un client GraphQL. Il peut être utilisé pour tester différentes requêtes, ainsi que pour diviser les IDE GraphQL en différents terrains de jeux et les regrouper par thème ou en leur attribuant un nom. Tout comme GraphiQL, Playground peut créer une documentation pour vous sans avoir besoin d'envoyer manuellement des requêtes d'introspection et de traiter la ou les réponses. Il a un autre grand avantage : il n'a pas besoin de l'interface GraphiQL pour être disponible. Vous pouvez diriger l'outil vers le nœud GraphQL via une URL ou l'utiliser localement avec un fichier de données. GraphQL Playground peut être utilisé pour tester directement les vulnérabilités, vous n'avez donc pas besoin d'utiliser un proxy personnel pour envoyer des requêtes HTTP. Cela signifie que vous pouvez utiliser cet outil pour une interaction simple avec et une évaluation de GraphQL. Pour d'autres charges utiles plus avancées, utilisez un proxy personnel.
 
-Note that in some cases, you will need to set the HTTP headers at the bottom, to include session ID or other mechanism of authentication. This still allows creating multiple "IDEs" with different permissions to verify if there are in fact authorization issues.
+Notez que dans certains cas, vous devrez définir les en-têtes HTTP en bas, pour inclure l'ID de session ou un autre mécanisme d'authentification. Cela permet toujours de créer plusieurs "IDE" avec différentes autorisations pour vérifier s'il y a effectivement des problèmes d'autorisation.
 
 ![Playground1](images/Playground1.png)\
-*Figure 12.1-2: GraphQL Playground High Level API Docs*
+*Figure 12.1-2 : Documentation de l'API de haut niveau de GraphQL Playground*
 
 ![Playground2](images/Playground2.png)\
-*Figure 12.1-3: GraphQL Playground API Schema*
+*Figure 12.1-3 : Schéma de l'API GraphQL Playground*
 
-You can even download the schemas to use in Voyager.
+Vous pouvez même télécharger les schémas à utiliser dans Voyager.
 
 #### Introspection Conclusion
 
-Introspection is a useful tool that allows users to gain more information about the GraphQL deployment. However, this will also allow malicious users to gain access to the same information. The best practice is to limit access to the introspection queries, since some tools or requests might fail if this feature is disabled altogether. As GraphQL usually bridges to the back end APIs of the system, it's better to enforce strict access control.
+L'introspection est un outil utile qui permet aux utilisateurs d'obtenir plus d'informations sur le déploiement de GraphQL. Cependant, cela permettra également aux utilisateurs malveillants d'accéder aux mêmes informations. La meilleure pratique consiste à limiter l'accès aux requêtes d'introspection, car certains outils ou requêtes peuvent échouer si cette fonctionnalité est complètement désactivée. Comme GraphQL relie généralement les API back-end du système, il est préférable d'appliquer un contrôle d'accès strict.
 
-### Authorization
+### Autorisation
 
-Introspection is the first place to look for authorization problems. As noted, access to introspection should be restricted as it allows for data extraction and data gathering. Once a tester has access to the schema and knowledge of the sensitive information there is to extract, they should then send queries that will not be blocked due to insufficient privileges. GraphQL does not enforce permissions by default, and so it is up to the application to perform authorization enforcement.
+L'introspection est le premier endroit où rechercher les problèmes d'autorisation. Comme indiqué, l'accès à l'introspection devrait être limité car il permet l'extraction et la collecte de données. Une fois qu'un testeur a accès au schéma et connaît les informations sensibles à extraire, il doit alors envoyer des requêtes qui ne seront pas bloquées en raison de privilèges insuffisants. GraphQL n'applique pas les autorisations par défaut, et c'est donc à l'application d'effectuer l'application des autorisations.
 
-In the earlier examples, the output of the introspection query shows there is a query called `auth`. This seems like a good place to extract sensitive information such as API tokens, passwords, etc.
+Dans les exemples précédents, la sortie de la requête d'introspection montre qu'il existe une requête appelée "auth". Cela semble être un bon endroit pour extraire des informations sensibles telles que des jetons d'API, des mots de passe, etc.
 
-![Auth GraphQL Query](images/auth1.png)\
-*Figure 12.1-4: GraphQL Auth Query API*
+![Requête d'authentification GraphQL](images/auth1.png)\
+*Figure 12.1-4 : API de requête d'authentification GraphQL*
 
-Testing the authorization implementation varies from deployment to deployment since each schema will have different sensitive information, and hence, different targets to focus on.
+Le test de l'implémentation de l'autorisation varie d'un déploiement à l'autre, car chaque schéma aura des informations sensibles différentes et, par conséquent, des cibles différentes sur lesquelles se concentrer.
 
-In this vulnerable example, every user (even unauthenticated) can gain access to the auth tokens of every veterinarian listed in the database. These tokens can be used to perform additional actions the schema allows, such as associating or disassociating a dog from any specified veterinarian using mutations, even if there is no matching auth token for the veterinarian in the request.
+Dans cet exemple vulnérable, chaque utilisateur (même non authentifié) peut accéder aux jetons d'authentification de chaque vétérinaire répertorié dans la base de données. Ces jetons peuvent être utilisés pour effectuer des actions supplémentaires autorisées par le schéma, telles que l'association ou la dissociation d'un chien de tout vétérinaire spécifié à l'aide de mutations, même s'il n'y a pas de jeton d'authentification correspondant pour le vétérinaire dans la demande.
 
-Here is an example in which the tester uses an extracted token they do not own to perform an action as the veterinarian "Benoit":
+Voici un exemple dans lequel le testeur utilise un jeton extrait qu'il ne possède pas pour effectuer une action en tant que vétérinaire "Benoit":
 
 ```graphql
 query brokenAccessControl {
@@ -254,7 +254,7 @@ query brokenAccessControl {
 }
 ```
 
-And the response:
+Et la réponse :
 
 ```json
 {
@@ -281,21 +281,21 @@ And the response:
 }
 ```
 
-All of the Dogs in the list belong to Benoit, and not to the auth token owner. It's possible to perform this type of action when proper authorization enforcement is not implemented.
+Tous les chiens de la liste appartiennent à Benoit, et non au propriétaire du jeton d'authentification. Il est possible d'effectuer ce type d'action lorsque l'application de l'autorisation appropriée n'est pas mise en œuvre.
 
 ### Injection
 
-GraphQL is the implementation of the API layer of an application, and as such, it usually forwards the requests to a back end API or the database directly. This allows you to utilize any underlying vulnerability such as SQL injection, command injection, cross-site scripting, etc. Using GraphQL just changes the entry point of the malicious payload.
+GraphQL est l'implémentation de la couche API d'une application, et en tant que telle, elle transmet généralement les requêtes à une API back-end ou directement à la base de données. Cela vous permet d'utiliser toute vulnérabilité sous-jacente telle que l'injection SQL, l'injection de commandes, les scripts intersites, etc. L'utilisation de GraphQL ne fait que modifier le point d'entrée de la charge utile malveillante.
 
-You can refer to other scenarios within the OWASP testing guide to get some ideas.
+Vous pouvez vous référer à d'autres scénarios dans le guide de test OWASP pour avoir des idées.
 
-GraphQL also has scalars, which are usually used for custom data types that do not have native data types, such as DateTime. These types of data do not have out-of-the-box validation, making them good candidates for testing.
+GraphQL a également des scalaires, qui sont généralement utilisés pour les types de données personnalisés qui n'ont pas de types de données natifs, tels que DateTime. Ces types de données n'ont pas de validation prête à l'emploi, ce qui en fait de bons candidats pour les tests.
 
-#### SQL Injection
+#### Injection SQL
 
-The example application is vulnerable by design in the query `dogs(namePrefix: String, limit: Int = 500): [Dog!]` since the parameter `namePrefix` is concatenated in the SQL query. Concatenating user input is a common malpractice of applications that can expose them to SQL injection.
+L'exemple d'application est vulnérable par conception dans la requête `dogs(namePrefix: String, limit: Int = 500): [Dog!]` car le paramètre `namePrefix` est concaténé dans la requête SQL. La concaténation des entrées utilisateur est une mauvaise pratique courante des applications qui peuvent les exposer à l'injection SQL.
 
-The following query extracts information from the `CONFIG` table within the database:
+La requête suivante extrait les informations de la table `CONFIG` de la base de données :
 
 ```graphql
 query sqli {
@@ -306,7 +306,7 @@ query sqli {
 }
 ```
 
-The response to this query is:
+La réponse à cette requête est :
 
 ```json
 {
@@ -333,17 +333,17 @@ The response to this query is:
 }
 ```
 
-The query contains the secret that signs JWTs in the example application, which is very sensitive information.
+La requête contient le secret qui signe les JWT dans l'exemple d'application, qui est une information très sensible.
 
-In order to know what to look for in any particular application, it will be helpful to collect information about how the application is built and how the database tables are organized. You can also use tools like `sqlmap` to look for injection paths and even automate the extraction of data from the database.
+Afin de savoir ce qu'il faut rechercher dans une application particulière, il sera utile de collecter des informations sur la manière dont l'application est construite et sur la manière dont les tables de la base de données sont organisées. Vous pouvez également utiliser des outils comme `sqlmap` pour rechercher des chemins d'injection et même automatiser l'extraction de données de la base de données.
 
-#### Cross-Site Scripting (XSS)
+#### Script intersite (XSS)
 
-Cross-site scripting occurs when an attacker injects executable code that is subsequently run by the browser. Learn about tests for XSS in the [Input Validation](../07-Input_Validation_Testing/README.md) chapter. You may test for reflected XSS using a payload from [Testing for Reflected Cross Site Scripting](../07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting.md).
+Les scripts intersites se produisent lorsqu'un attaquant injecte un code exécutable qui est ensuite exécuté par le navigateur. En savoir plus sur les tests pour XSS dans le chapitre [Input Validation](../07-Input_Validation_Testing/README.md). Vous pouvez tester le XSS reflété à l'aide d'une charge utile de [Testing for Reflected Cross Site Scripting](../07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting.md).
 
-In this example, errors might reflect the input and could cause XSS to occur.
+Dans cet exemple, les erreurs peuvent refléter l'entrée et entraîner l'apparition de XSS.
 
-Payload:
+Charge utile :
 
 ```graphql
 query xss  {
@@ -354,7 +354,7 @@ query xss  {
 }
 ```
 
-Response:
+Réponse :
 
 ```json
 {
@@ -382,13 +382,13 @@ Response:
 }
 ```
 
-### Denial of Service (DoS) Queries
+### Requêtes de déni de service (DoS)
 
-GraphQL exposes a very simple interface to allow developers to use nested queries and nested objects. This ability can also be used in a malicious way, by calling a deep nested query similar to a recursive function and causing a denial of service by using up CPU, memory, or other compute resources.
+GraphQL expose une interface très simple pour permettre aux développeurs d'utiliser des requêtes imbriquées et des objets imbriqués. Cette capacité peut également être utilisée de manière malveillante, en appelant une requête imbriquée profonde similaire à une fonction récursive et en provoquant un déni de service en utilisant le processeur, la mémoire ou d'autres ressources de calcul.
 
-Looking back at *Figure 12.1-1*, you can see that it is possible to create a loop where a Dog object contains a Veterinary object. There could be an endless amount of nested objects.
+En regardant *Figure 12.1-1*, vous pouvez voir qu'il est possible de créer une boucle où un objet Dog contient un objet Veterinary. Il pourrait y avoir une quantité infinie d'objets imbriqués.
 
-This allows for a deep query which has the potential to overload the application:
+Cela permet une requête approfondie qui a le potentiel de surcharger l'application :
 
 ```graphql
 query dos {
@@ -439,11 +439,11 @@ query dos {
 }
 ```
 
-There are multiple security measures that can be implemented to prevent these types of queries, listed in the [Remediation](#remediation) section. Abusive queries can cause issues like DoS for GraphQL deployments and should be included in testing.
+Plusieurs mesures de sécurité peuvent être mises en œuvre pour empêcher ces types de requêtes, répertoriées dans la section [Remediation](#remediation). Les requêtes abusives peuvent causer des problèmes tels que DoS pour les déploiements GraphQL et doivent être incluses dans les tests.
 
-### Batching Attacks
+### Attaques groupées
 
-GraphQL supports batching of multiple queries into a single request. This allows users to request multiple objects or multiple instances of objects efficiently. However, an attacker can utilize this functionality in order to perform a batching attack. Sending more than a single query in one request looks like the following:
+GraphQL prend en charge le regroupement de plusieurs requêtes en une seule requête. Cela permet aux utilisateurs de demander efficacement plusieurs objets ou plusieurs instances d'objets. Cependant, un attaquant peut utiliser cette fonctionnalité afin d'effectuer une attaque par lots. L'envoi de plusieurs requêtes dans une même requête ressemble à ceci :
 
 ```graphql
 [
@@ -462,7 +462,7 @@ GraphQL supports batching of multiple queries into a single request. This allows
 ]
 ```
 
-In the example application, a single request can be sent in order to extract all of the veterinary names using the guessable ID (it's an increasing integer). An attacker can then utilize the names in order to get access tokens. Instead of doing so in many requests, which might be blocked by a network security measure like a web application firewall or a rate limiter like Nginx, these requests may be batched. This means there would only be a couple of requests, which may allow for efficient brute forcing without being detected. Here is an example query:
+Dans l'exemple d'application, une seule requête peut être envoyée afin d'extraire tous les noms vétérinaires à l'aide de l'ID devinable (c'est un entier croissant). Un attaquant peut alors utiliser les noms afin d'obtenir des jetons d'accès. Au lieu de le faire dans de nombreuses requêtes, qui peuvent être bloquées par une mesure de sécurité réseau comme un pare-feu d'application Web ou un limiteur de débit comme Nginx, ces requêtes peuvent être regroupées. Cela signifie qu'il n'y aurait que quelques requêtes, ce qui peut permettre un forçage brutal efficace sans être détecté. Voici un exemple de requête :
 
 ```graphql
 query {
@@ -478,7 +478,7 @@ query {
 }
 ```
 
-This will provide the attacker with the names of the veterinaries and, as shown before, the names can be used to batch multiple queries requesting the auth tokens of those veterinaries. For example:
+Cela fournira à l'attaquant les noms des vétérinaires et, comme indiqué précédemment, les noms peuvent être utilisés pour regrouper plusieurs requêtes demandant les jetons d'authentification de ces vétérinaires. Par exemple :
 
 ```graphql
 query {
@@ -487,56 +487,56 @@ query {
 }
 ```
 
-Batching attacks can be used to bypass many security measures enforced on websites. It can also be used to enumerate objects and attempt to brute force multi-factor authentication or other sensitive information.
+Les attaques par lots peuvent être utilisées pour contourner de nombreuses mesures de sécurité appliquées sur les sites Web. Il peut également être utilisé pour énumérer des objets et tenter de forcer brutalement l'authentification multifacteur ou d'autres informations sensibles.
 
-### Detailed Error Message
+### Message d'erreur détaillé
 
-GraphQL can encounter unexpected errors during runtime. When such an error occurs, the server may send an error response that may reveal internal error details or application configurations or data. This allows a malicious user to acquire more information about the application. As part of testing, error messages should be checked by sending unexpected data, a process known as fuzzing. The responses should be searched for potentially sensitive information that may be revealed using this technique.
+GraphQL peut rencontrer des erreurs inattendues lors de l'exécution. Lorsqu'une telle erreur se produit, le serveur peut envoyer une réponse d'erreur qui peut révéler des détails d'erreur interne ou des configurations ou des données d'application. Cela permet à un utilisateur malveillant d'acquérir plus d'informations sur l'application. Dans le cadre des tests, les messages d'erreur doivent être vérifiés en envoyant des données inattendues, un processus connu sous le nom de fuzzing. Les réponses doivent être recherchées pour des informations potentiellement sensibles qui peuvent être révélées à l'aide de cette technique.
 
-### Exposure of Underlying API
+### Exposition de l'API sous-jacente
 
-GraphQL is a relatively new technology, and some applications are transitioning from old APIs to GraphQL. In many cases, GraphQL is deployed as a standard API which translates requests (sent using GraphQL syntax) to an underlying API, as well as the responses. If requests to the underlying API are not properly checked for authorization, it could lead to a possible escalation of privileges.
+GraphQL est une technologie relativement nouvelle, et certaines applications passent d'anciennes API à GraphQL. Dans de nombreux cas, GraphQL est déployé en tant qu'API standard qui traduit les requêtes (envoyées à l'aide de la syntaxe GraphQL) vers une API sous-jacente, ainsi que les réponses. Si les demandes adressées à l'API sous-jacente ne sont pas correctement vérifiées pour l'autorisation, cela pourrait entraîner une éventuelle élévation des privilèges.
 
-For example, a request containing the parameter `id=1/delete` might be interpreted as `/api/users/1/delete`. This could extend to the manipulation of other resources belonging to `user=1`. It is also possible that the request is interpreted to have the authorization given to the GraphQL node, instead of the true requester.
+Par exemple, une requête contenant le paramètre `id=1/delete` peut être interprétée comme `/api/users/1/delete`. Cela pourrait s'étendre à la manipulation d'autres ressources appartenant à `user=1`. Il est également possible que la demande soit interprétée comme ayant l'autorisation donnée au nœud GraphQL, au lieu du véritable demandeur.
 
-A tester should try and gain access to underlying API methods as it may be possible to escalate privileges.
+Un testeur doit essayer d'accéder aux méthodes API sous-jacentes car il peut être possible d'élever les privilèges.
 
-## Remediation
+## Correction
 
-- Restrict access to introspection queries.
-- Implement input validation.
-    - GraphQL does not have a native way to validate input, however, there is an open source project called ["graphql-constraint-directive"](https://github.com/confuser/graphql-constraint-directive) which allows for input validation as part of the schema definition.
-    - Input validation alone is helpful, but it is not a complete solution and additional measures should be taken to mitigate injection attacks.
-- Implement security measures to prevent abusive queries.
-    - Timeouts: restrict the amount of time that a query is permitted to run.
-    - Maximum query depth: limit the depth of allowed queries, which may prevent queries that are too deep from abusing resources.
-    - Set maximum query complexity: limit the complexity of queries to mitigate the abuse of GraphQL resources.
-    - Use server-time-based throttling: limit the amount of server time a user can consume.
-    - Use query-complexity-based throttling: limit the total complexity of queries a user can consume.
-- Send generic error messages: use generic error messages that do not reveal details of the deployment.
-- Mitigate batching attacks:
-    - Add object request rate limiting in code.
-    - Prevent batching for sensitive objects.
-    - Limit the number of queries that can run at one time.
+- Restreindre l'accès aux requêtes d'introspection.
+- Mettre en œuvre la validation des entrées.
+    - GraphQL n'a pas de moyen natif de valider les entrées, cependant, il existe un projet open source appelé ["graphql-constraint-directive"](https://github.com/confuser/graphql-constraint-directive) qui permet validation des entrées dans le cadre de la définition du schéma.
+    - La validation des entrées seule est utile, mais ce n'est pas une solution complète et des mesures supplémentaires doivent être prises pour atténuer les attaques par injection.
+- Mettre en place des mesures de sécurité pour éviter les requêtes abusives.
+    - Délais d'attente : restreignez la durée pendant laquelle une requête est autorisée à s'exécuter.
+    - Profondeur de requête maximale : limitez la profondeur des requêtes autorisées, ce qui peut empêcher les requêtes trop profondes d'abuser des ressources.
+    - Définir la complexité maximale des requêtes : limitez la complexité des requêtes pour atténuer l'abus des ressources GraphQL.
+    - Utilisez la limitation basée sur le temps du serveur : limitez la quantité de temps de serveur qu'un utilisateur peut consommer.
+    - Utilisez la limitation basée sur la complexité des requêtes : limitez la complexité totale des requêtes qu'un utilisateur peut consommer.
+- Envoyer des messages d'erreur génériques : utilisez des messages d'erreur génériques qui ne révèlent pas les détails du déploiement.
+- Atténuez les attaques par lots :
+    - Ajouter une limitation du taux de requête d'objet dans le code.
+    - Empêcher le regroupement d'objets sensibles.
+    - Limitez le nombre de requêtes pouvant être exécutées en même temps.
 
-For more on remediating GraphQL weaknesses, refer to the [GraphQL Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html).
+Pour en savoir plus sur la correction des faiblesses de GraphQL, reportez-vous à [GraphQL Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html).
 
-## Tools
+## Outils
 
-- [GraphQL Playground](https://github.com/prisma-labs/graphql-playground)
+- [Terrain de jeu GraphQL](https://github.com/prisma-labs/graphql-playground)
 - [GraphQL Voyager](https://apis.guru/graphql-voyager/)
 - [sqlmap](https://github.com/sqlmapproject/sqlmap)
-- [InQL (Burp Extension)](https://portswigger.net/bappstore/296e9a0730384be4b2fffef7b4e19b1f)
-- [GraphQL Raider (Burp Extension)](https://portswigger.net/bappstore/4841f0d78a554ca381c65b26d48207e6)
-- [GraphQL (Add-on for OWASP ZAP)](https://www.zaproxy.org/blog/2020-08-28-introducing-the-graphql-add-on-for-zap/)
+- [InQL (Burp Extension)] (https://portswigger.net/bappstore/296e9a0730384be4b2ffffef7b4e19b1f)
+- [GraphQL Raider (extension Burp)] (https://portswigger.net/bappstore/4841f0d78a554ca381c65b26d48207e6)
+- [GraphQL (Add-on pour OWASP ZAP)](https://www.zaproxy.org/blog/2020-08-28-introducing-the-graphql-add-on-for-zap/)
 
-## References
+## Références
 
 - [poc-graphql](https://github.com/righettod/poc-graphql)
-- [GraphQL Official Site](https://graphql.org/learn/)
-- [Howtographql - Security](https://www.howtographql.com/advanced/4-security/)
-- [GraphQL Constraint Directive](https://github.com/confuser/graphql-constraint-directive)
-- [Client-side Testing](../11-Client-side_Testing/README.md) (XSS and other vulnerabilities)
-- [5 Common GraphQL Security Vulnerabilities](https://carvesystems.com/news/the-5-most-common-graphql-security-vulnerabilities/)
-- [GraphQL common vulnerabilities and how to exploit them](https://medium.com/@the.bilal.rizwan/graphql-common-vulnerabilities-how-to-exploit-them-464f9fdce696)
+- [Site officiel de GraphQL](https://graphql.org/learn/)
+- [Howtographql - Sécurité](https://www.howtographql.com/advanced/4-security/)
+- [Directive de contrainte GraphQL] (https://github.com/confuser/graphql-constraint-directive)
+- [Test côté client](../11-Client-side_Testing/README.md) (XSS et autres vulnérabilités)
+- [5 vulnérabilités de sécurité courantes de GraphQL] (https://carvesystems.com/news/the-5-most-common-graphql-security-vulnerabilities/)
+- [Les vulnérabilités courantes de GraphQL et comment les exploiter](https://medium.com/@the.bilal.rizwan/graphql-common-vulnerabilities-how-to-exploit-them-464f9fdce696)
 - [GraphQL CS](https://cheatsheetseries.owasp.org/cheatsheets/GraphQL_Cheat_Sheet.html)
