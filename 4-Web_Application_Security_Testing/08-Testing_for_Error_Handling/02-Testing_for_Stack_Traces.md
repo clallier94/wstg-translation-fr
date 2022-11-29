@@ -1,7 +1,7 @@
-# Testing for Stack Traces
+# Test des traces de pile
 
 |ID          |
 |------------|
 |WSTG-ERRH-02|
 
-This content has been merged into: [Testing for Improper Error Handling](01-Testing_For_Improper_Error_Handling.md).
+Ce contenu a été fusionné dans : [Test de la gestion incorrecte des erreurs](01-Testing_For_Improper_Error_Handling.md).

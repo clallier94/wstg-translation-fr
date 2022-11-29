@@ -1,82 +1,82 @@
-# Testing for Improper Error Handling
+# Test de la gestion incorrecte des erreurs
 
 |ID          |
 |------------|
 |WSTG-ERRH-01|
 
-## Summary
+## Sommaire
 
-All types of applications (web apps, web servers, databases, etc.) will generate errors for various reasons. Developers often ignore handling these errors, or push away the idea that a user will ever try to trigger an error purposefully (*e.g.* sending a string where an integer is expected). When the developer only consider the happy path, they forget all other possible user-input the code can receive but can't handle.
+Tous les types d'applications (applications Web, serveurs Web, bases de données, etc.) généreront des erreurs pour diverses raisons. Les développeurs ignorent souvent la gestion de ces erreurs ou repoussent l'idée qu'un utilisateur essaiera un jour de déclencher une erreur à dessein (*par exemple* en envoyant une chaîne là où un entier est attendu). Lorsque le développeur ne considère que le chemin heureux, il oublie toutes les autres entrées utilisateur possibles que le code peut recevoir mais ne peut pas gérer.
 
-Errors sometimes rise as:
+Les erreurs augmentent parfois comme :
 
-- stack traces,
-- network timeouts,
-- input mismatch,
-- and memory dumps.
+- traces de pile,
+- les timeouts du réseau,
+- décalage d'entrée,
+- et les vidages mémoire.
 
-Improper error handling can allow attackers to:
+Une mauvaise gestion des erreurs peut permettre aux attaquants de :
 
-- Understand the APIs being used internally.
-- Map the various services integrating with each other by gaining insight on internal systems and frameworks used, which opens up doors to attack chaining.
-- Gather the versions and types of applications being used.
-- DoS the system by forcing the system into a deadlock or an unhandled exception that sends a panic signal to the engine running it.
-- Controls bypass where a certain exception is not restricted by the logic set around the happy path.
+- Comprendre les API utilisées en interne.
+- Cartographier les différents services s'intégrant les uns aux autres en obtenant un aperçu des systèmes internes et des cadres utilisés, ce qui ouvre la porte à l'enchaînement des attaques.
+- Recueillir les versions et les types d'applications utilisées.
+- DoS le système en forçant le système dans une impasse ou une exception non gérée qui envoie un signal de panique au moteur qui l'exécute.
+- Contrôle le contournement lorsqu'une certaine exception n'est pas limitée par la logique définie autour du chemin heureux.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify existing error output.
-- Analyze the different output returned.
+- Identifier la sortie d'erreur existante.
+- Analyser les différentes sorties retournées.
 
-## How to Test
+## Comment tester
 
-Errors are usually seen as benign as they provide diagnostics data and messages that could help the user understand the problem at hand, or for the developer to debug that error.
+Les erreurs sont généralement considérées comme bénignes car elles fournissent des données de diagnostic et des messages qui pourraient aider l'utilisateur à comprendre le problème en question ou permettre au développeur de déboguer cette erreur.
 
-By trying to send unexpected data, or forcing the system into certain edge cases and scenarios, the system or application will most of the times give out a bit on what's happening internally, unless the developers turned off all possible errors and return a certain custom message.
+En essayant d'envoyer des données inattendues ou en forçant le système dans certains cas et scénarios extrêmes, le système ou l'application dévoilera la plupart du temps un peu ce qui se passe en interne, à moins que les développeurs ne désactivent toutes les erreurs possibles et ne renvoient un certain message personnalisé. .
 
-### Web Servers
+### Serveurs Web
 
-All web apps run on a web server, whether it was an integrated one or a full fledged one. Web apps must handle and parse HTTP requests, and for that a web server is always part of the stack. Some of the most famous web servers are NGINX, Apache, and IIS.
+Toutes les applications Web s'exécutent sur un serveur Web, qu'il soit intégré ou à part entière. Les applications Web doivent gérer et analyser les requêtes HTTP, et pour cela, un serveur Web fait toujours partie de la pile. Certains des serveurs Web les plus connus sont NGINX, Apache et IIS.
 
-Web servers have known error messages and formats. If one is not familiar with how they look, searching online for them would provide examples. Another way would be to look into their documentation, or simply setup a server locally and discover the errors by going through the pages that the web server uses.
+Les serveurs Web ont des messages d'erreur et des formats connus. Si l'on n'est pas familier avec leur apparence, une recherche en ligne pour eux fournirait des exemples. Une autre façon serait de consulter leur documentation ou simplement de configurer un serveur localement et de découvrir les erreurs en parcourant les pages utilisées par le serveur Web.
 
-In order to trigger error messages, a tester must:
+Pour déclencher des messages d'erreur, un testeur doit :
 
-- Search for random files and folders that will not be found (404s).
-- Try to request folders that exist and see the server behavior (403s, blank page, or directory listing).
-- Try sending a request that breaks the [HTTP RFC](https://tools.ietf.org/html/rfc7231). One example would be to send a very large path, break the headers format, or change the HTTP version.
-    - Even if errors are handled on the application level, breaking the HTTP RFC may make the integrated web server show itself since it has to handle the request, and developers forget to override these errors.
+- Rechercher des fichiers et dossiers aléatoires qui ne seront pas trouvés (404s).
+- Essayez de demander des dossiers qui existent et voyez le comportement du serveur (403, page blanche ou liste de répertoires).
+- Essayez d'envoyer une requête qui rompt le [HTTP RFC](https://tools.ietf.org/html/rfc7231). Un exemple serait d'envoyer un très grand chemin, de casser le format des en-têtes ou de changer la version HTTP.
+    - Même si les erreurs sont gérées au niveau de l'application, la rupture de la RFC HTTP peut faire apparaître le serveur Web intégré puisqu'il doit gérer la requête, et les développeurs oublient de remplacer ces erreurs.
 
 ### Applications
 
-Applications are the most susceptible to let out a wide variety of error messages, which include: stack traces, memory dumps, mishandled exceptions, and generic errors. This happens due to the fact that applications are custom built most of the time and the developers need to observe and handle all possible error cases (or have a global error catching mechanism), and these errors can appear from integrations with other services.
+Les applications sont les plus susceptibles d'émettre une grande variété de messages d'erreur, notamment : des traces de pile, des vidages mémoire, des exceptions mal gérées et des erreurs génériques. Cela est dû au fait que les applications sont construites sur mesure la plupart du temps et que les développeurs doivent observer et gérer tous les cas d'erreur possibles (ou disposer d'un mécanisme global de capture d'erreurs), et ces erreurs peuvent apparaître à partir d'intégrations avec d'autres services.
 
-In order to make an application throw these errors, a tester must:
+Pour qu'une application génère ces erreurs, un testeur doit :
 
-1. Identify possible input points where the application is expecting data.
-2. Analyse the expected input type (strings, integers, JSON, XML, etc.).
-3. Fuzz every input point based on the previous steps to have a more focused test scenario.
-   - Fuzzing every input with all possible injections is not the best solution unless you have unlimited testing time and the application can handle that much input.
-   - If fuzzing isn't an option, handpick viable inputs that have the highest chance to break a certain parser (*e.g.* a closing bracket for a JSON body, a large text where only a couple of characters are expected, CLRF injection with parameters that might be parsed by servers and input validation controls, special characters that aren't applicable for file names, etc.).
-   - Fuzzing with jargon data should be ran for every type as sometimes the interpreters will break outside of the developer's exception handling.
-4. Understand the service responding with the error message and try to make a more refined fuzz list to bring out more information or error details from that service (it could be a database, a standalone service, etc.).
+1. Identifiez les points d'entrée possibles où l'application attend des données.
+2. Analysez le type d'entrée attendu (chaînes, entiers, JSON, XML, etc.).
+3. Fuzzez chaque point d'entrée en fonction des étapes précédentes pour avoir un scénario de test plus ciblé.
+   - Fuzzer chaque entrée avec toutes les injections possibles n'est pas la meilleure solution, sauf si vous disposez d'un temps de test illimité et que l'application peut gérer autant d'entrées.
+   - Si le fuzzing n'est pas une option, sélectionnez manuellement les entrées viables qui ont le plus de chances de casser un certain analyseur (*par exemple* un crochet fermant pour un corps JSON, un texte volumineux où seuls quelques caractères sont attendus, injection CLRF avec paramètres qui pourraient être analysés par les serveurs et les contrôles de validation d'entrée, les caractères spéciaux qui ne s'appliquent pas aux noms de fichiers, etc.).
+   - Le fuzzing avec des données de jargon doit être exécuté pour chaque type, car parfois les interpréteurs sortiront de la gestion des exceptions du développeur.
+4. Comprenez le service qui répond avec le message d'erreur et essayez de créer une liste fuzz plus précise pour faire ressortir plus d'informations ou de détails sur l'erreur de ce service (il peut s'agir d'une base de données, d'un service autonome, etc.).
 
-Error messages are sometimes the main weakness in mapping out systems, especially under a microservice architecture. If services are not properly set to handle errors in a generic and uniform manner, error messages would let a tester identify which service handles which requests, and allows for a more focused attack per service.
+Les messages d'erreur sont parfois la principale faiblesse de la cartographie des systèmes, en particulier sous une architecture de microservices. Si les services ne sont pas correctement configurés pour gérer les erreurs de manière générique et uniforme, les messages d'erreur permettent à un testeur d'identifier quel service gère quelles requêtes et permettent une attaque plus ciblée par service.
 
-> The tester needs to keep a vigilant eye for the response type. Sometimes errors are returned as success with an error body, hide the error in a 302, or simply by having a custom way of representing that error.
+> Le testeur doit garder un œil vigilant sur le type de réponse. Parfois, les erreurs sont renvoyées comme un succès avec un corps d'erreur, masquent l'erreur dans un 302 ou simplement en ayant une manière personnalisée de représenter cette erreur.
 
-## Remediation
+## Correction
 
-For remediation, check out the [Proactive Controls C10](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions) and the [Error Handling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).
+Pour remédier aux problèmes, consultez les [Contrôles proactifs C10](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions) et la [Fiche de triche pour la gestion des erreurs](https:/ /cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).
 
-## Playgrounds
+## Cours de récréation
 
-- [Juice Shop - Error Handling](https://pwning.owasp-juice.shop/part2/security-misconfiguration.html#provoke-an-error-that-is-neither-very-gracefully-nor-consistently-handled)
+- [Juice Shop - Gestion des erreurs](https://pwning.owasp-juice.shop/part2/security-misconfiguration.html#provoke-an-error-that-is-nither-very-gracefully-ni-consistently-handled )
 
-## References
+## Références
 
-- [WSTG: Appendix C - Fuzz Vectors](../../6-Appendix/C-Fuzz_Vectors.md)
-- [Proactive Controls C10: Handle All Errors and Exceptions](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions)
-- [ASVS v4.1 v7.4: Error handling](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x15-V7-Error-Logging.md#v74-error-handling)
-- [CWE 728 - Improper Error Handling](https://cwe.mitre.org/data/definitions/728.html)
-- [Cheat Sheet Series: Error Handling](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
+- [WSTG : Annexe C - Vecteurs Fuzz](../../6-Appendix/C-Fuzz_Vectors.md)
+- [Contrôles proactifs C10 : gérer toutes les erreurs et exceptions] (https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions)
+- [ASVS v4.1 v7.4 : gestion des erreurs](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x15-V7-Error-Logging.md#v74-error-handling)
+- [CWE 728 - Traitement incorrect des erreurs](https://cwe.mitre.org/data/definitions/728.html)
+- [Cheat Sheet Series : Gestion des erreurs] (https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
