@@ -1,76 +1,76 @@
-# Test Integrity Checks
+# Vérifications de l'intégrité des tests
 
 |ID          |
 |------------|
 |WSTG-BUSL-03|
 
-## Summary
+## Sommaire
 
-Many applications are designed to display different fields depending on the user of situation by leaving some inputs hidden. However, in many cases it is possible to submit values hidden field values to the server using a proxy. In these cases the server-side controls must be smart enough to perform relational or server-side edits to ensure that the proper data is allowed to the server based on user and application specific business logic.
+De nombreuses applications sont conçues pour afficher différents champs en fonction de l'utilisateur de la situation en laissant certaines entrées masquées. Cependant, dans de nombreux cas, il est possible de soumettre des valeurs de champs masqués au serveur à l'aide d'un proxy. Dans ces cas, les contrôles côté serveur doivent être suffisamment intelligents pour effectuer des modifications relationnelles ou côté serveur afin de garantir que les données appropriées sont autorisées sur le serveur en fonction de la logique métier spécifique à l'utilisateur et à l'application.
 
-Additionally, the application must not depend on non-editable controls, drop-down menus or hidden fields for business logic processing because these fields remain non-editable only in the context of the browsers. Users may be able to edit their values using proxy editor tools and try to manipulate business logic. If the application exposes values related to business rules like quantity, etc. as non-editable fields it must maintain a copy on the server-side and use the same for business logic processing. Finally, aside application/system data, log systems must be secured to prevent read, writing and updating.
+De plus, l'application ne doit pas dépendre de contrôles non modifiables, de menus déroulants ou de champs masqués pour le traitement de la logique métier car ces champs restent non modifiables uniquement dans le contexte des navigateurs. Les utilisateurs peuvent modifier leurs valeurs à l'aide d'outils d'édition de proxy et essayer de manipuler la logique métier. Si l'application expose des valeurs liées à des règles métier telles que la quantité, etc. en tant que champs non modifiables, elle doit en conserver une copie côté serveur et l'utiliser pour le traitement de la logique métier. Enfin, outre les données d'application/système, les systèmes de journalisation doivent être sécurisés pour empêcher la lecture, l'écriture et la mise à jour.
 
-Business logic integrity check vulnerabilities is unique in that these misuse cases are application specific and if users are able to make changes one should only be able to write or update/edit specific artifacts at specific times per the business process logic.
+Les vulnérabilités de vérification de l'intégrité de la logique métier sont uniques en ce sens que ces cas d'utilisation abusive sont spécifiques à l'application et si les utilisateurs sont en mesure d'apporter des modifications, ils ne devraient pouvoir écrire ou mettre à jour/modifier des artefacts spécifiques qu'à des moments précis selon la logique des processus métier.
 
-The application must be smart enough to check for relational edits and not allow users to submit information directly to the server that is not valid, trusted because it came from a non-editable controls or the user is not authorized to submit through the front end. Additionally, system artifacts such as logs must be "protected" from unauthorized read, writing and removal.
+L'application doit être suffisamment intelligente pour vérifier les modifications relationnelles et ne pas permettre aux utilisateurs de soumettre directement au serveur des informations qui ne sont pas valides, fiables car elles proviennent de contrôles non modifiables ou que l'utilisateur n'est pas autorisé à soumettre via le frontal. De plus, les artefacts système tels que les journaux doivent être « protégés » contre la lecture, l'écriture et la suppression non autorisées.
 
-### Example 1
+### Exemple 1
 
-Imagine an ASP.NET application GUI application that only allows the admin user to change the password for other users in the system. The admin user will see the username and password fields to enter a username and password while other users will not see either field. However, if a non admin user submits information in the username and password field through a proxy they may be able to "trick" the server into believing that the request has come from an admin user and change password of other users.
+Imaginez une application GUI d'application ASP.NET qui permet uniquement à l'utilisateur administrateur de modifier le mot de passe des autres utilisateurs du système. L'utilisateur admin verra les champs de nom d'utilisateur et de mot de passe pour entrer un nom d'utilisateur et un mot de passe tandis que les autres utilisateurs ne verront aucun champ. Cependant, si un utilisateur non administrateur soumet des informations dans le champ nom d'utilisateur et mot de passe via un proxy, il peut être en mesure de "tromper" le serveur en lui faisant croire que la demande provient d'un utilisateur administrateur et de changer le mot de passe des autres utilisateurs.
 
-### Example 2
+### Exemple 2
 
-Most web applications have dropdown lists making it easy for the user to quickly select their state, month of birth, etc. Suppose a Project Management application allowed users to login and depending on their privileges presented them with a drop down list of projects they have access to. What happens if an attacker finds the name of another project that they should not have access to and submits the information via a proxy. Will the application give access to the project? They should not have access even though they skipped an authorization business logic check.
+La plupart des applications Web ont des listes déroulantes permettant à l'utilisateur de sélectionner rapidement son état, son mois de naissance, etc. Supposons qu'une application de gestion de projet autorise les utilisateurs à se connecter et, en fonction de leurs privilèges, leur présente une liste déroulante des projets auxquels ils ont accès. à. Que se passe-t-il si un attaquant trouve le nom d'un autre projet auquel il ne devrait pas avoir accès et soumet les informations via un proxy. L'application donnera-t-elle accès au projet ? Ils ne devraient pas avoir accès même s'ils ont ignoré une vérification de logique métier d'autorisation.
 
-### Example 3
+### Exemple 3
 
-Suppose the motor vehicle administration system required an employee initially verify each citizens documentation and information when they issue an identification or driver's license. At this point the business process has created data with a high level of integrity as the integrity of submitted data is checked by the application. Now suppose the application is moved to the Internet so employees can log on for full service or citizens can log on for a reduced self-service application to update certain information. At this point an attacker may be able to use an intercepting proxy to add or update data that they should not have access to and they could destroy the integrity of the data by stating that the citizen was not married but supplying data for a spouse’s name. This type of inserting or updating of unverified data destroys the data integrity and might have been prevented if the business process logic was followed.
+Supposons que le système d'administration des véhicules à moteur exige qu'un employé vérifie initialement la documentation et les informations de chaque citoyen lorsqu'il délivre une pièce d'identité ou un permis de conduire. À ce stade, le processus métier a créé des données avec un haut niveau d'intégrité car l'intégrité des données soumises est vérifiée par l'application. Supposons maintenant que l'application soit déplacée vers Internet afin que les employés puissent se connecter pour un service complet ou que les citoyens puissent se connecter pour une application en libre-service réduite afin de mettre à jour certaines informations. À ce stade, un attaquant peut être en mesure d'utiliser un proxy d'interception pour ajouter ou mettre à jour des données auxquelles il ne devrait pas avoir accès et il pourrait détruire l'intégrité des données en déclarant que le citoyen n'était pas marié mais en fournissant des données pour le nom d'un conjoint. Ce type d'insertion ou de mise à jour de données non vérifiées détruit l'intégrité des données et aurait pu être empêché si la logique du processus métier avait été suivie.
 
-### Example 4
+### Exemple 4
 
-Many systems include logging for auditing and troubleshooting purposes. But, how good/valid is the information in these logs? Can they be manipulated by attackers either intentionally or accidentally having their integrity destroyed?
+De nombreux systèmes incluent la journalisation à des fins d'audit et de dépannage. Mais quelle est la qualité/la validité des informations contenues dans ces journaux ? Peuvent-ils être manipulés par des attaquants intentionnellement ou accidentellement dont l'intégrité est détruite ?
 
-## Test Objectives
+## Objectifs des tests
 
-- Review the project documentation for components of the system that move, store, or handle data.
-- Determine what type of data is logically acceptable by the component and what types the system should guard against.
-- Determine who should be allowed to modify or read that data in each component.
-- Attempt to insert, update, or delete data values used by each component that should not be allowed per the business logic workflow.
+- Examinez la documentation du projet pour les composants du système qui déplacent, stockent ou gèrent les données.
+- Déterminer quel type de données est logiquement acceptable par le composant et contre quels types le système doit se protéger.
+- Déterminez qui devrait être autorisé à modifier ou à lire ces données dans chaque composant.
+- Essayez d'insérer, de mettre à jour ou de supprimer des valeurs de données utilisées par chaque composant qui ne devraient pas être autorisées par le workflow de logique métier.
 
-## How to Test
+## Comment tester
 
-### Specific Testing Method 1
+### Méthode de test spécifique 1
 
-- Using a proxy capture HTTP traffic looking for hidden fields.
-- If a hidden field is found see how these fields compare with the GUI application and start interrogating this value through the proxy by submitting different data values trying to circumvent the business process and manipulate values you were not intended to have access to.
+- À l'aide d'un proxy, capturez le trafic HTTP à la recherche de champs cachés.
+- Si un champ masqué est trouvé, comparez ces champs avec l'application GUI et commencez à interroger cette valeur via le proxy en soumettant différentes valeurs de données en essayant de contourner le processus métier et de manipuler des valeurs auxquelles vous n'étiez pas censé avoir accès.
 
-### Specific Testing Method 2
+### Méthode de test spécifique 2
 
-- Using a proxy capture HTTP traffic looking for a place to insert information into areas of the application that are non-editable.
-- If it is found see how these fields compare with the GUI application and start interrogating this value through the proxy by submitting different data values trying to circumvent the business process and manipulate values you were not intended to have access to.
+- L'utilisation d'un proxy capture le trafic HTTP à la recherche d'un emplacement pour insérer des informations dans des zones de l'application qui ne sont pas modifiables.
+- S'il est trouvé, comparez ces champs avec l'application GUI et commencez à interroger cette valeur via le proxy en soumettant différentes valeurs de données en essayant de contourner le processus métier et de manipuler des valeurs auxquelles vous n'étiez pas censé avoir accès.
 
-### Specific Testing Method 3
+### Méthode de test spécifique 3
 
-- List components of the application or system that could be impacted, for example logs or databases.
-- For each component identified, try to read, edit or remove its information. For example log files should be identified and Testers should try to manipulate the data/information being collected.
+- Répertoriez les composants de l'application ou du système qui pourraient être impactés, par exemple les journaux ou les bases de données.
+- Pour chaque composant identifié, essayez de lire, modifier ou supprimer ses informations. Par exemple, les fichiers journaux doivent être identifiés et les testeurs doivent essayer de manipuler les données/informations collectées.
 
-## Related Test Cases
+## Cas de test associés
 
-All [Input Validation](../07-Input_Validation_Testing/README.md) test cases.
+Tous les cas de test [Input Validation](../07-Input_Validation_Testing/README.md).
 
-## Remediation
+## Correction
 
-The application should follow strict access controls on how data and artifacts can be modified and read, and through trusted channels that ensure the integrity of the data. Proper logging should be set in place to review and ensure that no unauthorized access or modification is happening.
+L'application doit suivre des contrôles d'accès stricts sur la façon dont les données et les artefacts peuvent être modifiés et lus, et via des canaux de confiance qui garantissent l'intégrité des données. Une journalisation appropriée doit être mise en place pour examiner et s'assurer qu'aucun accès ou modification non autorisé ne se produit.
 
-## Tools
+## Outils
 
-- Various system/application tools such as editors and file manipulation tools.
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org)
-- [Burp Suite](https://portswigger.net/burp)
+- Divers outils système/applicatifs tels que des éditeurs et des outils de manipulation de fichiers.
+- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
+- [Burp Suite] (https://portswigger.net/burp)
 
-## References
+## Références
 
-- [Implementing Referential Integrity and Shared Business Logic in a RDB](http://www.agiledata.org/essays/referentialIntegrity.html)
-- [On Rules and Integrity Constraints in Database Systems](https://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf)
-- [Use referential integrity to enforce basic business rules in Oracle](https://www.techrepublic.com/article/use-referential-integrity-to-enforce-basic-business-rules-in-oracle/)
-- [Maximizing Business Logic Reuse with Reactive Logic](https://dzone.com/articles/maximizing-business-logic)
+- [Mise en œuvre de l'intégrité référentielle et de la logique métier partagée dans une RDB] (http://www.agiledata.org/essays/referentialIntegrity.html)
+- [Sur les règles et les contraintes d'intégrité dans les systèmes de bases de données] (https://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf)
+- [Utiliser l'intégrité référentielle pour appliquer les règles métier de base dans Oracle](https://www.techrepublic.com/article/use-referential-integrity-to-enforce-basic-business-rules-in-oracle/)
+- [Optimiser la réutilisation de la logique métier avec la logique réactive](https://dzone.com/articles/maximizing-business-logic)

@@ -1,60 +1,60 @@
-# Test Payment Functionality
+# Tester la fonctionnalité de paiement
 
 |ID          |
 |------------|
 |WSTG-BUSL-10|
 
-## Summary
+## Sommaire
 
-Many applications implement payment functionality, including e-commerce sites, subscriptions, charities, donation sites and currency exchanges. The security of this functionality is critical, as vulnerabilities could allow attackers to steal from the organization, make fraudulent purchases, or even to steal payment card details from other users. These issue could result in not only reputational damage to the organization, but also significant financial losses, both from direct losses and fines from industry regulators.
+De nombreuses applications implémentent des fonctionnalités de paiement, notamment des sites de commerce électronique, des abonnements, des organisations caritatives, des sites de dons et des bureaux de change. La sécurité de cette fonctionnalité est essentielle, car des vulnérabilités pourraient permettre à des attaquants de voler l'organisation, de faire des achats frauduleux ou même de voler les détails de la carte de paiement d'autres utilisateurs. Ces problèmes pourraient entraîner non seulement des dommages à la réputation de l'organisation, mais également des pertes financières importantes, à la fois des pertes directes et des amendes des régulateurs de l'industrie.
 
-## Test Objectives
+## Objectifs des tests
 
-- Determine whether the business logic for the e-commerce functionality is robust.
-- Understand how the payment functionality works.
-- Determine whether the payment functionality is secure.
+- Déterminer si la logique métier de la fonctionnalité de commerce électronique est robuste.
+- Comprendre le fonctionnement de la fonctionnalité de paiement.
+- Déterminer si la fonctionnalité de paiement est sécurisée.
 
-## How to Test
+## Comment tester
 
-### Payment Gateway Integration Methods
+### Méthodes d'intégration de la passerelle de paiement
 
-There are several different ways that applications can integrate payment functionality, and the testing approach will vary depending on which one is used. The most common methods are:
+Les applications peuvent intégrer la fonctionnalité de paiement de différentes manières, et l'approche de test variera en fonction de celle qui est utilisée. Les méthodes les plus courantes sont :
 
-- Redirecting the user to a third-party payment gateway.
-- Loading a third-party payment gateway in an IFRAME on the application.
-- Having a HTML form that makes a cross-domain POST request to a third-party payment gateway.
-- Accepting the card details directly, and then making a POST from the application backend to the payment gateway's API.
+- Rediriger l'utilisateur vers une passerelle de paiement tierce.
+- Chargement d'une passerelle de paiement tiers dans un IFRAME sur l'application.
+- Disposer d'un formulaire HTML qui effectue une requête POST inter-domaines vers une passerelle de paiement tierce.
+- Accepter directement les détails de la carte, puis effectuer un POST depuis le backend de l'application vers l'API de la passerelle de paiement.
 
-### PCI DSS
+### PCI DSS
 
-The Payment Card Industry Data Security Standard (PCI DSS) is a standard that organizations are required to follow in order process debit and card payments (although it's important to note that it is not a law). A full discussion of this standard is outside of the scope of this guide (and of most penetration tests) - but it's useful for testers to understand a few key points.
+La norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS) est une norme que les organisations sont tenues de suivre pour traiter les paiements par débit et par carte (bien qu'il soit important de noter qu'il ne s'agit pas d'une loi). Une discussion complète de cette norme sort du cadre de ce guide (et de la plupart des tests de pénétration) - mais il est utile pour les testeurs de comprendre quelques points clés.
 
-The most common misconception about PCI DSS is that it only applies to systems that store cardholder data (i.e, debit or credit card details). This is incorrect: it applies to any system that "stores, processes or transmits" this information. Exactly which requirements need to be followed depends on how which of the payment gateway integration methods are used. The [Visa Processing E-Commerce Payments guidance](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf) provides further details on this, but as a brief summary:
+L'idée fausse la plus courante concernant la norme PCI DSS est qu'elle ne s'applique qu'aux systèmes qui stockent les données des titulaires de cartes (c'est-à-dire les détails des cartes de débit ou de crédit). Ceci est incorrect : cela s'applique à tout système qui "stocke, traite ou transmet" ces informations. Les exigences exactes à respecter dépendent de la manière dont les méthodes d'intégration de la passerelle de paiement sont utilisées. Les [Conseils sur le traitement des paiements de commerce électronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337 .pdf) fournit plus de détails à ce sujet, mais sous forme de bref résumé :
 
-| Integration Method | Self Assessment Questionnaire (SAQ) |
-|--------------------|-------------------------------------|
+| Méthode d'intégration | Questionnaire d'auto-évaluation (SAQ) |
+|--------------------|------------------------------------------|
 | Redirect | [SAQ A](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-A.pdf) |
 | IFRAME | [SAQ A](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-A.pdf) |
 | Cross-domain POST | [SAQ A-EP](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2-SAQ-A_EP-rev1_1.pdf) |
 | Backend API | [SAQ D](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-D_Merchant.pdf) |
 
-As well as the differences in the attack surface and risk profile of each approach, there is also a significant difference in the number of requirements between SAQ A (22 requirements) and SAQ D (329 requirements) that the organization needs to meet. As such, it's worth highlighting applications that are not using an redirect or IFRAME, as they are represent increased technical and compliance risks.
+Outre les différences dans la surface d'attaque et le profil de risque de chaque approche, il existe également une différence significative dans le nombre d'exigences entre SAQ A (22 exigences) et SAQ D (329 exigences) que l'organisation doit respecter. En tant que tel, il convient de mettre en évidence les applications qui n'utilisent pas de redirection ou d'IFRAME, car elles représentent des risques techniques et de conformité accrus.
 
-### Quantity Tampering
+### Modification de la quantité
 
-Most e-commerce websites allow users to add items to a basket before they start the checkout process. This basket should keep track of which items that have been added, and the quantity of each item. The quantity should normally be a positive integer, but if the website does not properly validate this then it may be possible to specify a decimal quantity of an item (such as `0.1`), or a negative quantity (such as `-1`). Depending on the backend processing, adding negative quantities of an item may result in a negative value, reducing the overall cost of the basket.
+La plupart des sites de commerce électronique permettent aux utilisateurs d'ajouter des articles à un panier avant de commencer le processus de paiement. Ce panier doit garder une trace des articles qui ont été ajoutés et de la quantité de chaque article. La quantité doit normalement être un nombre entier positif, mais si le site Web ne le valide pas correctement, il peut être possible de spécifier une quantité décimale d'un article (telle que "0,1") ou une quantité négative (telle que "-1" ). Selon le traitement backend, l'ajout de quantités négatives d'un article peut entraîner une valeur négative, ce qui réduit le coût global du panier.
 
-There are usually multiple ways to modify the contents of the basket that should be tested, such as:
+Il existe généralement plusieurs manières de modifier le contenu du panier qui doit être testé, telles que :
 
-- Adding a negative quantity of an item.
-- Repeatedly removing items until the quantity is negative.
-- Updating the quantity to a negative value.
+- Ajout d'une quantité négative d'un article.
+- Suppression répétée d'articles jusqu'à ce que la quantité soit négative.
+- Mise à jour de la quantité à une valeur négative.
 
-Some sites may also provide a drop-down menu of valid quantities (such as items that must be bought in packs of 10), and it may be possible to tamper these requests to add other quantities of items.
+Certains sites peuvent également fournir un menu déroulant de quantités valides (comme les articles qui doivent être achetés par pack de 10), et il peut être possible de falsifier ces demandes pour ajouter d'autres quantités d'articles.
 
-If the full basket details are passed to the payment gateway (rather than simply passing a total value), it may also be possible to tamper the values at that stage.
+Si les détails complets du panier sont transmis à la passerelle de paiement (plutôt que de simplement transmettre une valeur totale), il peut également être possible de falsifier les valeurs à ce stade.
 
-Finally, if the application is vulnerable to [HTTP parameter pollution](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md) then it may be possible to cause unexpected behavior by passing a parameter multiple times, such as:
+Enfin, si l'application est vulnérable à la [pollution des paramètres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md), il peut être possible de provoquer un comportement inattendu en passant plusieurs fois un paramètre, par exemple :
 
 ```http
 POST /api/basket/add
@@ -63,11 +63,11 @@ Host: example.org
 item_id=1&quantity=5&quantity=4
 ```
 
-### Price Tampering
+### Falsification des prix
 
-#### On the Application
+#### Sur la demande
 
-When adding an item to the basket, the application should only include the item and a quantity, such as the example request below:
+Lors de l'ajout d'un article au panier, l'application ne doit inclure que l'article et une quantité, comme dans l'exemple de demande ci-dessous :
 
 ```http
 POST /api/basket/add HTTP/1.1
@@ -76,7 +76,7 @@ Host: example.org
 item_id=1&quantity=5
 ```
 
-However, in some cases the application may also include the price, meaning that it may be possible to tamper it:
+Cependant, dans certains cas, l'application peut également inclure le prix, ce qui signifie qu'il peut être possible de le falsifier :
 
 ```http
 POST /api/basket/add HTTP/1.1
@@ -85,15 +85,15 @@ Host: example.org
 item_id=1&quantity=5&price=2.00
 ```
 
-Different types of items may have different validation rules, so each type needs to be separately tested. Some applications also allow users to add an optional donation to charity as part of their purchase, and this donation can usually be an arbitrary amount. If this amount is not validated, it may be possible to add a negative donation amount, which would then reduce the total value of the basket.
+Différents types d'éléments peuvent avoir des règles de validation différentes, de sorte que chaque type doit être testé séparément. Certaines applications permettent également aux utilisateurs d'ajouter un don facultatif à une association caritative dans le cadre de leur achat, et ce don peut généralement être d'un montant arbitraire. Si ce montant n'est pas validé, il peut être possible d'ajouter un montant de don négatif, ce qui réduirait alors la valeur totale du panier.
 
-#### On the Payment Gateway
+#### Sur la passerelle de paiement
 
-If the checkout process is performed on an third-party payment gateway, then it may be possible to tamper with the prices between the application and the gateway.
+Si le processus de paiement est effectué sur une passerelle de paiement tierce, il peut être possible de falsifier les prix entre l'application et la passerelle.
 
-The transfer to the gateway may be performed using a cross-domain POST to the gateway, as shown in the HTML example below.
+Le transfert vers la passerelle peut être effectué à l'aide d'un POST interdomaine vers la passerelle, comme illustré dans l'exemple HTML ci-dessous.
 
-> Note: The card details are not included in this request - the user will be prompted for them on the payment gateway:
+> Remarque : Les détails de la carte ne sont pas inclus dans cette demande - l'utilisateur sera invité à les saisir sur la passerelle de paiement :
 
 ```html
 <form action="https://example.org/process_payment" method="POST">
@@ -109,142 +109,142 @@ The transfer to the gateway may be performed using a cross-domain POST to the ga
 </form>
 ```
 
-By modifying the HTML form or intercepting the POST request, it may be possible to modify the prices of items, and to effectively purchase them for less. Note that many payment gateways will reject a transaction with a value of zero, so a total of 0.01 is more likely to succeed. However, some payment gateways may accept negative values (used to process refunds). Where there are multiple values (such as item prices, a shipping cost, and the total basket cost), all of these should be tested.
+En modifiant le formulaire HTML ou en interceptant la requête POST, il peut être possible de modifier les prix des articles, et de les acheter effectivement moins cher. Notez que de nombreuses passerelles de paiement rejetteront une transaction avec une valeur de zéro, donc un total de 0,01 a plus de chances de réussir. Cependant, certaines passerelles de paiement peuvent accepter des valeurs négatives (utilisées pour traiter les remboursements). Lorsqu'il existe plusieurs valeurs (telles que les prix des articles, les frais d'expédition et le coût total du panier), toutes doivent être testées.
 
-If the payment gateway uses an IFRAME instead, it may be possible to perform a similar type of attack by modifying the IFRAME URL:
+Si la passerelle de paiement utilise un IFRAME à la place, il peut être possible d'effectuer un type d'attaque similaire en modifiant l'URL IFRAME :
 
 ```html
 <iframe src="https://example.org/payment_iframe?merchant_id=123&basket_total=22.00" />
 ```
 
-> Note: Payment gateways are usually run by a third-parties, and as such may not be included in the scope of testing. This means that while price tampering may be acceptable, other types of attacks (such as SQL injection) should not be performed without explicit written approval).
+> Remarque : Les passerelles de paiement sont généralement gérées par des tiers et, en tant que telles, peuvent ne pas être incluses dans la portée des tests. Cela signifie que si la falsification des prix peut être acceptable, d'autres types d'attaques (telles que l'injection SQL) ne doivent pas être effectuées sans approbation écrite explicite).
 
-#### Encrypted Transaction Details
+#### Détails de la transaction cryptée
 
-In order to prevent the transaction being tampered with, some payment gateways will encrypt the details of the request that is made to them. For example, [Paypal](https://developer.paypal.com/api/nvp-soap/paypal-payments-standard/integration-guide/encryptedwebpayments/#link-usingewptoprotectmanuallycreatedpaymentbuttons) do this using public key cryptography.
+Afin d'éviter que la transaction ne soit falsifiée, certaines passerelles de paiement crypteront les détails de la demande qui leur est faite. Par exemple, [Paypal](https://developer.paypal.com/api/nvp-soap/paypal-payments-standard/integration-guide/encryptedwebpayments/#link-usingewptoprotectmanuallycreatedpaymentbuttons) utilise la cryptographie à clé publique.
 
-The first thing to try is making an unencrypted request, as some payment gateways allow insecure transactions unless they have been specifically configured to reject them.
+La première chose à essayer est de faire une demande non cryptée, car certaines passerelles de paiement autorisent les transactions non sécurisées à moins qu'elles n'aient été spécifiquement configurées pour les rejeter.
 
-If this doesn't work, then you need to find the public key that is used to encrypt the transaction details, which could be exposed in a backup of the application, or if you can find a directory traversal vulnerability.
+Si cela ne fonctionne pas, vous devez trouver la clé publique utilisée pour chiffrer les détails de la transaction, qui pourraient être exposés dans une sauvegarde de l'application, ou si vous pouvez trouver une vulnérabilité de traversée de répertoire.
 
-Alternatively, it's possible that the application re-uses the same public/private key pair for the payment gateway and its digital certificate. You can obtain the public key from the server with the following command:
+Alternativement, il est possible que l'application réutilise la même paire de clés publique/privée pour la passerelle de paiement et son certificat numérique. Vous pouvez obtenir la clé publique du serveur avec la commande suivante :
 
 ```bash
 echo -e '\0' | openssl s_client -connect example.org:443 2>/dev/null | openssl x509 -pubkey -noout
 ```
 
-Once you have this key, you can then try and create an encrypted request (based on the payment gateway's documentation), and submit it to the gateway to see if it's accepted.
+Une fois que vous avez cette clé, vous pouvez alors essayer de créer une demande cryptée (basée sur la documentation de la passerelle de paiement) et la soumettre à la passerelle pour voir si elle est acceptée.
 
-#### Secure Hashes
+#### Hachages sécurisés
 
-Other payment gateways use a secure hash (or a HMAC) of the transaction details to prevent tampering. The exact details of how this is done will vary between providers (for example, [Adyen](https://docs.adyen.com/online-payments/classic-integrations/hosted-payment-pages/hmac-signature-calculation) use HMAC-SHA256), but it will normally include the details of the transaction and a secret value. For example, a hash may be calculated as:
+D'autres passerelles de paiement utilisent un hachage sécurisé (ou un HMAC) des détails de la transaction pour empêcher toute falsification. Les détails exacts de la façon dont cela est fait varient selon les fournisseurs (par exemple, [Adyen](https://docs.adyen.com/online-payments/classic-integrations/hosted-payment-pages/hmac-signature-calculation) utilisez HMAC-SHA256), mais il inclura normalement les détails de la transaction et une valeur secrète. Par exemple, un hachage peut être calculé comme suit :
 
 ```php
 $secure_hash = md5($merchant_id . $transaction_id . $items . $total_value . $secret)
 ```
 
-This value is then added to the POST request that is sent to the payment gateway, and verified to ensure that the transaction hasn't been tampered with.
+Cette valeur est ensuite ajoutée à la requête POST envoyée à la passerelle de paiement et vérifiée pour s'assurer que la transaction n'a pas été falsifiée.
 
-The first thing to try is removing the secure hash, as some payment gateways allow insecure transactions unless a specific configuration option has been set.
+La première chose à essayer est de supprimer le hachage sécurisé, car certaines passerelles de paiement autorisent les transactions non sécurisées, sauf si une option de configuration spécifique a été définie.
 
-The POST request should contain all of the values required to calculate this hash, other than the secret key. This means that if you know how the hash is calculated (which should be included in the payment gateway's documentation), then you can attempt to brute-force the secret. Alternatively, if the website is running an off-the-shelf application, there may be a default secret in the configuration files or source code. Finally, if you can find a backup of the website, or otherwise gain access to the configuration files, you may be able to find the secret there.
+La requête POST doit contenir toutes les valeurs requises pour calculer ce hachage, autres que la clé secrète. Cela signifie que si vous savez comment le hachage est calculé (ce qui devrait être inclus dans la documentation de la passerelle de paiement), vous pouvez tenter de forcer brutalement le secret. Alternativement, si le site Web exécute une application standard, il peut y avoir un secret par défaut dans les fichiers de configuration ou le code source. Enfin, si vous pouvez trouver une sauvegarde du site Web ou accéder aux fichiers de configuration, vous pourrez peut-être y trouver le secret.
 
-If you can obtain this secret, you can then tamper the transaction details, and then generate your own secure hash which will be accepted by the payment gateway.
+Si vous pouvez obtenir ce secret, vous pouvez alors falsifier les détails de la transaction, puis générer votre propre hachage sécurisé qui sera accepté par la passerelle de paiement.
 
-#### Currency Tampering
+#### Falsification de devises
 
-If it's not possible to tamper with the actual prices, it may be possible to change the currency that is used, especially where applications support multiple currencies. For example, the application may validate that the price is 10, but if you can change the currency so that you pay 10 USD rather than 10 GBP, this would allow you to purchase items more cheaply.
+S'il n'est pas possible de modifier les prix réels, il peut être possible de modifier la devise utilisée, en particulier lorsque les applications prennent en charge plusieurs devises. Par exemple, l'application peut valider que le prix est de 10, mais si vous pouvez changer la devise pour payer 10 USD au lieu de 10 GBP, cela vous permettra d'acheter des articles moins cher.
 
-#### Time Delayed Requests
+#### Requêtes différées
 
-If the value of items on the site changes over time (for example on a currency exchange), then it may be possible to buy or sell at an old price by intercepting requests using a local proxy and delaying them. In order for this to be exploitable, the price would need to either be included in the request, or linked to something in the request (such as session or transaction ID). The example below shows how this could potentially be exploited on a application that allows users to buy and sell gold:
+Si la valeur des articles sur le site change au fil du temps (par exemple lors d'un échange de devises), il peut alors être possible d'acheter ou de vendre à un ancien prix en interceptant les demandes à l'aide d'un proxy local et en les retardant. Pour que cela soit exploitable, le prix devrait être soit inclus dans la demande, soit lié à quelque chose dans la demande (comme l'ID de session ou de transaction). L'exemple ci-dessous montre comment cela pourrait potentiellement être exploité sur une application permettant aux utilisateurs d'acheter et de vendre de l'or :
 
-- View the current price of gold on the website.
-- Initiate a buy request for 1oz of gold.
-- Intercept and freeze the request.
-- Wait one minutes to check the price of gold again:
-    - If it increases, allow the transaction to complete, and buy the gold for less than it's current value.
-    - If it decreases, drop the request request.
+- Voir le prix actuel de l'or sur le site Web.
+- Initier une demande d'achat pour 1 once d'or.
+- Intercepter et geler la demande.
+- Attendez une minute pour vérifier à nouveau le prix de l'or :
+    - S'il augmente, laissez la transaction se terminer et achetez l'or à un prix inférieur à sa valeur actuelle.
+    - S'il diminue, supprimez la requête request.
 
-If the website allows the user to make payments using cryptocurrencies (which are usually far more volatile), it may be possible to exploit this by obtaining a fixed price in that cryptocurrency, and then waiting to see if the value rises or falls compared to the main currency used by the website.
+Si le site Web permet à l'utilisateur d'effectuer des paiements en utilisant des crypto-monnaies (qui sont généralement beaucoup plus volatiles), il peut être possible d'exploiter cela en obtenant un prix fixe dans cette crypto-monnaie, puis en attendant de voir si la valeur augmente ou diminue par rapport au devise principale utilisée par le site Web.
 
-### Discount Codes
+### Codes de réduction
 
-If the application supports discount codes, then there are various checks that should be carried out:
+Si l'application prend en charge les codes de réduction, différentes vérifications doivent être effectuées :
 
-- Are the codes easily guessable (TEST, TEST10, SORRY, SORRY10, company name, etc)?
-    - If a code has a number in, can more codes be found by increasing the number?
-- Is there any brute-force protection?
-- Can multiple discount codes be applied at once?
-- Can discount codes be applied multiple times?
-- Can you [inject wildcard characters](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection) such as `%` or `*`?
-- Are discount codes exposed in the HTML source or hidden `<input>` fields anywhere on the application?
+- Les codes sont-ils facilement devinables (TEST, TEST10, SORRY, SORRY10, nom de l'entreprise, etc.) ?
+    - Si un code contient un nombre, peut-on trouver plus de codes en augmentant le nombre ?
+- Existe-t-il une protection contre la force brute ?
+- Plusieurs codes de réduction peuvent-ils être appliqués en même temps ?
+- Les codes de réduction peuvent-ils être appliqués plusieurs fois ?
+- Pouvez-vous [injecter des caractères génériques](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection) tels que `%` ou `*` ?
+- Les codes de réduction sont-ils exposés dans la source HTML ou dans les champs `<input>` masqués n'importe où sur l'application ?
 
-In addition to these, the usual vulnerabilities such as SQL injection should be tested for.
+En plus de celles-ci, les vulnérabilités habituelles telles que l'injection SQL doivent être testées.
 
-### Breaking Payment Flows
+### Rupture des flux de paiement
 
-If the checkout or payment process on an application involves multiple stages (such as adding items to a basket, entering discount codes, entering shipping details, and entering billing information), then it may be possible to cause unintended behavior by performing these steps outside of the expected sequence. For example, you could try:
+Si le processus de paiement ou de paiement sur une application implique plusieurs étapes (telles que l'ajout d'articles à un panier, la saisie de codes de réduction, la saisie de détails d'expédition et la saisie d'informations de facturation), il peut être possible de provoquer un comportement imprévu en effectuant ces étapes en dehors de la séquence attendue. Par exemple, vous pouvez essayer :
 
-- Modifying the shipping address after the billing details have been entered to reduce shipping costs.
-- Removing items after entering shipping details, to avoid a minimum basket value.
-- Modifying the contents of the basket after applying a discount code.
-- Modifying the contents of a basket after completing the checkout process.
+- Modification de l'adresse de livraison après saisie des coordonnées de facturation pour réduire les frais de port.
+- Suppression d'articles après avoir entré les détails d'expédition, pour éviter une valeur de panier minimum.
+- Modification du contenu du panier après application d'un code de réduction.
+- Modifier le contenu d'un panier après avoir terminé le processus de commande.
 
-It may also be possible to skip the entire payment process for the transaction. For example, if the application redirects to a third-party payment gateway, the payment flow may be:
+Il peut également être possible d'ignorer tout le processus de paiement pour la transaction. Par exemple, si l'application redirige vers une passerelle de paiement tierce, le flux de paiement peut être :
 
-- The user enters details on the application.
-- The user is redirected to the third-party payment gateway.
-- The user enters their card details.
-    - If the payment is successful, they are redirected to `success.php` on the application.
-    - If the payment is unsuccessful, they are redirected to `failure.php` on the application
-- The application updates its order database, and processes the order if it was successful.
+- L'utilisateur entre des détails sur l'application.
+- L'utilisateur est redirigé vers la passerelle de paiement tiers.
+- L'utilisateur saisit les détails de sa carte.
+    - Si le paiement est réussi, ils sont redirigés vers `success.php` sur l'application.
+    - Si le paiement échoue, ils sont redirigés vers `failure.php` sur l'application
+- L'application met à jour sa base de données de commandes et traite la commande si elle a réussi.
 
-Depending on whether the application actually validates that the payment on the gateway was successful, it may be possible to force-browse to the `success.php` page (possibly including a transaction ID if one is required), which would cause the website to process the order as though the payment was successful. Additionally, it may be possible to make repeated requests to the `success.php` page to cause an order to be processed multiple times.
+Selon que l'application valide ou non le succès du paiement sur la passerelle, il peut être possible de forcer la navigation vers la page "success.php" (éventuellement en incluant un ID de transaction si nécessaire), ce qui entraînerait le site Web à traiter la commande comme si le paiement avait réussi. De plus, il peut être possible de faire des demandes répétées à la page `success.php` pour qu'une commande soit traitée plusieurs fois.
 
-### Exploiting Transaction Processing Fees
+### Exploitation des frais de traitement des transactions
 
-Merchants normally have to pay fees for every transaction processed, which are typically made up of a small fixed fee, and a percentage of the total value. This means that receiving very small payments (such as $0.01) may result in the merchant actually losing money, as the transaction processing fees are greater than the total value of the transaction.
+Les commerçants doivent normalement payer des frais pour chaque transaction traitée, qui se composent généralement d'une petite commission fixe et d'un pourcentage de la valeur totale. Cela signifie que recevoir de très petits paiements (tels que 0,01 $) peut entraîner une perte d'argent pour le commerçant, car les frais de traitement de la transaction sont supérieurs à la valeur totale de la transaction.
 
-This issue is rarely exploitable on e-commerce sites, as the price of the cheapest item is usually high enough to prevent it. However, if the website allows customers to make payments with arbitrary amounts (such as donations), check that it enforces a sensible minimum value.
+Ce problème est rarement exploitable sur les sites de commerce électronique, car le prix de l'article le moins cher est généralement suffisamment élevé pour l'éviter. Cependant, si le site Web permet aux clients d'effectuer des paiements avec des montants arbitraires (tels que des dons), vérifiez qu'il applique une valeur minimale raisonnable.
 
-### Test Payment Cards
+### Tester les cartes de paiement
 
-Most payment gateways have a set of defined test card details, which can be used by developers during testing and debugging. These should only be usable on development or sandbox versions of the gateways, but may be accepted on live sites if they have been misconfigured.
+La plupart des passerelles de paiement ont un ensemble de détails de carte de test définis, qui peuvent être utilisés par les développeurs lors des tests et du débogage. Celles-ci ne doivent être utilisables que sur les versions de développement ou bac à sable des passerelles, mais peuvent être acceptées sur les sites en ligne si elles ont été mal configurées.
 
-Examples of these test details for various payment gateways are listed below:
+Des exemples de ces détails de test pour diverses passerelles de paiement sont répertoriés ci-dessous :
 
-- [Adyen - Test Card Numbers](https://docs.adyen.com/development-resources/test-cards/test-card-numbers)
-- [Globalpay - Test Cards](https://developer.globalpay.com/resources/test-card-numbers)
-- [Stripe - Basic Test Card Numbers](https://stripe.com/docs/testing#cards)
-- [Worldpay - Test Card Numbers](http://support.worldpay.com/support/kb/bg/testandgolive/tgl5103.html)
+- [Adyen - Numéros de carte de test](https://docs.adyen.com/development-resources/test-cards/test-card-numbers)
+- [Globalpay - Cartes de test](https://developer.globalpay.com/resources/test-card-numbers)
+- [Stripe - Numéros de carte de test de base] (https://stripe.com/docs/testing#cards)
+- [Worldpay - Numéros de carte de test](http://support.worldpay.com/support/kb/bg/testandgolive/tgl5103.html)
 
-### Testing Logistics
+### Logistique des tests
 
-Testing payment functionality on applications can introduce additional complexity, especially if a live site is being tested. Areas that need to be considered include:
+Le test de la fonctionnalité de paiement sur les applications peut introduire une complexité supplémentaire, en particulier si un site en direct est en cours de test. Les domaines qui doivent être pris en compte incluent :
 
-- Obtaining test card payment details for the application.
-    - If these are not available, then it may be possible to obtain a pre-paid card or an alternative.
-- Keeping a record of any orders that are made so that they can be cancelled and refunded.
-- Not placing orders that can't be cancelled, or that will cause other actions (such as goods being immediately dispatched from a warehouse).
+- Obtention des détails de paiement de la carte de test pour l'application.
+    - Si celles-ci ne sont pas disponibles, il peut être possible d'obtenir une carte prépayée ou une alternative.
+- Garder une trace de toutes les commandes passées afin qu'elles puissent être annulées et remboursées.
+- Ne pas passer de commandes qui ne peuvent pas être annulées ou qui entraîneront d'autres actions (comme l'expédition immédiate de marchandises depuis un entrepôt).
 
-## Related Test Cases
+## Cas de test associés
 
-- [Testing for HTTP Parameter Pollution](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md)
-- [Testing for SQL Injection](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md)
-- [Testing for the Circumvention of Work Flows](06-Testing_for_the_Circumvention_of_Work_Flows.md)
+- [Test de la pollution des paramètres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md)
+- [Test pour l'injection SQL](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md)
+- [Test pour le contournement des flux de travail](06-Testing_for_the_Circumvention_of_Work_Flows.md)
 
-## Remediation
+## Correction
 
-- Avoid storing, transmitting or processing card details wherever possible.
-    - Use a redirect or IFRAME for the payment gateway.
-- Review payment gateway documentation and use all available security features (such as encryption and secure hashes).
-- Handle all pricing related information on server-side:
-    - The only things included in client-side requests should be item IDs and quantities.
-- Implement appropriate input validation and business logic constraints (such as checking for negative item numbers or values).
-- Ensure that application payment flow is robust and that steps can't be performed out of sequence.
+- Dans la mesure du possible, évitez de stocker, de transmettre ou de traiter les détails de la carte.
+    - Utilisez une redirection ou IFRAME pour la passerelle de paiement.
+- Examinez la documentation de la passerelle de paiement et utilisez toutes les fonctionnalités de sécurité disponibles (telles que le cryptage et les hachages sécurisés).
+- Gérer toutes les informations relatives aux prix côté serveur :
+    - Les seuls éléments inclus dans les demandes côté client doivent être les ID d'articles et les quantités.
+- Mettre en œuvre des contraintes de validation d'entrée et de logique métier appropriées (telles que la vérification des numéros ou des valeurs d'éléments négatifs).
+- Assurez-vous que le flux de paiement de l'application est robuste et que les étapes ne peuvent pas être effectuées dans le désordre.
 
-## References
+## Références
 
-- [Payment Card Industry Data Security Standard (PCI DSS)](https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf)
-- [Visa Processing E-Commerce Payments guidance](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf)
+- [Norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS)](https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf)
+- [Conseils pour le traitement des paiements de commerce électronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf)

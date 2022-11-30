@@ -1,93 +1,93 @@
-# Introduction to Business Logic
+# Introduction à la logique métier
 
-Testing for business logic flaws in a multi-functional dynamic web application requires thinking in unconventional methods. If an application's authentication mechanism is developed with the intention of performing steps 1, 2, 3 in that specific order to authenticate a user. What happens if the user goes from step 1 straight to step 3? In this simplistic example, does the application provide access by failing open; deny access, or just error out with a 500 message?
+Tester les failles de la logique métier dans une application Web dynamique multifonctionnelle nécessite de penser à des méthodes non conventionnelles. Si le mécanisme d'authentification d'une application est développé avec l'intention d'effectuer les étapes 1, 2, 3 dans cet ordre spécifique pour authentifier un utilisateur. Que se passe-t-il si l'utilisateur passe directement de l'étape 1 à l'étape 3 ? Dans cet exemple simpliste, l'application fournit-elle un accès par échec d'ouverture ? refuser l'accès, ou juste une erreur avec un message 500 ?
 
-There are many examples that can be made, but the one constant lesson is "think outside of conventional wisdom". This type of vulnerability cannot be detected by a vulnerability scanner and relies upon the skills and creativity of the penetration tester. In addition, this type of vulnerability is usually one of the hardest to detect, and usually application specific but, at the same time, usually one of the most detrimental to the application, if exploited.
+Il existe de nombreux exemples qui peuvent être donnés, mais la seule leçon constante est de "penser en dehors de la sagesse conventionnelle". Ce type de vulnérabilité ne peut pas être détecté par un scanner de vulnérabilité et repose sur les compétences et la créativité du testeur d'intrusion. De plus, ce type de vulnérabilité est généralement l'un des plus difficiles à détecter, et généralement spécifique à l'application, mais, en même temps, généralement l'un des plus préjudiciables à l'application, s'il est exploité.
 
-The classification of business logic flaws has been under-studied; although exploitation of business flaws frequently happens in real-world systems, and many applied vulnerability researchers investigate them. The greatest focus is in web applications. There is debate within the community about whether these problems represent particularly new concepts, or if they are variations of well-known principles.
+La classification des failles de la logique métier a été sous-étudiée ; bien que l'exploitation des failles commerciales se produise fréquemment dans les systèmes du monde réel, et de nombreux chercheurs en vulnérabilité appliquée les étudient. L'accent est mis sur les applications Web. Il y a un débat au sein de la communauté pour savoir si ces problèmes représentent des concepts particulièrement nouveaux ou s'il s'agit de variations de principes bien connus.
 
-Testing of business logic flaws is similar to the test types used by functional testers that focus on logical or finite state testing. These types of tests require that security professionals think a bit differently, develop abused and misuse cases and use many of the testing techniques embraced by functional testers. Automation of business logic abuse cases is not possible and remains a manual art relying on the skills of the tester and their knowledge of the complete business process and its rules.
+Le test des failles de la logique métier est similaire aux types de test utilisés par les testeurs fonctionnels qui se concentrent sur les tests logiques ou à états finis. Ces types de tests exigent que les professionnels de la sécurité pensent un peu différemment, développent des cas d'abus et d'utilisation abusive et utilisent de nombreuses techniques de test adoptées par les testeurs fonctionnels. L'automatisation des cas d'abus de logique métier n'est pas possible et reste un art manuel reposant sur les compétences du testeur et sa connaissance du processus métier complet et de ses règles.
 
-## Business Limits and Restrictions
+## Limites et restrictions commerciales
 
-Consider the rules for the business function being provided by the application. Are there any limits or restrictions on people's behavior? Then consider whether the application enforces those rules. It's generally pretty easy to identify the test and analysis cases to verify the application if you're familiar with the business. If you are a third-party tester, then you're going to have to use your common sense and ask the business if different operations should be allowed by the application.
+Tenez compte des règles de la fonction métier fournie par l'application. Y a-t-il des limites ou des restrictions sur le comportement des gens ? Déterminez ensuite si l'application applique ces règles. Il est généralement assez facile d'identifier les cas de test et d'analyse pour vérifier l'application si vous êtes familier avec l'entreprise. Si vous êtes un testeur tiers, vous allez devoir faire preuve de bon sens et demander à l'entreprise si différentes opérations doivent être autorisées par l'application.
 
-Sometimes, in very complex applications, the tester will not have a full understanding of every aspect of the application initially. In these situations, it is best to have the client walk the tester through the application, so that they may gain a better understanding of the limits and intended functionality of the application, before the actual test begins. Additionally, having a direct line to the developers (if possible) during testing will help out greatly, if any questions arise regarding the application's functionality.
+Parfois, dans des applications très complexes, le testeur n'aura pas une compréhension complète de tous les aspects de l'application au départ. Dans ces situations, il est préférable que le client guide le testeur dans l'application, afin qu'il puisse mieux comprendre les limites et les fonctionnalités prévues de l'application, avant le début du test proprement dit. De plus, avoir une ligne directe avec les développeurs (si possible) pendant les tests aidera grandement, si des questions se posent concernant la fonctionnalité de l'application.
 
-## Challenges of Logic Testing
+## Défis des tests logiques
 
-Automated tools find it hard to understand context, hence it's up to a person to perform these kinds of tests. The following two examples will illustrate how understanding the functionality of the application, the developer's intentions, and some creative "out-of-the-box" thinking can break the application's logic. The first example starts with a simplistic parameter manipulation, whereas the second is a real world example of a multi-step process leading to completely subvert the application.
+Les outils automatisés ont du mal à comprendre le contexte, c'est donc à une personne d'effectuer ce genre de tests. Les deux exemples suivants illustrent comment la compréhension de la fonctionnalité de l'application, les intentions du développeur et certaines réflexions créatives "prêtes à l'emploi" peuvent briser la logique de l'application. Le premier exemple commence par une manipulation simpliste des paramètres, tandis que le second est un exemple réel d'un processus en plusieurs étapes conduisant à subvertir complètement l'application.
 
-**Example 1**:
+**Exemple 1**:
 
-Suppose an e-commerce site allows users to select items to purchase, view a summary page and then tender the sale. What if an attacker was able to go back to the summary page, maintaining their same valid session and inject a lower cost for an item and complete the transaction, and then check out?
+Supposons qu'un site de commerce électronique permette aux utilisateurs de sélectionner des articles à acheter, d'afficher une page de résumé, puis de proposer la vente. Que se passerait-il si un attaquant pouvait revenir à la page de résumé, maintenir sa même session valide et injecter un coût inférieur pour un article et terminer la transaction, puis passer à la caisse ?
 
-**Example 2**:
+**Exemple 2** :
 
-Holding/locking resources and keeping others from purchases these items online may result in attackers purchasing items at a lower price. The countermeasure to this problem is to implement timeouts and mechanisms to ensure that only the correct price can be charged.
+Conserver/verrouiller des ressources et empêcher les autres d'acheter ces articles en ligne peut amener les attaquants à acheter des articles à un prix inférieur. La contre-mesure à ce problème consiste à implémenter des délais d'attente et des mécanismes pour s'assurer que seul le prix correct peut être facturé.
 
-**Example 3**:
+**Exemple 3** :
 
-What if a user was able to start a transaction linked to their club/loyalty account and then after points have been added to their account cancel out of the transaction? Will the points/credits still be applied to their account?
+Que se passe-t-il si un utilisateur a pu démarrer une transaction liée à son compte club/fidélité, puis après que des points ont été ajoutés à son compte, annuler la transaction ? Les points/crédits seront-ils toujours appliqués à leur compte ?
 
-## Tools
+## Outils
 
-While there are tools for testing and verifying that business processes are functioning correctly in valid situations these tools are incapable of detecting logical vulnerabilities. For example, tools have no means of detecting if a user is able to circumvent the business process flow through editing parameters, predicting resource names or escalating privileges to access restricted resources nor do they have any mechanism to help the human testers to suspect this state of affairs.
+Bien qu'il existe des outils pour tester et vérifier que les processus métier fonctionnent correctement dans des situations valides, ces outils sont incapables de détecter les vulnérabilités logiques. Par exemple, les outils n'ont aucun moyen de détecter si un utilisateur est capable de contourner le flux des processus métier en éditant des paramètres, en prédisant des noms de ressources ou en augmentant les privilèges pour accéder à des ressources restreintes, et ils n'ont aucun mécanisme pour aider les testeurs humains à suspecter cet état de affaires.
 
-The following are some common tool types that can be useful in identifying business logic issues.
+Voici quelques types d'outils courants qui peuvent être utiles pour identifier les problèmes de logique métier.
 
-When installing addons you should always be diligent in considering the permissions they request and your browser usage habits.
+Lors de l'installation d'addons, vous devez toujours faire preuve de diligence en tenant compte des autorisations qu'ils demandent et des habitudes d'utilisation de votre navigateur.
 
-### Intercepting Proxy
+### Proxy d'interception
 
-To Observe the Request and Response Blocks of HTTP Traffic
+Pour observer les blocs de requête et de réponse du trafic HTTP
 
-- [OWASP Zed Attack Proxy](https://www.zaproxy.org)
-- [Burp Proxy](https://portswigger.net/burp)
+- [Proxy d'attaque Zed OWASP] (https://www.zaproxy.org)
+- [Burp Proxy] (https://portswigger.net/burp)
 
-### Web Browser Plug-ins
+### Plug-ins de navigateur Web
 
-To view and modify HTTP/HTTPS headers, post parameters, and observe the DOM of the Browser
+Pour afficher et modifier les en-têtes HTTP/HTTPS, publier les paramètres et observer le DOM du navigateur
 
-- [Tamper Data for FF Quantum](https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum)
-- [Tamper Chrome (for Google Chrome)](https://chrome.google.com/webstore/detail/tamper-chrome-extension/hifhgpdkfodlpnlmlnmhchnkepplebkb)
+- [Tamper Data for FF Quantum] (https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum)
+- [Tamper Chrome (pour Google Chrome)](https://chrome.google.com/webstore/detail/tamper-chrome-extension/hifhgpdkfodlpnlmlnmhchnkepplebkb)
 
-## Miscellaneous Test Tools
+## Outils de test divers
 
-- [Web Developer toolbar](https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
-    - The Web Developer extension adds a toolbar button to the browser with various web developer tools. This is the official port of the Web Developer extension for Firefox.
-- [HTTP Request Maker for Chrome](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp)
-- [HTTP Request Maker for Firefox](https://addons.mozilla.org/en-US/firefox/addon/http-request-maker)
-    - Request Maker is a tool for penetration testing. With it you can easily capture requests made by web pages, tamper with the URL, headers and POST data and, of course, make new requests
-- [Cookie Editor for Chrome](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg)
-- [Cookie Editor for Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor)
-    - Cookie Editor is a cookie manager. You can add, delete, edit, search, protect, and block cookies
+- [Barre d'outils du développeur Web] (https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+    - L'extension Web Developer ajoute un bouton de barre d'outils au navigateur avec divers outils de développement Web. Il s'agit du portage officiel de l'extension Web Developer pour Firefox.
+- [Fabricant de requêtes HTTP pour Chrome](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp)
+- [Fabricant de requêtes HTTP pour Firefox](https://addons.mozilla.org/en-US/firefox/addon/http-request-maker)
+    - Request Maker est un outil de test d'intrusion. Avec lui, vous pouvez facilement capturer les requêtes faites par les pages Web, falsifier l'URL, les en-têtes et les données POST et, bien sûr, faire de nouvelles requêtes
+- [Éditeur de cookies pour Chrome](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg)
+- [Éditeur de cookies pour Firefox](https://addons.mozilla.org/en-US/firefox/addon/cookie-editor)
+    - Cookie Editor est un gestionnaire de cookies. Vous pouvez ajouter, supprimer, modifier, rechercher, protéger et bloquer les cookies
 
-## References
+## Références
 
-### Whitepapers
+### Papiers blanc
 
 - [The Common Misuse Scoring System (CMSS): Metrics for Software Feature Misuse Vulnerabilities - NISTIR 7864](https://csrc.nist.gov/publications/detail/nistir/7864/final)
-- [Finite State testing of Graphical User Interfaces, Fevzi Belli](https://pdfs.semanticscholar.org/b57c/6c8022abfd2cb17ec785d3622027b3edfaaf.pdf)
-- [Principles and Methods of Testing Finite State Machines - A Survey, David Lee, Mihalis Yannakakis](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.380.3405&rep=rep1&type=pdf)
-- [Security Issues in Online Games, Jianxin Jeff Yan and Hyun-Jin Choi](https://www.researchgate.net/publication/220677013_Security_issues_in_online_games)
+- [Test à l'état fini des interfaces utilisateur graphiques, Fevzi Belli] (https://pdfs.semanticscholar.org/b57c/6c8022abfd2cb17ec785d3622027b3edfaaf.pdf)
+- [Principes et méthodes de test des machines à états finis - Une enquête, David Lee, Mihalis Yannakakis] (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.380.3405&rep=rep1&type=pdf)
+- [Problèmes de sécurité dans les jeux en ligne, Jianxin Jeff Yan et Hyun-Jin Choi](https://www.researchgate.net/publication/220677013_Security_issues_in_online_games)
 - [Securing Virtual Worlds Against Real Attack, Dr. Igor Muttik, McAfee](https://www.info-point-security.com/open_downloads/2008/McAfee_wp_online_gaming_0808.pdf)
-- [Seven Business Logic Flaws That Put Your Website At Risk – Jeremiah Grossman Founder and CTO, WhiteHat Security](https://www.slideshare.net/jeremiahgrossman/seven-business-logic-flaws-that-put-your-website-at-risk-harvard-07062008)
-- [Toward Automated Detection of Logic Vulnerabilities in Web Applications - Viktoria Felmetsger Ludovico Cavedon Christopher Kruegel Giovanni Vigna](https://www.usenix.org/legacy/event/sec10/tech/full_papers/Felmetsger.pdf)
+- [Seven Business Logic Flaws That Put Your Website At Risk - Jeremiah Grossman Fondateur et CTO, WhiteHat Security](https://www.slideshare.net/jeremiahgrossman/seven-business-logic-flaws-that-put-your-website -à-risque-harvard-07062008)
+- [Vers une détection automatisée des vulnérabilités logiques dans les applications Web - Viktoria Felmetsger Ludovico Cavedon Christopher Kruegel Giovanni Vigna](https://www.usenix.org/legacy/event/sec10/tech/full_papers/Felmetsger.pdf)
 
-### OWASP Related
+### Lié à l'OWASP
 
-- [How to Prevent Business Flaws Vulnerabilities in Web Applications, Marco Morana](http://www.slideshare.net/marco_morana/issa-louisville-2010morana)
+- [Comment prévenir les failles commerciales dans les applications Web, Marco Morana](http://www.slideshare.net/marco_morana/issa-louisville-2010morana)
 
-### Useful Web Sites
+### Sites Web utiles
 
-- [Abuse of Functionality](http://projects.webappsec.org/w/page/13246913/Abuse-of-Functionality)
-- [Business logic](https://en.wikipedia.org/wiki/Business_logic)
-- [Business Logic Flaws and Yahoo Games](http://jeremiahgrossman.blogspot.com/2006/12/business-logic-flaws.html)
-- [CWE-840: Business Logic Errors](https://cwe.mitre.org/data/definitions/840.html)
-- [Defying Logic: Theory, Design, and Implementation of Complex Systems for Testing Application Logic](https://pdfs.semanticscholar.org/d14a/18f08f6488f903f2f691a1d159e95d8ee04f.pdf)
-- [Software Testing Lifecycle](http://softwaretestingfundamentals.com/software-testing-life-cycle/)
+- [Abus de fonctionnalité](http://projects.webappsec.org/w/page/13246913/Abuse-of-Functionality)
+- [Logique métier](https://en.wikipedia.org/wiki/Business_logic)
+- [Business Logic Flaws et Yahoo Games](http://jeremiahgrossman.blogspot.com/2006/12/business-logic-flaws.html)
+- [CWE-840 : Erreurs de logique métier](https://cwe.mitre.org/data/definitions/840.html)
+- [Défier la logique : théorie, conception et mise en œuvre de systèmes complexes pour tester la logique d'application] (https://pdfs.semanticscholar.org/d14a/18f08f6488f903f2f691a1d159e95d8ee04f.pdf)
+- [Cycle de vie des tests logiciels](http://softwaretestingfundamentals.com/software-testing-life-cycle/)
 
-### Books
+### Livres
 
-- [The Decision Model: A Business Logic Framework Linking Business and Technology, By Barbara Von Halle, Larry Goldberg, Published by CRC Press, ISBN1420082817 (2010)](https://isbnsearch.org/isbn/1420082817)
+- [Le ​​modèle de décision : un cadre logique métier reliant les entreprises et la technologie, par Barbara Von Halle, Larry Goldberg, publié par CRC Press, ISBN1420082817 (2010)] (https://isbnsearch.org/isbn/1420082817)

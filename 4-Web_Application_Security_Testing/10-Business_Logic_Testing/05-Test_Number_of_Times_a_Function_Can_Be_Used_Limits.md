@@ -1,41 +1,41 @@
-# Test Number of Times a Function Can Be Used Limits
+# Test Nombre de fois qu'une fonction peut être utilisée Limites
 
 |ID          |
 |------------|
 |WSTG-BUSL-05|
 
-## Summary
+## Sommaire
 
-Many of the problems that applications are solving require limits to the number of times a function can be used or action can be executed. Applications must be "smart enough" to not allow the user to exceed their limit on the use of these functions since in many cases each time the function is used the user may gain some type of benefit that must be accounted for to properly compensate the owner. For example: an eCommerce site may only allow a users apply a discount once per transaction, or some applications may be on a subscription plan and only allow users to download three complete documents monthly.
+De nombreux problèmes que les applications résolvent nécessitent des limites quant au nombre de fois qu'une fonction peut être utilisée ou qu'une action peut être exécutée. Les applications doivent être « suffisamment intelligentes » pour ne pas permettre à l'utilisateur de dépasser sa limite d'utilisation de ces fonctions, car dans de nombreux cas, chaque fois que la fonction est utilisée, l'utilisateur peut obtenir un certain type d'avantage qui doit être pris en compte pour compenser correctement le propriétaire. . Par exemple : un site de commerce électronique peut autoriser les utilisateurs à n'appliquer une remise qu'une seule fois par transaction, ou certaines applications peuvent faire l'objet d'un abonnement et autoriser uniquement les utilisateurs à télécharger trois documents complets par mois.
 
-Vulnerabilities related to testing for the function limits are application specific and misuse cases must be created that strive to exercise parts of the application/functions/ or actions more than the allowable number of times.
+Les vulnérabilités liées au test des limites de fonction sont spécifiques à l'application et des cas d'utilisation abusive doivent être créés qui s'efforcent d'exercer des parties de l'application/des fonctions/ou des actions plus que le nombre de fois autorisé.
 
-Attackers may be able to circumvent the business logic and execute a function more times than "allowable" exploiting the application for personal gain.
+Les attaquants peuvent être en mesure de contourner la logique métier et d'exécuter une fonction plus de fois que « autorisé » en exploitant l'application à des fins personnelles.
 
-### Example
+### Exemple
 
-Suppose an eCommerce site allows users to take advantage of any one of many discounts on their total purchase and then proceed to checkout and tendering. What happens of the attacker navigates back to the discounts page after taking and applying the one "allowable" discount? Can they take advantage of another discount? Can they take advantage of the same discount multiple times?
+Supposons qu'un site de commerce électronique permette aux utilisateurs de profiter de l'une des nombreuses remises sur leur achat total, puis de procéder au paiement et à l'appel d'offres. Que se passe-t-il si l'attaquant revient à la page des remises après avoir pris et appliqué la seule remise "autorisée" ? Peuvent-ils profiter d'une autre réduction ? Peuvent-ils profiter plusieurs fois de la même remise ?
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify functions that must set limits to the times they can be called.
-- Assess if there is a logical limit set on the functions and if it is properly validated.
+- Identifier les fonctions qui doivent fixer des limites aux moments où elles peuvent être appelées.
+- Évaluer s'il y a une limite logique fixée sur les fonctions et si elle est correctement validée.
 
-## How to Test
+## Comment tester
 
-- Review the project documentation and use exploratory testing looking for functions or features in the application or system that should not be executed more that a single time or specified number of times during the business logic workflow.
-- For each of the functions and features found that should only be executed a single time or specified number of times during the business logic workflow, develop abuse/misuse cases that may allow a user to execute more than the allowable number of times. For example, can a user navigate back and forth through the pages multiple times executing a function that should only execute once? or can a user load and unload shopping carts allowing for additional discounts.
+- Examinez la documentation du projet et utilisez des tests exploratoires pour rechercher des fonctions ou des fonctionnalités dans l'application ou le système qui ne doivent pas être exécutées plus d'une seule fois ou un nombre spécifié de fois au cours du flux de travail de la logique métier.
+- Pour chacune des fonctions et fonctionnalités trouvées qui ne doivent être exécutées qu'une seule fois ou un nombre de fois spécifié au cours du flux de travail de la logique métier, développez des cas d'abus/de mauvaise utilisation qui peuvent permettre à un utilisateur d'exécuter plus que le nombre de fois autorisé. Par exemple, un utilisateur peut-il parcourir plusieurs fois les pages en exécutant une fonction qui ne devrait s'exécuter qu'une seule fois ? ou un utilisateur peut-il charger et décharger des paniers d'achat permettant des remises supplémentaires.
 
-## Related Test Cases
+## Cas de test associés
 
-- [Testing for Account Enumeration and Guessable User Account](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md)
-- [Testing for Weak lock out mechanism](../04-Authentication_Testing/03-Testing_for_Weak_Lock_Out_Mechanism.md)
+- [Test d'énumération de compte et de compte d'utilisateur devinable] (../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md)
+- [Test du mécanisme de verrouillage faible] (../04-Authentication_Testing/03-Testing_for_Weak_Lock_Out_Mechanism.md)
 
-## Remediation
+## Correction
 
-The application should set hard controls to prevent limit abuse. This can be achieved by setting a coupon to be no longer valid on the database level, to set a counter limit per user on the back end or database level, as all users should be identified through a session, whichever is better to the business requirement.
+L'application doit définir des contrôles stricts pour éviter les abus de limites. Ceci peut être réalisé en définissant un coupon pour qu'il ne soit plus valide au niveau de la base de données, afin de définir une limite de compteur par utilisateur au niveau du back-end ou de la base de données, car tous les utilisateurs doivent être identifiés via une session, selon ce qui convient le mieux aux besoins de l'entreprise. .
 
-## References
+## Références
 
-- [InfoPath Forms Services business logic exceeded the maximum limit of operations Rule](http://mpwiki.viacode.com/default.aspx?g=posts&t=115678)
-- [Gold Trading Was Temporarily Halted On The CME This Morning](https://www.businessinsider.com/gold-halted-on-cme-for-stop-logic-event-2013-10)
+- [La logique métier d'InfoPath Forms Services a dépassé la limite maximale d'opérations] (http://mpwiki.viacode.com/default.aspx?g=posts&t=115678)
+- [Le ??commerce de l'or a été temporairement interrompu sur le CME ce matin] (https://www.businessinsider.com/gold-halted-on-cme-for-stop-logic-event-2013-10)

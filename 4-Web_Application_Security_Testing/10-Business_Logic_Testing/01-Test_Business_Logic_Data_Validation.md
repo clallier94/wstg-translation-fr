@@ -1,69 +1,69 @@
-# Test Business Logic Data Validation
+# Tester la validation des données de la logique métier
 
 |ID          |
 |------------|
 |WSTG-BUSL-01|
 
-## Summary
+## Sommaire
 
-The application must ensure that only logically valid data can be entered at the front end as well as directly to the server-side of an application of system. Only verifying data locally may leave applications vulnerable to server injections through proxies or at handoffs with other systems. This is different from simply performing Boundary Value Analysis (BVA) in that it is more difficult and in most cases cannot be simply verified at the entry point, but usually requires checking some other system.
+L'application doit s'assurer que seules des données logiquement valides peuvent être saisies à l'avant ainsi que directement côté serveur d'une application de système. Seule la vérification locale des données peut rendre les applications vulnérables aux injections de serveur via des proxys ou lors de transferts avec d'autres systèmes. Ceci est différent de la simple analyse des valeurs limites (BVA) en ce sens qu'il est plus difficile et dans la plupart des cas ne peut pas être simplement vérifié au point d'entrée, mais nécessite généralement la vérification d'un autre système.
 
-For example: An application may ask for your Social Security Number. In BVA the application should check formats and semantics (is the value 9 digits long, not negative and not all 0's) for the data entered, but there are logic considerations also. SSNs are grouped and categorized. Is this person on a death file? Are they from a certain part of the country?
+Par exemple : une application peut vous demander votre numéro de sécurité sociale. Dans BVA, l'application doit vérifier les formats et la sémantique (la valeur est composée de 9 chiffres, non négative et pas uniquement de 0) pour les données saisies, mais il existe également des considérations logiques. Les SSN sont regroupés et catégorisés. Cette personne est-elle dans un dossier de décès ? Sont-ils originaires d'une certaine partie du pays?
 
-Vulnerabilities related to business data validation is unique in that they are application specific and different from the vulnerabilities related to forging requests in that they are more concerned about logical data as opposed to simply breaking the business logic workflow.
+Les vulnérabilités liées à la validation des données métier sont uniques en ce sens qu'elles sont spécifiques à l'application et différentes des vulnérabilités liées aux requêtes falsifiées en ce sens qu'elles sont plus préoccupées par les données logiques que par la simple rupture du flux de travail de la logique métier.
 
-The front end and the back end of the application should be verifying and validating that the data it has, is using and is passing along is logically valid. Even if the user provides valid data to an application the business logic may make the application behave differently depending on data or circumstances.
+Le front-end et le back-end de l'application doivent vérifier et valider que les données dont il dispose, qu'il utilise et qu'il transmet sont logiquement valides. Même si l'utilisateur fournit des données valides à une application, la logique métier peut faire en sorte que l'application se comporte différemment selon les données ou les circonstances.
 
-### Example 1
+### Exemple 1
 
-Suppose you manage a multi-tiered e-commerce site that allows users to order carpet. The user selects their carpet, enters the size, makes the payment, and the front end application has verified that all entered information is correct and valid for contact information, size, make and color of the carpet. But, the business logic in the background has two paths, if the carpet is in stock it is directly shipped from your warehouse, but if it is out of stock in your warehouse a call is made to a partner’s system and if they have it in-stock they will ship the order from their warehouse and reimbursed by them. What happens if an attacker is able to continue a valid in-stock transaction and send it as out-of-stock to your partner? What happens if an attacker is able to get in the middle and send messages to the partner warehouse ordering carpet without payment?
+Supposons que vous gérez un site de commerce électronique à plusieurs niveaux qui permet aux utilisateurs de commander de la moquette. L'utilisateur sélectionne son tapis, entre la taille, effectue le paiement et l'application frontale a vérifié que toutes les informations saisies sont correctes et valides pour les informations de contact, la taille, la marque et la couleur du tapis. Mais, la logique métier en arrière-plan a deux chemins, si le tapis est en stock, il est directement expédié depuis votre entrepôt, mais s'il est en rupture de stock dans votre entrepôt, un appel est passé au système d'un partenaire et s'il l'a dans -stock ils expédieront la commande depuis leur entrepôt et remboursés par eux. Que se passe-t-il si un attaquant est en mesure de poursuivre une transaction en stock valide et de l'envoyer comme étant en rupture de stock à votre partenaire ? Que se passe-t-il si un attaquant est capable de s'interposer et d'envoyer des messages à l'entrepôt partenaire en commandant du tapis sans paiement ?
 
-### Example 2
+### Exemple 2
 
-Many credit card systems are now downloading account balances nightly so the customers can check out more quickly for amounts under a certain value. The inverse is also true. If I pay my credit card off in the morning I may not be able to use the available credit in the evening. Another example may be if I use my credit card at multiple locations very quickly it may be possible to exceed my limit if the systems are basing decisions on last night’s data.
+De nombreux systèmes de cartes de crédit téléchargent désormais les soldes des comptes la nuit afin que les clients puissent régler plus rapidement les montants inférieurs à une certaine valeur. L'inverse est également vrai. Si je rembourse ma carte de crédit le matin, je ne pourrai peut-être pas utiliser le crédit disponible le soir. Un autre exemple peut être que si j'utilise ma carte de crédit à plusieurs endroits très rapidement, il peut être possible de dépasser ma limite si les systèmes fondent leurs décisions sur les données de la nuit dernière.
 
-### Example 3
+### Exemple 3
 
 **[Distributed Denial of Dollar (DDo$)](https://news.hitb.org/content/pirate-bay-proposes-distributed-denial-dollars-attack-ddo):**
-This was a campaign that was proposed by the founder of the website "The Pirate Bay" against the law firm who brought prosecutions against "The Pirate Bay". The goal was to take advantage of errors in the design of business features and in the process of credit transfer validation.
+Il s'agit d'une campagne proposée par le fondateur du site "The Pirate Bay" contre le cabinet d'avocats qui a engagé des poursuites contre "The Pirate Bay". L'objectif était de tirer parti des erreurs dans la conception des fonctionnalités commerciales et dans le processus de validation des virements.
 
-This attack was performed by sending very small amounts of money of 1 SEK ($0.13 USD) to the law firm.
-The bank account to which the payments were directed had only 1000 free transfers, after which any transfers have a surcharge for the account holder (2 SEK). After the first thousand Internet transactions every 1 SEK donation to the law firm will actually end up costing it 1 SEK instead.
+Cette attaque a été réalisée en envoyant de très petites sommes d'argent de 1 SEK (0,13 USD) au cabinet d'avocats.
+Le compte bancaire vers lequel les paiements ont été dirigés n'avait que 1 000 virements gratuits, après quoi tout virement entraîne un supplément pour le titulaire du compte (2 SEK). Après les mille premières transactions sur Internet, chaque don de 1 SEK au cabinet d'avocats finira par lui coûter 1 SEK à la place.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify data injection points.
-- Validate that all checks are occurring on the back end and can't be bypassed.
-- Attempt to break the format of the expected data and analyze how the application is handling it.
+- Identifier les points d'injection de données.
+- Validez que toutes les vérifications se produisent sur le back-end et ne peuvent pas être contournées.
+- Essayez de casser le format des données attendues et analysez comment l'application les gère.
 
-## How to Test
+## Comment tester
 
-### Generic Test Method
+### Méthode de test générique
 
-- Review the project documentation and use exploratory testing looking for data entry points or hand off points between systems or software.
-- Once found try to insert logically invalid data into the application/system.
-Specific Testing Method:
-- Perform front-end GUI Functional Valid testing on the application to ensure that the only "valid" values are accepted.
-- Using an intercepting proxy observe the HTTP POST/GET looking for places that variables such as cost and quality are passed. Specifically, look for "hand-offs" between application/systems that may be possible injection or tamper points.
-- Once variables are found start interrogating the field with logically "invalid" data, such as social security numbers or unique identifiers that do not exist or that do not fit the business logic. This testing verifies that the server functions properly and does not accept logically invalid data.
+- Examinez la documentation du projet et utilisez des tests exploratoires pour rechercher des points d'entrée de données ou des points de transfert entre les systèmes ou les logiciels.
+- Une fois trouvé, essayez d'insérer des données logiquement invalides dans l'application/le système.
+Méthode de test spécifique :
+- Effectuer des tests de validation fonctionnelle de l'interface graphique frontale sur l'application pour s'assurer que seules les valeurs "valides" sont acceptées.
+- À l'aide d'un proxy d'interception, observez le HTTP POST/GET à la recherche d'endroits où des variables telles que le coût et la qualité sont transmises. Plus précisément, recherchez les "transferts" entre les applications/systèmes qui peuvent être des points d'injection ou de sabotage possibles.
+- Une fois les variables trouvées, commencez à interroger le champ avec des données logiquement "invalides", telles que des numéros de sécurité sociale ou des identifiants uniques qui n'existent pas ou qui ne correspondent pas à la logique métier. Ce test vérifie que le serveur fonctionne correctement et n'accepte pas de données logiquement invalides.
 
-## Related Test Cases
+## Cas de test associés
 
-- All [Input Validation](../07-Input_Validation_Testing/README.md) test cases.
-- [Testing for Account Enumeration and Guessable User Account](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md).
-- [Testing for Bypassing Session Management Schema](../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md).
-- [Testing for Exposed Session Variables](../06-Session_Management_Testing/04-Testing_for_Exposed_Session_Variables.md).
+- Tous les cas de test [Input Validation](../07-Input_Validation_Testing/README.md).
+- [Test d'énumération de compte et de compte d'utilisateur devinable] (../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md).
+- [Test pour contourner le schéma de gestion de session] (../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md).
+- [Test des variables de session exposées] (../06-Session_Management_Testing/04-Testing_for_Exposed_Session_Variables.md).
 
-## Remediation
+## Correction
 
-The application/system must ensure that only "logically valid" data is accepted at all input and hand off points of the application or system and data is not simply trusted once it has entered the system.
+L'application/le système doit s'assurer que seules les données "logiquement valides" sont acceptées à tous les points d'entrée et de transfert de l'application ou du système et que les données ne sont pas simplement fiables une fois qu'elles sont entrées dans le système.
 
-## Tools
+## Outils
 
-- [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org)
-- [Burp Suite](https://portswigger.net/burp)
+- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
+- [Burp Suite] (https://portswigger.net/burp)
 
-## References
+## Références
 
-- [OWASP Proactive Controls (C5) - Validate All Inputs](https://owasp.org/www-project-proactive-controls/v3/en/c5-validate-inputs)
-- [OWASP Cheatsheet Series - Input_Validation_Cheat_Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
+- [Contrôles proactifs OWASP (C5) - Valider toutes les entrées](https://owasp.org/www-project-proactive-controls/v3/en/c5-validate-inputs)
+- [Série de feuilles de triche OWASP - Input_Validation_Cheat_Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html)
