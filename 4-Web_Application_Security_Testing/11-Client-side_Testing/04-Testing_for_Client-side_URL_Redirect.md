@@ -1,35 +1,35 @@
-# Testing for Client-side URL Redirect
+# Test de la redirection d'URL côté client
 
 |ID          |
 |------------|
 |WSTG-CLNT-04|
 
-## Summary
+## Sommaire
 
-This section describes how to check for client-side URL redirection, also known as open redirection. It is an input validation flaw that exists when an application accepts user-controlled input that specifies a link which leads to an external URL that could be malicious. This kind of vulnerability could be used to accomplish a phishing attack or redirect a victim to an infection page.
+Cette section décrit comment vérifier la redirection d'URL côté client, également appelée redirection ouverte. Il s'agit d'un défaut de validation d'entrée qui existe lorsqu'une application accepte une entrée contrôlée par l'utilisateur qui spécifie un lien menant à une URL externe qui pourrait être malveillante. Ce type de vulnérabilité pourrait être utilisé pour réaliser une attaque de phishing ou rediriger une victime vers une page d'infection.
 
-This vulnerability occurs when an application accepts untrusted input that contains a URL value and does not sanitize it. This URL value could cause the web application to redirect the user to another page, such as a malicious page controlled by the attacker.
+Cette vulnérabilité se produit lorsqu'une application accepte une entrée non approuvée contenant une valeur d'URL et ne la nettoie pas. Cette valeur d'URL pourrait amener l'application Web à rediriger l'utilisateur vers une autre page, telle qu'une page malveillante contrôlée par l'attaquant.
 
-This vulnerability may enable an attacker to successfully launch a phishing scam and steal user credentials. Since the redirection is originated by the real application, the phishing attempts may have a more trustworthy appearance.
+Cette vulnérabilité peut permettre à un attaquant de lancer avec succès une escroquerie par hameçonnage et de voler les informations d'identification de l'utilisateur. Étant donné que la redirection provient de l'application réelle, les tentatives de phishing peuvent avoir une apparence plus fiable.
 
-Here is an example of a phishing attack URL.
+Voici un exemple d'URL d'attaque de phishing.
 
-```text
+```texte
 http://www.target.site?#redirect=www.fake-target.site
 ```
 
-The victim that visits this URL will be automatically redirected to `fake-target.site`, where an attacker could place a fake page that resembles the intended site, in order to steal the victim's credentials.
+La victime qui visite cette URL sera automatiquement redirigée vers `fake-target.site`, où un attaquant pourrait placer une fausse page qui ressemble au site prévu, afin de voler les informations d'identification de la victime.
 
-Open redirection could also be used to craft a URL that would bypass the application’s access control checks and forward the attacker to privileged functions that they would normally not be able to access.
+La redirection ouverte pourrait également être utilisée pour créer une URL qui contournerait les vérifications de contrôle d'accès de l'application et redirigerait l'attaquant vers des fonctions privilégiées auxquelles il ne serait normalement pas en mesure d'accéder.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify injection points that handle URLs or paths.
-- Assess the locations that the system could redirect to.
+- Identifiez les points d'injection qui gèrent les URL ou les chemins.
+- Évaluer les emplacements vers lesquels le système pourrait rediriger.
 
-## How to Test
+## Comment tester
 
-When testers manually check for this type of vulnerability, they first identify if there are client-side redirections implemented in the client-side code. These redirections may be implemented, to give a JavaScript example, using the `window.location` object. This can be used to direct the browser to another page by simply assigning a string to it. This is demonstrated in the following snippet:
+Lorsque les testeurs recherchent manuellement ce type de vulnérabilité, ils identifient d'abord s'il existe des redirections côté client implémentées dans le code côté client. Ces redirections peuvent être implémentées, pour donner un exemple JavaScript, en utilisant l'objet `window.location`. Cela peut être utilisé pour diriger le navigateur vers une autre page en lui attribuant simplement une chaîne. Ceci est démontré dans l'extrait suivant :
 
 ```js
 var redir = location.hash.substring(1);
@@ -38,15 +38,15 @@ if (redir) {
 }
 ```
 
-In this example, the script does not perform any validation of the variable `redir` which contains the user-supplied input via the query string. Since no form of encoding is applied, this unvalidated input is passed to the `windows.location` object, creating a URL redirection vulnerability.
+Dans cet exemple, le script n'effectue aucune validation de la variable `redir` qui contient l'entrée fournie par l'utilisateur via la chaîne de requête. Puisqu'aucune forme d'encodage n'est appliquée, cette entrée non validée est transmise à l'objet `windows.location`, créant une vulnérabilité de redirection d'URL.
 
-This implies that an attacker could redirect the victim to a malicious site simply by submitting the following query string:
+Cela implique qu'un attaquant pourrait rediriger la victime vers un site malveillant simplement en soumettant la chaîne de requête suivante :
 
 ```text
 http://www.victim.site/?#www.malicious.site
 ```
 
-With a slight modification, the above example snippet can be vulnerable to JavaScript injection.
+Avec une légère modification, l'exemple d'extrait ci-dessus peut être vulnérable à l'injection de JavaScript.
 
 ```js
 var redir = location.hash.substring(1);
@@ -55,10 +55,10 @@ if (redir) {
 }
 ```
 
-This can be exploited by submitting the following query string:
+Cela peut être exploité en soumettant la chaîne de requête suivante :
 
 ```text
 http://www.victim.site/?#javascript:alert(document.cookie)
 ```
 
-When testing for this vulnerability, consider that some characters are treated differently by different browsers. For reference, see [DOM-based XSS](https://owasp.org/www-community/attacks/DOM_Based_XSS).
+Lors du test de cette vulnérabilité, considérez que certains caractères sont traités différemment par différents navigateurs. Pour référence, voir [XSS basé sur DOM](https://owasp.org/www-community/attacks/DOM_Based_XSS).

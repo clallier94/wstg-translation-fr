@@ -1,16 +1,16 @@
-# Testing for CSS Injection
+# Test d'injection CSS
 
 |ID          |
 |------------|
 |WSTG-CLNT-05|
 
-## Summary
+## Sommaire
 
-A CSS Injection vulnerability involves the ability to inject arbitrary CSS code in the context of a trusted web site which is rendered inside a victim's browser. The impact of this type of vulnerability varies based on the supplied CSS payload. It may lead to cross site scripting or data exfiltration.
+Une vulnérabilité d'injection CSS implique la capacité d'injecter du code CSS arbitraire dans le contexte d'un site Web de confiance qui est rendu dans le navigateur d'une victime. L'impact de ce type de vulnérabilité varie en fonction de la charge utile CSS fournie. Cela peut conduire à des scripts intersites ou à une exfiltration de données.
 
-This vulnerability occurs when the application allows user-supplied CSS to interfere with the application's legitimate style sheets. Injecting code in the CSS context may provide an attacker with the ability to execute JavaScript in certain conditions, or to extract sensitive values using CSS selectors and functions able to generate HTTP requests. Generally, allowing users the ability to customize pages by supplying custom CSS files is a considerable risk.
+Cette vulnérabilité se produit lorsque l'application permet au CSS fourni par l'utilisateur d'interférer avec les feuilles de style légitimes de l'application. L'injection de code dans le contexte CSS peut permettre à un attaquant d'exécuter JavaScript dans certaines conditions, ou d'extraire des valeurs sensibles à l'aide de sélecteurs CSS et de fonctions capables de générer des requêtes HTTP. Généralement, permettre aux utilisateurs de personnaliser les pages en fournissant des fichiers CSS personnalisés représente un risque considérable.
 
-The following JavaScript code shows a possible vulnerable script in which the attacker is able to control the `location.hash` (source) which reaches the `cssText` function (sink). This particular case may lead to DOM-based XSS in older browser versions; for more information, see the [DOM-based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html).
+Le code JavaScript suivant montre un possible script vulnérable dans lequel l'attaquant est capable de contrôler le `location.hash` (source) qui atteint la fonction `cssText` (sink). Ce cas particulier peut conduire à XSS basé sur DOM dans les anciennes versions de navigateur ; pour plus d'informations, consultez le [DOM-based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html).
 
 ```html
 <a id="a1">Click me</a>
@@ -21,12 +21,12 @@ The following JavaScript code shows a possible vulnerable script in which the at
 </script>
 ```
 
-The attacker could target the victim by asking them to visit the following URLs:
+L'attaquant pourrait cibler la victime en lui demandant de visiter les URL suivantes :
 
 - `www.victim.com/#red;-o-link:'<javascript:alert(1)>';-o-link-source:current;` (Opera \[8,12\])
 - `www.victim.com/#red;-:expression(alert(URL=1));` (IE 7/8)
 
-The same vulnerability may appear in the case of reflected XSS, for example, in the following PHP code:
+La même vulnérabilité peut apparaître dans le cas du XSS réfléchi, par exemple, dans le code PHP suivant :
 
 ```html
 <style>
@@ -37,9 +37,9 @@ p {
 </style>
 ```
 
-Further attack scenarios involve the ability to extract data through the adoption of pure CSS rules. Such attacks can be conducted through CSS selectors, leading to the exfiltration of data, for example, CSRF tokens.
+D'autres scénarios d'attaque impliquent la possibilité d'extraire des données grâce à l'adoption de règles CSS pures. De telles attaques peuvent être menées via des sélecteurs CSS, conduisant à l'exfiltration de données, par exemple, des jetons CSRF.
 
-Here is an example of code that attempts to select an input with a `name` matching `csrf_token` and a `value` beginning with an `a`. By utilizing a brute-force attack to determine the attribute's `value`, it is possible to carry out an attack that sends the value to the attacker's domain, such as by attempting to set a background image on the selected input element.
+Voici un exemple de code qui tente de sélectionner une entrée avec un `name` correspondant à `csrf_token` et une `value` commençant par un `a`. En utilisant une attaque par force brute pour déterminer la "valeur" de l'attribut, il est possible d'effectuer une attaque qui envoie la valeur au domaine de l'attaquant, par exemple en essayant de définir une image d'arrière-plan sur l'élément d'entrée sélectionné.
 
 ```html
 <style>
@@ -49,18 +49,18 @@ input[name=csrf_token][value=^a] {
 </style>
 ```
 
-Other attacks using solicited content such as CSS are highlighted in [Mario Heiderich's talk, "Got Your Nose"](https://www.youtube.com/watch?v=FIQvAaZj_HA) on YouTube.
+D'autres attaques utilisant du contenu sollicité, telles que CSS, sont présentées dans [Mario Heiderich's talk, "Got Your Nose"](https://www.youtube.com/watch?v=FIQvAaZj_HA) sur YouTube.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify CSS injection points.
-- Assess the impact of the injection.
+- Identifier les points d'injection CSS.
+- Évaluer l'impact de l'injection.
 
-## How to Test
+## Comment tester
 
-Code should be analyzed to determine if a user is permitted to inject content in the CSS context. Particularly, the way in which the website returns CSS rules on the basis of the inputs should be inspected.
+Le code doit être analysé pour déterminer si un utilisateur est autorisé à injecter du contenu dans le contexte CSS. En particulier, la manière dont le site Web renvoie les règles CSS sur la base des entrées doit être inspectée.
 
-The following is a basic example:
+Voici un exemple de base :
 
 ```html
 <a id="a1">Click me</a>
@@ -72,12 +72,12 @@ The following is a basic example:
 </script>
 ```
 
-The above code contains a source `location.hash`, controlled by the attacker, that can inject directly in the `style` attribute of an HTML element. As mentioned above, this may lead to different results depending on the browser in use and the supplied payload.
+Le code ci-dessus contient une source `location.hash`, contrôlée par l'attaquant, qui peut s'injecter directement dans l'attribut `style` d'un élément HTML. Comme mentionné ci-dessus, cela peut conduire à des résultats différents selon le navigateur utilisé et la charge utile fournie.
 
-The following pages provide examples of CSS injection vulnerabilities:
+Les pages suivantes fournissent des exemples de vulnérabilités d'injection CSS :
 
-- [Password "cracker" via CSS and HTML5](http://html5sec.org/invalid/?length=25)
-- [CSS attribute reading](http://eaea.sirdarckcat.net/cssar/v2/)
-- [JavaScript based attacks using `CSSStyleDeclaration` with unescaped input](https://github.com/wisec/domxsswiki/wiki/CSS-Text-sink)
+- [Mot de passe "cracker" via CSS et HTML5](http://html5sec.org/invalid/?length=25)
+- [Lecture des attributs CSS](http://eaea.sirdarckcat.net/cssar/v2/)
+- [Attaques basées sur JavaScript utilisant `CSSStyleDeclaration` avec une entrée non échappée] (https://github.com/wisec/domxsswiki/wiki/CSS-Text-sink)
 
-For further OWASP resources on preventing CSS injection, see the [Securing Cascading Style Sheets Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Securing_Cascading_Style_Sheets_Cheat_Sheet.html).
+Pour plus de ressources OWASP sur la prévention de l'injection CSS, consultez la [Fiche de triche pour la sécurisation des feuilles de style en cascade](https://cheatsheetseries.owasp.org/cheatsheets/Securing_Cascading_Style_Sheets_Cheat_Sheet.html).

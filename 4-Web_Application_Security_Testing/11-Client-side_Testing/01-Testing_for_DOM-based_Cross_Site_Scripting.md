@@ -1,66 +1,66 @@
-# Testing for DOM-Based Cross Site Scripting
+# Test pour le Cross Site Scripting basé sur DOM
 
 |ID          |
 |------------|
 |WSTG-CLNT-01|
 
-## Summary
+## Sommaire
 
-[DOM-based cross-site scripting](https://owasp.org/www-community/attacks/DOM_Based_XSS) is the de-facto name for [XSS](https://owasp.org/www-community/attacks/xss/) bugs that are the result of active browser-side content on a page, typically JavaScript, obtaining user input through a [source](https://github.com/wisec/domxsswiki/wiki/sources) and using it in a [sink](https://github.com/wisec/domxsswiki/wiki/Sinks), leading to the execution of injected code. This document only discusses JavaScript bugs which lead to XSS.
+[Script intersite basé sur DOM](https://owasp.org/www-community/attacks/DOM_Based_XSS) est le nom de facto pour [XSS](https://owasp.org/www-community/attacks /xss/) bogues résultant du contenu actif côté navigateur sur une page, généralement JavaScript, obtenant une entrée utilisateur via une [source](https://github.com/wisec/domxsswiki/wiki/sources) et l'utilisant dans un [sink](https://github.com/wisec/domxsswiki/wiki/Sinks), conduisant à l'exécution de code injecté. Ce document ne traite que des bogues JavaScript qui conduisent à XSS.
 
-The DOM, or [Document Object Model](https://en.wikipedia.org/wiki/Document_Object_Model), is the structural format used to represent documents in a browser. The DOM enables dynamic scripts such as JavaScript to reference components of the document such as a form field or a session cookie. The DOM is also used by the browser for security - for example to limit scripts on different domains from obtaining session cookies for other domains. A DOM-based XSS vulnerability may occur when active content, such as a JavaScript function, is modified by a specially crafted request such that a DOM element that can be controlled by an attacker.
+Le DOM, ou [Document Object Model](https://en.wikipedia.org/wiki/Document_Object_Model), est le format structurel utilisé pour représenter les documents dans un navigateur. Le DOM permet aux scripts dynamiques tels que JavaScript de référencer des composants du document tels qu'un champ de formulaire ou un cookie de session. Le DOM est également utilisé par le navigateur pour la sécurité - par exemple pour empêcher les scripts sur différents domaines d'obtenir des cookies de session pour d'autres domaines. Une vulnérabilité XSS basée sur DOM peut se produire lorsqu'un contenu actif, tel qu'une fonction JavaScript, est modifié par une requête spécialement conçue, de sorte qu'un élément DOM peut être contrôlé par un attaquant.
 
-Not all XSS bugs require the attacker to control the content returned from the server, but can instead abuse poor JavaScript coding practices to achieve the same results. The consequences are the same as a typical XSS flaw, only the means of delivery is different.
+Tous les bogues XSS n'exigent pas que l'attaquant contrôle le contenu renvoyé par le serveur, mais peuvent plutôt abuser des mauvaises pratiques de codage JavaScript pour obtenir les mêmes résultats. Les conséquences sont les mêmes qu'une faille XSS typique, seul le moyen de livraison est différent.
 
-In comparison to other types of cross site scripting vulnerabilities ([reflected and stored](https://owasp.org/www-community/attacks/xss/), where an un-sanitized parameter is passed by the server then returned to the user and executed in the context of the user's browser, a DOM-based XSS vulnerability controls the flow of the code by using elements of the Document Object Model (DOM) along with code crafted by the attacker to change the flow.
+En comparaison avec d'autres types de vulnérabilités de script intersite ([reflected and storage](https://owasp.org/www-community/attacks/xss/), où un paramètre non nettoyé est transmis par le serveur puis renvoyé au utilisateur et exécutée dans le contexte du navigateur de l'utilisateur, une vulnérabilité XSS basée sur DOM contrôle le flux du code en utilisant des éléments du modèle d'objet de document (DOM) ainsi que du code conçu par l'attaquant pour modifier le flux.
 
-Due to their nature, DOM-based XSS vulnerabilities can be executed in many instances without the server being able to determine what is actually being executed. This may make many of the general XSS filtering and detection techniques impotent to such attacks.
+En raison de leur nature, les vulnérabilités XSS basées sur DOM peuvent être exécutées dans de nombreux cas sans que le serveur ne puisse déterminer ce qui est réellement exécuté. Cela peut rendre de nombreuses techniques générales de filtrage et de détection XSS impuissantes à de telles attaques.
 
-This hypothetical example uses the following client-side code:
+Cet exemple hypothétique utilise le code côté client suivant :
 
 ```html
 <script>
-document.write("Site is at: " + document.location.href + ".");
+document.write("Site is at : " + document.location.href + ".");
 </script>
 ```
 
-An attacker may append `#<script>alert('xss')</script>` to the affected page URL which would, when executed, display the alert box. In this instance, the appended code would not be sent to the server as everything after the `#` character is not treated as part of the query by the browser, but as a fragment. In this example, the code is immediately executed and an alert of "xss" is displayed by the page. Unlike the more common types of cross site scripting ([reflected and stored](https://owasp.org/www-community/attacks/xss/) in which the code is sent to the server and then back to the browser, this is executed directly in the user's browser without server contact.
+Un attaquant peut ajouter `#<script>alert('xss')</script>` à l'URL de la page affectée qui, une fois exécutée, afficherait la boîte d'alerte. Dans ce cas, le code ajouté ne serait pas envoyé au serveur car tout ce qui suit le caractère "#" n'est pas traité comme faisant partie de la requête par le navigateur, mais comme un fragment. Dans cet exemple, le code est immédiatement exécuté et une alerte "xss" est affichée par la page. Contrairement aux types de scripts intersites les plus courants ([réfléchis et stockés](https://owasp.org/www-community/attacks/xss/) dans lesquels le code est envoyé au serveur puis renvoyé au navigateur, cela est exécuté directement dans le navigateur de l'utilisateur sans contact avec le serveur.
 
-The [consequences](https://owasp.org/www-community/attacks/xss/) of DOM-based XSS flaws are as wide ranging as those seen in more well known forms of XSS, including cookie retrieval, further malicious script injection, etc., and should therefore be treated with the same severity.
+Les [conséquences](https://owasp.org/www-community/attacks/xss/) des failles XSS basées sur DOM sont aussi étendues que celles observées dans des formes XSS plus connues, y compris la récupération de cookies, d'autres scripts malveillants injection, etc., et doivent donc être traités avec la même sévérité.
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify DOM sinks.
-- Build payloads that pertain to every sink type.
+- Identifier les puits DOM.
+- Créez des charges utiles qui se rapportent à chaque type de puits.
 
-## How to Test
+## Comment tester
 
-JavaScript applications differ significantly from other types of applications because they are often dynamically generated by the server. To understand what code is being executed, the website being tested needs to be crawled to determine all the instances of JavaScript being executed and where user input is accepted. Many websites rely on large libraries of functions, which often stretch into the hundreds of thousands of lines of code and have not been developed in-house. In these cases, top-down testing often becomes the only viable option, since many bottom level functions are never used, and analyzing them to determine which are sinks will use up more time than is often available. The same can also be said for top-down testing if the inputs or lack thereof is not identified to begin with.
+Les applications JavaScript diffèrent considérablement des autres types d'applications car elles sont souvent générées dynamiquement par le serveur. Pour comprendre quel code est exécuté, le site Web testé doit être exploré pour déterminer toutes les instances de JavaScript en cours d'exécution et où l'entrée de l'utilisateur est acceptée. De nombreux sites Web s'appuient sur de grandes bibliothèques de fonctions, qui s'étendent souvent sur des centaines de milliers de lignes de code et n'ont pas été développées en interne. Dans ces cas, les tests descendants deviennent souvent la seule option viable, car de nombreuses fonctions de niveau inférieur ne sont jamais utilisées, et leur analyse pour déterminer quels sont les puits prendra plus de temps que ce qui est souvent disponible. La même chose peut également être dite pour les tests descendants si les entrées ou leur absence ne sont pas identifiées pour commencer.
 
-User input comes in two main forms:
+L'entrée de l'utilisateur se présente sous deux formes principales :
 
-- Input written to the page by the server in a way that does not allow direct XSS, and
-- Input obtained from client-side JavaScript objects.
+- Entrée écrite sur la page par le serveur d'une manière qui n'autorise pas le XSS direct, et
+- Entrée obtenue à partir d'objets JavaScript côté client.
 
-Here are two examples of how the server may insert data into JavaScript:
+Voici deux exemples de la manière dont le serveur peut insérer des données dans JavaScript :
 
 ```js
 var data = "<escaped data from the server>";
 var result = someFunction("<escaped data from the server>");
 ```
 
-Here are two examples of input from client-side JavaScript objects:
+Voici deux exemples d'entrées d'objets JavaScript côté client :
 
 ```js
 var data = window.location;
 var result = someFunction(window.referrer);
 ```
 
-While there is little difference to the JavaScript code in how they are retrieved, it is important to note that when input is received via the server, the server can apply any permutations to the data that it desires. On the other hand, the permutations performed by JavaScript objects are fairly well understood and documented. If `someFunction` in the above example were a sink, then the exploitability in the former case would depend on the filtering done by the server, whereas in the latter case it would depend on the encoding done by the browser on the `window.referrer` object. Stefano Di Paulo has written an excellent article on what browsers return when asked for the various elements of a [URL using the document and location attributes](https://github.com/wisec/domxsswiki/wiki/location,-documentURI-and-URL-sources).
+Bien qu'il y ait peu de différence avec le code JavaScript dans la façon dont ils sont récupérés, il est important de noter que lorsque l'entrée est reçue via le serveur, le serveur peut appliquer toutes les permutations aux données qu'il souhaite. En revanche, les permutations effectuées par les objets JavaScript sont assez bien comprises et documentées. Si `someFunction` dans l'exemple ci-dessus était un puits, alors l'exploitabilité dans le premier cas dépendrait du filtrage effectué par le serveur, alors que dans le second cas, cela dépendrait de l'encodage effectué par le navigateur sur le `window.referrer ` objet. Stefano Di Paulo a écrit un excellent article sur ce que les navigateurs renvoient lorsqu'on leur demande les différents éléments d'une [URL utilisant les attributs de document et d'emplacement] (https://github.com/wisec/domxsswiki/wiki/location,-documentURI-and -URL-sources).
 
-Additionally, JavaScript is often executed outside of `<script>` blocks, as evidenced by the many vectors which have led to XSS filter bypasses in the past. When crawling the application, it is important to note the use of scripts in places such as event handlers and CSS blocks with expression attributes. Also, note that any off-site CSS or script objects will need to be assessed to determine what code is being executed.
+De plus, JavaScript est souvent exécuté en dehors des blocs `<script>`, comme en témoignent les nombreux vecteurs qui ont conduit à des contournements de filtres XSS dans le passé. Lors de l'exploration de l'application, il est important de noter l'utilisation de scripts dans des endroits tels que les gestionnaires d'événements et les blocs CSS avec des attributs d'expression. Notez également que tout objet CSS ou script hors site devra être évalué pour déterminer quel code est exécuté.
 
-Automated testing has only very limited success at identifying and validating DOM-based XSS as it usually identifies XSS by sending a specific payload and attempts to observe it in the server response. This may work fine for the simple example provided below, where the message parameter is reflected back to the user:
+Les tests automatisés n'ont qu'un succès très limité pour identifier et valider les XSS basés sur DOM, car ils identifient généralement les XSS en envoyant une charge utile spécifique et tentent de l'observer dans la réponse du serveur. Cela peut fonctionner correctement pour l'exemple simple fourni ci-dessous, où le paramètre de message est renvoyé à l'utilisateur :
 
 ```html
 <script>
@@ -69,7 +69,7 @@ document.write(document.URL.substring(pos,document.URL.length));
 </script>
 ```
 
-However, it may not be detected in the following contrived case:
+Cependant, il peut ne pas être détecté dans le cas artificiel suivant :
 
 ```html
 <script>
@@ -85,15 +85,15 @@ else
 </script>
 ```
 
-For this reason, automated testing will not detect areas that may be susceptible to DOM-based XSS unless the testing tool can perform additional analysis of the client-side code.
+Pour cette raison, les tests automatisés ne détecteront pas les zones susceptibles d'être sensibles au XSS basé sur DOM, à moins que l'outil de test ne puisse effectuer une analyse supplémentaire du code côté client.
 
-Manual testing should therefore be undertaken and can be done by examining areas in the code where parameters are referred to that may be useful to an attacker. Examples of such areas include places where code is dynamically written to the page and elsewhere where the DOM is modified or even where scripts are directly executed.
+Des tests manuels doivent donc être entrepris et peuvent être effectués en examinant les zones du code où des paramètres sont référencés qui peuvent être utiles à un attaquant. des exemples de telles zones incluent des endroits où le code est écrit dynamiquement sur la page et ailleurs où le DOM est modifié ou même où des scripts sont directement exécutés.
 
-## Remediation
+## Correction
 
-For measures to prevent DOM-based XSS, see the [DOM-based XSS Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html).
+Pour connaître les mesures visant à empêcher le XSS basé sur DOM, consultez la [Fiche de triche de prévention du XSS basé sur DOM](https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html).
 
-## References
+## Références
 
 - [DomXSSWiki](https://github.com/wisec/domxsswiki/wiki/)
-- [DOM XSS article by Amit Klein](http://www.webappsec.org/projects/articles/071105.html)
+- [Article DOM XSS par Amit Klein](http://www.webappsec.org/projects/articles/071105.html)

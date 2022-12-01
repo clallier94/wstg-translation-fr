@@ -1,45 +1,45 @@
-# Testing for Cross Site Script Inclusion
+# Test de l'inclusion de scripts intersites
 
-|ID          |
+|ID |
 |------------|
 |WSTG-CLNT-13|
 
-## Summary
+## Sommaire
 
-Cross Site Script Inclusion (XSSI) vulnerability allows sensitive data leakage across-origin or cross-domain boundaries. Sensitive data could include authentication-related data (login states, cookies, auth tokens, session IDs, etc.) or user's personal or sensitive personal data (email addresses, phone numbers, credit card details, social security numbers, etc.). XSSI is a client-side attack similar to Cross Site Request Forgery (CSRF) but has a different purpose. Where CSRF uses the authenticated user context to execute certain state-changing actions inside a victim’s page (e.g. transfer money to the attacker's account, modify privileges, reset password, etc.), XSSI instead uses JavaScript on the client-side to leak sensitive data from authenticated sessions.
+La vulnérabilité Cross Site Script Inclusion (XSSI) permet une fuite de données sensibles à travers les frontières d'origine ou entre domaines. Les données sensibles peuvent inclure des données liées à l'authentification (états de connexion, cookies, jetons d'authentification, identifiants de session, etc.) ou des données personnelles ou sensibles de l'utilisateur (adresses e-mail, numéros de téléphone, détails de carte de crédit, numéros de sécurité sociale, etc.). XSSI est une attaque côté client similaire à Cross Site Request Forgery (CSRF) mais a un objectif différent. Là où CSRF utilise le contexte de l'utilisateur authentifié pour exécuter certaines actions de changement d'état à l'intérieur de la page d'une victime (par exemple, transférer de l'argent sur le compte de l'attaquant, modifier les privilèges, réinitialiser le mot de passe, etc.), XSSI utilise à la place JavaScript côté client pour divulguer des données sensibles. à partir de sessions authentifiées.
 
-By default, websites are only allowed to access data if they are from the same origin. This is a key application security principle and governed by the same-origin policy (defined by [RFC 6454](https://tools.ietf.org/html/rfc6454)). An origin is defined as the combination of URI scheme (HTTP or HTTPS), host name, and port number. However, this policy is not applicable for HTML `<script>` tag inclusions. This exception is necessary, as without it websites would not be able to consume third party services, perform traffic analysis, or use advertisement platforms, etc.
+Par défaut, les sites Web ne sont autorisés à accéder aux données que s'ils proviennent de la même origine. Il s'agit d'un principe clé de sécurité des applications et régi par la politique de même origine (définie par [RFC 6454](https://tools.ietf.org/html/rfc6454)). Une origine est définie comme la combinaison d'un schéma d'URI (HTTP ou HTTPS), d'un nom d'hôte et d'un numéro de port. Cependant, cette règle ne s'applique pas aux inclusions de balises HTML `<script>`. Cette exception est nécessaire, car sans elle, les sites Web ne pourraient pas consommer de services tiers, effectuer des analyses de trafic, utiliser des plateformes publicitaires, etc.
 
-When the browser opens a website with `<script>` tags, the resources are fetched from the cross-origin domain. The resources then run in the same context as the including site or browser, which presents the opportunity to leak sensitive data. In most cases, this is achieved using JavaScript, however, the script source doesn't have to be a JavaScript file with type `text/javascript` or `.js` extension.
+Lorsque le navigateur ouvre un site Web avec des balises `<script>`, les ressources sont extraites du domaine d'origine croisée. Les ressources s'exécutent alors dans le même contexte que le site ou le navigateur inclus, ce qui présente la possibilité de divulguer des données sensibles. Dans la plupart des cas, cela est réalisé en utilisant JavaScript, cependant, la source du script n'a pas besoin d'être un fichier JavaScript avec le type `text/javascript` ou l'extension `.js`.
 
-Older browser's vulnerabilities (IE9/10) allowed data leakage via JavaScript error messages at runtime, but those vulnerabilities have now been patched by vendors and are considered less relevant. By setting the charset attribute of the `<script>` tag, an attacker or tester can enforce UTF-16 encoding, allowing data leakage for other data formats (e.g. JSON) in some cases. For more on these attacks, see [Identifier based XSSI attacks](https://www.mbsd.jp/Whitepaper/xssi.pdf).
+Les vulnérabilités des anciens navigateurs (IE9/10) permettaient des fuites de données via des messages d'erreur JavaScript lors de l'exécution, mais ces vulnérabilités ont maintenant été corrigées par les fournisseurs et sont considérées comme moins pertinentes. En définissant l'attribut charset de la balise `<script>`, un attaquant ou un testeur peut appliquer le codage UTF-16, permettant une fuite de données pour d'autres formats de données (par exemple JSON) dans certains cas. Pour en savoir plus sur ces attaques, consultez [Attaques XSSI basées sur l'identifiant](https://www.mbsd.jp/Whitepaper/xssi.pdf).
 
-## Test Objectives
+## Objectifs des tests
 
-- Locate sensitive data across the system.
-- Assess the leakage of sensitive data through various techniques.
+- Localisez les données sensibles à travers le système.
+- Évaluer la fuite de données sensibles à travers diverses techniques.
 
-## How to Test
+## Comment tester
 
-### Collect Data Using Authenticated and Unauthenticated User Sessions
+### Collecter des données à l'aide de sessions utilisateur authentifiées et non authentifiées
 
-Identify which endpoints are responsible for sending sensitive data, what parameters are required, and identify all relevant dynamically and statically generated JavaScript responses using authenticated user sessions. Pay special attention to sensitive data sent using [JSONP](https://en.wikipedia.org/wiki/JSONP). To find dynamically generated JavaScript responses, generate authenticated and unauthenticated requests, then compare them. If they're different, it means the response is dynamic; otherwise it's static. To simplify this task, a tool such as [Veit Hailperin's Burp proxy plugin](https://github.com/luh2/DetectDynamicJS) can be used. Make sure to check other file types in addition to JavaScript; XSSI is not limited to JavaScript files alone.
+Identifiez les terminaux responsables de l'envoi des données sensibles, les paramètres requis et identifiez toutes les réponses JavaScript pertinentes générées dynamiquement et statiquement à l'aide de sessions utilisateur authentifiées. Portez une attention particulière aux données sensibles envoyées à l'aide de [JSONP](https://en.wikipedia.org/wiki/JSONP). Pour trouver des réponses JavaScript générées dynamiquement, générez des requêtes authentifiées et non authentifiées, puis comparez-les. S'ils sont différents, cela signifie que la réponse est dynamique ; sinon c'est statique. Pour simplifier cette tâche, un outil tel que [plug-in proxy Burp de Veit Hailperin](https://github.com/luh2/DetectDynamicJS) peut être utilisé. Assurez-vous de vérifier d'autres types de fichiers en plus de JavaScript ; XSSI n'est pas limité aux seuls fichiers JavaScript.
 
-### Determine Whether the Sensitive Data Can Be Leaked Using JavaScript
+### Déterminer si les données sensibles peuvent être divulguées à l'aide de JavaScript
 
-Testers should analyze code for the following vehicles for data leakage via XSSI vulnerabilities:
+Les testeurs doivent analyser le code des véhicules suivants pour détecter les fuites de données via les vulnérabilités XSSI :
 
-1. Global variables
-2. Global function parameters
-3. CSV (Comma Separated Values) with quotations theft
-4. JavaScript runtime errors
-5. Prototype chaining using `this`
+1. Variables globales
+2. Paramètres de fonction globaux
+3. CSV (Comma Separated Values) avec vol de citations
+4. Erreurs d'exécution JavaScript
+5. Chaînage de prototypes en utilisant `this`
 
-### 1. Sensitive Data Leakage via Global Variables
+### 1. Fuite de données sensibles via des variables globales
 
-An API key is stored in a JavaScript file with the URI `https://victim.com/internal/api.js` on the victim's website, `victim.com`, which is only accessible to authenticated users. An attacker configures a website, `attackingwebsite.com`, and uses the `<script>` tag to refer to the JavaScript file.
+Une clé API est stockée dans un fichier JavaScript avec l'URI `https://victim.com/internal/api.js` sur le site Web de la victime, `victim.com`, qui n'est accessible qu'aux utilisateurs authentifiés. Un attaquant configure un site Web, `attackingwebsite.com`, et utilise la balise `<script>` pour faire référence au fichier JavaScript.
 
-Here are the contents of `https://victim.com/internal/api.js`:
+Voici le contenu de `https://victim.com/internal/api.js` :
 
 ```javascript
 (function() {
@@ -47,7 +47,7 @@ Here are the contents of `https://victim.com/internal/api.js`:
 })();
 ```
 
-The attack site, `attackingwebsite.com`, has an `index.html` with the following code:
+Le site d'attaque, `attackingwebsite.com`, a un `index.html` avec le code suivant :
 
 ```html
 <!DOCTYPE html>
@@ -68,13 +68,13 @@ The attack site, `attackingwebsite.com`, has an `index.html` with the following 
 </html>
 ```
 
-In this example, a victim is authenticated with `victim.com`. An attacker lures the victim to `attackingwebsite.com` via social engineering, phishing emails, etc. The victim's browser then fetches `api.js`, resulting in the sensitive data being leaked via the global JavaScript variable and displayed using `innerHTML`.
+Dans cet exemple, une victime est authentifiée avec `victim.com`. Un attaquant attire la victime vers "attackingwebsite.com" via l'ingénierie sociale, des e-mails de phishing, etc. Le navigateur de la victime récupère ensuite "api.js", ce qui entraîne la fuite des données sensibles via la variable JavaScript globale et leur affichage à l'aide de "innerHTML".
 
-### 2. Sensitive Data Leakage via Global Function Parameters
+### 2. Fuite de données sensibles via les paramètres de fonction globaux
 
-This example is similar to the previous one, except in this case `attackingwebsite.com` uses a global JavaScript function to extract the sensitive data by overwriting the victim's global JavaScript function.
+Cet exemple est similaire au précédent, sauf que dans ce cas, `attackingwebsite.com` utilise une fonction JavaScript globale pour extraire les données sensibles en écrasant la fonction JavaScript globale de la victime.
 
-Here are the contents of `https://victim.com/internal/api.js`:
+Voici le contenu de `https://victim.com/internal/api.js` :
 
 ```javascript
 (function() {
@@ -83,7 +83,7 @@ Here are the contents of `https://victim.com/internal/api.js`:
 })();
 ```
 
-The attack site, `attackingwebsite.com`, has an `index.html` with the following code:
+Le site d'attaque, `attackingwebsite.com`, a un `index.html` avec le code suivant :
 
 ```html
 <!DOCTYPE html>
@@ -105,11 +105,11 @@ The attack site, `attackingwebsite.com`, has an `index.html` with the following 
 </html>
 ```
 
-There are other XSSI vulnerabilities that can result in sensitive data leakage either via JavaScript prototype chains or global function calls. For more on these attacks, see [The Unexpected Dangers of Dynamic JavaScript](https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-lekies.pdf).
+Il existe d'autres vulnérabilités XSSI qui peuvent entraîner des fuites de données sensibles via des chaînes de prototypes JavaScript ou des appels de fonctions globales. Pour en savoir plus sur ces attaques, consultez [Les dangers inattendus du JavaScript dynamique](https://www.usenix.org/system/files/conference/usenixsecurity15/sec15-paper-lekies.pdf).
 
-### 3. Sensitive Data Leakage via CSV with Quotations Theft
+### 3. Fuite de données sensibles via CSV avec vol de devis
 
-To leak data the attacker/tester has to be able to inject JavaScript code into the CSV data. The following example code is an excerpt from Takeshi Terada's [Identifier based XSSI attacks](https://www.mbsd.jp/Whitepaper/xssi.pdf) whitepaper.
+Pour divulguer des données, l'attaquant/testeur doit pouvoir injecter du code JavaScript dans les données CSV. L'exemple de code suivant est un extrait du livre blanc [Identifier based XSSI attack](https://www.mbsd.jp/Whitepaper/xssi.pdf) de Takeshi Terada.
 
 ```text
 HTTP/1.1 200 OK
@@ -117,24 +117,24 @@ Content-Type: text/csv
 Content-Disposition: attachment; filename="a.csv"
 Content-Length: xxxx
 
-1,"___","aaa@a.example","03-0000-0001"
-2,"foo","bbb@b.example","03-0000-0002"
+1,"___","aaa@a.exemple","03-0000-0001"
+2,"foo","bbb@b.exemple","03-0000-0002"
 ...
-98,"bar","yyy@example.net","03-0000-0088"
-99,"___","zzz@example.com","03-0000-0099"
+98,"bar","yyy@exemple.net","03-0000-0088"
+99,"___","zzz@exemple.com","03-0000-0099"
 ```
 
-In this example, using the `___` columns as injection points and inserting JavaScript strings in their place has the following result.
+Dans cet exemple, l'utilisation des colonnes `____` comme points d'injection et l'insertion de chaînes JavaScript à leur place donne le résultat suivant.
 
 ```text
-1,"\"",$$$=function(){/*","aaa@a.example","03-0000-0001"
-2,"foo","bbb@b.example","03-0000-0002"
+1,"\"",$$$=function(){/*","aaa@a.exemple","03-0000-0001"
+2,"foo","bbb@b.exemple","03-0000-0002"
 ...
-98,"bar","yyy@example.net","03-0000-0088"
-99,"*/}//","zzz@example.com","03-0000-0099"
+98,"bar","yyy@exemple.net","03-0000-0088"
+99,"*/}//","zzz@exemple.com","03-0000-0099"
 ```
 
-[Jeremiah Grossman wrote about a similar vulnerability in Gmail](https://blog.jeremiahgrossman.com/2006/01/advanced-web-attack-techniques-using.html) in 2006 that allowed the extraction of user contacts in JSON. In this case, the data was received from Gmail and parsed by the browser JavaScript engine using an unreferenced Array constructor to leak the data. An attacker could access this Array with the sensitive data by defining and overwriting the internal Array constructor like this:
+[Jeremiah Grossman a écrit sur une vulnérabilité similaire dans Gmail](https://blog.jeremiahgrossman.com/2006/01/advanced-web-attack-techniques-using.html) en 2006 qui permettait l'extraction des contacts des utilisateurs dans JSON. Dans ce cas, les données ont été reçues de Gmail et analysées par le moteur JavaScript du navigateur à l'aide d'un constructeur Array non référencé pour divulguer les données. Un attaquant pourrait accéder à ce Array avec les données sensibles en définissant et en écrasant le constructeur Array interne comme ceci :
 
 ```html
 <!DOCTYPE html>
@@ -153,9 +153,9 @@ In this example, using the `___` columns as injection points and inserting JavaS
 </html>
 ```
 
-### 4. Sensitive Data Leakage via JavaScript Runtime Errors
+### 4. Fuite de données sensibles via des erreurs d'exécution JavaScript
 
-Browsers normally present standardized [JavaScript error messages](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors). However, in the case of IE9/10, runtime error messages provided additional details that could be used to leak data. For example, a website `victim.com` serves the following content at the URI `http://victim.com/service/csvendpoint` for authenticated users:
+Les navigateurs présentent normalement des [messages d'erreur JavaScript] normalisés (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors). Cependant, dans le cas d'IE9/10, les messages d'erreur d'exécution ont fourni des détails supplémentaires qui pourraient être utilisés pour divulguer des données. Par exemple, un site Web "victim.com" diffuse le contenu suivant à l'URI "http://victim.com/service/csvendpoint" pour les utilisateurs authentifiés :
 
 ```text
 HTTP/1.1 200 OK
@@ -166,7 +166,7 @@ Content-Length: 13
 1,abc,def,ghi
 ```
 
-This vulnerability could be exploited with the following:
+Cette vulnérabilité pourrait être exploitée avec les éléments suivants :
 
 ```html
 <!--error handler -->
@@ -175,16 +175,16 @@ This vulnerability could be exploited with the following:
 <script src="http://victim.com/service/csvendpoint"></script>
 ```
 
-When the browser tries to render the CSV content as JavaScript, it fails and leaks the sensitive data:
+Lorsque le navigateur essaie de restituer le contenu CSV en JavaScript, il échoue et perd les données sensibles :
 
-![JavaScript runtime error message ](images/XSSI1.jpeg)\
-*Figure 4.11.13-1: JavaScript runtime error message*
+![Message d'erreur d'exécution JavaScript ](images/XSSI1.jpeg)\
+*Figure 4.11.13-1 : Message d'erreur d'exécution JavaScript*
 
-### 5. Sensitive Data Leakage via Prototype Chaining Using `this`
+### 5. Fuite de données sensibles via le chaînage de prototypes à l'aide de `this`
 
-In JavaScript, the `this` keyword is dynamically scoped. This means if a function is called upon an object, `this` will point to this object even though the called function might not belong to the object itself. This behavior can be used to leak data. In the following example from [Sebastian Leike's demonstration page](http://sebastian-lekies.de/leak/), the sensitive data is stored in an Array. An attacker can override `Array.prototype.forEach` with an attacker-controlled function. If some code calls the `forEach` function on an array instance that contains sensitive values, the attacker-controlled function will be invoked with `this` pointing to the object that contains the sensitive data.
+En JavaScript, le mot-clé `this` est défini dynamiquement. Cela signifie que si une fonction est appelée sur un objet, "this" pointera vers cet objet même si la fonction appelée n'appartient pas à l'objet lui-même. Ce comportement peut être utilisé pour divulguer des données. Dans l'exemple suivant de la [page de démonstration de Sebastian Leike](http://sebastian-lekies.de/leak/), les données sensibles sont stockées dans un Array. Un attaquant peut remplacer `Array.prototype.forEach` par une fonction contrôlée par l'attaquant. Si du code appelle la fonction `forEach` sur une instance de tableau contenant des valeurs sensibles, la fonction contrôlée par l'attaquant sera invoquée avec `this` pointant vers l'objet contenant les données sensibles.
 
-Here is an excerpt of a JavaScript file containing sensitive data, `javascript.js`:
+Voici un extrait d'un fichier JavaScript contenant des données sensibles, `javascript.js` :
 
 ```javascript
 ...
@@ -198,7 +198,7 @@ Here is an excerpt of a JavaScript file containing sensitive data, `javascript.j
 ...
 ```
 
-The sensitive data can be leaked with the following JavaScript code:
+Les données sensibles peuvent être divulguées avec le code JavaScript suivant :
 
 ```html
 ...

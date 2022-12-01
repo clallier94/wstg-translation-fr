@@ -1,35 +1,35 @@
-# Testing Web Messaging
+# Tester la messagerie Web
 
 |ID          |
 |------------|
 |WSTG-CLNT-11|
 
-## Summary
+## Sommaire
 
-Web Messaging (also known as [Cross Document Messaging](https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging)) allows applications running on different domains to communicate in a secure manner. Before the introduction of web messaging, the communication of different origins (between iframes, tabs and windows) was restricted by the same origin policy and enforced by the browser. Developers used multiple hacks in order to accomplish these tasks, and most of them were mainly insecure.
+La messagerie Web (également connue sous le nom de [messagerie croisée](https://html.spec.whatwg.org/multipage/web-messaging.html#web-messaging)) permet aux applications exécutées sur différents domaines de communiquer de manière sécurisée. Avant l'introduction de la messagerie Web, la communication d'origines différentes (entre les iframes, les onglets et les fenêtres) était restreinte par la même politique d'origine et imposée par le navigateur. Les développeurs ont utilisé plusieurs hacks pour accomplir ces tâches, et la plupart d'entre eux étaient principalement non sécurisés.
 
-This restriction within the browser is in place to prevent a malicious website from reading confidential data from other iframes, tabs, etc; however, there are some legitimate cases where two trusted websites need to exchange data with each other. To meet this need, Cross Document Messaging was introduced in the [WHATWG HTML5](https://html.spec.whatwg.org/multipage/) draft specification and was implemented in all major browsers. It enables secure communications between multiple origins across iframes, tabs and windows.
+Cette restriction dans le navigateur est en place pour empêcher un site Web malveillant de lire des données confidentielles à partir d'autres iframes, onglets, etc. ; cependant, il existe des cas légitimes où deux sites Web de confiance doivent échanger des données entre eux. Pour répondre à ce besoin, la messagerie interdocuments a été introduite dans le projet de spécification [WHATWG HTML5](https://html.spec.whatwg.org/multipage/) et a été implémentée dans tous les principaux navigateurs. Il permet des communications sécurisées entre plusieurs origines à travers des iframes, des onglets et des fenêtres.
 
-The messaging API introduced the [`postMessage()` method](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage), with which plain-text messages can be sent cross-origin. It consists of two parameters: message, and domain.
+L'API de messagerie a introduit la [méthode `postMessage()`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage), avec laquelle des messages en texte brut peuvent être envoyés origine. Il se compose de deux paramètres : message et domaine.
 
-There are some security concerns when using `*` as the domain that we discuss below. In order to receive messages, the receiving website needs to add a new event handler, which has the following attributes:
+Il existe des problèmes de sécurité lors de l'utilisation de `*` comme domaine dont nous parlerons ci-dessous. Pour recevoir des messages, le site Web destinataire doit ajouter un nouveau gestionnaire d'événements, qui possède les attributs suivants :
 
-- Data, the content of the incoming message;
-- Origin of the sender document; and
-- Source, the source window.
+- Données, le contenu du message entrant ;
+- Origine du document expéditeur ; et
+- Source, la fenêtre source.
 
-Here is an example of the messaging API in use. To send a message:
+Voici un exemple de l'API de messagerie utilisée. Pour envoyer un message :
 
 ```js
-iframe1.contentWindow.postMessage("Hello world","http://www.example.com");
+iframe1.contentWindow.postMessage("Hello world","http://www.exemple.com");
 ```
 
-To receive a message:
+Pour recevoir un message :
 
 ```js
 window.addEventListener("message", handler, true);
 function handler(event) {
-    if(event.origin === 'chat.example.com') {
+    if(event.origin === 'chat.exemple.com') {
         /* process message (event.data) */
     } else {
         /* ignore messages from untrusted domains */
@@ -37,32 +37,32 @@ function handler(event) {
 }
 ```
 
-### Origin Security
+### Sécurité d'origine
 
-The origin is made up of a scheme, host name, and port. It uniquely identifies the domain sending or receiving the message, and does not include the path or the fragment part of the URL. For instance, `https://example.com` will be considered different from `http://example.com` because the schema of the former is `https`, while the latter is `http`. This also applies to web servers running in the same domain but on different ports.
+L'origine est composée d'un schéma, d'un nom d'hôte et d'un port. Il identifie de manière unique le domaine qui envoie ou reçoit le message et n'inclut pas le chemin ou la partie fragment de l'URL. Par exemple, `https://exemple.com` sera considéré comme différent de `http://exemple.com` car le schéma du premier est `https`, tandis que le second est `http`. Cela s'applique également aux serveurs Web exécutés dans le même domaine mais sur des ports différents.
 
-## Test Objectives
+## Objectifs des tests
 
-- Assess the security of the message's origin.
-- Validate that it's using safe methods and validating its input.
+- Évaluer la sécurité de l'origine du message.
+- Validez qu'il utilise des méthodes sûres et validez son entrée.
 
-## How to Test
+## Comment tester
 
-### Examine Origin Security
+### Examiner la sécurité de l'origine
 
-Testers should check whether the application code is filtering and processing messages from trusted domains. Within the sending domain, also ensure that the receiving domain is explicitly stated, and that `*` is not used as the second argument of `postMessage()`. This practice could introduce security concerns and could lead to, in the case of a redirection or if the origin changes by other means, the website sending data to unknown hosts, and therefore, leaking confidential data to malicious servers.
+Les testeurs doivent vérifier si le code de l'application filtre et traite les messages provenant de domaines de confiance. Dans le domaine d'envoi, assurez-vous également que le domaine de réception est explicitement indiqué et que `*` n'est pas utilisé comme deuxième argument de `postMessage()`. Cette pratique pourrait introduire des problèmes de sécurité et pourrait conduire, dans le cas d'une redirection ou si l'origine change par d'autres moyens, à ce que le site Web envoie des données à des hôtes inconnus, et donc à des fuites de données confidentielles vers des serveurs malveillants.
 
-If the website fails to add security controls to restrict the domains or origins that are allowed to send messages to a website, it is likely to introduce a security risk. Testers should examine the code for message event listeners and get the callback function from the `addEventListener` method for further analysis. Domains must always be verified prior to data manipulation.
+Si le site Web ne parvient pas à ajouter des contrôles de sécurité pour restreindre les domaines ou les origines autorisés à envoyer des messages à un site Web, il est susceptible d'introduire un risque de sécurité. Les testeurs doivent examiner le code des écouteurs d'événements de message et obtenir la fonction de rappel de la méthode "addEventListener" pour une analyse plus approfondie. Les domaines doivent toujours être vérifiés avant la manipulation des données.
 
-### Examine Input Validation
+### Examiner la validation des entrées
 
-Although the website is theoretically accepting messages from trusted domains only, data must still be treated as externally-sourced, untrusted data, and processed with the appropriate security controls. Testers should analyze the code and look for insecure methods, in particular where data is being evaluated via `eval()` or inserted into the DOM via the `innerHTML` property, which may create DOM-based XSS vulnerabilities.
+Bien que le site Web n'accepte théoriquement que les messages provenant de domaines de confiance, les données doivent toujours être traitées comme des données non fiables de source externe et traitées avec les contrôles de sécurité appropriés. Les testeurs doivent analyser le code et rechercher des méthodes non sécurisées, en particulier lorsque les données sont évaluées via `eval()` ou insérées dans le DOM via la propriété `innerHTML`, ce qui peut créer des vulnérabilités XSS basées sur DOM.
 
-### Static Code Analysis
+### Analyse de code statique
 
-JavaScript code should be analyzed to determine how web messaging is implemented. In particular, testers should be interested in how the website is restricting messages from untrusted domains, and how the data is handled even for trusted domains.
+Le code JavaScript doit être analysé pour déterminer comment la messagerie Web est implémentée. En particulier, les testeurs doivent s'intéresser à la manière dont le site Web limite les messages provenant de domaines non approuvés et à la manière dont les données sont gérées même pour les domaines de confiance.
 
-In this example, access is needed for every subdomain (www, chat, forums, ...) within the owasp.org domain. The code is trying to accept any domain with `.owasp.org`:
+Dans cet exemple, un accès est nécessaire pour chaque sous-domaine (www, chat, forums, ...) du domaine owasp.org. Le code essaie d'accepter n'importe quel domaine avec `.owasp.org` :
 
 ```js
 window.addEventListener("message", callback, true);
@@ -74,15 +74,15 @@ function callback(e) {
 }
 ```
 
-The intention is to allow subdomains such as:
+L'intention est d'autoriser des sous-domaines tels que :
 
 - `www.owasp.org`
 - `chat.owasp.org`
 - `forums.owasp.org`
 
-Unfortunately, this introduces vulnerabilities. An attacker can easily bypass the filter since a domain such as `www.owasp.org.attacker.com` will match.
+Malheureusement, cela introduit des vulnérabilités. Un attaquant peut facilement contourner le filtre car un domaine tel que `www.owasp.org.attacker.com` correspondra.
 
-Here is an example of code that lacks an origin check. This is very insecure, as it will accept input from any domain:
+Voici un exemple de code qui n'a pas de vérification d'origine. Ceci est très peu sûr, car il acceptera les entrées de n'importe quel domaine :
 
 ```js
 window.addEventListener("message", callback, true);
@@ -92,7 +92,7 @@ function callback(e) {
 }
 ```
 
-Here is an example with input validation vulnerabilities that may lead to XSS attack:
+Voici un exemple avec des vulnérabilités de validation d'entrée pouvant conduire à une attaque XSS :
 
 ```js
 window.addEventListener("message", callback, true);
@@ -104,6 +104,6 @@ function callback(e) {
 }
 ```
 
-A more secure approach would be to use the property `innerText` instead of `innerHTML`.
+Une approche plus sûre consisterait à utiliser la propriété `innerText` au lieu de `innerHTML`.
 
-For further OWASP resources regarding web messaging, see [OWASP HTML5 Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html)
+Pour plus de ressources OWASP concernant la messagerie Web, voir [OWASP HTML5 Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html)

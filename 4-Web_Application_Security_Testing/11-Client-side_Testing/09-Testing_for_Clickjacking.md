@@ -1,37 +1,37 @@
-# Testing for Clickjacking
+# Test de détournement de clic
 
 |ID          |
 |------------|
 |WSTG-CLNT-09|
 
-## Summary
+## Sommaire
 
-Clickjacking, a subset of UI redressing, is a malicious technique whereby a web user is deceived into interacting (in most cases by clicking) with something other than what the user believes they are interacting with. This type of attack, either alone or in conjunction with other attacks, could potentially send unauthorized commands or reveal confidential information while the victim is interacting with seemingly-harmless web pages. The term clickjacking was coined by Jeremiah Grossman and Robert Hansen in 2008.
+Le détournement de clic, un sous-ensemble de la réparation de l'interface utilisateur, est une technique malveillante par laquelle un internaute est amené à interagir (dans la plupart des cas en cliquant) avec quelque chose d'autre que ce avec quoi l'utilisateur croit interagir. Ce type d'attaque, seul ou en conjonction avec d'autres attaques, pourrait potentiellement envoyer des commandes non autorisées ou révéler des informations confidentielles pendant que la victime interagit avec des pages Web apparemment inoffensives. Le terme clickjacking a été inventé par Jeremiah Grossman et Robert Hansen en 2008.
 
-A clickjacking attack uses seemingly-harmless features of HTML and JavaScript to force the victim to perform undesired actions, such as clicking an invisible button that performs an unintended operation. This is a client-side security issue that affects a variety of browsers and platforms.
+Une attaque de détournement de clic utilise des fonctionnalités apparemment inoffensives de HTML et JavaScript pour forcer la victime à effectuer des actions indésirables, comme cliquer sur un bouton invisible qui effectue une opération involontaire. Il s'agit d'un problème de sécurité côté client qui affecte une variété de navigateurs et de plates-formes.
 
-To carry out this attack, an attacker creates a seemingly-harmless web page that loads the target application through the use of an inline frame (concealed with CSS code). Once this is done, an attacker may induce the victim to interact with the web page by other means (through, for example, social engineering). Like other attacks, a common prerequisite is that the victim is authenticated against the attacker’s target website.
+Pour mener à bien cette attaque, un attaquant crée une page Web apparemment inoffensive qui charge l'application cible grâce à l'utilisation d'un cadre en ligne (dissimulé avec du code CSS). Une fois cela fait, un attaquant peut inciter la victime à interagir avec la page Web par d'autres moyens (par exemple, via l'ingénierie sociale). Comme pour les autres attaques, une condition préalable courante est que la victime soit authentifiée auprès du site Web cible de l'attaquant.
 
-![Clickjacking illustration](images/Clickjacking_description.png)\
-*Figure 4.11.9-1: Clickjacking inline frame illustration*
+![Illustration de détournement de clic](images/Clickjacking_description.png)\
+*Figure 4.11.9-1 : Illustration du cadre en ligne de détournement de clic*
 
-The victim surfs the attacker's web page with the intention of interacting with the visible user interface, but is inadvertently performing actions on the hidden page. Using the hidden page, an attacker can deceive users into performing actions they never intended to perform through the positioning of the hidden elements in the web page.
+La victime surfe sur la page Web de l'attaquant avec l'intention d'interagir avec l'interface utilisateur visible, mais effectue par inadvertance des actions sur la page masquée. À l'aide de la page masquée, un attaquant peut inciter les utilisateurs à effectuer des actions qu'ils n'avaient jamais l'intention d'effectuer via le positionnement des éléments masqués dans la page Web.
 
-![Masked inline frame illustration](images/Masked_iframe.png)\
-*Figure 4.11.9-2: Masked inline frame illustration*
+![Illustration de cadre en ligne masqué](images/Masked_iframe.png)\
+*Figure 4.11.9-2 : Illustration du cadre en ligne masqué*
 
-The power of this method is that the actions performed by the victim are originated from the hidden but authentic target web page. Consequently, some of the anti-CSRF protections deployed by the developers to protect the web page from CSRF attacks could be bypassed.
+La puissance de cette méthode est que les actions effectuées par la victime proviennent de la page Web cible cachée mais authentique. Par conséquent, certaines des protections anti-CSRF déployées par les développeurs pour protéger la page Web des attaques CSRF pourraient être contournées.
 
-## Test Objectives
+## Objectifs des tests
 
-- Understand security measures in place.
-- Assess how strict the security measures are and if they are bypassable.
+- Comprendre les mesures de sécurité en place.
+- Évaluez la rigueur des mesures de sécurité et si elles sont contournables.
 
-## How to Test
+## Comment tester
 
-As mentioned above, this type of attack is often designed to allow an attacker to induce users’ actions on the target site, even if anti-CSRF tokens are being used. Testing should be conducted to determine if website pages are vulnerable to clickjacking attacks.
+Comme mentionné ci-dessus, ce type d'attaque est souvent conçu pour permettre à un attaquant d'induire des actions des utilisateurs sur le site cible, même si des jetons anti-CSRF sont utilisés. Des tests doivent être effectués pour déterminer si les pages du site Web sont vulnérables aux attaques de détournement de clic.
 
-Testers may investigate if a target page can be loaded in an inline frame by creating a simple web page that includes a frame containing the target web page. An example of HTML code to create this testing web page is displayed in the following snippet:
+Les testeurs peuvent rechercher si une page cible peut être chargée dans un cadre en ligne en créant une page Web simple qui inclut un cadre contenant la page Web cible. Un exemple de code HTML pour créer cette page Web de test est affiché dans l'extrait suivant :
 
 ```html
 <html>
@@ -44,37 +44,37 @@ Testers may investigate if a target page can be loaded in an inline frame by cre
 </html>
 ```
 
-If the `http://www.target.site` page is successfully loaded into the frame, then the site is vulnerable and has no type of protection against clickjacking attacks.
+Si la page `http://www.target.site` est chargée avec succès dans le cadre, alors le site est vulnérable et n'a aucun type de protection contre les attaques de détournement de clic.
 
-### Bypass Clickjacking Protection
+### Contourner la protection contre le détournement de clics
 
-If the `http://www.target.site` page does not appear in the inline frame, the site probably has some form of protection against clickjacking. It’s important to note that this isn’t a guarantee that the page is totally immune to clickjacking.
+Si la page "http://www.target.site" n'apparaît pas dans le cadre en ligne, le site dispose probablement d'une certaine forme de protection contre le détournement de clics. Il est important de noter que cela ne garantit pas que la page est totalement à l'abri du détournement de clics.
 
-Methods to protect a web page from clickjacking can be divided into a few main mechanisms. It is possible to bypass these methods in some circumstances by employing specific workarounds. For further OWASP resources on clickjacking defense, see the [OWASP Clickjacking Defense Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html).
+Les méthodes de protection d'une page Web contre le détournement de clics peuvent être divisées en quelques mécanismes principaux. Il est possible de contourner ces méthodes dans certaines circonstances en utilisant des solutions de contournement spécifiques. Pour plus de ressources OWASP sur la défense contre le détournement de clics, consultez la [fiche de triche de défense contre le détournement de clics OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html).
 
-#### Client-side Protection: Frame Busting
+#### Protection côté client : suppression de trames
 
-The most common client-side method, that has been developed to protect a web page from clickjacking, is called Frame Busting and it consists of a script in each page that should not be framed. The aim of this technique is to prevent a site from functioning when it is loaded inside a frame.
+La méthode côté client la plus courante, qui a été développée pour protéger une page Web contre le détournement de clics, s'appelle Frame Busting et consiste en un script dans chaque page qui ne doit pas être encadré. Le but de cette technique est d'empêcher un site de fonctionner lorsqu'il est chargé à l'intérieur d'un cadre.
 
-The structure of frame busting code typically consists of a "conditional statement" and a "counter-action" statement. For this type of protection, there are some workarounds that fall under the name of "Bust frame busting". Some of this techniques are browser-specific while others work across browsers.
+La structure du code de contournement de trame se compose généralement d'une "instruction conditionnelle" et d'une instruction "contre-action". Pour ce type de protection, il existe des solutions de contournement appelées "Bust frame busting". Certaines de ces techniques sont spécifiques au navigateur tandis que d'autres fonctionnent sur tous les navigateurs.
 
-##### Mobile Website Version
+##### Version du site Web mobile
 
-Mobile versions of the website are usually smaller and faster than the desktop ones, and they have to be less complex than the main application. Mobile variants have often less protection since there is the wrong assumption that an attacker could not attack an application by the smart phone. This is fundamentally wrong, because an attacker can fake the real origin given by a web browser, such that a non-mobile victim may be able to visit an application made for mobile users. From this assumption follows that in some cases it is not necessary to use techniques to evade frame busting when there are unprotected alternatives, which allow the use of same attack vectors.
+Les versions mobiles du site Web sont généralement plus petites et plus rapides que les versions de bureau, et elles doivent être moins complexes que l'application principale. Les variantes mobiles ont souvent moins de protection car on suppose à tort qu'un attaquant ne pourrait pas attaquer une application par le smartphone. C'est fondamentalement faux, car un attaquant peut falsifier l'origine réelle donnée par un navigateur Web, de sorte qu'une victime non mobile peut être en mesure de visiter une application conçue pour les utilisateurs mobiles. Il découle de cette hypothèse que, dans certains cas, il n'est pas nécessaire d'utiliser des techniques pour éviter le contournement de trame lorsqu'il existe des alternatives non protégées, qui permettent l'utilisation des mêmes vecteurs d'attaque.
 
-##### Double Framing
+##### Double encadrement
 
-Some frame busting techniques try to break frame by assigning a value to the `parent.location` attribute in the "counter-action" statement.
+Certaines techniques de contournement de trame tentent de casser la trame en attribuant une valeur à l'attribut `parent.location` dans l'instruction "counter-action".
 
-Such actions are, for example:
+De telles actions sont, par exemple :
 
 - `self.parent.location` = `document.location`
 - `parent.location.href` = `self.location`
 - `parent.location` = `self.location`
 
-This method works well until the target page is framed by a single page. However, if the attacker encloses the target web page in one frame which is nested in another one (a double frame), then trying to access to `parent.location` becomes a security violation in all popular browsers, due to the descendant frame navigation policy. This security violation disables the counter-action navigation.
+Cette méthode fonctionne bien jusqu'à ce que la page cible soit encadrée par une seule page. Cependant, si l'attaquant enferme la page Web cible dans un cadre qui est imbriqué dans un autre (un cadre double), alors essayer d'accéder à `parent.location` devient une violation de sécurité dans tous les navigateurs populaires, en raison de la navigation par cadre descendant politique. Cette violation de sécurité désactive la navigation de contre-action.
 
-Target site frame busting code (`example.org`):
+Code de contournement du cadre du site cible (`exemple.org`) :
 
 ```javascript
 if(top.location!=self.locaton) {
@@ -82,39 +82,39 @@ if(top.location!=self.locaton) {
 }
 ```
 
-Attacker’s top frame (`fictitious2.html`):
+Cadre supérieur de l'attaquant (`fictitious2.html`) :
 
 ```html
 <iframe src="fictitious.html">
 ```
 
-Attacker’s fictitious sub-frame (`fictitious.html`):
+Sous-cadre fictif de l'attaquant (`fictitious.html`) :
 
 ```html
-<iframe src="http://example.org">
+<iframe src="http://exemple.org">
 ```
 
-##### Disabling JavaScript
+##### Désactiver JavaScript
 
-Since these type of client-side protections relies on JavaScript frame busting code, if the victim has JavaScript disabled or it is possible for an attacker to disable JavaScript code, the web page will not have any protection mechanism against clickjacking.
+Étant donné que ce type de protections côté client repose sur le code JavaScript frame busting, si JavaScript est désactivé chez la victime ou s'il est possible pour un attaquant de désactiver le code JavaScript, la page Web ne disposera d'aucun mécanisme de protection contre le détournement de clics.
 
-There are three deactivation techniques that can be used with frames:
+Trois techniques de désactivation peuvent être utilisées avec les trames :
 
-- Sandbox attribute: with HTML5 there is a new attribute called "sandbox". It enables a set of restrictions on content loaded into the iframe. At this moment this attribute is only compatible with Chrome and Safari.
+- Attribut sandbox : avec HTML5, il existe un nouvel attribut appelé "sandbox". Il active un ensemble de restrictions sur le contenu chargé dans l'iframe. Pour le moment, cet attribut n'est compatible qu'avec Chrome et Safari.
 
-Example:
+exemple :
 
 ```html
-<iframe src="http://example.org" sandbox></iframe>
+<iframe src="http://exemple.org" sandbox></iframe>
 ```
 
-- Design mode: Paul Stone showed a security issue concerning the "designMode" that can be turned on in the framing page (via document.designMode), disabling JavaScript in top and sub-frame.
+- Mode design : Paul Stone a montré un problème de sécurité concernant le "designMode" qui peut être activé dans la page de cadrage (via document.designMode), désactivant JavaScript en top et sub-frame.
 
-##### OnBeforeUnload Event
+##### Événement OnBeforeUnload
 
-The `onBeforeUnload` event could be used to evade frame busting code. This event is called when the frame busting code wants to destroy the iframe by loading the URL in the whole web page and not only in the iframe. The handler function returns a string that is prompted to the user asking confirm if he wants to leave the page. When this string is displayed to the user is likely to cancel the navigation, defeating target's frame busting attempt.
+L'événement `onBeforeUnload` pourrait être utilisé pour échapper au code de contournement de trame. Cet événement est appelé lorsque le code de contournement de cadre veut détruire l'iframe en chargeant l'URL dans toute la page Web et pas seulement dans l'iframe. La fonction de gestionnaire renvoie une chaîne qui est demandée à l'utilisateur demandant de confirmer s'il veut quitter la page. Lorsque cette chaîne est affichée, l'utilisateur est susceptible d'annuler la navigation, en vainquant la tentative de contournement de la cible.
 
-The attacker can use this attack by registering an unload event on the top page using the following example code:
+L'attaquant peut utiliser cette attaque en enregistrant un événement de déchargement sur la page d'accueil à l'aide de l'exemple de code suivant :
 
 ```html
 <h1>www.fictitious.site</h1>
@@ -124,16 +124,16 @@ The attacker can use this attack by registering an unload event on the top page 
         return " Do you want to leave fictitious.site?";
     }
 </script>
-<iframe src="http://example.org">
+<iframe src="http://exemple.org">
 ```
 
-The previous technique requires the user interaction but, the same result, can be achieved without prompting the user. To do this the attacker have to automatically cancel the incoming navigation request in an onBeforeUnload event handler by repeatedly submitting (for example every millisecond) a navigation request to a web page that responds with a "HTTP/1.1 204 No Content" header.
+La technique précédente nécessite l'interaction de l'utilisateur mais, le même résultat, peut être obtenu sans inviter l'utilisateur. Pour ce faire, l'attaquant doit annuler automatiquement la requête de navigation entrante dans un gestionnaire d'événements onBeforeUnload en soumettant à plusieurs reprises (par exemple toutes les millisecondes) une requête de navigation à une page Web qui répond avec un en-tête "HTTP/1.1 204 No Content".
 
-Since with this response the browser will do nothing, the resulting of this operation is the flushing of the request pipeline, rendering the original frame busting attempt futile.
+Étant donné qu'avec cette réponse, le navigateur ne fera rien, le résultat de cette opération est le vidage du pipeline de requête, rendant vaine la tentative de rupture de trame d'origine.
 
-Following an example code:
+Suite à un exemple de code :
 
-204 page:
+204 pages :
 
 ```php
 <?php
@@ -141,7 +141,7 @@ Following an example code:
 ?>
 ```
 
-Attacker's page:
+Page de l'attaquant :
 
 ```html
 <script>
@@ -157,16 +157,16 @@ Attacker's page:
             }
         }, 1);
 </script>
-<iframe src="http://example.org">
+<iframe src="http://exemple.org">
 ```
 
-##### XSS Filter
+##### Filtre XSS
 
-Starting from Google Chrome 4.0 and from IE8 there were introduced XSS filters to protect users from reflected XSS attacks. Nava and Lindsay have observed that these kind of filters can be used to deactivate frame busting code by faking it as malicious code.
+À partir de Google Chrome 4.0 et d'IE8, des filtres XSS ont été introduits pour protéger les utilisateurs des attaques XSS réfléchies. Nava et Lindsay ont observé que ce type de filtres peut être utilisé pour désactiver le code de contournement de trame en le faisant passer pour un code malveillant.
 
-- **IE8 XSS filter**: this filter has visibility into all parameters of each request and response flowing through the web browser and it compares them to a set of regular expressions in order to look for reflected XSS attempts. When the filter identifies a possible XSS attacks; it disables all inline scripts within the page, including frame busting scripts (the same thing could be done with external scripts). For this reason an attacker could induce a false positive by inserting the beginning of the frame busting script into a request's parameters.
+- **Filtre XSS IE8** : ce filtre a une visibilité sur tous les paramètres de chaque requête et réponse passant par le navigateur Web et les compare à un ensemble d'expressions régulières afin de rechercher les tentatives XSS reflétées. Lorsque le filtre identifie une éventuelle attaque XSS ; il désactive tous les scripts en ligne dans la page, y compris les scripts de contournement de cadre (la même chose peut être faite avec des scripts externes). Pour cette raison, un attaquant pourrait induire un faux positif en insérant le début du script de contournement de trame dans les paramètres d'une requête.
 
-Example: Target web page frame busting code:
+exemple : Code de contournement du cadre de la page Web cible :
 
 ```html
 <script>
@@ -177,15 +177,15 @@ Example: Target web page frame busting code:
 </script>
 ```
 
-Attacker code:
+Code de l'attaquant :
 
 ```html
-<iframe src="http://example.org/?param=<script>if">
+<iframe src="http://exemple.org/?param=<script>if">
 ```
 
-- **Chrome 4.0 XSSAuditor filter**: It has a little different behavior compared to IE8 XSS filter, in fact with this filter an attacker could deactivate a "script" by passing its code in a request parameter. This enables the framing page to specifically target a single snippet containing the frame busting code, leaving all the other codes intact.
+- **Filtre Chrome 4.0 XSSAuditor** : Il a un comportement un peu différent par rapport au filtre XSS IE8, en effet avec ce filtre un attaquant pourrait désactiver un "script" en passant son code dans un paramètre de requête. Cela permet à la page de cadrage de cibler spécifiquement un seul extrait contenant le code de contournement de cadre, laissant tous les autres codes intacts.
 
-Example: Target web page frame busting code:
+exemple : Code de contournement du cadre de la page Web cible :
 
 ```html
 <script>
@@ -196,68 +196,68 @@ Example: Target web page frame busting code:
 </script>
 ```
 
-Attacker code:
+Code de l'attaquant :
 
 ```html
-<iframe src="http://example.org/?param=if(top+!%3D+self)+%7B+top.location%3Dself.location%3B+%7D">
+<iframe src="http://exemple.org/?param=if(top+!%3D+self)+%7B+top.location%3Dself.location%3B+%7D">
 ```
 
-##### Redefining Location
+##### Redéfinir l'emplacement
 
-For several browsers the `document.location` variable is an immutable attribute. However, for some version of Internet Explorer and Safari, it is possible to redefine this attribute. This fact can be exploited to evade frame busting code.
+Pour plusieurs navigateurs, la variable `document.location` est un attribut immuable. Cependant, pour certaines versions d'Internet Explorer et de Safari, il est possible de redéfinir cet attribut. Ce fait peut être exploité pour échapper au code de contournement de trame.
 
-- **Redefining location in IE7 and IE8**: it is possible to redefine `location` as it is illustrated in the following example. By defining `location` as a variable, any code that tries to read or to navigate by assigning `top.location` will fail due to a security violation and so the frame busting code is suspended.
+- **Redéfinition de l'emplacement dans IE7 et IE8** : il est possible de redéfinir `emplacement` comme illustré dans l'exemple suivant. En définissant `location` comme une variable, tout code qui essaie de lire ou de naviguer en attribuant `top.location` échouera en raison d'une violation de sécurité et le code de rupture de trame est donc suspendu.
 
-Example:
+exemple :
 
 ```html
 <script>
     var location = "xyz";
 </script>
-<iframe src="http://example.org"></iframe>
+<iframe src="http://exemple.org"></iframe>
 ```
 
-- **Redefining location in Safari 4.0.4**: To bust frame busting code with `top.location` it is possible to bind `location` to a function via `defineSetter` (through window), so that an attempt to read or navigate to the `top.location` will fail.
+- **Redéfinition de l'emplacement dans Safari 4.0.4** : Pour casser le code de contournement de cadre avec `top.location`, il est possible de lier `location` à une fonction via `defineSetter` (à travers la fenêtre), de sorte qu'une tentative de lecture ou accédez au `top.location` échouera.
 
-Example:
+exemple :
 
 ```html
 <script>
     window.defineSetter("location" , function(){});
 </script>
-<iframe src="http://example.org"></iframe>
+<iframe src="http://exemple.org"></iframe>
 ```
 
-#### Server-side Protection: X-Frame-Options
+#### Protection côté serveur : X-Frame-Options
 
-An alternative approach to client-side frame busting code consists of an header based defense. The `X-FRAME-OPTIONS` header is sent from the server on HTTP responses and is used to mark web pages that shouldn't be framed. This header can take the values `DENY`, `SAMEORIGIN`, `ALLOW-FROM` origin, or non-standard `ALLOWALL`. The recommended value is `DENY`.
+Une approche alternative au code de contournement de trame côté client consiste en une défense basée sur l'en-tête. L'en-tête `X-FRAME-OPTIONS` est envoyé par le serveur sur les réponses HTTP et est utilisé pour marquer les pages Web qui ne doivent pas être encadrées. Cet en-tête peut prendre les valeurs `DENY`, `SAMEORIGIN`, `ALLOW-FROM` origin ou `ALLOWALL` non standard. La valeur recommandée est "REFUSER".
 
-The `X-FRAME-OPTIONS` header is a very good solution, and was adopted by all major browsers, but also for this technique there are some limitations that could lead in any case to exploit the clickjacking vulnerability.
+L'en-tête `X-FRAME-OPTIONS` est une très bonne solution, et a été adopté par tous les principaux navigateurs, mais aussi pour cette technique, il existe certaines limitations qui pourraient conduire dans tous les cas à exploiter la vulnérabilité de détournement de clic.
 
-##### Proxies
+##### Procurations
 
-Web proxies are known for adding and stripping headers. In the case in which a web proxy strips the `X-FRAME-OPTIONS` header then the site loses its framing protection.
+Les proxys Web sont connus pour ajouter et supprimer des en-têtes. Dans le cas où un proxy Web supprime l'en-tête `X-FRAME-OPTIONS`, le site perd sa protection de cadrage.
 
-##### Mobile Website Version
+##### Version du site Web mobile
 
-Also in this case, since the `X-FRAME-OPTIONS` has to be implemented in every page of the website, the developers may have not protected the mobile version of the website.
+Dans ce cas également, étant donné que `X-FRAME-OPTIONS` doit être implémenté dans chaque page du site Web, les développeurs n'ont peut-être pas protégé la version mobile du site Web.
 
-#### Server-side Protection: Using frame-ancestors directive of Content Security Policy (CSP)
+#### Protection côté serveur : utilisation de la directive frame-ancestors de la politique de sécurité du contenu (CSP)
 
-The `frame-ancestors` directive in the HTTP Content-Security-Policy (CSP) specifies the acceptable parents that may embed a page using the `<frame>`, `<iframe>`, `<object>`, `<embed>`, or `<applet>` tags.
+La directive `frame-ancestors` dans HTTP Content-Security-Policy (CSP) spécifie les parents acceptables qui peuvent intégrer une page en utilisant `<frame>`, `<iframe>`, `<object>`, `<embed >`, ou `<applet>` balises.
 
-Also `frame-ancestors` allows a site to authorize multiple domains using the normal Content Security Policy semantics.
+De plus, `frame-ancestors` permet à un site d'autoriser plusieurs domaines en utilisant la sémantique normale de la politique de sécurité du contenu.
 
-### Create a Proof of Concept
+### Créer une preuve de concept
 
-Once we have discovered that the site we are testing is vulnerable to clickjacking attack, we can proceed with the development of a "proof of concept" (PoC) to demonstrate the vulnerability. It is important to note that, as mentioned previously, these attacks can be used in conjunction with other forms of attacks (for example CSRF attacks) and could lead to overcome anti-CSRF tokens. In this regard we can imagine that, for example, the `example.org` website allows to authenticated and authorized users to make a transfer of money to another account.
+Une fois que nous avons découvert que le site que nous testons est vulnérable aux attaques de détournement de clic, nous pouvons procéder au développement d'une "preuve de concept" (PoC) pour démontrer la vulnérabilité. Il est important de noter que, comme mentionné précédemment, ces attaques peuvent être utilisées en conjonction avec d'autres formes d'attaques (par exemple des attaques CSRF) et pourraient conduire à surmonter les jetons anti-CSRF. A cet égard on peut imaginer que, par exemple, le site `exemple.org` permet à des utilisateurs authentifiés et autorisés d'effectuer un transfert d'argent vers un autre compte.
 
-Suppose that to execute the transfer the developers have planned three steps. In the first step the user fill a form with the destination account and the amount. In the second step, whenever the user submits the form, is presented a summary page asking the user confirmation (like the one presented in the following picture).
+Supposons que pour exécuter le transfert, les développeurs aient prévu trois étapes. Dans un premier temps, l'utilisateur remplit un formulaire avec le compte de destination et le montant. Dans la deuxième étape, chaque fois que l'utilisateur soumet le formulaire, une page récapitulative demandant à l'utilisateur une confirmation (comme celle présentée dans l'image suivante) est présentée.
 
-![Clickjacking Example Step 2](images/Clickjacking_example_step2.png)\
-*Figure 4.11.9-3: Clickjacking Example Step 2*
+![Exemple de détournement de clic étape 2](images/Clickjacking_exemple_step2.png)\
+*Figure 4.11.9-3 : Exemple de détournement de clic Étape 2*
 
-Following a snippet of the code for the step 2:
+Suite à un extrait du code pour l'étape 2 :
 
 ```html
 //generate random anti CSRF token
@@ -285,9 +285,9 @@ $form = '
 </form>';
 ```
 
-In the last step are planned security controls and then, if all is OK, the transfer is done. In the following listing a snippet of code of the last step is presented:
+Dans la dernière étape sont prévus les contrôles de sécurité puis, si tout va bien, le transfert est effectué. Dans la liste suivante, un extrait de code de la dernière étape est présenté :
 
-> Note: in this example, for simplicity, there is no input sanitization, but it has no relevance to block this type of attack
+> Remarque : dans cet exemple, pour simplifier, il n'y a pas de filtrage des entrées, mais cela n'a aucune pertinence pour bloquer ce type d'attaque
 
 ```javascript
 if( (!empty($_SESSION['antiCsrf'])) && (!empty($_POST['antiCsrf'])) )
@@ -303,23 +303,23 @@ if( (!empty($_SESSION['antiCsrf'])) && (!empty($_POST['antiCsrf'])) )
 }
 ```
 
-As you can see the code is protected from CSRF attack both with a random token generated in the second step and accepting only variable passed via POST method. In this situation an attacker could forge a CSRF + Clickjacking attack to evade anti-CSRF protection and force a victim to do a money transfer without her consent.
+Comme vous pouvez le voir, le code est protégé contre les attaques CSRF à la fois avec un jeton aléatoire généré à la deuxième étape et en n'acceptant que la variable transmise via la méthode POST. Dans cette situation, un attaquant pourrait forger une attaque CSRF + Clickjacking pour échapper à la protection anti-CSRF et forcer une victime à effectuer un transfert d'argent sans son consentement.
 
-The target page for the attack is the second step of the money transfer procedure. Since the developers put the security controls only in the last step, thinking that this is secure enough, the attacker could pass the account and amount parameters via GET method.
+La page cible de l'attaque est la deuxième étape de la procédure de transfert d'argent. Étant donné que les développeurs placent les contrôles de sécurité uniquement dans la dernière étape, pensant que cela est suffisamment sécurisé, l'attaquant pourrait transmettre les paramètres de compte et de montant via la méthode GET.
 
-> Note: there is an advanced clickjacking attack that permits to force users to fill a form, so also in the case in which is required to fill a form, the attack is feasible
+> Remarque : il existe une attaque avancée de détournement de clic qui permet de forcer les utilisateurs à remplir un formulaire, donc aussi dans le cas où il est nécessaire de remplir un formulaire, l'attaque est faisable
 
-The attacker's page may look like a simple and harmless web page like the one presented below:
+La page de l'attaquant peut ressembler à une page Web simple et inoffensive comme celle présentée ci-dessous :
 
-![Clickjacking Example Malicious Page 1](images/Clickjacking_example_malicious_page_1.png)\
-*Figure 4.11.9-4: Clickjacking Example Malicious Page 1*
+![Clickjacking exemple Malicious Page 1](images/Clickjacking_exemple_malicious_page_1.png)\
+*Figure 4.11.9-4 : Exemple de détournement de clic Malicious Page 1*
 
-But playing with the CSS opacity value we can see what is hidden under the seemingly innocuous web page.
+Mais en jouant avec la valeur d'opacité CSS, nous pouvons voir ce qui est caché sous la page Web apparemment anodine.
 
-![Clickjacking Example Malicious Page 2](images/Clickjacking_example_malicious_page_2.png)\
-*Figure 4.11.9-5: Clickjacking Example Malicious Page 2*
+![Exemple de détournement de clic Malicious Page 2](images/Clickjacking_exemple_malicious_page_2.png)\
+*Figure 4.11.9-5 : Exemple de détournement de clic Page 2 malveillante*
 
-The clickjacking code to create this page is presented below:
+Le code de clickjacking pour créer cette page est présenté ci-dessous :
 
 ```html
 <html>
@@ -373,15 +373,15 @@ The clickjacking code to create this page is presented below:
 </html>
 ```
 
-With the help of CSS (note the `#clickjacking` block) we can mask and suitably position the iframe in such a way as to match the buttons. If the victim click on the button "Click and go!" the form is submitted and the transfer is completed.
+Avec l'aide de CSS (notez le bloc `#clickjacking`), nous pouvons masquer et positionner convenablement l'iframe de manière à ce qu'il corresponde aux boutons. Si la victime clique sur le bouton "Cliquez et partez !" le formulaire est soumis et le transfert est terminé.
 
-![Clickjacking Example Malicious Page 3](images/Clickjacking_example_malicious_page_3.png)\
-*Figure 4.11.9-6: Clickjacking Example Malicious Page 3*
+![Clickjacking exemple Malicious Page 3](images/Clickjacking_exemple_malicious_page_3.png)\
+*Figure 4.11.9-6 : Exemple de détournement de clic Malicious Page 3*
 
-The example presented uses only basic clickjacking technique, but with advanced technique is possible to force user filling form with values defined by the attacker.
+L'exemple présenté utilise uniquement la technique de base du détournement de clic, mais avec une technique avancée, il est possible de forcer l'utilisateur à remplir le formulaire avec des valeurs définies par l'attaquant.
 
-## References
+## Références
 
-- [OWASP Clickjacking](https://owasp.org/www-community/attacks/Clickjacking)
-- [Wikipedia Clickjacking](https://en.wikipedia.org/wiki/Clickjacking)
-- [Gustav Rydstedt, Elie Bursztein, Dan Boneh, and Collin Jackson: "Busting Frame Busting: a Study of Clickjacking Vulnerabilities on Popular Sites"](https://seclab.stanford.edu/websec/framebusting/framebust.pdf)
+- [Clickjacking OWASP](https://owasp.org/www-community/attacks/Clickjacking)
+- [Clicjacking Wikipédia](https://en.wikipedia.org/wiki/Clickjacking)
+- [Gustav Rydstedt, Elie Bursztein, Dan Boneh et Collin Jackson : "Busting Frame Busting: a Study of Clickjacking Vulnerabilities on Popular Sites"](https://seclab.stanford.edu/websec/framebusting/framebust.pdf)

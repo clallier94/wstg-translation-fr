@@ -1,14 +1,14 @@
-# Testing for Client-side Resource Manipulation
+# Test de la manipulation des ressources côté client
 
 |ID          |
 |------------|
 |WSTG-CLNT-06|
 
-## Summary
+## Sommaire
 
-A client-side resource manipulation vulnerability is an input validation flaw. It occurs when an application accepts user-controlled input that specifies the path of a resource such as the source of an iframe, JavaScript, applet, or the handler of an XMLHttpRequest. This vulnerability consists of the ability to control the URLs that link to some resources present in a web page. The impact of this vulnerability varies, and it is usually adopted to conduct XSS attacks. This vulnerability makes it is possible to interfere with the expected application's behavior by causing it to load and render malicious objects.
+Une vulnérabilité de manipulation de ressources côté client est une faille de validation d'entrée. Cela se produit lorsqu'une application accepte une entrée contrôlée par l'utilisateur qui spécifie le chemin d'une ressource telle que la source d'un iframe, JavaScript, applet ou le gestionnaire d'un XMLHttpRequest. Cette vulnérabilité consiste en la capacité de contrôler les URL qui pointent vers certaines ressources présentes dans une page Web. L'impact de cette vulnérabilité varie et elle est généralement adoptée pour mener des attaques XSS. Cette vulnérabilité permet d'interférer avec le comportement attendu de l'application en lui faisant charger et restituer des objets malveillants.
 
-The following JavaScript code shows a possible vulnerable script in which an attacker is able to control the `location.hash` (source) which reaches the attribute `src` of a script element. This particular case leads to a XSS attack as external JavaScript could be injected.
+Le code JavaScript suivant montre un éventuel script vulnérable dans lequel un attaquant est capable de contrôler le `location.hash` (source) qui atteint l'attribut `src` d'un élément de script. Ce cas particulier conduit à une attaque XSS car du JavaScript externe pourrait être injecté.
 
 ```html
 <script>
@@ -20,21 +20,21 @@ The following JavaScript code shows a possible vulnerable script in which an att
 </script>
 ```
 
-An attacker could target a victim by causing them to visit this URL:
+Un attaquant pourrait cibler une victime en lui faisant visiter cette URL :
 
 `www.victim.com/#http://evil.com/js.js`
 
-Where `js.js` contains:
+Où `js.js` contient :
 
 ```js
 alert(document.cookie)
 ```
 
-This would cause the alert to pop up on the victim's browser.
+Cela entraînerait l'apparition de l'alerte sur le navigateur de la victime.
 
-A more damaging scenario involves the possibility of controlling the URL called in a CORS request. Since CORS allows the target resource to be accessible by the requesting domain through a header-based approach, the attacker may ask the target page to load malicious content from its own website.
+Un scénario plus préjudiciable implique la possibilité de contrôler l'URL appelée dans une requête CORS. Étant donné que CORS permet à la ressource cible d'être accessible par le domaine demandeur via une approche basée sur l'en-tête, l'attaquant peut demander à la page cible de charger du contenu malveillant à partir de son propre site Web.
 
-Here is an example of a vulnerable page:
+Voici un exemple de page vulnérable :
 
 ```html
 <b id="p"></b>
@@ -55,11 +55,11 @@ Here is an example of a vulnerable page:
 </script>
 ```
 
-The `location.hash` is controlled by user input and is used for requesting an external resource, which will then be reflected through the construct `innerHTML`. An attacker could ask a victim to visit the following URL:
+Le `location.hash` est contrôlé par l'entrée de l'utilisateur et est utilisé pour demander une ressource externe, qui sera ensuite reflétée via la construction `innerHTML`. Un attaquant pourrait demander à une victime de visiter l'URL suivante :
 
 `www.victim.com/#http://evil.com/html.html`
 
-With the payload handler for `html.html`:
+Avec le gestionnaire de charge utile pour `html.html` :
 
 ```html
 <?php
@@ -68,25 +68,25 @@ header('Access-Control-Allow-Origin: http://www.victim.com');
 <script>alert(document.cookie);</script>
 ```
 
-## Test Objectives
+## Objectifs des tests
 
-- Identify sinks with weak input validation.
-- Assess the impact of the resource manipulation.
+- Identifiez les puits avec une validation d'entrée faible.
+- Évaluer l'impact de la manipulation des ressources.
 
-## How to Test
+## Comment tester
 
-To manually check for this type of vulnerability, we must identify whether the application employs inputs without correctly validating them. If so, these inputs are under the control of the user and could be used to specify external resources. Since there are many resources that could be included in the application (such as images, video, objects, css, and iframes), the client-side scripts that handle the associated URLs should be investigated for potential issues.
+Pour vérifier manuellement ce type de vulnérabilité, nous devons identifier si l'application utilise des entrées sans les valider correctement. Si c'est le cas, ces entrées sont sous le contrôle de l'utilisateur et pourraient être utilisées pour spécifier des ressources externes. Étant donné qu'il existe de nombreuses ressources pouvant être incluses dans l'application (telles que des images, des vidéos, des objets, des CSS et des iframes), les scripts côté client qui gèrent les URL associées doivent être examinés pour les problèmes potentiels.
 
-The following table shows possible injection points (sink) that should be checked:
+Le tableau suivant montre les points d'injection possibles (puits) qui doivent être vérifiés :
 
-| Resource Type   | Tag/Method                                | Sink   |
-| --------------- | ----------------------------------------- | ------ |
-| Frame           | iframe                                    | src    |
-| Link            | a                                         | href   |
-| AJAX Request    | `xhr.open(method, [url], true);` | URL    |
-| CSS             | link                                      | href   |
-| Image           | img                                       | src    |
-| Object          | object                                    | data   |
-| Script          | script                                    | src    |
+| Type de ressource | Tag/Méthode                             | Sink   |
+| ----------------- | --------------------------------------- | ------ |
+| Frame             | iframe                                  | src    |
+| Link              | a                                       | href   |
+| AJAX Request      | `xhr.open(method, [url], true);`        | URL    |
+| CSS               | link                                    | href   |
+| Image             | img                                     | src    |
+| Object            | object                                  | data   |
+| Script            | script                                  | src    |
 
-The most interesting ones are those that allow to an attacker to include client-side code (for example JavaScript) that could lead to XSS vulnerabilities.
+Les plus intéressantes sont celles qui permettent à un attaquant d'inclure du code côté client (par exemple JavaScript) pouvant conduire à des vulnérabilités XSS.

