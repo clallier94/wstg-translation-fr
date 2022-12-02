@@ -1,50 +1,50 @@
-# Testing Tools Resource
+# Ressource d'outils de test
 
 ## Introduction
 
-This appendix is intended to provide a list of common tools that are used for web application testing. It does not aim to be a complete tool reference, and the inclusion of a tool here should not be seen as a specific endorsement of that tool by OWASP.
+Cette annexe est destinée à fournir une liste des outils courants utilisés pour les tests d'applications Web. Il ne vise pas à être une référence d'outil complète, et l'inclusion d'un outil ici ne doit pas être considérée comme une approbation spécifique de cet outil par l'OWASP.
 
-The list contains only tools that are freely available to download and use (although they may have licenses restricting their use for commercial activity).
+La liste ne contient que des outils librement disponibles au téléchargement et à l'utilisation (bien qu'ils puissent avoir des licences limitant leur utilisation à des fins commerciales).
 
-## General Web Testing
+## Tests Web généraux
 
-### Web Proxies
+### Proxy Web
 
-- [OWASP ZAP](https://www.zaproxy.org)
-    - The Zed Attack Proxy (ZAP) is an easy to use integrated penetration testing tool for finding vulnerabilities in web applications. It is designed to be used by people with a wide range of security experience and as such is ideal for developers and functional testers who are new to penetration testing.
-    - ZAP provides automated scanners as well as a set of tools that allow you to find security vulnerabilities manually.
+- [OWASP ZAP] (https://www.zaproxy.org)
+    - Le Zed Attack Proxy (ZAP) est un outil de test de pénétration intégré facile à utiliser pour trouver des vulnérabilités dans les applications Web. Il est conçu pour être utilisé par des personnes ayant une large expérience en matière de sécurité et, en tant que tel, il est idéal pour les développeurs et les testeurs fonctionnels qui découvrent les tests d'intrusion.
+    - ZAP fournit des scanners automatisés ainsi qu'un ensemble d'outils qui vous permettent de trouver manuellement les vulnérabilités de sécurité.
 - [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
-    - Burp Suite is an intercepting proxy for security testing. It allows intercepting and modifying all HTTP(S) traffic passing in both directions, it can work with custom TLS certificates and non-proxy-aware clients.
+    - Burp Suite est un proxy d'interception pour les tests de sécurité. Il permet d'intercepter et de modifier tout le trafic HTTP(S) passant dans les deux sens, il peut fonctionner avec des certificats TLS personnalisés et des clients non sensibles au proxy.
 - [Telerik Fiddler](https://www.telerik.com/fiddler)
-    - Fiddler an intercepting web proxy that is primarily aimed at developers rather than penetration testers, but still provides useful functionality. It also hooks directly into the Windows HTTP APIs, allowing it to intercept traffic from some software that doesn't allow custom proxies to be set.
+    - Fiddler un proxy Web d'interception qui s'adresse principalement aux développeurs plutôt qu'aux testeurs d'intrusion, mais fournit toujours des fonctionnalités utiles. Il se connecte également directement aux API HTTP de Windows, ce qui lui permet d'intercepter le trafic de certains logiciels qui ne permettent pas de définir des proxys personnalisés.
 
-### Firefox Extensions
+### Extensions Firefox
 
-- [Firefox HTTP Header Live](https://addons.mozilla.org/en-US/firefox/addon/http-header-live)
-    - View HTTP headers of a page and while browsing.
-- [Firefox Multi-Account Containers](https://addons.mozilla.org/en-GB/firefox/addon/multi-account-containers/)
-    - Create multiple containers, each of which have their own isolated cookies and sessions. Useful for testing access control between different users.
+- [En-tête HTTP Firefox Live] (https://addons.mozilla.org/en-US/firefox/addon/http-header-live)
+    - Afficher les en-têtes HTTP d'une page et lors de la navigation.
+- [Conteneurs multi-comptes Firefox](https://addons.mozilla.org/en-GB/firefox/addon/multi-account-containers/)
+    - Créez plusieurs conteneurs, chacun ayant ses propres cookies et sessions isolés. Utile pour tester le contrôle d'accès entre différents utilisateurs.
 - [Firefox Tamper Data](https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum/)
-    - Use Tamper Data to view and modify HTTP/HTTPS headers and post parameters
-- [Firefox Web Developer](https://addons.mozilla.org/en-US/firefox/addon/web-developer/)
-    - The Web Developer extension adds various web developer tools to the browser.
+    - Utilisez Tamper Data pour afficher et modifier les en-têtes HTTP/HTTPS et les paramètres de publication
+- [Développeur Web Firefox](https://addons.mozilla.org/en-US/firefox/addon/web-developer/)
+    - L'extension Web Developer ajoute divers outils de développement Web au navigateur.
 
-### Chrome Extensions
+### Extensions Chrome
 
-- [Chrome Web Developer](https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
-    - The Web Developer extension adds a toolbar button to the browser with various web developer tools. This is the official port of the Web Developer extension for Chrome.
-- [HTTP Request Maker](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp?hl=en-US)
-    - Request Maker is a tool for penetration testing. With it you can easily capture requests made by web pages, tamper with the URL, headers and POST data and, of course, make new requests
-- [Cookie Editor](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg?hl=en-US)
-    - Edit This Cookie is a cookie manager. You can add, delete, edit, search, protect and block cookies
+- [Développeur Web Chrome] (https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+    - L'extension Web Developer ajoute un bouton de barre d'outils au navigateur avec divers outils de développement Web. Il s'agit du portage officiel de l'extension Web Developer pour Chrome.
+- [Fabricant de requêtes HTTP](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp?hl=en-US)
+    - Request Maker est un outil de test d'intrusion. Avec lui, vous pouvez facilement capturer les requêtes faites par les pages Web, falsifier l'URL, les en-têtes et les données POST et, bien sûr, faire de nouvelles requêtes
+- [Éditeur de cookies](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg?hl=en-US)
+    - Modifier Ce cookie est un gestionnaire de cookies. Vous pouvez ajouter, supprimer, modifier, rechercher, protéger et bloquer les cookies
 
-### Testing for Specific Vulnerabilities
+### Test de vulnérabilités spécifiques
 
-#### Testing for SQL Injection
+#### Test d'injection SQL
 
 - [sqlmap](http://sqlmap.org)
 
-#### Testing TLS
+#### Test TLS
 
 - [OWASP O-Saft](https://owasp.org/www-project-o-saft/)
 - [sslyze](https://github.com/nabla-c0d3/sslyze)
@@ -52,19 +52,19 @@ The list contains only tools that are freely available to download and use (alth
 - [SSLScan](https://github.com/rbsec/sslscan)
 - [SSLLabs](https://www.ssllabs.com/ssltest/)
 
-#### Testing for Brute Force Attacks
+#### Test des attaques par force brute
 
 ##### Hash Crackers
 
 - [John the Ripper](https://github.com/openwall/john)
 - [hashcat](https://hashcat.net/hashcat/)
 
-##### Remote Brute Force
+##### Force brute à distance
 
-- [OWASP ZAP](https://www.zaproxy.org)
+- [OWASP ZAP] (https://www.zaproxy.org)
 - [Patator](https://github.com/lanjelot/patator)
 - [THC Hydra](https://github.com/vanhauser-thc/thc-hydra)
-- [Burp Suite Community Edition (Intruder)](https://portswigger.net/burp/communitydownload)
+- [Burp Suite Community Edition (Intrus)](https://portswigger.net/burp/communitydownload)
 
 #### Fuzzers
 
@@ -72,65 +72,65 @@ The list contains only tools that are freely available to download and use (alth
 - [Wfuzz](https://github.com/xmendez/wfuzz)
 - [Jdam](https://gitlab.com/michenriksen/jdam)
 
-#### Google Hacking
+#### Piratage de Google
 
-- [Google Hacking database](https://www.exploit-db.com/google-hacking-database/)
+- [Base de données de piratage Google] (https://www.exploit-db.com/google-hacking-database/)
 
-#### Slow HTTP
+#### HTTP lent
 
 - [Slowloris](https://github.com/gkbrk/slowloris)
 - [slowhttptest](https://github.com/shekyan/slowhttptest)
 
-### Site Mirroring
+### Mise en miroir du site
 
 - [wget](https://www.gnu.org/software/wget/)
-- [wget for windows](http://gnuwin32.sourceforge.net/packages/wget.htm)
+- [wget pour windows](http://gnuwin32.sourceforge.net/packages/wget.htm)
 - [curl](https://curl.haxx.se)
 
-### Content Discovery
+### Découverte de contenu
 
 - [Gobuster](https://github.com/OJ/gobuster)
 
-### Port and Service Discovery
+### Découverte de ports et de services
 
 - [Nmap](https://nmap.org/)
 
-## Vulnerability Scanners
+## Analyseurs de vulnérabilité
 
-- [OWASP ZAP](https://www.zaproxy.org)
+- [OWASP ZAP] (https://www.zaproxy.org)
 - [Nikto](https://cirt.net/Nikto2)
 - [Nuclei](https://nuclei.projectdiscovery.io/)
 
-## Exploitation Frameworks
+## Cadres d'exploitation
 
 - [Metasploit](https://github.com/rapid7/metasploit-framework)
 - [BeEF](https://github.com/beefproject/beef/)
 
-## Linux Distributions
+## distributions Linux
 
 - [Kali](https://www.kali.org)
-- [Parrot](https://www.parrotsec.org)
-- [Samurai](https://github.com/SamuraiWTF/samuraiwtf)
+- [Perroquet](https://www.parrotsec.org)
+- [Samouraï](https://github.com/SamuraiWTF/samuraiwtf)
 - [Santoku](https://sourceforge.net/projects/santoku/)
 - [BlackArch](https://blackarch.org/downloads.html)
 
-## Source Code Analyzers
+## Analyseurs de code source
 
 - [Spotbugs](https://spotbugs.github.io)
-- [Find Security Bugs](https://find-sec-bugs.github.io)
-- [phpcs-security-audit](https://github.com/squizlabs/PHP_CodeSniffer)
+- [Trouver les bogues de sécurité] (https://find-sec-bugs.github.io)
+- [audit de sécurité phpcs](https://github.com/squizlabs/PHP_CodeSniffer)
 - [PMD](https://pmd.github.io)
-- [Microsoft's .NET Analyzers](https://docs.microsoft.com/en-us/visualstudio/code-quality/install-net-analyzers)
-- [SonarQube Community Edition](https://www.sonarqube.org)
+- [Analyseurs .NET de Microsoft](https://docs.microsoft.com/en-us/visualstudio/code-quality/install-net-analyzers)
+- [Édition communautaire SonarQube] (https://www.sonarqube.org)
 
-## Browser Automation Tools
+## Outils d'automatisation du navigateur
 
-Browser Automation tools are used to validate the functionality of web applications. Some follow a scripted approach and typically make use of a Unit Testing framework to construct test suites and test cases. Most, if not all, can be adapted to perform security specific tests in addition to functional tests.
+Les outils d'automatisation du navigateur sont utilisés pour valider la fonctionnalité des applications Web. Certains suivent une approche scriptée et utilisent généralement un cadre de test unitaire pour construire des suites de tests et des cas de test. La plupart, sinon tous, peuvent être adaptés pour effectuer des tests spécifiques à la sécurité en plus des tests fonctionnels.
 
-### Open Source Tools
+### Outils Open Source
 
 - [HtmlUnit](http://htmlunit.sourceforge.net)
-    - A Java and JUnit based framework that uses the Apache HttpClient as the transport.
-    - Very robust and configurable and is used as the engine for a number of other testing tools.
-- [Selenium](https://www.selenium.dev)
-    - JavaScript based testing framework, cross-platform and provides a GUI for creating tests.
+     - Un framework basé sur Java et JUnit qui utilise Apache HttpClient comme transport.
+     - Très robuste et configurable et est utilisé comme moteur pour un certain nombre d'autres outils de test.
+- [Sélénium](https://www.selenium.dev)
+     - Framework de test basé sur JavaScript, multiplateforme et fournit une interface graphique pour créer des tests.

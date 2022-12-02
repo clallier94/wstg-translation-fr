@@ -1,84 +1,84 @@
-# Encoded Injection
+# Injection codée
 
-## Background
+## Arrière plan
 
-Character encoding is the process of mapping characters, numbers and other symbols to a standard format. Typically, this is done to create a message ready for transmission between sender and receiver. It is, in simple terms, the conversion of characters (belonging to different languages like English, Chinese, Greek or any other known language) into bytes. An example of a widely used character encoding scheme is the American Standard Code for Information Interchange (ASCII) that initially used 7-bit codes. More recent examples of encoding schemes would be the Unicode `UTF-8` and `UTF-16` computing industry standards.
+L'encodage des caractères est le processus de mappage des caractères, des nombres et d'autres symboles dans un format standard. En règle générale, cela est fait pour créer un message prêt à être transmis entre l'expéditeur et le destinataire. C'est, en termes simples, la conversion de caractères (appartenant à différentes langues comme l'anglais, le chinois, le grec ou toute autre langue connue) en octets. Un exemple de schéma de codage de caractères largement utilisé est le code standard américain pour l'échange d'informations (ASCII) qui utilisait initialement des codes à 7 bits. Des exemples plus récents de schémas de codage seraient les normes de l'industrie informatique Unicode "UTF-8" et "UTF-16".
 
-In the space of application security and due to the plethora of encoding schemes available, character encoding has a popular misuse. It is being used for encoding malicious injection strings in a way that obfuscates them. This can lead to the bypass of input validation filters, or take advantage of particular ways in which browsers render encoded text.
+Dans le domaine de la sécurité des applications et en raison de la pléthore de schémas de codage disponibles, le codage de caractères est souvent mal utilisé. Il est utilisé pour encoder des chaînes d'injection malveillantes de manière à les obscurcir. Cela peut conduire au contournement des filtres de validation d'entrée ou tirer parti de certaines manières dont les navigateurs restituent le texte codé.
 
-## Input Encoding – Filter Evasion
+## Codage d'entrée - Évasion du filtre
 
-Web applications usually employ different types of input filtering mechanisms to limit the input that can be submitted by the user. If these input filters are not implemented sufficiently well, it is possible to slip a character or two through these filters. For instance, a `/` can be represented as `2F` (hex) in ASCII, while the same character (`/`) is encoded as `C0` `AF` in Unicode (2 byte sequence). Therefore, it is important for the input filtering control to be aware of the encoding scheme used. If the filter is found to be detecting only `UTF-8` encoded injections, a different encoding scheme may be employed to bypass this filter.
+Les applications Web utilisent généralement différents types de mécanismes de filtrage des entrées pour limiter les entrées pouvant être soumises par l'utilisateur. Si ces filtres d'entrée ne sont pas suffisamment bien implémentés, il est possible de glisser un caractère ou deux à travers ces filtres. Par exemple, un `/` peut être représenté par `2F` (hex) en ASCII, tandis que le même caractère (`/`) est codé comme `C0` `AF` en Unicode (séquence de 2 octets). Par conséquent, il est important que la commande de filtrage d'entrée soit consciente du schéma de codage utilisé. S'il s'avère que le filtre ne détecte que des injections codées "UTF-8", un schéma de codage différent peut être utilisé pour contourner ce filtre.
 
-## Output Encoding – Server & Browser Consensus
+## Encodage de sortie - Consensus du serveur et du navigateur
 
-Web browsers need to be aware of the encoding scheme used to coherently display a web page. Ideally, this information should be provided to the browser in the HTTP header (`Content-Type`) field, as shown below:
+Les navigateurs Web doivent connaître le schéma de codage utilisé pour afficher de manière cohérente une page Web. Idéalement, ces informations devraient être fournies au navigateur dans le champ d'en-tête HTTP ("Content-Type"), comme indiqué ci-dessous :
 
 ```http
 Content-Type: text/html; charset=UTF-8
 ```
 
-or through HTML META tag (`META HTTP-EQUIV`), as shown below:
+ou via la balise HTML META (`META HTTP-EQUIV`), comme indiqué ci-dessous :
 
 ``` html
 <META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 ```
 
-It is through these character encoding declarations that the browser understands which set of characters to use when converting bytes to characters. Note that the content type mentioned in the HTTP header has precedence over the META tag declaration.
+C'est grâce à ces déclarations d'encodage de caractères que le navigateur comprend quel jeu de caractères utiliser lors de la conversion d'octets en caractères. Notez que le type de contenu mentionné dans l'en-tête HTTP a priorité sur la déclaration de balise META.
 
-CERT describes it here as follows:
+Le CERT le décrit ici comme suit :
 
-Many web pages leave the character encoding (`charset` parameter in HTTP) undefined. In earlier versions of HTML and HTTP, the character encoding was supposed to default to `ISO-8859-1` if it wasn't defined. In fact, many browsers had a different default, so it was not possible to rely on the default being `ISO-8859-1`. HTML version 4 legitimizes this - if the character encoding isn't specified, any character encoding can be used.
+De nombreuses pages Web laissent le codage des caractères (paramètre `charset` dans HTTP) indéfini. Dans les versions antérieures de HTML et HTTP, l'encodage des caractères était censé être par défaut "ISO-8859-1" s'il n'était pas défini. En fait, de nombreux navigateurs avaient une valeur par défaut différente, il n'était donc pas possible de se fier à la valeur par défaut `ISO-8859-1`. La version 4 de HTML le légitime - si l'encodage de caractères n'est pas spécifié, n'importe quel encodage de caractères peut être utilisé.
 
-If the web server doesn't specify which character encoding is in use, it can't tell which characters are special. Web pages with unspecified character encoding work most of the time because most character sets assign the same characters to byte values below 128. But which of the values above 128 are special? Some 16-bit `character-encoding` schemes have additional multi-byte representations for special characters such as `<`. Some browsers recognize this alternative encoding and act on it. This is "correct" behavior, but it makes attacks using malicious scripts much harder to prevent. The server simply doesn't know which byte sequences represent the special characters.
+Si le serveur Web ne spécifie pas quel encodage de caractères est utilisé, il ne peut pas dire quels caractères sont spéciaux. Les pages Web avec un codage de caractères non spécifié fonctionnent la plupart du temps car la plupart des jeux de caractères attribuent les mêmes caractères aux valeurs d'octet inférieures à 128. Mais lesquelles des valeurs supérieures à 128 sont spéciales ? Certains schémas de `codage de caractères` 16 bits ont des représentations multi-octets supplémentaires pour les caractères spéciaux tels que `<`. Certains navigateurs reconnaissent cet encodage alternatif et agissent en conséquence. C'est un comportement "correct", mais il rend les attaques utilisant des scripts malveillants beaucoup plus difficiles à prévenir. Le serveur ne sait tout simplement pas quelles séquences d'octets représentent les caractères spéciaux.
 
-Therefore in the event of not receiving the character encoding information from the server, the browser either attempts to guess the encoding scheme or reverts to a default scheme. In some cases, the user explicitly sets the default encoding in the browser to a different scheme. Any such mismatch in the encoding scheme used by the web page (server) and the browser may cause the browser to interpret the page in a manner that is unintended or unexpected.
+Par conséquent, en cas de non-réception des informations d'encodage de caractères du serveur, le navigateur tente soit de deviner le schéma d'encodage, soit de revenir à un schéma par défaut. Dans certains cas, l'utilisateur définit explicitement le codage par défaut dans le navigateur sur un schéma différent. Une telle incompatibilité dans le schéma de codage utilisé par la page Web (serveur) et le navigateur peut amener le navigateur à interpréter la page d'une manière involontaire ou inattendue.
 
-### Encoded Injections
+### Injections codées
 
-All the scenarios given below form only a subset of the various ways obfuscation can be achieved to bypass input filters. Also, the success of encoded injections depends on the browser in use. For example, `US-ASCII` encoded injections were previously successful only in IE browser but not in Firefox. Therefore, it may be noted that encoded injections, to a large extent, are browser dependent.
+Tous les scénarios donnés ci-dessous ne forment qu'un sous-ensemble des différentes façons dont l'obscurcissement peut être réalisé pour contourner les filtres d'entrée. De plus, le succès des injections codées dépend du navigateur utilisé. Par exemple, les injections encodées en "US-ASCII" ne réussissaient auparavant que dans le navigateur IE, mais pas dans Firefox. Par conséquent, on peut noter que les injections codées, dans une large mesure, dépendent du navigateur.
 
-### Basic Encoding
+### Encodage de base
 
-Consider a basic input validation filter that protects against injection of single quote character. In this case the following injection would easily bypass this filter:
+Considérez un filtre de validation d'entrée de base qui protège contre l'injection de guillemets simples. Dans ce cas, l'injection suivante contournerait facilement ce filtre :
 
 ``` html
 <script>alert(String.fromCharCode(88,83,83))</script>
 ```
 
-`String.fromCharCode` JavaScript function takes the given Unicode values and returns the corresponding string. This is one of the most basic forms of encoded injections. Another vector that can be used to bypass this filter is:
+La fonction JavaScript `String.fromCharCode` prend les valeurs Unicode données et renvoie la chaîne correspondante. C'est l'une des formes les plus élémentaires d'injections codées. Un autre vecteur qui peut être utilisé pour contourner ce filtre est :
 
 ``` html
 <IMG src="" onerror=javascript:alert(&quot;XSS&quot;)>
 ```
 
-Or by using the respective [HTML character codes](https://www.rapidtables.com/code/text/unicode-characters.html):
+Ou en utilisant les [codes de caractères HTML](https://www.rapidtables.com/code/text/unicode-characters.html) respectifs :
 
 ``` html
 <IMG src="" onerror="javascript:alert(&#34;XSS&#34;)">
 ```
 
-The above uses HTML Entities to construct the injection string. HTML Entities encoding is used to display characters that have a special meaning in HTML. For instance, `>` works as a closing bracket for a HTML tag. In order to actually display this character on the web page HTML character entities should be inserted in the page source. The injections mentioned above are one way of encoding. There are numerous other ways in which a string can be encoded (obfuscated) in order to bypass the above filter.
+Ce qui précède utilise des entités HTML pour construire la chaîne d'injection. L'encodage des entités HTML est utilisé pour afficher les caractères qui ont une signification particulière en HTML. Par exemple, `>` fonctionne comme un crochet fermant pour une balise HTML. Afin d'afficher réellement ce caractère sur la page Web, les entités de caractères HTML doivent être insérées dans la source de la page. Les injections mentionnées ci-dessus sont une manière d'encoder. Il existe de nombreuses autres manières d'encoder (obscurcir) une chaîne afin de contourner le filtre ci-dessus.
 
-### Hex Encoding
+### Encodage hexadécimal
 
-Hex, short for Hexadecimal, is a base 16 numbering system i.e it has 16 different values from `0` to `9` and `A` to `F` to represent various characters. Hex encoding is another form of obfuscation that is sometimes used to bypass input validation filters. For instance, hex encoded version of the string `<IMG SRC=javascript:alert('XSS')>` is
+Hex, abréviation de Hexadecimal, est un système de numérotation en base 16, c'est-à-dire qu'il a 16 valeurs différentes de '0' à '9' et 'A' à 'F' pour représenter divers caractères. L'encodage hexadécimal est une autre forme d'obscurcissement qui est parfois utilisée pour contourner les filtres de validation d'entrée. Par exemple, la version encodée en hexadécimal de la chaîne `<IMG SRC=javascript:alert('XSS')>` est
 
 ``` html
 <IMG SRC=%6A%61%76%61%73%63%72%69%70%74%3A%61%6C%65%72%74%28%27%58%53%53%27%29>
 ```
 
-A variation of the above string is given below. Can be used in case ‘%’ is being filtered:
+Une variante de la chaîne ci-dessus est donnée ci-dessous. Peut être utilisé dans le cas où '%' est filtré :
 
 ``` html
 <IMG SRC=&#x6A&#x61&#x76&#x61&#x73&#x63&#x72&#x69&#x70&#x74&#x3A&#x61&#x6C&#x65&#x72&#x74&#x28&#x27&#x58&#x53&#x53&#x27&#x29>
 ```
 
-There are other encoding schemes, such as Base64 and Octal, that may be used for obfuscation. Although, every encoding scheme may not work every time, a bit of trial and error coupled with intelligent manipulations would definitely reveal the loophole in a weakly built input validation filter.
+Il existe d'autres schémas de codage, tels que Base64 et Octal, qui peuvent être utilisés pour l'obscurcissement. Bien que chaque schéma de codage puisse ne pas fonctionner à chaque fois, un peu d'essais et d'erreurs couplés à des manipulations intelligentes révéleraient certainement la faille dans un filtre de validation d'entrée faiblement construit.
 
-### UTF-7 Encoding
+### Encodage UTF-7
 
-UTF-7 encoding of
+Encodage UTF-7 de
 
 ``` html
 <SCRIPT>
@@ -86,21 +86,21 @@ UTF-7 encoding of
 </SCRIPT>
 ```
 
-is as below
+est comme ci-dessous
 
 `+ADw-SCRIPT+AD4-alert('XSS');+ADw-/SCRIPT+AD4-`
 
-For the above script to work, the browser has to interpret the web page as encoded in `UTF-7`.
+Pour que le script ci-dessus fonctionne, le navigateur doit interpréter la page Web comme encodée en `UTF-7`.
 
-### Multi-byte Encoding
+### Encodage multi-octets
 
-Variable-width encoding is another type of character encoding scheme that uses codes of varying lengths to encode characters. Multi-Byte Encoding is a type of variable-width encoding that uses varying number of bytes to represent a character. Multi-byte encoding is primarily used to encode characters that belong to a large character set e.g. Chinese, Japanese and Korean.
+Le codage à largeur variable est un autre type de schéma de codage de caractères qui utilise des codes de longueurs variables pour coder les caractères. Le codage multi-octets est un type de codage à largeur variable qui utilise un nombre variable d'octets pour représenter un caractère. Le codage multi-octets est principalement utilisé pour coder des caractères appartenant à un grand jeu de caractères, par ex. chinois, japonais et coréen.
 
-Multibyte encoding has been used in the past to bypass standard input validation functions and carry out cross site scripting and SQL injection attacks.
+Le codage multioctet a été utilisé dans le passé pour contourner les fonctions de validation d'entrée standard et effectuer des scripts intersites et des attaques par injection SQL.
 
-## References
+## Références
 
-- [Encoding (Semiotics)](https://en.wikipedia.org/wiki/Encoding_(semiotics))
-- [HTML Entities](https://www.w3schools.com/HTML/html_entities.asp)
-- [How to prevent input validation attacks](https://searchsecurity.techtarget.com/answer/How-to-prevent-input-validation-attacks)
-- [Unicode and Character Sets](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/)
+- [Encodage (Sémiotique)](https://en.wikipedia.org/wiki/Encoding_(sémiotique))
+- [Entités HTML](https://www.w3schools.com/HTML/html_entities.asp)
+- [Comment empêcher les attaques de validation d'entrée](https://searchsecurity.techtarget.com/answer/How-to-prevent-input-validation-attacks)
+- [Unicode et jeux de caractères] (https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and- jeux-de-caractères-pas-d'excuses/)

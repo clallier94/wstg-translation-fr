@@ -1,280 +1,280 @@
-# Leveraging Dev Tools
+# Tirer parti des outils de développement
 
-This appendix outlines various details for use of in browser Developer Tool functionality to aid in security testing activities.
+Cette annexe décrit divers détails à utiliser dans la fonctionnalité de l'outil de développement du navigateur pour faciliter les activités de test de sécurité.
 
-Obviously in browser functionality is not a substitute for: DAST (Dynamic Application Security Testing) tools, SAST (Static Application Security Testing) tools, or a tester's experience, however, it can be leveraged for some testing activities and report production related tasks.
+De toute évidence, la fonctionnalité du navigateur ne remplace pas : les outils DAST (Dynamic Application Security Testing), les outils SAST (Static Application Security Testing) ou l'expérience d'un testeur, cependant, elle peut être exploitée pour certaines activités de test et les tâches liées à la production de rapports.
 
-## Accessing Dev Tools
+## Accéder aux outils de développement
 
-Opening Dev Tools can be accomplished in a number of ways.
+L'ouverture des outils de développement peut être accomplie de plusieurs façons.
 
-1. Via the keyboard shortcut `F12`.
-2. Via the keyboard shortcut `ctrl` + `shift` + `i` on Windows.
-3. Via the keyboard short cut `cmd` + `option` + `i` on Mac.
-4. Via the web page right-click context menu and then selecting `Inspect` in Google Chrome.
-5. Via the web page right-click context menu and then selecting `Inspect Element` in Mozilla Firefox.
-6. Via the triple dot 'kabob' menu in Google Chrome then selecting `More Tools` and then `Developer Tools`.
-7. Via the triple line 'hamburger' (or 'pancake') menu in Mozilla Firefox then selecting `Web Developer` and then `Toggle Tools`.
-8. Via the gear icon settings menu in Edge/IE then selecting `Developer Tools`.
+1. Via le raccourci clavier `F12`.
+2. Via le raccourci clavier `ctrl` + `shift` + `i` sous Windows.
+3. Via le raccourci clavier `cmd` + `option` + `i` sur Mac.
+4. Via le menu contextuel de la page Web, cliquez avec le bouton droit de la souris, puis sélectionnez "Inspecter" dans Google Chrome.
+5. Via le menu contextuel de la page Web, cliquez avec le bouton droit de la souris, puis sélectionnez "Inspecter l'élément" dans Mozilla Firefox.
+6. Via le menu "kabob" à trois points dans Google Chrome, sélectionnez "Plus d'outils", puis "Outils de développement".
+7. Via le menu triple ligne 'hamburger' (ou 'pancake') dans Mozilla Firefox puis en sélectionnant `Web Developer` puis `Toggle Tools`.
+8. Via le menu des paramètres de l'icône d'engrenage dans Edge/IE, puis en sélectionnant "Outils de développement".
 
-> NOTE: The majority of the instructions below assume that Dev Tools is already open or active.
+> REMARQUE : La majorité des instructions ci-dessous supposent que Dev Tools est déjà ouvert ou actif.
 
-## Capabilities
+## Capacités
 
-| Functionality         | Chrome* | Firefox | Edge/IE | Safari |
-|-----------------------|:-------:|:-------:|:-------:|:------:|
-| User-Agent Switching  | Y       | Y       | Y       | Y      |
-| Edit/Resend Requests  | Y       | Y       | N       | N      |
-| Cookie Editing        | Y       | Y       | Y       | N      |
-| Local Storage Editing | Y       | Y       | Y       | N      |
-| Disable CSS           | Y       | Y       | Y       | Y      |
-| Disable JavaScript    | Y       | Y       | N       | Y      |
-| View HTTP Headers     | Y       | Y       | Y       | Y      |
-| Screenshots           | Y       | Y       | Y       | N      |
-| Offline Mode          | Y       | Y       | N       | N      |
-| Encoding and Decoding | Y       | Y       | Y       | Y      |
-| Responsive Design Mode| Y       | Y       | Y       | Y      |
+| Fonctionnalité | Chrome* | Firefox | Edge/IE | safari |
+|----------------------|:-------:|:-------:|:---- ---:|:------:|
+| Commutation utilisateur-agent | Y | Y | Y | Y |
+| Modifier/Renvoyer les demandes | Y | Y | N | N |
+| Modification des cookies | Y | Y | Y | N |
+| Édition du stockage local | Y | Y | Y | N |
+| Désactiver CSS | Y | Y | Y | Y |
+| Désactiver JavaScript | Y | Y | N | Y |
+| Afficher les en-têtes HTTP | Y | Y | Y | Y |
+| Captures d'écran | Y | Y | Y | N |
+| Mode hors ligne | Y | Y | N | N |
+| Encodage et décodage | Y | Y | Y | Y |
+| Mode de conception réactif| Y | Y | Y | Y |
 
-`*` Anything that applies to Google Chrome should be applicable to all Chromium based applications. (Which includes Microsoft rebadging Edge around 2019/2020.)
+`*` Tout ce qui s'applique à Google Chrome devrait s'appliquer à toutes les applications basées sur Chromium. (Ce qui inclut Microsoft rebadging Edge vers 2019/2020.)
 
-## User-Agent Switching
+## Commutation utilisateur-agent
 
-### Related Testing
+### Tests associés
 
-- [Testing for Browser Cache Weaknesses](../4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
-
-### Google Chrome
-
-1. Click on triple dot 'kabob' menu on the right side of the Developer Tools pane, select `More tools` then select `Network conditions`.
-2. Un-check the "Select automatically" checkbox.
-3. Select the user agent from dropdown menu or enter a custom user agent
-
-![User-Agent selection dropdown menu in Google Chrome](images/f_chrome_devtools_ua_switch.png)\
-*Figure 6.F-1: Google Chrome Dev Tools User-Agent Switching Functionality*
-
-### Mozilla Firefox
-
-1. Navigate to Firefox’s `about:config` page and click `I accept the risk!`.
-2. Enter `general.useragent.override` into the search field.
-3. Look for `general.useragent.override`, if you can't see this preference, look for one that show a set of radio buttons `Boolean, Number, String` select `String` then click the plus sign `Add` button on the `about:config` page.
-4. Set the value of `general.useragent.override` to whatever [User-Agent](https://developers.whatismybrowser.com/useragents/explore/) you might need.
-
-![User-Agent configuration preference in Mozilla Firefox](images/f_firefox_ua_switch.png)\
-*Figure 6.F-2: Mozilla Firefox User-Agent Switching Functionality*
-
-Later click on the garbage can `Delete` button to the right of the `general.useragent.override` preference to remove the override and switch back to the default user agent.
-
-## Edit/Resend Requests
-
-### Related Testing
-
-- [Authentication Testing](../4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
-- [Authorization Testing](../4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
-- [Session Management Testing](../4-Web_Application_Security_Testing/06-Session_Management_Testing/README.md)
-- [Input Validation Testing](../4-Web_Application_Security_Testing/07-Input_Validation_Testing/README.md)
-- [Business Logic Testing](../4-Web_Application_Security_Testing/10-Business_Logic_Testing/README.md)
-
-### Mozilla Firefox
-
-1. Select the `Network` tab.
-2. Perform any action in the web application.
-3. Right-click on the HTTP request from the list and select `Edit and Resend`.
-4. Make desired modifications and click on the `Send` button.
-5. Right-click on the modified request and select `Open in New Tab`.
+- [Test des faiblesses du cache du navigateur](../4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
 
 ### Google Chrome
 
-1. Select the `Network` tab.
-2. Perform any action in the web application.
-3. Right-click on the HTTP request from the list and select `Copy > Copy as fetch`.
-4. Paste the provided JavaScript code into the `Console` tab.
-5. Make any required modifications, and then hit enter to send the request.
+1. Cliquez sur le menu "kabob" à trois points sur le côté droit du volet Outils de développement, sélectionnez "Plus d'outils", puis sélectionnez "Conditions réseau".
+2. Décochez la case "Sélectionner automatiquement".
+3. Sélectionnez l'agent utilisateur dans le menu déroulant ou entrez un agent utilisateur personnalisé
 
-## Cookie Editing
+![Menu déroulant de sélection de l'agent utilisateur dans Google Chrome](images/f_chrome_devtools_ua_switch.png)\
+*Figure 6.F-1 : Fonctionnalité de changement d'agent utilisateur de Google Chrome Dev Tools*
 
-### Related Testing
+###MozillaFirefox
 
-- [Authentication Testing](../4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
-- [Authorization Testing](../4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
-- [Session Management Testing](../4-Web_Application_Security_Testing/06-Session_Management_Testing/README.md)
-- [Testing for Cookie Attributes](../4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md)
+1. Accédez à la page "about:config" de Firefox et cliquez sur "J'accepte le risque !".
+2. Entrez `general.useragent.override` dans le champ de recherche.
+3. Recherchez `general.useragent.override`, si vous ne voyez pas cette préférence, recherchez-en une qui affiche un ensemble de boutons radio `Boolean, Number, String` sélectionnez `String` puis cliquez sur le signe plus `Add` sur la page `about:config`.
+4. Définissez la valeur de `general.useragent.override` sur tout [User-Agent](https://developers.whatismybrowser.com/useragents/explore/) dont vous pourriez avoir besoin.
 
-### Google Chrome
+![Préférence de configuration de l'agent utilisateur dans Mozilla Firefox](images/f_firefox_ua_switch.png)\
+*Figure 6.F-2 : Fonctionnalité de changement d'agent utilisateur de Mozilla Firefox*
 
-1. Click the `Application` tab.
-2. Expand `Cookies` under the `Storage` heading.
-3. Select the relevant domain name.
-4. Double click in the `Value` column to edit any cookie value.
+Cliquez ensuite sur le bouton de la corbeille "Supprimer" à droite de la préférence "general.useragent.override" pour supprimer le remplacement et revenir à l'agent utilisateur par défaut.
 
-> Note: Cookies can be deleted once selected by pressing the `delete` key, or from the right-click context menu.
+## Modifier/Renvoyer les demandes
 
-### Mozilla Firefox
+### Tests associés
 
-1. Click the `Storage` tab.
-2. Expand the `Cookies` section.
-3. Select the relevant domain name.
-4. Double click in the `Value` column to edit any cookie value.
+- [Test d'authentification](../4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
+- [Test d'autorisation](../4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
+- [Test de gestion de session](../4-Web_Application_Security_Testing/06-Session_Management_Testing/README.md)
+- [Test de validation des entrées](../4-Web_Application_Security_Testing/07-Input_Validation_Testing/README.md)
+- [Tests de logique métier](../4-Web_Application_Security_Testing/10-Business_Logic_Testing/README.md)
 
-> Note: Cookies can be deleted once selected by pressing the `delete` key, or with various options from the right-click context menu.
+###MozillaFirefox
 
-![Cookie Editing functionality in Mozilla Firefox](images/f_firefox_cookie_edit.png)\
-*Figure 6.F-3: Mozilla Firefox Cookie Editing Functionality*
-
-## Local Storage Editing
-
-### Related Testing
-
-- [Testing Browser Storage](../4-Web_Application_Security_Testing/11-Client-side_Testing/12-Testing_Browser_Storage.md)
+1. Sélectionnez l'onglet "Réseau".
+2. Effectuez toute action dans l'application Web.
+3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez "Modifier et renvoyer".
+4. Effectuez les modifications souhaitées et cliquez sur le bouton "Envoyer".
+5. Cliquez avec le bouton droit sur la demande modifiée et sélectionnez "Ouvrir dans un nouvel onglet".
 
 ### Google Chrome
 
-1. Click the `Application` tab.
-2. Expand `Local Storage` under the `Storage` heading.
-3. Select the relevant domain name.
-4. Double click in the `Value` column to edit any cookie value.
-5. Double click in the applicable Cell to edit the `Key` or `Value`.
+1. Sélectionnez l'onglet "Réseau".
+2. Effectuez toute action dans l'application Web.
+3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez « Copier > Copier en tant que récupération ».
+4. Collez le code JavaScript fourni dans l'onglet "Console".
+5. Effectuez les modifications requises, puis appuyez sur Entrée pour envoyer la demande.
 
-> Note: Editing `Session Storage` or `Index DB` follows essentially the same steps.
+## Modification des cookies
+
+### Tests associés
+
+- [Test d'authentification](../4-Web_Application_Security_Testing/04-Authentication_Testing/README.md)
+- [Test d'autorisation](../4-Web_Application_Security_Testing/05-Authorization_Testing/README.md)
+- [Test de gestion de session](../4-Web_Application_Security_Testing/06-Session_Management_Testing/README.md)
+- [Test des attributs des cookies](../4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md)
+
+### Google Chrome
+
+1. Cliquez sur l'onglet "Application".
+2. Développez "Cookies" sous l'en-tête "Stockage".
+3. Sélectionnez le nom de domaine concerné.
+4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
+
+> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche "supprimer" ou à partir du menu contextuel du clic droit.
+
+###MozillaFirefox
+
+1. Cliquez sur l'onglet "Stockage".
+2. Développez la section "Cookies".
+3. Sélectionnez le nom de domaine concerné.
+4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
+
+> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche "supprimer", ou avec diverses options du menu contextuel du clic droit.
+
+![Fonctionnalité d'édition des cookies dans Mozilla Firefox](images/f_firefox_cookie_edit.png)\
+*Figure 6.F-3 : Fonctionnalité d'édition des cookies de Mozilla Firefox*
+
+## Édition du stockage local
+
+### Tests associés
+
+- [Test du stockage du navigateur](../4-Web_Application_Security_Testing/11-Client-side_Testing/12-Testing_Browser_Storage.md)
+
+### Google Chrome
+
+1. Cliquez sur l'onglet "Application".
+2. Développez "Stockage local" sous l'en-tête "Stockage".
+3. Sélectionnez le nom de domaine concerné.
+4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
+5. Double-cliquez dans la cellule applicable pour modifier la « clé » ou la « valeur ».
+
+> Remarque : La modification de `Session Storage` ou `Index DB` suit essentiellement les mêmes étapes.
 >
-> Note: Items can be added or deleted via the right-click context menu.
+> Remarque : Les éléments peuvent être ajoutés ou supprimés via le menu contextuel du clic droit.
 
-### Mozilla Firefox
+###MozillaFirefox
 
-1. Click the `Storage` tab.
-2. Expand the `Local Storage` section.
-3. Select the relevant domain name.
-4. Double click in the applicable Cell to edit the `Key` or `Value`.
+1. Cliquez sur l'onglet "Stockage".
+2. Développez la section "Stockage local".
+3. Sélectionnez le nom de domaine concerné.
+4. Double-cliquez dans la cellule applicable pour modifier la « clé » ou la « valeur ».
 
-> Note: Editing `Session Storage` or `Index DB` follows essentially the same steps.
+> Remarque : La modification de `Session Storage` ou `Index DB` suit essentiellement les mêmes étapes.
 >
-> Note: Items can be added or deleted via the right-click context menu.
+> Remarque : Les éléments peuvent être ajoutés ou supprimés via le menu contextuel du clic droit.
 
-## Disable CSS
+## Désactiver CSS
 
-### Related Testing
+### Tests associés
 
-- [Testing for Client-side Resource Manipulation](../4-Web_Application_Security_Testing/11-Client-side_Testing/06-Testing_for_Client-side_Resource_Manipulation.md)
+- [Test de la manipulation des ressources côté client](../4-Web_Application_Security_Testing/11-Client-side_Testing/06-Testing_for_Client-side_Resource_Manipulation.md)
 
-### General
+### Général
 
-All major browsers support manipulating CSS leveraging the Dev Tools Console and JavaScript functionality:
+Tous les principaux navigateurs prennent en charge la manipulation de CSS à l'aide de la console Dev Tools et de la fonctionnalité JavaScript :
 
-- To remove all external style-sheets: `$('style,link[rel="stylesheet"]').remove();`
-- To remove all internal style-sheets: `$('style').remove();`
-- To remove all in-line styles: `Array.prototype.forEach.call(document.querySelectorAll('*'),function(el){el.removeAttribute('style');});`
-- To remove everything from head tag: `$('head').remove();`
+- Pour supprimer toutes les feuilles de style externes : `$('style,link[rel="stylesheet"]').remove();`
+- Pour supprimer toutes les feuilles de style internes : `$('style').remove();`
+- Pour supprimer tous les styles en ligne : `Array.prototype.forEach.call(document.querySelectorAll('*'),function(el){el.removeAttribute('style');});`
+- Pour tout supprimer de la balise head : `$('head').remove();`
 
-## Disable JavaScript
-
-### Google Chrome
-
-1. Click on triple dot 'kabob' menu on the right side of the web developer toolbar and click on `Settings`.
-2. On the `Preferences` tab, under the `Debugger` section, check the `Disable JavaScript` checkbox.
-
-### Mozilla Firefox
-
-1. On the dev tools `Debugger` tab, click on the settings gear button in the upper right corner of the developer toolbar.
-2. Select `Disable JavaScript` from the dropdown (this is an enable/disable menu item; when JavaScript is disabled, the menu item has a check mark).
-
-## View HTTP Headers
-
-### Related Testing
-
-- [Information Gathering](../4-Web_Application_Security_Testing/01-Information_Gathering/README.md)
+## Désactiver JavaScript
 
 ### Google Chrome
 
-1. On the `Networking` tab in Dev Tools select any URL or request.
-2. In the lower right hand pane select the `Headers` tab.
+1. Cliquez sur le menu "kabob" à trois points sur le côté droit de la barre d'outils du développeur Web et cliquez sur "Paramètres".
+2. Dans l'onglet "Préférences", sous la section "Débogueur", cochez la case "Désactiver JavaScript".
 
-![Headers View in Google Chrome](images/f_chrome_devtools_headers.png)\
-*Figure 6.F-4: Google Chrome Headers View*
+###MozillaFirefox
 
-### Mozilla Firefox
+1. Dans l'onglet "Débogueur" des outils de développement, cliquez sur le bouton d'engrenage des paramètres dans le coin supérieur droit de la barre d'outils du développeur.
+2. Sélectionnez "Désactiver JavaScript" dans la liste déroulante (il s'agit d'un élément de menu activer/désactiver ; lorsque JavaScript est désactivé, l'élément de menu est coché).
 
-1. On the `Networking` tab in Dev Tools select any URL or request.
-2. In the lower right hand pane select the `Headers` tab.
+## Afficher les en-têtes HTTP
 
-![Headers View in Mozilla Firefox](images/f_firefox_devtools_headers.png)\
-*Figure 6.F-5: Mozilla Firefox Headers View*
+### Tests associés
 
-## Screenshots
+- [Collecte d'informations](../4-Web_Application_Security_Testing/01-Information_Gathering/README.md)
 
-### Related Testing
+### Google Chrome
+
+1. Dans l'onglet "Réseau" des outils de développement, sélectionnez une URL ou une requête.
+2. Dans le volet inférieur droit, sélectionnez l'onglet "En-têtes".
+
+![Affichage des en-têtes dans Google Chrome](images/f_chrome_devtools_headers.png)\
+*Figure 6.F-4 : Affichage des en-têtes Google Chrome*
+
+###MozillaFirefox
+
+1. Dans l'onglet "Réseau" des outils de développement, sélectionnez une URL ou une requête.
+2. Dans le volet inférieur droit, sélectionnez l'onglet "En-têtes".
+
+![Affichage des en-têtes dans Mozilla Firefox](images/f_firefox_devtools_headers.png)\
+*Figure 6.F-5 : Affichage des en-têtes de Mozilla Firefox*
+
+## Captures d'écran
+
+### Tests associés
 
 - [Reporting](../5-Reporting/README.md)
 
 ### Google Chrome
 
-1. Press on the `Toggle Device Toolbar` button or press `ctrl` + `shift` + `m`.
-2. Click the triple dot 'kabob' menu in the Device Toolbar.
-3. Select `Capture screenshot` or `Capture full size screenshot`.
+1. Appuyez sur le bouton `Toggle Device Toolbar` ou appuyez sur `ctrl` + `shift` + `m`.
+2. Cliquez sur le menu 'kabob' à trois points dans la barre d'outils de l'appareil.
+3. Sélectionnez "Capture d'écran" ou "Capture d'écran en taille réelle".
 
-### Mozilla Firefox
+###MozillaFirefox
 
-1. Press the triple dot `ellipsis` button in the address bar.
-2. Select `Take a Screenshot`.
-3. Select either the `Save full page` or `Save visible` option.
+1. Appuyez sur le bouton à trois points "points de suspension" dans la barre d'adresse.
+2. Sélectionnez "Prendre une capture d'écran".
+3. Sélectionnez l'option "Enregistrer la page entière" ou "Enregistrer la page visible".
 
-## Offline Mode
-
-### Google Chrome
-
-1. Navigate to `Network` tab.
-2. In the `Throttle` dropdown select `Offline`.
-
-![Offline Option in Google Chrome](images/f_chrome_devtools_offline.png)\
-*Figure 6.F-6: Google Chrome Offline Option*
-
-### Mozilla Firefox
-
-1. From the triple line 'hamburger' (or 'pancake') menu select `Web Developer` and then `Work Offline`.
-
-![Offline Option in Mozilla Firefox](images/f_firefox_devtools_offline.png)\
-*Figure 6.F-7: Mozilla Firefox Offline Option*
-
-## Encoding and Decoding
-
-### Related Testing
-
-- Many (perhaps even most) types of [Web Application Security Testing](../4-Web_Application_Security_Testing/README.md) can benefit from various types of encoding.
-
-### General
-
-All major browsers support encoding and decoding strings in various ways leveraging the Dev Tools Console and JavaScript functionality:
-
-- Base64 encode: `btoa("string-to-encode")`
-- Base64 decode: `atob("string-to-decode")`
-- URL encode: `encodeURIComponent("string-to-encode")`
-- URL decode: `decodeURIComponent("string-to-decode")`
-- HTML encode: `escape("string-to-encode")`
-- HTML decode: `unescape("string-to-decode")`
-
-## Responsive Design Mode
-
-### Related Testing
-
-- [Testing for Browser Cache Weaknesses](../4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
-- [Testing for Weaker Authentication in Alternative Channel](../4-Web_Application_Security_Testing/04-Authentication_Testing/10-Testing_for_Weaker_Authentication_in_Alternative_Channel.md)
-- [Testing for Clickjacking](../4-Web_Application_Security_Testing/11-Client-side_Testing/09-Testing_for_Clickjacking.md)
+## Mode hors-ligne
 
 ### Google Chrome
 
-1. Click the `Toggle device toolbar` button or press `ctrl` + `shift` + `m`.
+1. Accédez à l'onglet "Réseau".
+2. Dans la liste déroulante "Throttle", sélectionnez "Hors ligne".
 
-![Responsive Design Mode in Google Chrome](images/f_chrome_responsive_design_mode.png)\
-*Figure 6.F-8: Google Chrome Responsive Design Mode*
+![Option hors ligne dans Google Chrome](images/f_chrome_devtools_offline.png)\
+*Figure 6.F-6 : Option Google Chrome hors ligne*
 
-### Mozilla Firefox
+###MozillaFirefox
 
-1. Click the `Responsive Design Mode` button or press `ctrl` + `shift` + `m`.
+1. Dans le menu à trois lignes "hamburger" (ou "crêpe"), sélectionnez "Développeur Web", puis "Travailler hors ligne".
 
-![Responsive Design Mode in Mozilla Firefox](images/f_firefox_responsive_design_mode.png)\
-*Figure 6.F-9: Mozilla Firefox Responsive Design Mode*
+![Option hors ligne dans Mozilla Firefox](images/f_firefox_devtools_offline.png)\
+*Figure 6.F-7 : Option hors ligne de Mozilla Firefox*
 
-## References
+## Encodage et décodage
 
-- [Web App Security Testing with Browsers](https://getmantra.com/web-app-security-testing-with-browsers/)
-- [Black Hills Information Security - Webcast: Free Tools! How to Use Developer Tools and JavaScript in Webapp Pentests](https://www.blackhillsinfosec.com/webcast-free-tools-how-to-use-developer-tools-and-javascript-in-webapp-pentests/)
-- [Greg Malcolm - Chrome Developer Tools: Raiding the Armory](https://github.com/gregmalcolm/wacky-wandas-wicked-weapons-frontend/blob/fix-it/README.md)
-- [List of UserAgent Strings](http://user-agent-string.info/list-of-ua)
+### Tests associés
+
+- De nombreux (peut-être même la plupart) types de [tests de sécurité des applications Web] (../4-Web_Application_Security_Testing/README.md) peuvent bénéficier de différents types d'encodage.
+
+### Général
+
+Tous les principaux navigateurs prennent en charge l'encodage et le décodage des chaînes de différentes manières en exploitant la console Dev Tools et la fonctionnalité JavaScript :
+
+- Encodage Base64 : `btoa("chaîne-à-encoder")`
+- Décodage Base64 : `atob("string-to-decode")`
+- Encodage de l'URL : `encodeURIComponent("string-to-encode")`
+- Décodage d'URL : `decodeURIComponent("string-to-decode")`
+- Encodage HTML : `escape("string-to-encode")`
+- Décodage HTML : `unescape("string-to-decode")`
+
+## Mode de conception réactif
+
+### Tests associés
+
+- [Test des faiblesses du cache du navigateur](../4-Web_Application_Security_Testing/04-Authentication_Testing/06-Testing_for_Browser_Cache_Weaknesses.md)
+- [Test pour une authentification plus faible dans un canal alternatif](../4-Web_Application_Security_Testing/04-Authentication_Testing/10-Testing_for_Weaker_Authentication_in_Alternative_Channel.md)
+- [Test de détournement de clic](../4-Web_Application_Security_Testing/11-Client-side_Testing/09-Testing_for_Clickjacking.md)
+
+### Google Chrome
+
+1. Cliquez sur le bouton `Basculer la barre d'outils de l'appareil` ou appuyez sur `ctrl` + `shift` + `m`.
+
+![Mode de conception réactif dans Google Chrome](images/f_chrome_responsive_design_mode.png)\
+*Figure 6.F-8 : Mode de conception réactif de Google Chrome*
+
+###MozillaFirefox
+
+1. Cliquez sur le bouton `Responsive Design Mode` ou appuyez sur `ctrl` + `shift` + `m`.
+
+![Mode de conception réactif dans Mozilla Firefox](images/f_firefox_responsive_design_mode.png)\
+*Figure 6.F-9 : Mode de conception réactif de Mozilla Firefox*
+
+## Références
+
+- [Test de sécurité des applications Web avec les navigateurs](https://getmantra.com/web-app-security-testing-with-browsers/)
+- [Black Hills Information Security - Webcast : Outils gratuits ! Comment utiliser les outils de développement et JavaScript dans les Webapp Pentests] (https://www.blackhillsinfosec.com/webcast-free-tools-how-to-use-developer-tools-and-javascript-in-webapp-pentests/)
+- [Greg Malcolm - Outils de développement Chrome : Raid sur l'armurerie](https://github.com/gregmalcolm/wacky-wandas-wicked-weapons-frontend/blob/fix-it/README.md)
+- [Liste des chaînes UserAgent] (http://user-agent-string.info/list-of-ua)

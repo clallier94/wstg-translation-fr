@@ -1,22 +1,22 @@
-# History
+# Histoire
 
-The Testing Guide v4 was released in 2014. The Testing guide originated in 2003 with Dan Cuthbert as one of the original editors. It was handed over to Eoin Keary in 2005 and transformed into a wiki. From 2013 Andrew Muller co-lead the project with Matteo Meucci into 2018/2019. Point releases after v4 and the ramp toward v5 is being lead by Rick Mitchell and Elie Saad.
+Le Guide de test v4 a été publié en 2014. Le guide de test est né en 2003 avec Dan Cuthbert comme l'un des éditeurs originaux. Il a été remis à Eoin Keary en 2005 et transformé en wiki. De 2013, Andrew Muller a codirigé le projet avec Matteo Meucci jusqu'en 2018/2019. Les versions ponctuelles après la v4 et la rampe vers la v5 sont dirigées par Rick Mitchell et Elie Saad.
 
-- April, 2020: OWASP Testing Guide, Version 4.1
-- September, 2014: OWASP Testing Guide, Version 4.0
-- September, 2008: OWASP Testing Guide, Version 3.0
-- December, 2006: OWASP Testing Guide, Version 2.0
-- July, 2004: OWASP Web Application Penetration Checklist, Version 1.1
-- December, 2004: The OWASP Testing Guide, Version 1.0
+- Avril 2020 : Guide de test OWASP, version 4.1
+- Septembre 2014 : Guide de test OWASP, version 4.0
+- Septembre 2008 : Guide de test OWASP, version 3.0
+- Décembre 2006 : Guide de test OWASP, Version 2.0
+- Juillet 2004 : Liste de contrôle de pénétration des applications Web OWASP, version 1.1
+- Décembre 2004 : Le Guide de Test OWASP, Version 1.0
 
-## Leaders
+## Dirigeants
 
-- Matteo Meucci: OWASP Testing Guide Lead 2007-2020.
-- Andrew Muller: OWASP Testing Guide Lead 2013-2019.
-- Eoin Keary: OWASP Testing Guide Lead 2005-2007.
-- Daniel Cuthbert: OWASP Testing Guide Lead 2003-2005.
+- Matteo Meucci : responsable du guide de test OWASP 2007-2020.
+- Andrew Muller : responsable du guide de test OWASP 2013-2019.
+- Eoin Keary : responsable du guide de test OWASP 2005-2007.
+- Daniel Cuthbert : responsable du guide de test OWASP 2003-2005.
 
-## v4 Authors
+## Auteurs V4
 
 ```html
 - Matteo Meucci          - Thomas Ryan       - Mike Hryekewicz  - Eduardo Castellano - Babu Arokiadas
@@ -33,7 +33,7 @@ The Testing Guide v4 was released in 2014. The Testing guide originated in 2003 
 - Robert Smith           - Sumit Siddharth   - Rick Mitchell    - Christian Heinrich - Hugo Costa
 ```
 
-## v4 Reviewers
+## Réviseurs v4
 
 ```html
 - Davide Danelon          - Andrea Rosignoli     - Irene Abezgauz
@@ -41,7 +41,7 @@ The Testing Guide v4 was released in 2014. The Testing guide originated in 2003 
 - Aditya Balapure
 ```
 
-## v3 Authors
+## Auteurs V3
 
 ```html
 - Anurag Agarwwal        - Giorgio Fedon        - Gianrico Ingrosso         - Mark Roxberry
@@ -51,14 +51,14 @@ The Testing Guide v4 was released in 2014. The Testing guide originated in 2003 
 - Matteo Meucci          - Stefano Di Paola     - Christian Heinrich        - Marco Morana
 ```
 
-## v3 Reviewers
+## Réviseurs v3
 
 ```html
 - Marco Cova            - Matteo Meucci         - Rick Mitchell
 - Kevin Fuller          - Nam Nguyen
 ```
 
-## v2 Authors
+## Auteurs V2
 
 ```html
 - Vicente Aguilera      - David Endler               - Matteo Meucci        - Anush Shetty
@@ -73,7 +73,7 @@ The Testing Guide v4 was released in 2014. The Testing guide originated in 2003 
 - Stephen DeVries       - Ralph M. Los               - Stefano Di Paola     - Mark Roxberry
 ```
 
-## v2 Reviewers
+## Réviseurs v2
 
 ```html
 - Vicente Aguilera      - Mauro Bregolin          - Daniel Cuthbert       - Stefano Di Paola

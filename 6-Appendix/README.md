@@ -1,13 +1,13 @@
-# Appendix
+# Annexe
 
-Appendix A. [Testing Tools Resource](A-Testing_Tools_Resource.md)
+Annexe A. [Ressource des outils de test](A-Testing_Tools_Resource.md)
 
-Appendix B. [Suggested Reading](B-Suggested_Reading.md)
+Annexe B. [Lectures suggérées](B-Suggested_Reading.md)
 
-Appendix C. [Fuzz Vectors](C-Fuzz_Vectors.md)
+Annexe C. [Vecteurs Fuzz](C-Fuzz_Vectors.md)
 
-Appendix D. [Encoded Injection](D-Encoded_Injection.md)
+Annexe D. [Injection codée](D-Encoded_Injection.md)
 
-Appendix E. [History](E-History.md)
+Annexe E. [Historique](E-History.md)
 
-Appendix F. [Leveraging Dev Tools](F-Leveraging_Dev_Tools.md)
+Annexe F. [Exploitation des outils de développement](F-Leaving_Dev_Tools.md)
