@@ -2,43 +2,43 @@
 
 ## Introduction
 
-Cette annexe est destinée à fournir une liste des outils courants utilisés pour les tests d'applications Web. Il ne vise pas à être une référence d'outil complète, et l'inclusion d'un outil ici ne doit pas être considérée comme une approbation spécifique de cet outil par l'OWASP.
+Cette annexe est destinÃ©e Ã  fournir une liste des outils courants utilisÃ©s pour les tests d'applications Web. Il ne vise pas Ã  Ãªtre une rÃ©fÃ©rence d'outil complÃ¨te, et l'inclusion d'un outil ici ne doit pas Ãªtre considÃ©rÃ©e comme une approbation spÃ©cifique de cet outil par l'OWASP.
 
-La liste ne contient que des outils librement disponibles au téléchargement et à l'utilisation (bien qu'ils puissent avoir des licences limitant leur utilisation à des fins commerciales).
+La liste ne contient que des outils librement disponibles au tÃ©lÃ©chargement et Ã  l'utilisation (bien qu'ils puissent avoir des licences limitant leur utilisation Ã  des fins commerciales).
 
-## Tests Web généraux
+## Tests Web gÃ©nÃ©raux
 
 ### Proxy Web
 
-- [OWASP ZAP] (https://www.zaproxy.org)
-    - Le Zed Attack Proxy (ZAP) est un outil de test de pénétration intégré facile à utiliser pour trouver des vulnérabilités dans les applications Web. Il est conçu pour être utilisé par des personnes ayant une large expérience en matière de sécurité et, en tant que tel, il est idéal pour les développeurs et les testeurs fonctionnels qui découvrent les tests d'intrusion.
-    - ZAP fournit des scanners automatisés ainsi qu'un ensemble d'outils qui vous permettent de trouver manuellement les vulnérabilités de sécurité.
+- [OWASP ZAP](https://www.zaproxy.org)
+    - Le Zed Attack Proxy (ZAP) est un outil de test de pÃ©nÃ©tration intÃ©grÃ© facile Ã  utiliser pour trouver des vulnÃ©rabilitÃ©s dans les applications Web. Il est conÃ§u pour Ãªtre utilisÃ© par des personnes ayant une large expÃ©rience en matiÃ¨re de sÃ©curitÃ© et, en tant que tel, il est idÃ©al pour les dÃ©veloppeurs et les testeurs fonctionnels qui dÃ©couvrent les tests d'intrusion.
+    - ZAP fournit des scanners automatisÃ©s ainsi qu'un ensemble d'outils qui vous permettent de trouver manuellement les vulnÃ©rabilitÃ©s de sÃ©curitÃ©.
 - [Burp Suite Community Edition](https://portswigger.net/burp/communitydownload)
-    - Burp Suite est un proxy d'interception pour les tests de sécurité. Il permet d'intercepter et de modifier tout le trafic HTTP(S) passant dans les deux sens, il peut fonctionner avec des certificats TLS personnalisés et des clients non sensibles au proxy.
+    - Burp Suite est un proxy d'interception pour les tests de sÃ©curitÃ©. Il permet d'intercepter et de modifier tout le trafic HTTP(S) passant dans les deux sens, il peut fonctionner avec des certificats TLS personnalisÃ©s et des clients non sensibles au proxy.
 - [Telerik Fiddler](https://www.telerik.com/fiddler)
-    - Fiddler un proxy Web d'interception qui s'adresse principalement aux développeurs plutôt qu'aux testeurs d'intrusion, mais fournit toujours des fonctionnalités utiles. Il se connecte également directement aux API HTTP de Windows, ce qui lui permet d'intercepter le trafic de certains logiciels qui ne permettent pas de définir des proxys personnalisés.
+    - Fiddler un proxy Web d'interception qui s'adresse principalement aux dÃ©veloppeurs plutÃ´t qu'aux testeurs d'intrusion, mais fournit toujours des fonctionnalitÃ©s utiles. Il se connecte Ã©galement directement aux API HTTP de Windows, ce qui lui permet d'intercepter le trafic de certains logiciels qui ne permettent pas de dÃ©finir des proxys personnalisÃ©s.
 
 ### Extensions Firefox
 
-- [En-tête HTTP Firefox Live] (https://addons.mozilla.org/en-US/firefox/addon/http-header-live)
-    - Afficher les en-têtes HTTP d'une page et lors de la navigation.
+- [En-tÃªte HTTP Firefox Live](https://addons.mozilla.org/en-US/firefox/addon/http-header-live)
+    - Afficher les en-tÃªtes HTTP d'une page et lors de la navigation.
 - [Conteneurs multi-comptes Firefox](https://addons.mozilla.org/en-GB/firefox/addon/multi-account-containers/)
-    - Créez plusieurs conteneurs, chacun ayant ses propres cookies et sessions isolés. Utile pour tester le contrôle d'accès entre différents utilisateurs.
+    - CrÃ©ez plusieurs conteneurs, chacun ayant ses propres cookies et sessions isolÃ©s. Utile pour tester le contrÃ´le d'accÃ¨s entre diffÃ©rents utilisateurs.
 - [Firefox Tamper Data](https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum/)
-    - Utilisez Tamper Data pour afficher et modifier les en-têtes HTTP/HTTPS et les paramètres de publication
-- [Développeur Web Firefox](https://addons.mozilla.org/en-US/firefox/addon/web-developer/)
-    - L'extension Web Developer ajoute divers outils de développement Web au navigateur.
+    - Utilisez Tamper Data pour afficher et modifier les en-tÃªtes HTTP/HTTPS et les paramÃ¨tres de publication
+- [DÃ©veloppeur Web Firefox](https://addons.mozilla.org/en-US/firefox/addon/web-developer/)
+    - L'extension Web Developer ajoute divers outils de dÃ©veloppement Web au navigateur.
 
 ### Extensions Chrome
 
-- [Développeur Web Chrome] (https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
-    - L'extension Web Developer ajoute un bouton de barre d'outils au navigateur avec divers outils de développement Web. Il s'agit du portage officiel de l'extension Web Developer pour Chrome.
-- [Fabricant de requêtes HTTP](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp?hl=en-US)
-    - Request Maker est un outil de test d'intrusion. Avec lui, vous pouvez facilement capturer les requêtes faites par les pages Web, falsifier l'URL, les en-têtes et les données POST et, bien sûr, faire de nouvelles requêtes
-- [Éditeur de cookies](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg?hl=en-US)
-    - Modifier Ce cookie est un gestionnaire de cookies. Vous pouvez ajouter, supprimer, modifier, rechercher, protéger et bloquer les cookies
+- [DÃ©veloppeur Web Chrome](https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+    - L'extension Web Developer ajoute un bouton de barre d'outils au navigateur avec divers outils de dÃ©veloppement Web. Il s'agit du portage officiel de l'extension Web Developer pour Chrome.
+- [Editeur de requÃªtes HTTP](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp?hl=en-US)
+    - Request Maker est un outil de test d'intrusion. Avec lui, vous pouvez facilement capturer les requÃªtes faites par les pages Web, falsifier l'URL, les en-tÃªtes et les donnÃ©es POST et, bien sÃ»r, faire de nouvelles requÃªtes
+- [Ã‰diteur de cookies](https://chrome.google.com/webstore/detail/fngmhnnpilhplaeedifhccceomclgfbg?hl=en-US)
+    - Modifier Ce cookie est un gestionnaire de cookies. Vous pouvez ajouter, supprimer, modifier, rechercher, protÃ©ger et bloquer les cookies
 
-### Test de vulnérabilités spécifiques
+### Test de vulnÃ©rabilitÃ©s spÃ©cifiques
 
 #### Test d'injection SQL
 
@@ -59,9 +59,9 @@ La liste ne contient que des outils librement disponibles au téléchargement et à
 - [John the Ripper](https://github.com/openwall/john)
 - [hashcat](https://hashcat.net/hashcat/)
 
-##### Force brute à distance
+##### Force brute Ã  distance
 
-- [OWASP ZAP] (https://www.zaproxy.org)
+- [OWASP ZAP](https://www.zaproxy.org)
 - [Patator](https://github.com/lanjelot/patator)
 - [THC Hydra](https://github.com/vanhauser-thc/thc-hydra)
 - [Burp Suite Community Edition (Intrus)](https://portswigger.net/burp/communitydownload)
@@ -74,7 +74,7 @@ La liste ne contient que des outils librement disponibles au téléchargement et à
 
 #### Piratage de Google
 
-- [Base de données de piratage Google] (https://www.exploit-db.com/google-hacking-database/)
+- [Base de donnÃ©es de piratage Google](https://www.exploit-db.com/google-hacking-database/)
 
 #### HTTP lent
 
@@ -87,17 +87,17 @@ La liste ne contient que des outils librement disponibles au téléchargement et à
 - [wget pour windows](http://gnuwin32.sourceforge.net/packages/wget.htm)
 - [curl](https://curl.haxx.se)
 
-### Découverte de contenu
+### DÃ©couverte de contenu
 
 - [Gobuster](https://github.com/OJ/gobuster)
 
-### Découverte de ports et de services
+### DÃ©couverte de ports et de services
 
 - [Nmap](https://nmap.org/)
 
-## Analyseurs de vulnérabilité
+## Analyseurs de vulnÃ©rabilitÃ©
 
-- [OWASP ZAP] (https://www.zaproxy.org)
+- [OWASP ZAP](https://www.zaproxy.org)
 - [Nikto](https://cirt.net/Nikto2)
 - [Nuclei](https://nuclei.projectdiscovery.io/)
 
@@ -109,28 +109,28 @@ La liste ne contient que des outils librement disponibles au téléchargement et à
 ## distributions Linux
 
 - [Kali](https://www.kali.org)
-- [Perroquet](https://www.parrotsec.org)
-- [Samouraï](https://github.com/SamuraiWTF/samuraiwtf)
+- [Parrot](https://www.parrotsec.org)
+- [SamouraÃ¯](https://github.com/SamuraiWTF/samuraiwtf)
 - [Santoku](https://sourceforge.net/projects/santoku/)
 - [BlackArch](https://blackarch.org/downloads.html)
 
 ## Analyseurs de code source
 
 - [Spotbugs](https://spotbugs.github.io)
-- [Trouver les bogues de sécurité] (https://find-sec-bugs.github.io)
-- [audit de sécurité phpcs](https://github.com/squizlabs/PHP_CodeSniffer)
+- [Trouver les bogues de sÃ©curitÃ©](https://find-sec-bugs.github.io)
+- [audit de sÃ©curitÃ© phpcs](https://github.com/squizlabs/PHP_CodeSniffer)
 - [PMD](https://pmd.github.io)
 - [Analyseurs .NET de Microsoft](https://docs.microsoft.com/en-us/visualstudio/code-quality/install-net-analyzers)
-- [Édition communautaire SonarQube] (https://www.sonarqube.org)
+- [Ã‰dition communautaire SonarQube](https://www.sonarqube.org)
 
 ## Outils d'automatisation du navigateur
 
-Les outils d'automatisation du navigateur sont utilisés pour valider la fonctionnalité des applications Web. Certains suivent une approche scriptée et utilisent généralement un cadre de test unitaire pour construire des suites de tests et des cas de test. La plupart, sinon tous, peuvent être adaptés pour effectuer des tests spécifiques à la sécurité en plus des tests fonctionnels.
+Les outils d'automatisation du navigateur sont utilisÃ©s pour valider la fonctionnalitÃ© des applications Web. Certains suivent une approche scriptÃ©e et utilisent gÃ©nÃ©ralement un cadre de test unitaire pour construire des suites de tests et des cas de test. La plupart, sinon tous, peuvent Ãªtre adaptÃ©s pour effectuer des tests spÃ©cifiques Ã  la sÃ©curitÃ© en plus des tests fonctionnels.
 
-### Outils Open Source
+### Outils OpenÂ Source
 
 - [HtmlUnit](http://htmlunit.sourceforge.net)
-     - Un framework basé sur Java et JUnit qui utilise Apache HttpClient comme transport.
-     - Très robuste et configurable et est utilisé comme moteur pour un certain nombre d'autres outils de test.
-- [Sélénium](https://www.selenium.dev)
-     - Framework de test basé sur JavaScript, multiplateforme et fournit une interface graphique pour créer des tests.
+     - Un framework basÃ© sur Java et JUnit qui utilise Apache HttpClient comme transport.
+     - TrÃ¨s robuste et configurable et est utilisÃ© comme moteur pour un certain nombre d'autres outils de test.
+- [Selenium](https://www.selenium.dev)
+     - Framework de test basÃ© sur JavaScript, multiplateforme et fournit une interface graphique pour crÃ©er des tests.
