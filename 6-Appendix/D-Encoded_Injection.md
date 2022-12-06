@@ -103,4 +103,4 @@ Le codage multioctet a été utilisé dans le passé pour contourner les fonctio
 - [Encodage (Sémiotique)](https://en.wikipedia.org/wiki/Encoding_(sémiotique))
 - [Entités HTML](https://www.w3schools.com/HTML/html_entities.asp)
 - [Comment empêcher les attaques de validation d'entrée](https://searchsecurity.techtarget.com/answer/How-to-prevent-input-validation-attacks)
-- [Unicode et jeux de caractères] (https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and- jeux-de-caractères-pas-d'excuses/)
+- [Unicode et jeux de caractères](https://www.joelonsoftware.com/2003/10/08/the-absolute-minimum-every-software-developer-absolutely-positively-must-know-about-unicode-and-character-sets-no-excuses/)
