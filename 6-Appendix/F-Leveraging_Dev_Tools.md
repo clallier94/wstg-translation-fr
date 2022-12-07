@@ -21,19 +21,20 @@ L'ouverture des outils de développement peut être accomplie de plusieurs faço
 
 ## Capacités
 
-| Fonctionnalité | Chrome* | Firefox | Edge/IE | safari |
-|----------------------|:-------:|:-------:|:---- ---:|:------:|
-| Commutation utilisateur-agent | Y | Y | Y | Y |
-| Modifier/Renvoyer les demandes | Y | Y | N | N |
-| Modification des cookies | Y | Y | Y | N |
-| Édition du stockage local | Y | Y | Y | N |
-| Désactiver CSS | Y | Y | Y | Y |
-| Désactiver JavaScript | Y | Y | N | Y |
-| Afficher les en-têtes HTTP | Y | Y | Y | Y |
-| Captures d'écran | Y | Y | Y | N |
-| Mode hors ligne | Y | Y | N | N |
-| Encodage et décodage | Y | Y | Y | Y |
-| Mode de conception réactif| Y | Y | Y | Y |
+
+| Fonctionnalité        | Chrome* | Firefox | Edge/IE | Safari |
+|-----------------------|:-------:|:-------:|:-------:|:------:|
+| Commutation utilisateur-agent  | Y       | Y       | Y       | Y      |
+| Modifier/Renvoyer les demandes  | Y       | Y       | N       | N      |
+| Modification des cookies        | Y       | Y       | Y       | N      |
+| Édition du stockage local | Y       | Y       | Y       | N      |
+| Désactiver CSS           | Y       | Y       | Y       | Y      |
+| Désactiver JavaScript    | Y       | Y       | N       | Y      |
+| Affichage des en-têtes HTTP     | Y       | Y       | Y       | Y      |
+| Captures d'écran           | Y       | Y       | Y       | N      |
+| Mode hors ligne          | Y       | Y       | N       | N      |
+| Encodage et décodage | Y       | Y       | Y       | Y      |
+| Mode de conception réactif| Y       | Y       | Y       | Y      |
 
 `*` Tout ce qui s'applique à Google Chrome devrait s'appliquer à toutes les applications basées sur Chromium. (Ce qui inclut Microsoft rebadging Edge vers 2019/2020.)
 
@@ -52,7 +53,7 @@ L'ouverture des outils de développement peut être accomplie de plusieurs faço
 ![Menu déroulant de sélection de l'agent utilisateur dans Google Chrome](images/f_chrome_devtools_ua_switch.png)\
 *Figure 6.F-1 : Fonctionnalité de changement d'agent utilisateur de Google Chrome Dev Tools*
 
-###MozillaFirefox
+### Mozilla Firefox
 
 1. Accédez à la page "about:config" de Firefox et cliquez sur "J'accepte le risque !".
 2. Entrez `general.useragent.override` dans le champ de recherche.
@@ -62,7 +63,7 @@ L'ouverture des outils de développement peut être accomplie de plusieurs faço
 ![Préférence de configuration de l'agent utilisateur dans Mozilla Firefox](images/f_firefox_ua_switch.png)\
 *Figure 6.F-2 : Fonctionnalité de changement d'agent utilisateur de Mozilla Firefox*
 
-Cliquez ensuite sur le bouton de la corbeille "Supprimer" à droite de la préférence "general.useragent.override" pour supprimer le remplacement et revenir à l'agent utilisateur par défaut.
+Cliquez ensuite sur le bouton de la corbeille `Supprimer` à droite de la préférence `general.useragent.override` pour supprimer le remplacement et revenir à l'agent utilisateur par défaut.
 
 ## Modifier/Renvoyer les demandes
 
@@ -74,20 +75,20 @@ Cliquez ensuite sur le bouton de la corbeille "Supprimer" à droite de la préf�
 - [Test de validation des entrées](../4-Web_Application_Security_Testing/07-Input_Validation_Testing/README.md)
 - [Tests de logique métier](../4-Web_Application_Security_Testing/10-Business_Logic_Testing/README.md)
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Sélectionnez l'onglet "Réseau".
+1. Sélectionnez l'onglet `Réseau`.
 2. Effectuez toute action dans l'application Web.
-3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez "Modifier et renvoyer".
-4. Effectuez les modifications souhaitées et cliquez sur le bouton "Envoyer".
-5. Cliquez avec le bouton droit sur la demande modifiée et sélectionnez "Ouvrir dans un nouvel onglet".
+3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez `Modifier et renvoyer`.
+4. Effectuez les modifications souhaitées et cliquez sur le bouton `Envoyer`.
+5. Cliquez avec le bouton droit sur la demande modifiée et sélectionnez `Ouvrir dans un nouvel onglet`.
 
 ### Google Chrome
 
-1. Sélectionnez l'onglet "Réseau".
+1. Sélectionnez l'onglet `Réseau`.
 2. Effectuez toute action dans l'application Web.
-3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez « Copier > Copier en tant que récupération ».
-4. Collez le code JavaScript fourni dans l'onglet "Console".
+3. Cliquez avec le bouton droit sur la requête HTTP dans la liste et sélectionnez `Copier > Copier en tant que récupération`.
+4. Collez le code JavaScript fourni dans l'onglet `Console`.
 5. Effectuez les modifications requises, puis appuyez sur Entrée pour envoyer la demande.
 
 ## Modification des cookies
@@ -101,21 +102,21 @@ Cliquez ensuite sur le bouton de la corbeille "Supprimer" à droite de la préf�
 
 ### Google Chrome
 
-1. Cliquez sur l'onglet "Application".
-2. Développez "Cookies" sous l'en-tête "Stockage".
+1. Cliquez sur l'onglet `Application`.
+2. Développez "Cookies" sous l'en-tête `Stockage`.
 3. Sélectionnez le nom de domaine concerné.
-4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
+4. Double-cliquez dans la colonne `Valeur` pour modifier toute valeur de cookie.
 
-> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche "supprimer" ou à partir du menu contextuel du clic droit.
+> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche `supprimer` ou à partir du menu contextuel du clic droit.
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Cliquez sur l'onglet "Stockage".
-2. Développez la section "Cookies".
+1. Cliquez sur l'onglet `Stockage`.
+2. Développez la section `Cookies`.
 3. Sélectionnez le nom de domaine concerné.
-4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
+4. Double-cliquez dans la colonne `Valeur` pour modifier toute valeur de cookie.
 
-> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche "supprimer", ou avec diverses options du menu contextuel du clic droit.
+> Remarque : Les cookies peuvent être supprimés une fois sélectionnés en appuyant sur la touche `supprimer`, ou avec diverses options du menu contextuel du clic droit.
 
 ![Fonctionnalité d'édition des cookies dans Mozilla Firefox](images/f_firefox_cookie_edit.png)\
 *Figure 6.F-3 : Fonctionnalité d'édition des cookies de Mozilla Firefox*
@@ -128,22 +129,22 @@ Cliquez ensuite sur le bouton de la corbeille "Supprimer" à droite de la préf�
 
 ### Google Chrome
 
-1. Cliquez sur l'onglet "Application".
-2. Développez "Stockage local" sous l'en-tête "Stockage".
+1. Cliquez sur l'onglet `Application`.
+2. Développez `Stockage local` sous l'en-tête `Stockage`.
 3. Sélectionnez le nom de domaine concerné.
-4. Double-cliquez dans la colonne "Valeur" pour modifier toute valeur de cookie.
-5. Double-cliquez dans la cellule applicable pour modifier la « clé » ou la « valeur ».
+4. Double-cliquez dans la colonne `Valeur` pour modifier toute valeur de cookie.
+5. Double-cliquez dans la cellule applicable pour modifier la `clé` ou la `valeur`.
 
 > Remarque : La modification de `Session Storage` ou `Index DB` suit essentiellement les mêmes étapes.
 >
 > Remarque : Les éléments peuvent être ajoutés ou supprimés via le menu contextuel du clic droit.
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Cliquez sur l'onglet "Stockage".
-2. Développez la section "Stockage local".
+1. Cliquez sur l'onglet `Stockage`.
+2. Développez la section `Stockage local`.
 3. Sélectionnez le nom de domaine concerné.
-4. Double-cliquez dans la cellule applicable pour modifier la « clé » ou la « valeur ».
+4. Double-cliquez dans la cellule applicable pour modifier la `clé` ou la `valeur`.
 
 > Remarque : La modification de `Session Storage` ou `Index DB` suit essentiellement les mêmes étapes.
 >
@@ -168,13 +169,13 @@ Tous les principaux navigateurs prennent en charge la manipulation de CSS à l'a
 
 ### Google Chrome
 
-1. Cliquez sur le menu "kabob" à trois points sur le côté droit de la barre d'outils du développeur Web et cliquez sur "Paramètres".
-2. Dans l'onglet "Préférences", sous la section "Débogueur", cochez la case "Désactiver JavaScript".
+1. Cliquez sur le menu à trois points sur le côté droit de la barre d'outils du développeur Web et cliquez sur `Paramètres`.
+2. Dans l'onglet `Préférences`, sous la section `Débogueur`, cochez la case `Désactiver JavaScript`.
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Dans l'onglet "Débogueur" des outils de développement, cliquez sur le bouton d'engrenage des paramètres dans le coin supérieur droit de la barre d'outils du développeur.
-2. Sélectionnez "Désactiver JavaScript" dans la liste déroulante (il s'agit d'un élément de menu activer/désactiver ; lorsque JavaScript est désactivé, l'élément de menu est coché).
+1. Dans l'onglet `Débogueur` des outils de développement, cliquez sur le bouton d'engrenage des paramètres dans le coin supérieur droit de la barre d'outils du développeur.
+2. Sélectionnez `Désactiver JavaScript` dans la liste déroulante (il s'agit d'un élément de menu activer/désactiver ; lorsque JavaScript est désactivé, l'élément de menu est coché).
 
 ## Afficher les en-têtes HTTP
 
@@ -184,16 +185,16 @@ Tous les principaux navigateurs prennent en charge la manipulation de CSS à l'a
 
 ### Google Chrome
 
-1. Dans l'onglet "Réseau" des outils de développement, sélectionnez une URL ou une requête.
-2. Dans le volet inférieur droit, sélectionnez l'onglet "En-têtes".
+1. Dans l'onglet `Réseau` des outils de développement, sélectionnez une URL ou une requête.
+2. Dans le volet inférieur droit, sélectionnez l'onglet `En-têtes`.
 
 ![Affichage des en-têtes dans Google Chrome](images/f_chrome_devtools_headers.png)\
 *Figure 6.F-4 : Affichage des en-têtes Google Chrome*
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Dans l'onglet "Réseau" des outils de développement, sélectionnez une URL ou une requête.
-2. Dans le volet inférieur droit, sélectionnez l'onglet "En-têtes".
+1. Dans l'onglet `Réseau` des outils de développement, sélectionnez une URL ou une requête.
+2. Dans le volet inférieur droit, sélectionnez l'onglet `En-têtes`.
 
 ![Affichage des en-têtes dans Mozilla Firefox](images/f_firefox_devtools_headers.png)\
 *Figure 6.F-5 : Affichage des en-têtes de Mozilla Firefox*
@@ -207,28 +208,28 @@ Tous les principaux navigateurs prennent en charge la manipulation de CSS à l'a
 ### Google Chrome
 
 1. Appuyez sur le bouton `Toggle Device Toolbar` ou appuyez sur `ctrl` + `shift` + `m`.
-2. Cliquez sur le menu 'kabob' à trois points dans la barre d'outils de l'appareil.
-3. Sélectionnez "Capture d'écran" ou "Capture d'écran en taille réelle".
+2. Cliquez sur le menu à trois points dans la barre d'outils de l'appareil.
+3. Sélectionnez `Capture d'écran` ou `Capture d'écran en taille réelle`.
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Appuyez sur le bouton à trois points "points de suspension" dans la barre d'adresse.
-2. Sélectionnez "Prendre une capture d'écran".
-3. Sélectionnez l'option "Enregistrer la page entière" ou "Enregistrer la page visible".
+1. Appuyez sur le bouton à trois points `points de suspension` dans la barre d'adresse.
+2. Sélectionnez `Prendre une capture d'écran`.
+3. Sélectionnez l'option `Enregistrer la page entière` ou `Enregistrer la page visible`.
 
 ## Mode hors-ligne
 
 ### Google Chrome
 
-1. Accédez à l'onglet "Réseau".
-2. Dans la liste déroulante "Throttle", sélectionnez "Hors ligne".
+1. Accédez à l'onglet `Réseau`.
+2. Dans la liste déroulante, sélectionnez `Hors ligne`.
 
 ![Option hors ligne dans Google Chrome](images/f_chrome_devtools_offline.png)\
 *Figure 6.F-6 : Option Google Chrome hors ligne*
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Dans le menu à trois lignes "hamburger" (ou "crêpe"), sélectionnez "Développeur Web", puis "Travailler hors ligne".
+1. Dans le menu à trois lignes "hamburger" (ou "crêpe"), sélectionnez `Développement Web`, puis `Travailler hors ligne`.
 
 ![Option hors ligne dans Mozilla Firefox](images/f_firefox_devtools_offline.png)\
 *Figure 6.F-7 : Option hors ligne de Mozilla Firefox*
@@ -237,7 +238,7 @@ Tous les principaux navigateurs prennent en charge la manipulation de CSS à l'a
 
 ### Tests associés
 
-- De nombreux (peut-être même la plupart) types de [tests de sécurité des applications Web] (../4-Web_Application_Security_Testing/README.md) peuvent bénéficier de différents types d'encodage.
+- De nombreux (peut-être même la plupart) types de [tests de sécurité des applications Web](../4-Web_Application_Security_Testing/README.md) peuvent bénéficier de différents types d'encodage.
 
 ### Général
 
@@ -265,9 +266,9 @@ Tous les principaux navigateurs prennent en charge l'encodage et le décodage de
 ![Mode de conception réactif dans Google Chrome](images/f_chrome_responsive_design_mode.png)\
 *Figure 6.F-8 : Mode de conception réactif de Google Chrome*
 
-###MozillaFirefox
+### Mozilla Firefox
 
-1. Cliquez sur le bouton `Responsive Design Mode` ou appuyez sur `ctrl` + `shift` + `m`.
+1. Cliquez sur le bouton `Mode de conception réactif` ou appuyez sur `ctrl` + `shift` + `m`.
 
 ![Mode de conception réactif dans Mozilla Firefox](images/f_firefox_responsive_design_mode.png)\
 *Figure 6.F-9 : Mode de conception réactif de Mozilla Firefox*
@@ -275,6 +276,6 @@ Tous les principaux navigateurs prennent en charge l'encodage et le décodage de
 ## Références
 
 - [Test de sécurité des applications Web avec les navigateurs](https://getmantra.com/web-app-security-testing-with-browsers/)
-- [Black Hills Information Security - Webcast : Outils gratuits ! Comment utiliser les outils de développement et JavaScript dans les Webapp Pentests] (https://www.blackhillsinfosec.com/webcast-free-tools-how-to-use-developer-tools-and-javascript-in-webapp-pentests/)
+- [Black Hills Information Security - Webcast : Outils gratuits ! Comment utiliser les outils de développement et JavaScript dans les Webapp Pentests](https://www.blackhillsinfosec.com/webcast-free-tools-how-to-use-developer-tools-and-javascript-in-webapp-pentests/)
 - [Greg Malcolm - Outils de développement Chrome : Raid sur l'armurerie](https://github.com/gregmalcolm/wacky-wandas-wicked-weapons-frontend/blob/fix-it/README.md)
-- [Liste des chaînes UserAgent] (http://user-agent-string.info/list-of-ua)
+- [Liste des chaînes UserAgent](http://user-agent-string.info/list-of-ua)
