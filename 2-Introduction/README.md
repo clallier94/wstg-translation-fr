@@ -34,7 +34,7 @@ De nombreux éléments doivent être testés au cours du cycle de développement
 
 Pour les besoins de ce document, le test est un processus de comparaison de l'état d'un système ou d'une application par rapport à un ensemble de critères. Dans l'industrie de la sécurité, les gens testent fréquemment par rapport à un ensemble de critères mentaux qui ne sont ni bien définis ni complets. En conséquence, de nombreux étrangers considèrent les tests de sécurité comme un art noir. L'objectif de ce document est de changer cette perception et de permettre aux personnes sans connaissances approfondies en matière de sécurité de faire une différence dans les tests.
 
-### Pourquoi effectuer des tests ?
+### Pourquoi effectuer des tests ?
 
 Ce document est conçu pour aider les organisations à comprendre ce qui comprend un programme de test et pour les aider à identifier les étapes à suivre pour créer et exploiter un programme de test d'applications Web modernes. Le guide donne une vue d'ensemble des éléments requis pour créer un programme complet de sécurité des applications Web. Ce guide peut être utilisé comme référence et comme méthodologie pour aider à déterminer l'écart entre les pratiques existantes et les meilleures pratiques de l'industrie. Ce guide permet aux organisations de se comparer à leurs homologues du secteur, de comprendre l'ampleur des ressources nécessaires pour tester et maintenir les logiciels, ou de se préparer à un audit. Ce chapitre n'entre pas dans les détails techniques de la façon de tester une application, car l'intention est de fournir un cadre organisationnel de sécurité typique. Les détails techniques sur la façon de tester une application, dans le cadre d'un test d'intrusion ou d'une revue de code, seront couverts dans les parties restantes de ce document.
 
@@ -306,7 +306,7 @@ Le code de cet exemple de vérification des paramètres magiques peut ressembler
 ```java
 public void doPost( HttpServletRequest request, HttpServletResponse response) {
   String magic = "sf8g7sfjdsurtsdieerwqredsgnfg8d";
-  boolean admin = magic.equals( request.getParameter("magic"));
+  boolean admin = magic.equals(request.getParameter("magic"));
   if (admin) doAdmin( request, response);
   else … // traitement normal
 }
@@ -360,7 +360,7 @@ L'objectif d'une catégorisation des menaces et des contre-mesures est de défin
 
 Une catégorisation des menaces et des contre-mesures pour les vulnérabilités peut également être utilisée pour documenter les exigences de sécurité pour le codage sécurisé telles que les normes de codage sécurisé. Un exemple d'erreur de codage courante dans les contrôles d'authentification consiste à appliquer une fonction de hachage pour chiffrer un mot de passe, sans appliquer de graine à la valeur. Du point de vue du codage sécurisé, il s'agit d'une vulnérabilité qui affecte le cryptage utilisé pour l'authentification avec une cause première de vulnérabilité dans une erreur de codage. Étant donné que la cause principale est un codage non sécurisé, l'exigence de sécurité peut être documentée dans des normes de codage sécurisé et validée par des révisions de code sécurisé pendant la phase de développement du SDLC.
 
-### Tests de sécurité et analyse des risques
+### Tests de sécurité et analyse des risques
 
 Les exigences de sécurité doivent tenir compte de la gravité des vulnérabilités pour soutenir une "stratégie d'atténuation des risques". En supposant que l'organisation gère un référentiel des vulnérabilités trouvées dans les applications (c'est-à-dire une base de connaissances sur les vulnérabilités), les problèmes de sécurité peuvent être signalés par type, problème, atténuation, cause première et mappés aux applications où ils se trouvent. Une telle base de connaissances sur les vulnérabilités peut également être utilisée pour établir une métrique permettant d'analyser l'efficacité des tests de sécurité dans l'ensemble du SDLC.
 
@@ -415,22 +415,22 @@ Les scénarios d'abus permettent d'analyser l'application du point de vue de l'a
 
 Pour dériver les exigences de sécurité des [cas d'utilisation et d'abus](https://iacis.org/iis/2006/Damodaran.pdf), il est important de définir les scénarios fonctionnels et les scénarios négatifs et de les mettre sous forme graphique. L'exemple suivant est une méthodologie étape par étape pour le cas de la dérivation d'exigences de sécurité pour l'authentification.
 
-#### Étape 1 : Décrivez le scénario fonctionnel
+#### Étape 1 : Décrivez le scénario fonctionnel
 
 L'utilisateur s'authentifie en fournissant un nom d'utilisateur et un mot de passe. L'application accorde l'accès aux utilisateurs en fonction de l'authentification des informations d'identification de l'utilisateur par l'application et fournit des erreurs spécifiques à l'utilisateur lorsque la validation échoue.
 
-#### Étape 2 : Décrivez le scénario négatif
+#### Étape 2 : Décrivez le scénario négatif
 
 L'attaquant brise l'authentification par une force brute ou une attaque par dictionnaire des mots de passe et des vulnérabilités de récolte de compte dans l'application. Les erreurs de validation fournissent des informations spécifiques à un attaquant qui sont utilisées pour deviner quels comptes sont des comptes enregistrés valides (noms d'utilisateur). L'attaquant tente alors de forcer brutalement le mot de passe d'un compte valide. Une attaque par force brute sur des mots de passe d'une longueur minimale de quatre chiffres peut réussir avec un nombre limité de tentatives (c'est-à-dire 10\^4).
 
-#### Étape 3 : Décrire les scénarios fonctionnels et négatifs avec des cas d'utilisation et de mauvaise utilisation
+#### Étape 3 : Décrire les scénarios fonctionnels et négatifs avec des cas d'utilisation et de mauvaise utilisation
 
 L'exemple graphique ci-dessous illustre la dérivation des exigences de sécurité via des cas d'utilisation et de mauvaise utilisation. Le scénario fonctionnel comprend les actions de l'utilisateur (saisie d'un nom d'utilisateur et d'un mot de passe) et les actions de l'application (authentification de l'utilisateur et envoi d'un message d'erreur en cas d'échec de la validation). Le cas d'utilisation abusive comprend les actions de l'attaquant, c'est-à-dire essayer de casser l'authentification en forçant brutalement le mot de passe via une attaque par dictionnaire et en devinant les noms d'utilisateur valides à partir des messages d'erreur. En représentant graphiquement les menaces pour les actions de l'utilisateur (abus), il est possible de dériver les contre-mesures comme les actions d'application qui atténuent ces menaces.
 
 ![Cas d'utilisation et de mauvaise utilisation](images/640px-UseAndMisuseCase.png)\
 *Figure 2-5 : Cas d'utilisation et de mauvaise utilisation*
 
-#### Étape 4 : Établir les exigences de sécurité
+#### Étape 4 : Établir les exigences de sécurité
 
 Dans ce cas, les exigences de sécurité suivantes pour l'authentification sont dérivées :
 
@@ -442,7 +442,7 @@ Ces exigences de sécurité doivent être documentées et testées.
 
 ## Tests de sécurité intégrés dans les workflows de développement et de test
 
-### Tests de sécurité dans le workflow de développement
+### Tests de sécurité dans le workflow de développement
 
 Les tests de sécurité pendant la phase de développement du SDLC représentent la première opportunité pour les développeurs de s'assurer que les composants logiciels individuels qu'ils ont développés sont testés en matière de sécurité avant d'être intégrés à d'autres composants ou intégrés à l'application. Les composants logiciels peuvent être constitués d'artefacts logiciels tels que des fonctions, des méthodes et des classes, ainsi que des interfaces de programmation d'application, des bibliothèques et des fichiers exécutables. Pour les tests de sécurité, les développeurs peuvent s'appuyer sur les résultats de l'analyse du code source pour vérifier de manière statique que le code source développé n'inclut pas de vulnérabilités potentielles et est conforme aux normes de codage sécurisé. Les tests unitaires de sécurité peuvent en outre vérifier dynamiquement (c'est-à-dire au moment de l'exécution) que les composants fonctionnent comme prévu. Avant d'intégrer les modifications de code nouvelles et existantes dans la version de l'application, les résultats de l'analyse statique et dynamique doivent être examinés et validés.
 
@@ -596,4 +596,4 @@ Enfin, les directeurs de l'information (CIO) et les directeurs de la sécurité 
 
 ## Références
 
-- US National Institute of Standards (NIST) 2002 [enquête sur le coût des logiciels non sécurisés pour l'économie américaine en raison de tests logiciels inadéquats] (https://www.nist.gov/director/planning/upload/report02-3.pdf )
+- US National Institute of Standards (NIST) 2002 [enquête sur le coût des logiciels non sécurisés pour l'économie américaine en raison de tests logiciels inadéquats](https://www.nist.gov/director/planning/upload/report02-3.pdf)
