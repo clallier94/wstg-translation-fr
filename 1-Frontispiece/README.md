@@ -6,7 +6,7 @@
 >
 > — Rick Mitchell
 
-L'OWASP remercie les nombreux auteurs, réviseurs et éditeurs pour leur travail acharné pour amener ce guide là où il se trouve aujourd'hui. Si vous avez des commentaires ou des suggestions sur le guide de test, n'hésitez pas à ouvrir un problème ou à soumettre un correctif/une contribution via une demande d'extraction à notre [dépôt GitHub] (https://github.com/OWASP/wstg/).
+L'OWASP remercie les nombreux auteurs, réviseurs et éditeurs pour leur travail acharné pour amener ce guide là où il se trouve aujourd'hui. Si vous avez des commentaires ou des suggestions sur le guide de test, n'hésitez pas à ouvrir un problème ou à soumettre un correctif/une contribution via une demande d'extraction à notre [dépôt GitHub](https://github.com/OWASP/wstg/).
 
 ## Droits d'auteur et titulaire de licence
 
