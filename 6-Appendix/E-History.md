@@ -1,6 +1,6 @@
 # Historique
 
-Le Guide de test v4 a été publié en 2014. Le guide de test est né en 2003 avec Dan Cuthbert comme l'un des éditeurs originaux. Il a été remis à Eoin Keary en 2005 et transformé en wiki. De 2013, Andrew Muller a codirigé le projet avec Matteo Meucci jusqu'en 2018/2019. Les versions ponctuelles après la v4 et la rampe vers la v5 sont dirigées par Rick Mitchell et Elie Saad.
+Le Guide de test v4 a été publié en 2014. Le guide de test est né en 2003 avec Dan Cuthbert comme l'un des éditeurs originaux. Il a été remis à Eoin Keary en 2005 et transformé en wiki. De 2013, Andrew Muller a codirigé le projet avec Matteo Meucci jusqu'en 2018/2019. Les versions ponctuelles après la v4 et la rampe vers la v5 sont dirigées par Rick Mitchell et Elie Saad. La traduction fraçaise est assurée par Cédric Lallier
 
 - Avril 2020 : Guide de test OWASP, version 4.1
 - Septembre 2014 : Guide de test OWASP, version 4.0
