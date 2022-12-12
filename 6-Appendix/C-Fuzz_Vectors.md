@@ -1,17 +1,17 @@
-# Vecteurs Fuzz
+# Attaques par fuzzing
 
-Les vecteurs de fuzzing suivants peuvent Ítre utilisÈs avec [ZAP](https://www.zaproxy.org), [Burp Suite](https://portswigger.net/burp) ou un autre outil de test. [Fuzzing](https://owasp.org/www-community/Fuzzing) est l'approche "Èvier de cuisine" pour tester les rÈponses d'une application ‡ la manipulation de paramËtres. GÈnÈralement, un analyste recherche des conditions d'erreur ou des comportements anormaux qui se produisent dans une application ‡ la suite d'un fuzzing.
+Les attaques par fuzzing peuvent √™tre r√©alis√©es avec [ZAP](https://www.zaproxy.org), la [Suite Burp](https://portswigger.net/burp) ou un autre outil de test. [Fuzzing](https://owasp.org/www-community/Fuzzing) est l'approche "test √† donn√©es al√©atoires" pour tester les r√©ponses d'une application √† la manipulation de param√®tres. G√©n√©ralement, un analyste recherche des conditions d'erreur ou des comportements anormaux qui se produisent dans une application √† la suite d'un fuzzing.
 
-Les rÈfÈrences suivantes sont fournies comme sources d'entrÈe pour le fuzzing et les activitÈs de test connexes.
+Les r√©f√©rences suivantes sont fournies comme sources d'entr√©e pour le fuzzing et les activit√©s de test connexes.
 
-- [Aide-mÈmoire sur les scripts intersites (XSS)](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
+- [Aide-m√©moire sur les scripts intersites (XSS)](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
 - [AwesomeXSS](https://github.com/s0md3v/AwesomeXSS)
-- [Payloads All The Things] (https://github.com/swisskyrepo/PayloadsAllTheThings)
-- [Grande liste de cordes coquines] (https://github.com/minimaxir/big-list-of-naughty-strings)
+- [Payloads All The Things](https://github.com/swisskyrepo/PayloadsAllTheThings)
+- [Big List of Naughty Strings](https://github.com/minimaxir/big-list-of-naughty-strings)
 - [Liste Bo0oM Fuzz](https://github.com/Bo0oM/fuzz.txt)
 - [FuzzDB](https://github.com/fuzzdb-project/fuzzdb)
-- [Dictionnaires bl4de] (https://github.com/bl4de/dictionaries)
-- [Ouvrir les charges utiles de redirection] (https://github.com/cujanovic/Open-Redirect-Payloads)
-- [Fiche de triche EdOverflow Bug Bounty] (https://github.com/EdOverflow/bugbounty-cheatsheet)
+- [Dictionnaires bl4de](https://github.com/bl4de/dictionaries)
+- [Open Redirect Payloads](https://github.com/cujanovic/Open-Redirect-Payloads)
+- [Bug Bounty Cheat Sheet](https://github.com/EdOverflow/bugbounty-cheatsheet)
 - [Daniel Miessler - SecLists](https://github.com/danielmiessler/SecLists)
 - [Flux Twitter XssPayloads](https://twitter.com/XssPayloads)
