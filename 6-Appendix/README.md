@@ -4,7 +4,7 @@ Annexe A. [Ressource des outils de test](A-Testing_Tools_Resource.md)
 
 Annexe B. [Lectures suggérées](B-Suggested_Reading.md)
 
-Annexe C. [Vecteurs Fuzz](C-Fuzz_Vectors.md)
+Annexe C. [Attaques par fuzzing](C-Fuzz_Vectors.md)
 
 Annexe D. [Injection codée](D-Encoded_Injection.md)
 
