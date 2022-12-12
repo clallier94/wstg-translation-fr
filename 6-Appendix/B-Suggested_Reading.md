@@ -13,9 +13,9 @@
 
 - L'art des tests de sécurité logicielle : identification des failles de sécurité logicielle, par Chris Wysopal, Lucas Nelson, Dino Dai Zovi, Elfriede Dustin, publié par Addison-Wesley, ISBN 0321304861 (2006)
 - Construire un logiciel sécurisé : comment éviter les problèmes de sécurité de la bonne manière, par Gary McGraw et John Viega, publié par Addison-Wesley Pub Co, ISBN 020172152X (2002)
-- [The Ethical Hack : A Framework for Business Value Penetration Testing, par James S. Tiller, Auerbach Publications, ISBN 084931609X (2005)](https://books.google.com/books?id=fwASXKXOolEC&printsec=frontcover&source=gbs_ge_summary_r&redir_esc= y#v=unepage&q&f=false)
+- [The Ethical Hack : A Framework for Business Value Penetration Testing, par James S. Tiller, Auerbach Publications, ISBN 084931609X (2005)](https://books.google.com/books?id=fwASXKXOolEC&printsec=frontcover&source=gbs_ge_summary_r&redir_esc=y#v=unepage&q&f=false)
 - [Exploiting Software: How to Break Code, par Gary McGraw et Greg Hoglund, publié par Addison-Wesley Pub Co, ISBN 0201786958 (2004)](http://www.exploitingsoftware.com)
-- [Le manuel du hacker : la stratégie derrière l'intrusion et la défense des réseaux, par Susan Young, Dave Aitel, Auerbach Publications, ISBN : 0849308887 (2005)](https://books.google.com/books?id=AO2fsAPVC34C&printsec=frontcover&source =gbs_ge_summary_r&redir_esc=y#v=unepage&q&f=false)
+- [Le manuel du hacker : la stratégie derrière l'intrusion et la défense des réseaux, par Susan Young, Dave Aitel, Auerbach Publications, ISBN : 0849308887 (2005)](https://books.google.com/books?id=AO2fsAPVC34C&printsec=frontcover&source=gbs_ge_summary_r&redir_esc=y#v=unepage&q&f=false)
 - [Hacking Exposed: Web Applications 3, par Joel Scambray, Vinvent Liu, Caleb Sima, publié par McGraw-Hill Osborne Media, ISBN 007222438X (2010)](http://www.webhackingexposed.com/)
 - The Web Application Hacker's Handbook: Finding and Exploiting Security Flaws, 2nd Edition - [publié par Dafydd Stuttard, Marcus Pinto, ISBN 9781118026472 (2011)]
 - Comment briser la sécurité logicielle, par James Whittaker, Herbert H. Thompson, publié par Addison Wesley, ISBN 0321194330 (2003)
