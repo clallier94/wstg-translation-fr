@@ -1,4 +1,4 @@
-# Rapports
+# Structure de rapport
 
 La réalisation de l'aspect technique de l'évaluation ne représente que la moitié du processus d'évaluation global. Le produit final est la production d'un rapport bien écrit et informatif. Un rapport doit être facile à comprendre et doit mettre en évidence tous les risques constatés lors de la phase d'évaluation. Le rapport devrait plaire à la fois à la direction générale et au personnel technique.
 
