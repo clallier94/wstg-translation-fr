@@ -10,9 +10,9 @@ Un schéma de nommage est une méthodologie systématique utilisée pour identif
 
 ## Étiquette d'identification du logiciel
 
-L'étiquette d'identification du logiciel (`SWID`) est une norme de l'Organisation internationale de normalisation définie par la norme ISO/IEC 19770-2:2015. Les balises "SWID" sont utilisées pour identifier clairement chaque logiciel dans le cadre de cycles de vie complets de gestion des actifs logiciels. Il est recommandé que ce schéma d'informations soit utilisé par le National Institute of Standards and Technology (NIST) comme identification principale pour tout logiciel développé ou installé. À partir de `SWID`, il est possible de générer d'autres schémas tels que le `CPE` utilisé par la National Vulnerability Database (NVD) alors que le processus inverse n'est pas possible.
+L'étiquette d'identification du logiciel (`SWID`) est une norme de l'Organisation internationale de normalisation définie par la norme ISO/IEC 19770-2:2015. Les balises `SWID` sont utilisées pour identifier clairement chaque logiciel dans le cadre de cycles de vie complets de gestion des actifs logiciels. Il est recommandé que ce schéma d'informations soit utilisé par le National Institute of Standards and Technology (NIST) comme identification principale pour tout logiciel développé ou installé. À partir de `SWID`, il est possible de générer d'autres schémas tels que le `CPE` utilisé par la National Vulnerability Database (NVD) alors que le processus inverse n'est pas possible.
 
-Chaque balise "SWID" est représentée sous la forme d'un format XML standardisé. Une balise `SWID` est composée de trois groupes d'éléments. Le premier bloc composé de 7 éléments prédéfinis doit être considéré comme une balise valide. Suivi d'un bloc facultatif qui fournit un ensemble de 30 éléments prédéfinis possibles que le créateur de balises peut utiliser pour fournir des informations fiables et détaillées. Enfin, le groupe d'éléments "Étendu" offre la possibilité au créateur de la balise de définir tous les éléments non prédéfinis nécessaires pour définir avec précision le logiciel décrit. Le haut niveau de granularité fourni par `SWID` permet non seulement de décrire un produit logiciel donné, mais également son statut spécifique sur le cycle de vie du logiciel.
+Chaque balise `SWID` est représentée sous la forme d'un format XML standardisé. Une balise `SWID` est composée de trois groupes d'éléments. Le premier bloc composé de 7 éléments prédéfinis doit être considéré comme une balise valide. Suivi d'un bloc facultatif qui fournit un ensemble de 30 éléments prédéfinis possibles que le créateur de balises peut utiliser pour fournir des informations fiables et détaillées. Enfin, le groupe d'éléments "Étendu" offre la possibilité au créateur de la balise de définir tous les éléments non prédéfinis nécessaires pour définir avec précision le logiciel décrit. Le haut niveau de granularité fourni par `SWID` permet non seulement de décrire un produit logiciel donné, mais également son statut spécifique sur le cycle de vie du logiciel.
 
 ### Exemples
 
@@ -54,7 +54,7 @@ Chaque balise "SWID" est représentée sous la forme d'un format XML standardis�
 
 ## Énumération de plate-forme commune
 
-Le schéma Common Platform Enumeration (`CPE`) est un schéma de nommage structuré pour les systèmes informatiques, les logiciels et les packages gérés par `NVD`. Couramment utilisé conjointement avec les codes d'identification des vulnérabilités et expositions communes (par exemple, "CVE-2017-0147"). Bien qu'il soit considéré comme un schéma obsolète remplacé par "SWID", "CPE" est encore largement utilisé par plusieurs solutions de sécurité.
+Le schéma Common Platform Enumeration (`CPE`) est un schéma de nommage structuré pour les systèmes informatiques, les logiciels et les packages gérés par `NVD`. Couramment utilisé conjointement avec les codes d'identification des vulnérabilités et expositions communes (par exemple, `CVE-2017-0147`). Bien qu'il soit considéré comme un schéma obsolète remplacé par `SWID`, `CPE` est encore largement utilisé par plusieurs solutions de sécurité.
 
 Défini comme un dictionnaire de valeurs enregistrées fourni par `NVD`. Chaque code `CPE` peut être défini comme un nom bien formaté ou comme une URL. Chaque valeur DOIT suivre cette structure :
 
@@ -123,16 +123,16 @@ La définition de chaque composant est la suivante :
 | Système d'exploitation | CPE ou SWID |
 | Paquet de système d'exploitation | PURL ou SWID |
 
-> Remarque : En raison du statut obsolète de `CPE`, l'industrie recommande que les nouveaux projets implémentent `SWID` lorsqu'ils doivent choisir entre les deux méthodes. Même si "CPE" est connu pour être un schéma de nommage largement utilisé dans les projets et solutions actifs actuels.
+> Remarque : En raison du statut obsolète de `CPE`, l'industrie recommande que les nouveaux projets implémentent `SWID` lorsqu'ils doivent choisir entre les deux méthodes. Même si `CPE` est connu pour être un schéma de nommage largement utilisé dans les projets et solutions actifs actuels.
 
 ## Références
 
 - [NISTIR 8060 - Directives pour la création d'étiquettes d'identification de logiciel interopérable (SWID) (pdf)](https://nvlpubs.nist.gov/nistpubs/ir/2016/NIST.IR.8060.pdf)
 - [NISTIR 8085 - Forming Common Platform Enumeration (CPE) Names from Software Identification (SWID) Tags](https://csrc.nist.gov/CSRC/media/Publications/nistir/8085/draft/documents/nistir_8085_draft.pdf)
 - [ISO/IEC 19770-2:2015 - Technologies de l'information—Gestion des actifs logiciels—Partie 2 : Étiquette d'identification du logiciel](https://www.iso.org/standard/65666.html)
-- [Dictionnaire officiel de l'énumération de la plate-forme commune (CPE)] (https://nvd.nist.gov/products/cpe)
+- [Dictionnaire officiel de l'énumération de la plate-forme commune (CPE)](https://nvd.nist.gov/products/cpe)
 - [Common Platform Enumeration : Dictionary Specification Version 2.3](https://csrc.nist.gov/publications/detail/nistir/7697/final)
-- [Spécification PURL] (https://github.com/package-url/purl-spec)
+- [Spécification PURL](https://github.com/package-url/purl-spec)
 
 ### Implémentations connues
 
