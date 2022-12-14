@@ -16,6 +16,6 @@
 
 4.1.8 [Empreintes sur les Frameworks](08-Fingerprint_Web_Application_Framework.md)
 
-4.1.9 [Empreintes sur les application Web](09-Fingerprint_Web_Application.md)
+4.1.9 [Empreintes sur les applications Web](09-Fingerprint_Web_Application.md)
 
 4.1.10 [Architecture d'application de carte](10-Map_Application_Architecture.md)
