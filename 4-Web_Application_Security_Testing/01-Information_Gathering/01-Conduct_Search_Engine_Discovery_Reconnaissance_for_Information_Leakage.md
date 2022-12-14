@@ -1,4 +1,4 @@
-# Effectuer une reconnaissance de découverte de moteur de recherche pour les fuites d'informations
+# Effectuer une reconnaissance de dÃ©couverte de moteur de recherche pour les fuites d'informations
 
 |ID          |
 |------------|
@@ -6,85 +6,85 @@
 
 ## Sommaire
 
-Pour que les moteurs de recherche fonctionnent, les programmes informatiques (ou "robots") récupèrent régulièrement des données (appelées [exploration](https://en.wikipedia.org/wiki/Web_crawler)) à partir de milliards de pages sur le Web. Ces programmes trouvent du contenu et des fonctionnalités Web en suivant des liens à partir d'autres pages ou en consultant des plans de site. Si un site Web utilise un fichier spécial appelé "robots.txt" pour répertorier les pages qu'il ne souhaite pas que les moteurs de recherche récupèrent, les pages qui y sont répertoriées seront ignorées. Il s'agit d'un aperçu de base. Google propose une explication plus détaillée du [fonctionnement d'un moteur de recherche](https://support.google.com/webmasters/answer/70897?hl=en).
+Pour que les moteurs de recherche fonctionnent, les programmes informatiques (ou `robots`) rÃ©cupÃ¨rent rÃ©guliÃ¨rement des donnÃ©es (appelÃ©es [exploration](https://en.wikipedia.org/wiki/Web_crawler)) Ã  partir de milliards de pages sur le Web. Ces programmes trouvent du contenu et des fonctionnalitÃ©s Web en suivant des liens Ã  partir d'autres pages ou en consultant des plans de site. Si un site Web utilise un fichier spÃ©cial appelÃ© `robots.txt` pour rÃ©pertorier les pages qu'il ne souhaite pas que les moteurs de recherche rÃ©cupÃ¨rent, les pages qui y sont rÃ©pertoriÃ©es seront ignorÃ©es. Il s'agit d'un aperÃ§u de base. Google propose une explication plus dÃ©taillÃ©e du [fonctionnement d'un moteur de recherche](https://support.google.com/webmasters/answer/70897?hl=en).
 
-Les testeurs peuvent utiliser des moteurs de recherche pour effectuer des reconnaissances sur des sites Web et des applications Web. Il existe des éléments directs et indirects dans la découverte et la reconnaissance des moteurs de recherche : les méthodes directes concernent la recherche dans les index et le contenu associé à partir des caches, tandis que les méthodes indirectes concernent l'apprentissage d'informations de conception et de configuration sensibles en recherchant des forums, des groupes de discussion et des sites Web d'appel d'offres.
+Les testeurs peuvent utiliser des moteurs de recherche pour effectuer des reconnaissances sur des sites Web et des applications Web. Il existe des Ã©lÃ©ments directs et indirects dans la dÃ©couverte et la reconnaissance des moteurs de rechercheÂ : les mÃ©thodes directes concernent la recherche dans les index et le contenu associÃ© Ã  partir des caches, tandis que les mÃ©thodes indirectes concernent l'apprentissage d'informations de conception et de configuration sensibles en recherchant des forums, des groupes de discussion et des sites Web d'appel d'offres.
 
-Une fois qu'un robot de moteur de recherche a terminé l'exploration, il commence à indexer le contenu Web en fonction des balises et des attributs associés, tels que `<TITLE>`, afin de renvoyer des résultats de recherche pertinents. Si le fichier `robots.txt` n'est pas mis à jour pendant la durée de vie du site Web et que les balises méta HTML en ligne indiquant aux robots de ne pas indexer le contenu n'ont pas été utilisées, il est possible que les index contiennent du contenu Web non prévu. à inclure par les propriétaires. Les propriétaires de sites Web peuvent utiliser le "robots.txt" mentionné précédemment, les balises méta HTML, l'authentification et les outils fournis par les moteurs de recherche pour supprimer ce contenu.
+Une fois qu'un robot de moteur de recherche a terminÃ© l'exploration, il commence Ã  indexer le contenu Web en fonction des balises et des attributs associÃ©s, tels que `<TITLE>`, afin de renvoyer des rÃ©sultats de recherche pertinents. Si le fichier `robots.txt` n'est pas mis Ã  jour pendant la durÃ©e de vie du site Web et que les balises mÃ©ta HTML en ligne indiquant aux robots de ne pas indexer le contenu n'ont pas Ã©tÃ© utilisÃ©es, il est possible que les index contiennent du contenu Web non prÃ©vu. Ã  inclure par les propriÃ©taires. Les propriÃ©taires de sites Web peuvent utiliser le `robots.txt` mentionnÃ© prÃ©cÃ©demment, les balises mÃ©ta HTML, l'authentification et les outils fournis par les moteurs de recherche pour supprimer ce contenu.
 
 ## Objectifs des tests
 
-- Identifiez les informations sensibles de conception et de configuration de l'application, du système ou de l'organisation qui sont exposées directement (sur le site Web de l'organisation) ou indirectement (via des services tiers).
+- Identifiez les informations sensibles de conception et de configuration de l'application, du systÃ¨me ou de l'organisation qui sont exposÃ©es directement (sur le site Web de l'organisation) ou indirectement (via des services tiers).
 
 ## Comment tester
 
-Utilisez un moteur de recherche pour rechercher des informations potentiellement sensibles. Cela peut inclure :
+Utilisez un moteur de recherche pour rechercher des informations potentiellement sensibles. Cela peut inclureÂ :
 
-- schémas et configurations de réseau ;
-- messages et e-mails archivés par des administrateurs ou d'autres membres clés du personnel ;
-- procédures de connexion et formats de nom d'utilisateur ;
-- noms d'utilisateur, mots de passe et clés privées ;
-- fichiers de configuration de services tiers ou cloud ;
-- révéler le contenu du message d'erreur ; et
-- applications non publiques (développement, test, test d'acceptation par l'utilisateur (UAT) et versions intermédiaires des sites).
+- schÃ©mas et configurations de rÃ©seauÂ ;
+- messages et e-mails archivÃ©s par des administrateurs ou d'autres membres clÃ©s du personnelÂ ;
+- procÃ©dures de connexion et formats de nom d'utilisateurÂ ;
+- noms d'utilisateur, mots de passe et clÃ©s privÃ©esÂ ;
+- fichiers de configuration de services tiers ou cloudÂ ;
+- rÃ©vÃ©ler le contenu du message d'erreurÂ ; et
+- applications non publiques (dÃ©veloppement, test, test d'acceptation par l'utilisateur (UAT) et versions intermÃ©diaires des sites).
 
 ### Moteurs de recherche
 
-Ne limitez pas les tests à un seul fournisseur de moteur de recherche, car différents moteurs de recherche peuvent générer des résultats différents. Les résultats des moteurs de recherche peuvent varier de plusieurs manières, en fonction de la date à laquelle le moteur a exploré le contenu pour la dernière fois et de l'algorithme utilisé par le moteur pour déterminer les pages pertinentes. Envisagez d'utiliser les moteurs de recherche suivants (par ordre alphabétique) :
+Ne limitez pas les tests Ã  un seul fournisseur de moteur de recherche, car diffÃ©rents moteurs de recherche peuvent gÃ©nÃ©rer des rÃ©sultats diffÃ©rents. Les rÃ©sultats des moteurs de recherche peuvent varier de plusieurs maniÃ¨res, en fonction de la date Ã  laquelle le moteur a explorÃ© le contenu pour la derniÃ¨re fois et de l'algorithme utilisÃ© par le moteur pour dÃ©terminer les pages pertinentes. Envisagez d'utiliser les moteurs de recherche suivants (par ordre alphabÃ©tique)Â :
 
 - [Baidu](https://www.baidu.com/), le moteur de recherche [le plus populaire](https://en.wikipedia.org/wiki/Web_search_engine#Market_share) de Chine.
-- [Bing](https://www.bing.com/), un moteur de recherche détenu et exploité par Microsoft, et le deuxième [plus populaire](https://en.wikipedia.org/wiki/Web_search_engine#Market_share) à l'échelle mondiale. Prend en charge les [mots clés de recherche avancée] (http://help.bing.microsoft.com/#apex/18/en-US/10001/-1).
+- [Bing](https://www.bing.com/), un moteur de recherche dÃ©tenu et exploitÃ© par Microsoft, et le deuxiÃ¨me [plus populaire](https://en.wikipedia.org/wiki/Web_search_engine#Market_share) Ã  l'Ã©chelle mondiale. Prend en charge les [mots clÃ©s de recherche avancÃ©e](http://help.bing.microsoft.com/#apex/18/en-US/10001/-1).
 - [binsearch.info](https://binsearch.info/), un moteur de recherche pour les newsgroups Usenet binaires.
-- [Common Crawl](https://commoncrawl.org/), "un référentiel ouvert de données d'exploration du Web qui peut être consulté et analysé par n'importe qui."
-- [DuckDuckGo](https://duckduckgo.com/), un moteur de recherche axé sur la confidentialité qui compile les résultats de nombreuses [sources] différentes(https://help.duckduckgo.com/results/sources/). Prend en charge la [syntaxe de recherche](https://help.duckduckgo.com/duckduckgo-help-pages/results/syntax/).
-- [Google](https://www.google.com/), qui propose le moteur de recherche [le plus populaire](https://en.wikipedia.org/wiki/Web_search_engine#Market_share) au monde et utilise un système de classement tenter de renvoyer les résultats les plus pertinents. Prend en charge les [opérateurs de recherche](https://support.google.com/websearch/answer/2466433).
-- [Internet Archive Wayback Machine](https://archive.org/web/), "construire une bibliothèque numérique de sites Internet et d'autres artefacts culturels sous forme numérique".
-- [Shodan](https://www.shodan.io/), un service de recherche d'appareils et de services connectés à Internet. Les options d'utilisation incluent un plan gratuit limité ainsi que des plans d'abonnement payants.
+- [Common Crawl](https://commoncrawl.org/), "un rÃ©fÃ©rentiel ouvert de donnÃ©es d'exploration du Web qui peut Ãªtre consultÃ© et analysÃ© par n'importe qui."
+- [DuckDuckGo](https://duckduckgo.com/), un moteur de recherche axÃ© sur la confidentialitÃ© qui compile les rÃ©sultats de nombreuses [sources](https://help.duckduckgo.com/results/sources/) diffÃ©rentes. Prend en charge la [syntaxe de recherche](https://help.duckduckgo.com/duckduckgo-help-pages/results/syntax/).
+- [Google](https://www.google.com/), qui propose le moteur de recherche [le plus populaire](https://en.wikipedia.org/wiki/Web_search_engine#Market_share) au monde et utilise un systÃ¨me de classement tenter de renvoyer les rÃ©sultats les plus pertinents. Prend en charge les [opÃ©rateurs de recherche](https://support.google.com/websearch/answer/2466433).
+- [Internet Archive Wayback Machine](https://archive.org/web/), "construire une bibliothÃ¨que numÃ©rique de sites Internet et d'autres artefacts culturels sous forme numÃ©rique".
+- [Shodan](https://www.shodan.io/), un service de recherche d'appareils et de services connectÃ©s Ã  Internet. Les options d'utilisation incluent un plan gratuit limitÃ© ainsi que des plans d'abonnement payants.
 
-### Opérateurs de recherche
+### OpÃ©rateurs de recherche
 
-Un opérateur de recherche est un mot-clé ou une syntaxe spéciale qui étend les capacités des requêtes de recherche régulières et peut aider à obtenir des résultats plus spécifiques. Ils prennent généralement la forme `operator:query`. Voici quelques opérateurs de recherche couramment pris en charge :
+Un opÃ©rateur de recherche est un mot-clÃ© ou une syntaxe spÃ©ciale qui Ã©tend les capacitÃ©s des requÃªtes de recherche rÃ©guliÃ¨res et peut aider Ã  obtenir des rÃ©sultats plus spÃ©cifiques. Ils prennent gÃ©nÃ©ralement la forme `operator:query`. Voici quelques opÃ©rateurs de recherche couramment pris en chargeÂ :
 
 - `site:` limitera la recherche au domaine fourni.
-- `inurl:` renverra uniquement les résultats qui incluent le mot-clé dans l'URL.
-- `intitle:` renverra uniquement les résultats qui ont le mot-clé dans le titre de la page.
-- `intext:` ou `inbody:` recherchera uniquement le mot-clé dans le corps des pages.
-- `filetype:` correspondra uniquement à un type de fichier spécifique, c'est-à-dire `.png` ou `.php`.
+- `inurl:` renverra uniquement les rÃ©sultats qui incluent le mot-clÃ© dans l'URL.
+- `intitle:` renverra uniquement les rÃ©sultats qui ont le mot-clÃ© dans le titre de la page.
+- `intext:` ou `inbody:` recherchera uniquement le mot-clÃ© dans le corps des pages.
+- `filetype:` correspondra uniquement Ã  un type de fichier spÃ©cifique, c'est-Ã -dire `.png` ou `.php`.
 
-Par exemple, pour trouver le contenu Web de owasp.org tel qu'indexé par un moteur de recherche typique, la syntaxe requise est :
+Par exemple, pour trouver le contenu Web de owasp.org tel qu'indexÃ© par un moteur de recherche typique, la syntaxe requise estÂ :
 
 ```text
 site:owasp.org
 ```
 
-![Exemple de résultat de recherche d'opération de site Google](images/Google_site_Operator_Search_Results_Example_20200406.png)\
-*Figure 4.1.1-1 : Exemple de résultat de recherche d'opération de site Google*
+![Exemple de rÃ©sultat de recherche d'opÃ©ration de site Google](images/Google_site_Operator_Search_Results_Example_20200406.png)\
+*Figure 4.1.1-1 : Exemple de rÃ©sultat de recherche d'opÃ©ration de site Google*
 
 ### Affichage du contenu mis en cache
 
-Pour rechercher du contenu qui a déjà été indexé, utilisez l'opérateur `cache:`. Ceci est utile pour afficher le contenu qui peut avoir changé depuis le moment où il a été indexé, ou qui peut ne plus être disponible. Tous les moteurs de recherche ne fournissent pas de contenu mis en cache pour la recherche ; la source la plus utile au moment de la rédaction est Google.
+Pour rechercher du contenu qui a dÃ©jÃ  Ã©tÃ© indexÃ©, utilisez l'opÃ©rateur `cache:`. Ceci est utile pour afficher le contenu qui peut avoir changÃ© depuis le moment oÃ¹ il a Ã©tÃ© indexÃ©, ou qui peut ne plus Ãªtre disponible. Tous les moteurs de recherche ne fournissent pas de contenu mis en cache pour la rechercheÂ ; la source la plus utile au moment de la rÃ©daction est Google.
 
-Pour afficher `owasp.org` tel qu'il est mis en cache, la syntaxe est la suivante :
+Pour afficher `owasp.org` tel qu'il est mis en cache, la syntaxe est la suivanteÂ :
 
 ```text
 cache:owasp.org
 ```
 
-![Exemple de résultat de recherche d'opération Google Cache](images/Google_cache_Operator_Search_Results_Example_20200406.png)\
-*Figure 4.1.1-2 : Exemple de résultat de recherche d'opération Google Cache*
+![Exemple de rÃ©sultat de recherche d'opÃ©ration Google Cache](images/Google_cache_Operator_Search_Results_Example_20200406.png)\
+*Figure 4.1.1-2 : Exemple de rÃ©sultat de recherche d'opÃ©ration Google Cache*
 
 ### Google Hacking, ou Dorking
 
-La recherche avec les opérateurs peut être une technique de découverte très efficace lorsqu'elle est combinée à la créativité du testeur. Les opérateurs peuvent être enchaînés pour découvrir efficacement des types spécifiques de fichiers et d'informations sensibles. Cette technique, appelée [Google hacking](https://en.wikipedia.org/wiki/Google_hacking) ou Dorking, est également possible en utilisant d'autres moteurs de recherche, tant que les opérateurs de recherche sont pris en charge.
+La recherche avec les opÃ©rateurs peut Ãªtre une technique de dÃ©couverte trÃ¨s efficace lorsqu'elle est combinÃ©e Ã  la crÃ©ativitÃ© du testeur. Les opÃ©rateurs peuvent Ãªtre enchaÃ®nÃ©s pour dÃ©couvrir efficacement des types spÃ©cifiques de fichiers et d'informations sensibles. Cette technique, appelÃ©e [Google hacking](https://en.wikipedia.org/wiki/Google_hacking) ou Dorking, est Ã©galement possible en utilisant d'autres moteurs de recherche, tant que les opÃ©rateurs de recherche sont pris en charge.
 
-Une base de données de dorks, telle que [Google Hacking Database](https://www.exploit-db.com/google-hacking-database), est une ressource utile qui peut aider à découvrir des informations spécifiques. Certaines catégories de dorks disponibles sur cette base de données incluent:
+Une base de donnÃ©es de dorks, telle que [Google Hacking Database](https://www.exploit-db.com/google-hacking-database), est une ressource utile qui peut aider Ã  dÃ©couvrir des informations spÃ©cifiques. Certaines catÃ©gories de dorks disponibles sur cette base de donnÃ©es incluent:
 
 - Prises de pieds
 - Fichiers contenant des noms d'utilisateur
-- Répertoires sensibles
-- Détection de serveur Web
-- Fichiers vulnérables
-- Serveurs vulnérables
+- RÃ©pertoires sensibles
+- DÃ©tection de serveur Web
+- Fichiers vulnÃ©rables
+- Serveurs vulnÃ©rables
 - Messages d'erreur
 - Fichiers contenant des informations juteuses
 - Fichiers contenant des mots de passe
@@ -92,6 +92,6 @@ Une base de données de dorks, telle que [Google Hacking Database](https://www.ex
 
 ## Correction
 
-Examinez attentivement la sensibilité des informations de conception et de configuration avant de les publier en ligne.
+Examinez attentivement la sensibilitÃ© des informations de conception et de configuration avant de les publier en ligne.
 
-Examinez périodiquement la sensibilité des informations de conception et de configuration existantes publiées en ligne.
+Examinez pÃ©riodiquement la sensibilitÃ© des informations de conception et de configuration existantes publiÃ©es en ligne.
