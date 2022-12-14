@@ -1,4 +1,4 @@
-# Examiner le contenu de la page Web pour détecter les fuites d'informations
+# Examiner le contenu de la page Web pour dÃ©tecter les fuites d'informations
 
 |ID          |
 |------------|
@@ -6,25 +6,25 @@
 
 ## Sommaire
 
-Il est très courant, et même recommandé, que les programmeurs incluent des commentaires détaillés et des métadonnées sur leur code source. Cependant, les commentaires et les métadonnées inclus dans le code HTML peuvent révéler des informations internes qui ne devraient pas être disponibles pour les attaquants potentiels. Les commentaires et l'examen des métadonnées doivent être effectués afin de déterminer si des informations sont divulguées. De plus, certaines applications peuvent divulguer des informations dans le corps des réponses de redirection.
+Il est trÃ¨s courant, et mÃªme recommandÃ©, que les programmeurs incluent des commentaires dÃ©taillÃ©s et des mÃ©tadonnÃ©es sur leur code source. Cependant, les commentaires et les mÃ©tadonnÃ©es inclus dans le code HTML peuvent rÃ©vÃ©ler des informations internes qui ne devraient pas Ãªtre disponibles pour les attaquants potentiels. Les commentaires et l'examen des mÃ©tadonnÃ©es doivent Ãªtre effectuÃ©s afin de dÃ©terminer si des informations sont divulguÃ©es. De plus, certaines applications peuvent divulguer des informations dans le corps des rÃ©ponses de redirection.
 
-Pour les applications Web modernes, l'utilisation de JavaScript côté client pour le front-end devient de plus en plus populaire. Les technologies de construction front-end populaires utilisent JavaScript côté client comme ReactJS, AngularJS ou Vue. Comme pour les commentaires et les métadonnées dans le code HTML, de nombreux programmeurs codent également en dur des informations sensibles dans des variables JavaScript sur le front-end. Les informations sensibles peuvent inclure (mais sans s'y limiter) : des clés d'API privées (*par exemple* une clé d'API Google Map sans restriction), des adresses IP internes, des routes sensibles (*par exemple* une route vers des pages ou des fonctionnalités d'administration masquées) ou même des informations d'identification. Ces informations sensibles peuvent être divulguées à partir de ce code JavaScript frontal. Un examen doit être effectué afin de déterminer si des informations sensibles ont été divulguées et pourraient être utilisées par des attaquants à des fins abusives.
+Pour les applications Web modernes, l'utilisation de JavaScript cÃ´tÃ© client pour le front-end devient de plus en plus populaire. Les technologies de construction front-end populaires utilisent JavaScript cÃ´tÃ© client comme ReactJS, AngularJS ou Vue. Comme pour les commentaires et les mÃ©tadonnÃ©es dans le code HTML, de nombreux programmeurs codent Ã©galement en dur des informations sensibles dans des variables JavaScript sur le front-end. Les informations sensibles peuvent inclure (mais sans s'y limiter)Â : des clÃ©s d'API privÃ©es (*par exemple* une clÃ© d'API Google Map sans restriction), des adresses IP internes, des routes sensibles (*par exemple* une route vers des pages ou des fonctionnalitÃ©s d'administration masquÃ©es) ou mÃªme des informations d'identification. Ces informations sensibles peuvent Ãªtre divulguÃ©es Ã  partir de ce code JavaScript frontal. Un examen doit Ãªtre effectuÃ© afin de dÃ©terminer si des informations sensibles ont Ã©tÃ© divulguÃ©es et pourraient Ãªtre utilisÃ©es par des attaquants Ã  des fins abusives.
 
-Pour les grandes applications Web, les problèmes de performances sont une grande préoccupation pour les programmeurs. Les programmeurs ont utilisé différentes méthodes pour optimiser les performances frontales, notamment les feuilles de style syntaxiquement impressionnantes (SASS), Sassy CSS (SCSS), webpack, etc. En utilisant ces technologies, le code frontal deviendra parfois plus difficile à comprendre et difficile à déboguer, et à cause de cela, les programmeurs déploient souvent des fichiers de carte source à des fins de débogage. Une "carte source" est un fichier spécial qui connecte une version minifiée/uglifiée d'un élément (CSS ou JavaScript) à la version originale créée. Les programmeurs se demandent encore s'il faut ou non intégrer les fichiers de carte source dans l'environnement de production. Cependant, il est indéniable que les fichiers de carte source ou les fichiers de débogage, s'ils sont publiés dans l'environnement de production, rendront leur source plus lisible par l'homme. Cela peut permettre aux attaquants de trouver plus facilement des vulnérabilités à partir du front-end ou de collecter des informations sensibles à partir de celui-ci. Une révision du code JavaScript doit être effectuée afin de déterminer si des fichiers de débogage sont exposés à partir du front-end. En fonction du contexte et de la sensibilité du projet, un expert en sécurité doit décider si les fichiers doivent exister ou non dans l'environnement de production.
+Pour les grandes applications Web, les problÃ¨mes de performances sont une grande prÃ©occupation pour les programmeurs. Les programmeurs ont utilisÃ© diffÃ©rentes mÃ©thodes pour optimiser les performances frontales, notamment les feuilles de style syntaxiquement impressionnantes (SASS), Sassy CSS (SCSS), webpack, etc. En utilisant ces technologies, le code frontal deviendra parfois plus difficile Ã  comprendre et difficile Ã  dÃ©boguer, et Ã  cause de cela, les programmeurs dÃ©ploient souvent des fichiers de carte source Ã  des fins de dÃ©bogage. Une "carte source" est un fichier spÃ©cial qui connecte une version minifiÃ©e/uglifiÃ©e d'un Ã©lÃ©ment (CSS ou JavaScript) Ã  la version originale crÃ©Ã©e. Les programmeurs se demandent encore s'il faut ou non intÃ©grer les fichiers de carte source dans l'environnement de production. Cependant, il est indÃ©niable que les fichiers de carte source ou les fichiers de dÃ©bogage, s'ils sont publiÃ©s dans l'environnement de production, rendront leur source plus lisible par l'homme. Cela peut permettre aux attaquants de trouver plus facilement des vulnÃ©rabilitÃ©s Ã  partir du front-end ou de collecter des informations sensibles Ã  partir de celui-ci. Une rÃ©vision du code JavaScript doit Ãªtre effectuÃ©e afin de dÃ©terminer si des fichiers de dÃ©bogage sont exposÃ©s Ã  partir du front-end. En fonction du contexte et de la sensibilitÃ© du projet, un expert en sÃ©curitÃ© doit dÃ©cider si les fichiers doivent exister ou non dans l'environnement de production.
 
 ## Objectifs des tests
 
-- Examinez les commentaires de la page Web, les métadonnées et redirigez les corps pour détecter toute fuite d'informations.
-- Rassemblez les fichiers JavaScript et examinez le code JS pour mieux comprendre l'application et détecter toute fuite d'informations.
-- Identifiez si des fichiers de carte source ou d'autres fichiers de débogage frontaux existent.
+- Examinez les commentaires de la page Web, les mÃ©tadonnÃ©es et redirigez les corps pour dÃ©tecter toute fuite d'informations.
+- Rassemblez les fichiers JavaScript et examinez le code JS pour mieux comprendre l'application et dÃ©tecter toute fuite d'informations.
+- Identifiez si des fichiers de carte source ou d'autres fichiers de dÃ©bogage frontaux existent.
 
 ## Comment tester
 
-### Examiner les commentaires et les métadonnées de la page Web
+### Examiner les commentaires et les mÃ©tadonnÃ©es de la page Web
 
-Les commentaires HTML sont souvent utilisés par les développeurs pour inclure des informations de débogage sur l'application. Parfois, ils oublient les commentaires et les laissent dans des environnements de production. Les testeurs doivent rechercher les commentaires HTML qui commencent par `<!--`.
+Les commentaires HTML sont souvent utilisÃ©s par les dÃ©veloppeurs pour inclure des informations de dÃ©bogage sur l'application. Parfois, ils oublient les commentaires et les laissent dans des environnements de production. Les testeurs doivent rechercher les commentaires HTML qui commencent par `<!--`.
 
-Recherchez dans le code source HTML des commentaires contenant des informations sensibles susceptibles d'aider l'attaquant à mieux comprendre l'application. Il peut s'agir de code SQL, de noms d'utilisateur et de mots de passe, d'adresses IP internes ou d'informations de débogage.
+Recherchez dans le code source HTML des commentaires contenant des informations sensibles susceptibles d'aider l'attaquant Ã  mieux comprendre l'application. Il peut s'agir de code SQL, de noms d'utilisateur et de mots de passe, d'adresses IP internes ou d'informations de dÃ©bogage.
 
 ```html
 ...
@@ -39,53 +39,53 @@ Recherchez dans le code source HTML des commentaires contenant des informations 
 ...
 ```
 
-Le testeur peut même trouver quelque chose comme ceci :
+Le testeur peut mÃªme trouver quelque chose comme ceci :
 
 ```html
 <!-- Use the DB administrator password for testing:  f@keP@a$$w0rD -->
 ```
 
-Vérifiez les informations de version HTML pour les numéros de version valides et les URL de définition de type de données (DTD)
+VÃ©rifiez les informations de version HTML pour les numÃ©ros de version valides et les URL de dÃ©finition de type de donnÃ©es (DTD)
 
 ```html
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 ```
 
-- `strict.dtd` -- DTD stricte par défaut
+- `strict.dtd` -- DTD stricte par dÃ©faut
 - `loose.dtd` -- DTD libre
 - `frameset.dtd` -- DTD pour les documents de jeu de cadres
 
-Certaines balises "META" ne fournissent pas de vecteurs d'attaque actifs, mais permettent plutôt à un attaquant de profiler une application :
+Certaines balises `META` ne fournissent pas de vecteurs d'attaque actifs, mais permettent plutÃ´t Ã  un attaquant de profiler une applicationÂ :
 
 ```html
 <META name="Author" content="Andrew Muller">
 ```
 
-Une balise `META` commune (mais non conforme aux [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) est [Refresh](https://en.wikipedia.org/wiki /Meta_refresh).
+Une balise `META` commune (mais non conforme aux [WCAG](https://www.w3.org/WAI/standards-guidelines/wcag/) est [Refresh](https://en.wikipedia.org/wiki/Meta_refresh).
 
 ```html
 <META http-equiv="Refresh" content="15;URL=https://www.owasp.org/index.html">
 ```
 
-Une utilisation courante de la balise "META" consiste à spécifier des mots clés qu'un moteur de recherche peut utiliser pour améliorer la qualité des résultats de recherche.
+Une utilisation courante de la balise `META` consiste Ã  spÃ©cifier des mots clÃ©s qu'un moteur de recherche peut utiliser pour amÃ©liorer la qualitÃ© des rÃ©sultats de recherche.
 
 ```html
 <META name="keywords" lang="en-us" content="OWASP, security, sunshine, lollipops">
 ```
 
-Bien que la plupart des serveurs Web gèrent l'indexation des moteurs de recherche via le fichier `robots.txt`, elle peut également être gérée par les balises `META`. La balise ci-dessous conseillera aux robots de ne pas indexer et de ne pas suivre les liens sur la page HTML contenant la balise.
+Bien que la plupart des serveurs Web gÃ¨rent l'indexation des moteurs de recherche via le fichier `robots.txt`, elle peut Ã©galement Ãªtre gÃ©rÃ©e par les balises `META`. La balise ci-dessous conseillera aux robots de ne pas indexer et de ne pas suivre les liens sur la page HTML contenant la balise.
 
 ```html
 <META name="robots" content="none">
 ```
 
-La [Platform for Internet Content Selection (PICS)](https://www.w3.org/PICS/) et le [Protocol for Web Description Resources (POWDER)](https://www.w3.org/2007/powder /) fournissent une infrastructure pour associer des métadonnées au contenu Internet.
+La [Platform for Internet Content Selection (PICS)](https://www.w3.org/PICS/) et le [Protocol for Web Description Resources (POWDER)](https://www.w3.org/2007/powder/) fournissent une infrastructure pour associer des mÃ©tadonnÃ©es au contenu Internet.
 
 ### Identification du code JavaScript et collecte des fichiers JavaScript
 
-Les programmeurs codent souvent en dur des informations sensibles avec des variables JavaScript sur le front-end. Les testeurs doivent vérifier le code source HTML et rechercher le code JavaScript entre les balises `<script>` et `</script>`. Les testeurs doivent également identifier les fichiers JavaScript externes pour examiner le code (les fichiers JavaScript ont l'extension de fichier `.js` et le nom du fichier JavaScript est généralement placé dans l'attribut `src` (source) d'une balise `<script>`).
+Les programmeurs codent souvent en dur des informations sensibles avec des variables JavaScript sur le front-end. Les testeurs doivent vÃ©rifier le code source HTML et rechercher le code JavaScript entre les balises `<script>` et `</script>`. Les testeurs doivent Ã©galement identifier les fichiers JavaScript externes pour examiner le code (les fichiers JavaScript ont l'extension de fichier `.js` et le nom du fichier JavaScript est gÃ©nÃ©ralement placÃ© dans l'attribut `src` (source) d'une balise `<script>`).
 
-Vérifiez le code JavaScript pour toute fuite d'informations sensibles qui pourrait être utilisée par des attaquants pour abuser ou manipuler davantage le système. Recherchez des valeurs telles que : clés d'API, adresses IP internes, routes sensibles ou informations d'identification. Par exemple:
+VÃ©rifiez le code JavaScript pour toute fuite d'informations sensibles qui pourrait Ãªtre utilisÃ©e par des attaquants pour abuser ou manipuler davantage le systÃ¨me. Recherchez des valeurs telles queÂ : clÃ©s d'API, adressesÂ IP internes, routes sensibles ou informations d'identification. Par exemple:
 
 ```javascript
 const myS3Credentials = {
@@ -94,15 +94,15 @@ const myS3Credentials = {
 };
 ```
 
-Le testeur peut même trouver quelque chose comme ceci :
+Le testeur peut mÃªme trouver quelque chose comme ceci :
 
 ```javascript
 var conString = "tcp://postgres:1234@localhost/postgres";
 ```
 
-Lorsqu'une clé API est trouvée, les testeurs peuvent vérifier si les restrictions de clé API sont définies par service ou par IP, référent HTTP, application, SDK, etc.
+Lorsqu'une clÃ© API est trouvÃ©e, les testeurs peuvent vÃ©rifier si les restrictions de clÃ© API sont dÃ©finies par service ou par IP, rÃ©fÃ©rent HTTP, application, SDK, etc.
 
-Par exemple, si les testeurs ont trouvé une clé API Google Map, ils peuvent vérifier si cette clé API est restreinte par adresse IP ou restreinte uniquement par les API Google Map. Si la clé API Google est limitée uniquement par les API Google Map, les attaquants peuvent toujours utiliser cette clé API pour interroger les API Google Map sans restriction et le propriétaire de l'application doit payer pour cela.
+Par exemple, si les testeurs ont trouvÃ© une clÃ© API Google Map, ils peuvent vÃ©rifier si cette clÃ© API est restreinte par adresse IP ou restreinte uniquement par les API Google Map. Si la clÃ© API Google est limitÃ©e uniquement par les API Google Map, les attaquants peuvent toujours utiliser cette clÃ© API pour interroger les API Google Map sans restriction et le propriÃ©taire de l'application doit payer pour cela.
 
 ```html
 
@@ -113,7 +113,7 @@ Par exemple, si les testeurs ont trouvé une clé API Google Map, ils peuvent véri
 </script>
 ```
 
-Dans certains cas, les testeurs peuvent trouver des itinéraires sensibles à partir du code JavaScript, tels que des liens vers des pages d'administration internes ou masquées.
+Dans certains cas, les testeurs peuvent trouver des itinÃ©raires sensibles Ã  partir du code JavaScript, tels que des liens vers des pages d'administration internes ou masquÃ©es.
 
 ```html
 <script type="application/json">
@@ -125,9 +125,9 @@ Dans certains cas, les testeurs peuvent trouver des itinéraires sensibles à part
 
 ### Identification des fichiers de carte source
 
-Les fichiers de carte source seront généralement chargés lors de l'ouverture de DevTools. Les testeurs peuvent également trouver des fichiers de carte source en ajoutant l'extension ".map" après l'extension de chaque fichier JavaScript externe. Par exemple, si un testeur voit un fichier `/static/js/main.chunk.js`, il peut alors rechercher son fichier de carte source en visitant `/static/js/main.chunk.js.map`.
+Les fichiers de carte source seront gÃ©nÃ©ralement chargÃ©s lors de l'ouverture de DevTools. Les testeurs peuvent Ã©galement trouver des fichiers de carte source en ajoutant l'extension ".map" aprÃ¨s l'extension de chaque fichier JavaScript externe. Par exemple, si un testeur voit un fichier `/static/js/main.chunk.js`, il peut alors rechercher son fichier de carte source en visitant `/static/js/main.chunk.js.map`.
 
-Vérifiez les fichiers de carte source pour toute information sensible qui peut aider l'attaquant à mieux comprendre l'application. Par exemple :
+VÃ©rifiez les fichiers de carte source pour toute information sensible qui peut aider l'attaquant Ã  mieux comprendre l'application. Par exemple :
 
 ```json
 {
@@ -144,18 +144,18 @@ Vérifiez les fichiers de carte source pour toute information sensible qui peut a
 }
 ```
 
-Lorsque les sites Web chargent des fichiers de carte source, le code source frontal devient lisible et plus facile à déboguer.
+Lorsque les sites Web chargent des fichiers de carte source, le code source frontal devient lisible et plus facile Ã  dÃ©boguer.
 
-### Identifier les réponses de redirection qui divulguent des informations
+### Identifier les rÃ©ponses de redirection qui divulguent des informations
 
-Bien que l'on ne s'attende généralement pas à ce que les réponses de redirection contiennent du contenu Web significatif, rien ne garantit qu'elles ne peuvent pas contenir de contenu. Ainsi, bien que les réponses de la série 300 (redirection) contiennent souvent du contenu de type "redirection vers `https://example.com/`", elles peuvent également divulguer du contenu.
+Bien que l'on ne s'attende gÃ©nÃ©ralement pas Ã  ce que les rÃ©ponses de redirection contiennent du contenu Web significatif, rien ne garantit qu'elles ne peuvent pas contenir de contenu. Ainsi, bien que les rÃ©ponses de la sÃ©rie 300 (redirection) contiennent souvent du contenu de type "redirection vers `https://example.com/`", elles peuvent Ã©galement divulguer du contenu.
 
-Considérez une situation dans laquelle une réponse de redirection est le résultat d'une vérification d'authentification ou d'autorisation, si cette vérification échoue, le serveur peut répondre en redirigeant l'utilisateur vers une page "sûre" ou "par défaut", mais la réponse de redirection elle-même peut toujours contenir du contenu qui ne s'affiche pas dans le navigateur mais est bien transmis au client. Cela peut être vu soit en tirant parti des outils de développement de navigateur, soit via un proxy personnel (tel que ZAP, Burp, Fiddler ou Charles).
+ConsidÃ©rez une situation dans laquelle une rÃ©ponse de redirection est le rÃ©sultat d'une vÃ©rification d'authentification ou d'autorisation, si cette vÃ©rification Ã©choue, le serveur peut rÃ©pondre en redirigeant l'utilisateur vers une page "sÃ»re" ou "par dÃ©faut", mais la rÃ©ponse de redirection elle-mÃªme peut toujours contenir du contenu qui ne s'affiche pas dans le navigateur mais est bien transmis au client. Cela peut Ãªtre vu soit en tirant parti des outils de dÃ©veloppement de navigateur, soit via un proxy personnel (tel que ZAP, Burp, Fiddler ou Charles).
 
 ## Outils
 
 - [Wget](https://www.gnu.org/software/wget/wget.html)
-- Browser "view source" function
+- Fonction "view source" du navigateur
 - Eyeballs
 - [Curl](https://curl.haxx.se/)
 - [Zaproxy](https://www.zaproxy.org)
