@@ -1,78 +1,78 @@
 # 4.0 Introduction et objectifs
 
-Cette section décrit la méthodologie de test de sécurité des applications Web OWASP et explique comment tester les preuves de vulnérabilités au sein de l'application en raison de lacunes dans les contrôles de sécurité identifiés.
+Cette section dÃ©crit la mÃ©thodologie de test de sÃ©curitÃ© des applications Web OWASP et explique comment tester les preuves de vulnÃ©rabilitÃ©s au sein de l'application en raison de lacunes dans les contrÃ´les de sÃ©curitÃ© identifiÃ©s.
 
-## Qu'est-ce que le test de sécurité des applications Web ?
+## Qu'est-ce que le test de sÃ©curitÃ© des applications WebÂ ?
 
-Un test de sécurité est une méthode d'évaluation de la sécurité d'un système informatique ou d'un réseau en validant et en vérifiant méthodiquement l'efficacité des contrôles de sécurité des applications. Un test de sécurité d'application Web se concentre uniquement sur l'évaluation de la sécurité d'une application Web. Le processus implique une analyse active de l'application pour détecter toute faiblesse, défaut technique ou vulnérabilité. Tout problème de sécurité détecté sera présenté au propriétaire du système, accompagné d'une évaluation de l'impact, d'une proposition d'atténuation ou d'une solution technique.
+Un test de sÃ©curitÃ© est une mÃ©thode d'Ã©valuation de la sÃ©curitÃ© d'un systÃ¨me informatique ou d'un rÃ©seau en validant et en vÃ©rifiant mÃ©thodiquement l'efficacitÃ© des contrÃ´les de sÃ©curitÃ© des applications. Un test de sÃ©curitÃ© d'application Web se concentre uniquement sur l'Ã©valuation de la sÃ©curitÃ© d'une application Web. Le processus implique une analyse active de l'application pour dÃ©tecter toute faiblesse, dÃ©faut technique ou vulnÃ©rabilitÃ©. Tout problÃ¨me de sÃ©curitÃ© dÃ©tectÃ© sera prÃ©sentÃ© au propriÃ©taire du systÃ¨me, accompagnÃ© d'une Ã©valuation de l'impact, d'une proposition d'attÃ©nuation ou d'une solution technique.
 
-## Qu'est-ce qu'une vulnérabilité ?
+## Qu'est-ce qu'une vulnÃ©rabilitÃ©Â ?
 
-Une vulnérabilité est une faille ou une faiblesse dans la conception, la mise en œuvre, le fonctionnement ou la gestion d'un système qui pourrait être exploitée pour compromettre les objectifs de sécurité du système.
+Une vulnÃ©rabilitÃ© est une faille ou une faiblesse dans la conception, la mise en Å“uvre, le fonctionnement ou la gestion d'un systÃ¨me qui pourrait Ãªtre exploitÃ©e pour compromettre les objectifs de sÃ©curitÃ© du systÃ¨me.
 
-## Qu'est-ce qu'une menace ?
+## Qu'est-ce qu'une menaceÂ ?
 
-Une menace est tout (un attaquant externe malveillant, un utilisateur interne, une instabilité du système, etc.) vulnérabilité.
+Une menace est tout (un attaquant externe malveillant, un utilisateur interne, une instabilitÃ© du systÃ¨me, etc.) ce qui peut nuire aux actifs dÃ©tenus par une application (ressources de valeur, telles que les donnÃ©es dans une base de donnÃ©es ou dans le systÃ¨me de fichiers) en exploitant une vulnÃ©rabilitÃ©.
 
-## Qu'est-ce qu'un essai ?
+## Qu'est-ce qu'un essaiÂ ?
 
-Un test est une action visant à démontrer qu'une application répond aux exigences de sécurité de ses parties prenantes.
+Un test est une action visant Ã  dÃ©montrer qu'une application rÃ©pond aux exigences de sÃ©curitÃ© de ses parties prenantes.
 
-## L'approche dans la rédaction de ce guide
+## L'approche dans la rÃ©daction de ce guide
 
 L'approche OWASP est ouverte et collaborative :
 
-- Ouvert : chaque expert en sécurité peut participer avec son expérience au projet. Tout est gratuit.
-- Collaboratif : un brainstorming est effectué avant la rédaction des articles afin que l'équipe puisse partager des idées et développer une vision collective du projet. Cela signifie un consensus approximatif, un public plus large et une participation accrue.
+- Ouvert : chaque expert en sÃ©curitÃ© peut participer avec son expÃ©rience au projet. Tout est gratuit.
+- Collaboratif : un brainstorming est effectuÃ© avant la rÃ©daction des articles afin que l'Ã©quipe puisse partager des idÃ©es et dÃ©velopper une vision collective du projet. Cela signifie un consensus approximatif, un public plus large et une participation accrue.
 
-Cette approche tend à créer une méthodologie de test définie qui sera :
+Cette approche tend Ã  crÃ©er une mÃ©thodologie de test dÃ©finie qui seraÂ :
 
-- Cohérent
+- CohÃ©rent
 - Reproductible
 - Rigoureux
-- Sous contrôle qualité
+- Sous contrÃ´le qualitÃ©
 
-Les problèmes à résoudre sont entièrement documentés et testés. Il est important d'utiliser une méthode pour tester toutes les vulnérabilités connues et documenter toutes les activités de test de sécurité.
+Les problÃ¨mes Ã  rÃ©soudre sont entiÃ¨rement documentÃ©s et testÃ©s. Il est important d'utiliser une mÃ©thode pour tester toutes les vulnÃ©rabilitÃ©s connues et documenter toutes les activitÃ©s de test de sÃ©curitÃ©.
 
-## Qu'est-ce que la méthodologie de test OWASP ?
+## Qu'est-ce que la mÃ©thodologie de test OWASPÂ ?
 
-Les tests de sécurité ne seront jamais une science exacte où une liste complète de tous les problèmes possibles qui devraient être testés peut être définie. En effet, les tests de sécurité ne sont une technique appropriée pour tester la sécurité des applications Web que dans certaines circonstances. Le but de ce projet est de rassembler toutes les techniques de test possibles, d'expliquer ces techniques et de maintenir le guide à jour. La méthode de test de sécurité des applications Web OWASP est basée sur l'approche de la boîte noire. Le testeur ne sait rien ou a très peu d'informations sur l'application à tester.
+Les tests de sÃ©curitÃ© ne seront jamais une science exacte oÃ¹ une liste complÃ¨te de tous les problÃ¨mes possibles qui devraient Ãªtre testÃ©s peut Ãªtre dÃ©finie. En effet, les tests de sÃ©curitÃ© ne sont une technique appropriÃ©e pour tester la sÃ©curitÃ© des applications Web que dans certaines circonstances. Le but de ce projet est de rassembler toutes les techniques de test possibles, d'expliquer ces techniques et de maintenir le guide Ã  jour. La mÃ©thode de test de sÃ©curitÃ© des applications Web OWASP est basÃ©e sur l'approche de la boÃ®te noire. Le testeur ne sait rien ou a trÃ¨s peu d'informations sur l'application Ã  tester.
 
-Le modèle de test se compose de :
+Le modÃ¨le de test se compose deÂ :
 
-- Testeur : Qui effectue les activités de test
-- Outils et méthodologie : le cœur de ce projet de guide de test
-- Application : La boîte noire à tester
+- TesteurÂ : Qui effectue les activitÃ©s de test
+- Outils et mÃ©thodologieÂ : le cÅ“ur de ce projet de guide de test
+- Application : La boÃ®te noire Ã  tester
 
-Les tests peuvent être classés comme passifs ou actifs :
+Les tests peuvent Ãªtre classÃ©s comme passifs ou actifsÂ :
 
 ### Tests passifs
 
-Lors des tests passifs, un testeur essaie de comprendre la logique de l'application et explore l'application en tant qu'utilisateur. Des outils peuvent être utilisés pour la collecte d'informations. Par exemple, un proxy HTTP peut être utilisé pour observer toutes les requêtes et réponses HTTP. À la fin de cette phase, le testeur doit généralement comprendre tous les points d'accès et toutes les fonctionnalités du système (par exemple, les en-têtes HTTP, les paramètres, les cookies, les API, l'utilisation/les modèles de technologie, etc.). La section [Collecte d'informations](../01-Information_Gathering/README.md) explique comment effectuer des tests passifs.
+Lors des tests passifs, un testeur essaie de comprendre la logique de l'application et explore l'application en tant qu'utilisateur. Des outils peuvent Ãªtre utilisÃ©s pour la collecte d'informations. Par exemple, un proxy HTTP peut Ãªtre utilisÃ© pour observer toutes les requÃªtes et rÃ©ponses HTTP. Ã€ la fin de cette phase, le testeur doit gÃ©nÃ©ralement comprendre tous les points d'accÃ¨s et toutes les fonctionnalitÃ©s du systÃ¨me (par exemple, les en-tÃªtes HTTP, les paramÃ¨tres, les cookies, les API, l'utilisation/les modÃ¨les de technologie, etc.). La section [Collecte d'informations](../01-Information_Gathering/README.md) explique comment effectuer des tests passifs.
 
-Par exemple, un testeur peut trouver une page à l'URL suivante : `https://www.exemple.com/login/auth_form`
+Par exemple, un testeur peut trouver une page Ã  l'URL suivanteÂ : `https://www.exemple.com/login/auth_form`
 
-Cela peut indiquer un formulaire d'authentification où l'application demande un nom d'utilisateur et un mot de passe.
+Cela peut indiquer un formulaire d'authentification oÃ¹ l'application demande un nom d'utilisateur et un mot de passe.
 
-Les paramètres suivants représentent deux points d'accès à l'application : `https://www.exemple.com/appx?a=1&b=1`
+Les paramÃ¨tres suivants reprÃ©sentent deux points d'accÃ¨s Ã  l'applicationÂ : `https://www.exemple.com/appx?a=1&b=1`
 
-Dans ce cas, l'application affiche deux points d'accès (paramètres 'a' et 'b'). Tous les points d'entrée trouvés dans cette phase représentent une cible pour les tests. Garder une trace du répertoire ou de l'arborescence des appels de l'application et de tous les points d'accès peut être utile pendant les tests actifs.
+Dans ce cas, l'application affiche deux points d'accÃ¨s (paramÃ¨tres 'a' et 'b'). Tous les points d'entrÃ©e trouvÃ©s dans cette phase reprÃ©sentent une cible pour les tests. Garder une trace du rÃ©pertoire ou de l'arborescence des appels de l'application et de tous les points d'accÃ¨s peut Ãªtre utile pendant les tests actifs.
 
-### Tests actifs
+### Tests actifs
 
-Pendant les tests actifs, un testeur commence à utiliser les méthodologies décrites dans les sections suivantes.
+Pendant les tests actifs, un testeur commence Ã  utiliser les mÃ©thodologies dÃ©crites dans les sections suivantes.
 
-L'ensemble des tests actifs a été divisé en 12 catégories :
+L'ensemble des tests actifs a Ã©tÃ© divisÃ© en 12 catÃ©goriesÂ :
 
 - La collecte d'informations
-- Tests de gestion de configuration et de déploiement
-- Tests de gestion d'identité
+- Tests de gestion de configuration et de dÃ©ploiement
+- Tests de gestion d'identitÃ©
 - Tests d'authentification
 - Tests d'autorisation
 - Test de gestion de session
-- Test de validation des entrées
+- Test de validation des entrÃ©es
 - La gestion des erreurs
 - Cryptographie
-- Test de logique métier
-- Tests côté client
+- Test de logique mÃ©tier
+- Tests cÃ´tÃ© client
 - Tests d'API
