@@ -6,23 +6,23 @@
 
 ## Sommaire
 
-L'empreinte digitale du serveur Web consiste à identifier le type et la version du serveur Web sur lequel une cible s'exécute. Bien que les empreintes digitales de serveur Web soient souvent encapsulées dans des outils de test automatisés, il est important que les chercheurs comprennent les principes fondamentaux de la manière dont ces outils tentent d'identifier les logiciels, et pourquoi cela est utile.
+L'empreinte digitale du serveur Web consiste Ã  identifier le type et la version du serveur Web sur lequel une cible s'exÃ©cute. Bien que les empreintes digitales de serveur Web soient souvent encapsulÃ©es dans des outils de test automatisÃ©s, il est important que les chercheurs comprennent les principes fondamentaux de la maniÃ¨re dont ces outils tentent d'identifier les logiciels, et pourquoi cela est utile.
 
-La découverte précise du type de serveur Web sur lequel une application s'exécute peut permettre aux testeurs de sécurité de déterminer si l'application est vulnérable aux attaques. En particulier, les serveurs exécutant des versions plus anciennes de logiciels sans correctifs de sécurité à jour peuvent être sensibles aux exploits connus spécifiques à la version.
+La dÃ©couverte prÃ©cise du type de serveur Web sur lequel une application s'exÃ©cute peut permettre aux testeurs de sÃ©curitÃ© de dÃ©terminer si l'application est vulnÃ©rable aux attaques. En particulier, les serveurs exÃ©cutant des versions plus anciennes de logiciels sans correctifs de sÃ©curitÃ© Ã  jour peuvent Ãªtre sensibles aux exploits connus spÃ©cifiques Ã  la version.
 
 ## Objectifs des tests
 
-- Déterminez la version et le type d'un serveur Web en cours d'exécution pour permettre une découverte plus approfondie de toute vulnérabilité connue.
+- DÃ©terminez la version et le type d'un serveur Web en cours d'exÃ©cution pour permettre une dÃ©couverte plus approfondie de toute vulnÃ©rabilitÃ© connue.
 
 ## Comment tester
 
-Les techniques utilisées pour la prise d'empreintes digitales du serveur Web incluent la [saisie de bannière](https://en.wikipedia.org/wiki/Banner_grabbing), l'obtention de réponses à des requêtes malformées et l'utilisation d'outils automatisés pour effectuer des analyses plus robustes qui utilisent une combinaison de tactiques. Le principe fondamental par lequel toutes ces techniques fonctionnent est le même. Ils s'efforcent tous d'obtenir une réponse du serveur Web qui peut ensuite être comparée à une base de données de réponses et de comportements connus, et donc associée à un type de serveur connu.
+Les techniques utilisÃ©es pour la prise d'empreintes digitales du serveur Web incluent la [saisie de banniÃ¨re](https://en.wikipedia.org/wiki/Banner_grabbing), l'obtention de rÃ©ponses Ã  des requÃªtes malformÃ©es et l'utilisation d'outils automatisÃ©s pour effectuer des analyses plus robustes qui utilisent une combinaison de tactiques. Le principe fondamental par lequel toutes ces techniques fonctionnent est le mÃªme. Ils s'efforcent tous d'obtenir une rÃ©ponse du serveur Web qui peut ensuite Ãªtre comparÃ©e Ã  une base de donnÃ©es de rÃ©ponses et de comportements connus, et donc associÃ©e Ã  un type de serveur connu.
 
-### Saisie de bannières
+### Saisie de banniÃ¨res
 
-Une capture de bannière est effectuée en envoyant une requête HTTP au serveur Web et en examinant son [en-tête de réponse] (https://developer.mozilla.org/en-US/docs/Glossary/Response_header). Cela peut être accompli en utilisant une variété d'outils, y compris `telnet` pour les requêtes HTTP ou `openssl` pour les requêtes via TLS/SSL.
+Une capture de banniÃ¨re est effectuÃ©e en envoyant une requÃªte HTTP au serveur Web et en examinant son [en-tÃªte de rÃ©ponse](https://developer.mozilla.org/en-US/docs/Glossary/Response_header). Cela peut Ãªtre accompli en utilisant une variÃ©tÃ© d'outils, y compris `telnet` pour les requÃªtes HTTP ou `openssl` pour les requÃªtes via TLS/SSL.
 
-Par exemple, voici la réponse à une requête d'un serveur Apache.
+Par exemple, voici la rÃ©ponse Ã  une requÃªte d'un serveur Apache.
 
 ```http
 HTTP/1.1 200 OK
@@ -37,7 +37,7 @@ Content-Type: text/html
 ...
 ```
 
-Voici une autre réponse, cette fois de nginx.
+Voici une autre rÃ©ponse, cette fois de nginx.
 
 ```http
 HTTP/1.1 200 OK
@@ -52,7 +52,7 @@ Accept-Ranges: bytes
 ...
 ```
 
-Voici à quoi ressemble une réponse de lighttpd.
+Voici Ã  quoi ressemble une rÃ©ponse de lighttpd.
 
 ```sh
 HTTP/1.0 200 OK
@@ -66,7 +66,7 @@ Date: Thu, 05 Sep 2019 17:57:57 GMT
 Server: lighttpd/1.4.54
 ```
 
-Dans ces exemples, le type et la version du serveur sont clairement exposés. Cependant, les applications soucieuses de la sécurité peuvent obscurcir les informations de leur serveur en modifiant l'en-tête. Par exemple, voici un extrait de la réponse à une demande de site avec un en-tête modifié :
+Dans ces exemples, le type et la version du serveur sont clairement exposÃ©s. Cependant, les applications soucieuses de la sÃ©curitÃ© peuvent obscurcir les informations de leur serveur en modifiant l'en-tÃªte. Par exemple, voici un extrait de la rÃ©ponse Ã  une demande de site avec un en-tÃªte modifiÃ©Â :
 
 ```sh
 HTTP/1.1 200 OK
@@ -77,30 +77,30 @@ Status: 200 OK
 ...
 ```
 
-Dans les cas où les informations sur le serveur sont masquées, les testeurs peuvent deviner le type de serveur en fonction de l'ordre des champs d'en-tête. Notez que dans l'exemple Apache ci-dessus, les champs suivent cet ordre :
+Dans les cas oÃ¹ les informations sur le serveur sont masquÃ©es, les testeurs peuvent deviner le type de serveur en fonction de l'ordre des champs d'en-tÃªte. Notez que dans l'exemple Apache ci-dessus, les champs suivent cet ordreÂ :
 
 - Date
 - Serveur
-- Dernière modification
+- DerniÃ¨re modification
 - Etag
 - Plages d'acceptation
 - Longueur du contenu
 - Lien
 - Type de contenu
 
-Cependant, dans les exemples de serveur nginx et obscurci, les champs communs suivent cet ordre :
+Cependant, dans les exemples de serveur nginx et obscurci, les champs communs suivent cet ordreÂ :
 
 - Serveur
 - Date
 - Type de contenu
 
-Les testeurs peuvent utiliser ces informations pour deviner que le serveur masqué est nginx. Cependant, étant donné qu'un certain nombre de serveurs Web différents peuvent partager le même ordre de champs et que des champs peuvent être modifiés ou supprimés, cette méthode n'est pas définitive.
+Les testeurs peuvent utiliser ces informations pour deviner que le serveur masquÃ© est nginx. Cependant, Ã©tant donnÃ© qu'un certain nombre de serveurs Web diffÃ©rents peuvent partager le mÃªme ordre de champs et que des champs peuvent Ãªtre modifiÃ©s ou supprimÃ©s, cette mÃ©thode n'est pas dÃ©finitive.
 
-### Envoi de requêtes malformées
+### Envoi de requÃªtes malformÃ©es
 
-Les serveurs Web peuvent être identifiés en examinant leurs réponses d'erreur et, dans les cas où ils n'ont pas été personnalisés, leurs pages d'erreur par défaut. Une façon de contraindre un serveur à les présenter consiste à envoyer des requêtes intentionnellement incorrectes ou mal formées.
+Les serveurs Web peuvent Ãªtre identifiÃ©s en examinant leurs rÃ©ponses d'erreur et, dans les cas oÃ¹ ils n'ont pas Ã©tÃ© personnalisÃ©s, leurs pages d'erreur par dÃ©faut. Une faÃ§on de contraindre un serveur Ã  les prÃ©senter consiste Ã  envoyer des requÃªtes intentionnellement incorrectes ou mal formÃ©es.
 
-Par exemple, voici la réponse à une requête pour la méthode inexistante `SANTA CLAUS` d'un serveur Apache.
+Par exemple, voici la rÃ©ponse Ã  une requÃªte pour la mÃ©thode inexistante `SANTA CLAUS` d'un serveur Apache.
 
 ```sh
 GET / SANTA CLAUS/1.1
@@ -123,7 +123,7 @@ Content-Type: text/html; charset=iso-8859-1
 </body></html>
 ```
 
-Voici la réponse à la même demande de nginx.
+Voici la rÃ©ponse Ã  la mÃªme demande de nginx.
 
 ```sh
 GET / SANTA CLAUS/1.1
@@ -138,7 +138,7 @@ GET / SANTA CLAUS/1.1
 </html>
 ```
 
-Voici la réponse à la même requête de lighttpd.
+Voici la rÃ©ponse Ã  la mÃªme requÃªte de lighttpd.
 
 ```sh
 GET / SANTA CLAUS/1.1
@@ -164,22 +164,22 @@ Server: lighttpd/1.4.54
 </html>
 ```
 
-Comme les pages d'erreur par défaut offrent de nombreux facteurs de différenciation entre les types de serveurs Web, leur examen peut être une méthode efficace pour la prise d'empreintes digitales même lorsque les champs d'en-tête du serveur sont masqués.
+Comme les pages d'erreur par dÃ©faut offrent de nombreux facteurs de diffÃ©renciation entre les types de serveurs Web, leur examen peut Ãªtre une mÃ©thode efficace pour la prise d'empreintes digitales mÃªme lorsque les champs d'en-tÃªte du serveur sont masquÃ©s.
 
-### Utilisation des outils d'analyse automatisés
+### Utilisation des outils d'analyse automatisÃ©s
 
-Comme indiqué précédemment, la prise d'empreintes digitales du serveur Web est souvent incluse en tant que fonctionnalité des outils d'analyse automatisés. Ces outils sont capables de faire des requêtes similaires à celles présentées ci-dessus, ainsi que d'envoyer d'autres sondes plus spécifiques au serveur. Les outils automatisés peuvent comparer les réponses des serveurs Web beaucoup plus rapidement que les tests manuels et utiliser de grandes bases de données de réponses connues pour tenter d'identifier le serveur. Pour ces raisons, les outils automatisés sont plus susceptibles de produire des résultats précis.
+Comme indiquÃ© prÃ©cÃ©demment, la prise d'empreintes digitales du serveur Web est souvent incluse en tant que fonctionnalitÃ© des outils d'analyse automatisÃ©s. Ces outils sont capables de faire des requÃªtes similaires Ã  celles prÃ©sentÃ©es ci-dessus, ainsi que d'envoyer d'autres sondes plus spÃ©cifiques au serveur. Les outils automatisÃ©s peuvent comparer les rÃ©ponses des serveurs Web beaucoup plus rapidement que les tests manuels et utiliser de grandes bases de donnÃ©es de rÃ©ponses connues pour tenter d'identifier le serveur. Pour ces raisons, les outils automatisÃ©s sont plus susceptibles de produire des rÃ©sultats prÃ©cis.
 
-Voici quelques outils d'analyse couramment utilisés qui incluent la fonctionnalité d'empreinte digitale du serveur Web.
+Voici quelques outils d'analyse couramment utilisÃ©s qui incluent la fonctionnalitÃ© d'empreinte digitale du serveur Web.
 
-- [Netcraft](https://toolbar.netcraft.com/site_report), un outil en ligne qui analyse les sites Web à la recherche d'informations, y compris le serveur Web.
+- [Netcraft](https://toolbar.netcraft.com/site_report), un outil en ligne qui analyse les sites Web Ã  la recherche d'informations, y compris le serveur Web.
 - [Nikto](https://github.com/sullo/nikto), un outil d'analyse en ligne de commande Open Source.
-- [Nmap](https://nmap.org/), un outil en ligne de commande Open Source qui possède également une interface graphique, [Zenmap](https://nmap.org/zenmap/).
+- [Nmap](https://nmap.org/), un outil en ligne de commande Open Source qui possÃ¨de Ã©galement une interface graphique, [Zenmap](https://nmap.org/zenmap/).
 
 ## Correction
 
-Bien que les informations de serveur exposées ne constituent pas nécessairement une vulnérabilité en soi, ce sont des informations qui peuvent aider les attaquants à exploiter d'autres vulnérabilités qui peuvent exister. Les informations de serveur exposées peuvent également conduire les attaquants à trouver des vulnérabilités de serveur spécifiques à la version qui peuvent être utilisées pour exploiter des serveurs non corrigés. Pour cette raison, il est recommandé de prendre certaines précautions. Ces actions comprennent :
+Bien que les informations de serveur exposÃ©es ne constituent pas nÃ©cessairement une vulnÃ©rabilitÃ© en soi, ce sont des informations qui peuvent aider les attaquants Ã  exploiter d'autres vulnÃ©rabilitÃ©s qui peuvent exister. Les informations de serveur exposÃ©es peuvent Ã©galement conduire les attaquants Ã  trouver des vulnÃ©rabilitÃ©s de serveur spÃ©cifiques Ã  la version qui peuvent Ãªtre utilisÃ©es pour exploiter des serveurs non corrigÃ©s. Pour cette raison, il est recommandÃ© de prendre certaines prÃ©cautions. Ces actions comprennent :
 
-- Obscurcissement des informations du serveur Web dans les en-têtes, comme avec le [module mod_headers] d'Apache (https://httpd.apache.org/docs/current/mod/mod_headers.html).
-- Utilisation d'un [serveur proxy inverse] renforcé (https://en.wikipedia.org/wiki/Proxy_server#Reverse_proxies) pour créer une couche de sécurité supplémentaire entre le serveur Web et Internet.
-- Veiller à ce que les serveurs Web soient mis à jour avec les derniers logiciels et correctifs de sécurité.
+- Obscurcissement des informations du serveur Web dans les en-tÃªtes, comme avec le [module mod_headers](https://httpd.apache.org/docs/current/mod/mod_headers.html) d'Apache .
+- Utilisation d'un [serveur proxy inverse](https://en.wikipedia.org/wiki/Proxy_server#Reverse_proxies) renforcÃ©  pour crÃ©er une couche de sÃ©curitÃ© supplÃ©mentaire entre le serveur Web et Internet.
+- Veiller Ã  ce que les serveurs Web soient mis Ã  jour avec les derniers logiciels et correctifs de sÃ©curitÃ©.
