@@ -43,11 +43,11 @@ Trois facteurs influencent le nombre d'applications liées à un nom DNS donné 
 
 3. **Hôtes virtuels**
 
-    Le DNS permet d'associer une seule adresse IP à un ou plusieurs noms symboliques. Par exemple, l'adresse IP `192.168.1.100` peut être associée aux noms DNS `www.exemple.com`, `helpdesk.exemple.com`, `webmail.exemple.com`. Il n'est pas nécessaire que tous les noms appartiennent au même domaine DNS. Cette relation 1 à N peut être reflétée pour servir un contenu différent en utilisant ce que l'on appelle des hôtes virtuels. Les informations spécifiant l'hôte virtuel auquel nous faisons référence sont intégrées dans l'en-tête [Host header] HTTP 1.1 (https://tools.ietf.org/html/rfc2616#section-14.23).
+    Le DNS permet d'associer une seule adresse IP à un ou plusieurs noms symboliques. Par exemple, l'adresse IP `192.168.1.100` peut être associée aux noms DNS `www.exemple.com`, `helpdesk.exemple.com`, `webmail.exemple.com`. Il n'est pas nécessaire que tous les noms appartiennent au même domaine DNS. Cette relation 1 à N peut être reflétée pour servir un contenu différent en utilisant ce que l'on appelle des hôtes virtuels. Les informations spécifiant l'hôte virtuel auquel nous faisons référence sont intégrées dans [l'en-tête](https://tools.ietf.org/html/rfc2616#section-14.23) HTTP 1.1 .
 
     On ne soupçonnerait pas l'existence d'autres applications Web en plus de l'évident `www.exemple.com`, à moins de connaître `helpdesk.exemple.com` et `webmail.exemple.com`.
 
-### Approches pour résoudre le problème 1 : URL non standard
+### Approches pour résoudre le problème 1 : URL non standard
 
 Il n'existe aucun moyen de s'assurer pleinement de l'existence d'applications Web dont le nom n'est pas standard. Étant non standard, il n'y a pas de critères fixes régissant la convention de dénomination, mais il existe un certain nombre de techniques que le testeur peut utiliser pour obtenir des informations supplémentaires.
 
@@ -108,7 +108,7 @@ Cache-Control: no-cache
 ...
 ```
 
-Cela confirme qu'il s'agit bien d'un serveur HTTP. Alternativement, les testeurs auraient pu visiter l'URL avec un navigateur Web ; ou utilisé les commandes GET ou HEAD Perl, qui imitent les interactions HTTP telles que celle donnée ci-dessus (cependant, les requêtes HEAD peuvent ne pas être honorées par tous les serveurs).
+Cela confirme qu'il s'agit bien d'un serveur HTTP. Alternativement, les testeurs auraient pu visiter l'URL avec un navigateur Web ou utiliser les commandes GET ou HEAD Perl, qui imitent les interactions HTTP telles que celle donnée ci-dessus (cependant, les requêtes HEAD peuvent ne pas être honorées par tous les serveurs).
 
 - Apache Tomcat fonctionnant sur le port 8080.
 
@@ -158,9 +158,9 @@ Ce type de recherche s'apparente au transfert de zone DNS, mais s'appuie sur des
 
 #### Services IP inversés
 
-Les services d'IP inversé sont similaires aux requêtes inverses DNS, à la différence que les testeurs interrogent une application Web au lieu d'un serveur de noms. Il existe un certain nombre de ces services disponibles. Puisqu'ils ont tendance à renvoyer des résultats partiels (et souvent différents), il est préférable d'utiliser plusieurs services pour obtenir une analyse plus complète.
+Les services d'IP inversée sont similaires aux requêtes inverses DNS, à la différence que les testeurs interrogent une application Web au lieu d'un serveur de noms. Il existe un certain nombre de ces services disponibles. Puisqu'ils ont tendance à renvoyer des résultats partiels (et souvent différents), il est préférable d'utiliser plusieurs services pour obtenir une analyse plus complète.
 
-- [IP inversée MxToolbox] (https://mxtoolbox.com/ReverseLookup.aspx)
+- [IP inversée MxToolbox](https://mxtoolbox.com/ReverseLookup.aspx)
 - [DNSstuff](https://www.dnsstuff.com/) (plusieurs services disponibles)
 - [Net Square](https://web.archive.org/web/20190515092354/http://www.net-square.com/mspawn.html) (plusieurs requêtes sur les domaines et adresses IP, nécessite une installation)
 
@@ -172,7 +172,7 @@ Par exemple, en considérant l'exemple précédent concernant `www.owasp.org`, l
 
 Les techniques de recherche sur Google sont expliquées dans [Google Hacking, ou Dorking](01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md).
 
-#### Certificats numériques
+#### Certificats numériques
 
 Si le serveur accepte les connexions via HTTPS, le nom commun (CN) et le nom alternatif du sujet (SAN) sur le certificat peuvent contenir un ou plusieurs noms d'hôte. Cependant, si le serveur Web n'a pas de certificat de confiance ou si des caractères génériques sont utilisés, cela peut ne pas renvoyer d'informations valides.
 
