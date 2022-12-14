@@ -2,7 +2,7 @@
 
 4.1.1 [Effectuer une reconnaissance de découverte de moteur de recherche pour les fuites d'informations](01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md)
 
-4.1.2 [Empreintes sur les serveur Web](02-Fingerprint_Web_Server.md)
+4.1.2 [Empreintes sur les serveurs Web](02-Fingerprint_Web_Server.md)
 
 4.1.3 [Examiner les métafichiers du serveur Web pour détecter les fuites d'informations](03-Review_Webserver_Metafiles_for_Information_Leakage.md)
 
