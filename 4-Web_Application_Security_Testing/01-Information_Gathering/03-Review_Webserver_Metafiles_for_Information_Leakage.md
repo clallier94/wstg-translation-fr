@@ -21,7 +21,7 @@ Cette section décrit comment tester divers fichiers de métadonnées pour déte
 
 Les Spiders Web, les robots ou les robots d'indexation récupèrent une page Web, puis traversent de manière récursive des hyperliens pour récupérer d'autres contenus Web. Leur comportement accepté est spécifié par le [Robots Exclusion Protocol](https://www.robotstxt.org) du fichier [robots.txt](https://www.robotstxt.org/) dans le répertoire racine Web.
 
-À titre d'exemple, le début du fichier "robots.txt" de [Google](https://www.google.com/robots.txt) échantillonné le 5 mai 2020 est cité ci-dessous :
+À titre d'exemple, le début du fichier `robots.txt` de [Google](https://www.google.com/robots.txt) échantillonné le 5 mai 2020 est cité ci-dessous :
 
 ```text
 User-agent: *
@@ -45,7 +45,7 @@ Disallow: /sdch
 ...
 ```
 
-Les spiders/robots/crawlers Web peuvent [intentionnellement ignorer](https://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html) les directives `Disallow` spécifiées dans un `robots.txt ` fichier. Par conséquent, `robots.txt` ne doit pas être considéré comme un mécanisme permettant d'appliquer des restrictions sur la manière dont le contenu Web est consulté, stocké ou republié par des tiers.
+Les spiders/robots/crawlers Web peuvent [intentionnellement ignorer](https://blog.isc2.org/isc2_blog/2008/07/the-attack-of-t.html) les directives `Disallow` spécifiées dans un fichier `robots.txt`. Par conséquent, `robots.txt` ne doit pas être considéré comme un mécanisme permettant d'appliquer des restrictions sur la manière dont le contenu Web est consulté, stocké ou republié par des tiers.
 
 Le fichier `robots.txt` est récupéré à partir du répertoire racine Web du serveur Web. Par exemple, pour récupérer le `robots.txt` de `www.google.com` en utilisant `wget` ou `curl` :
 
@@ -75,7 +75,7 @@ Les balises `<META>` sont situées dans la section `HEAD` de chaque document HTM
 
 S'il n'y a pas d'entrée `<META NAME="ROBOTS" ... >`, alors le "Robots Exclusion Protocol" est par défaut `INDEX,FOLLOW` respectivement. Par conséquent, les deux autres entrées valides définies par le "Robots Exclusion Protocol" sont préfixées par `NO...` c'est-à-dire `NOINDEX` et `NOFOLLOW`.
 
-Sur la base de la ou des directives Disallow répertoriées dans le fichier `robots.txt` dans la racine Web, une recherche d'expression régulière pour `<META NAME="ROBOTS"` dans chaque page Web est entreprise et le résultat est comparé au `robots.txt ` fichier dans la racine Web.
+Sur la base de la ou des directives Disallow répertoriées dans le fichier `robots.txt` dans la racine Web, une recherche d'expression régulière pour `<META NAME="ROBOTS"` dans chaque page Web est entreprise et le résultat est comparé au fichier `robots.txt ` dans la racine Web.
 
 #### Balises d'informations META diverses
 
@@ -143,7 +143,7 @@ En explorant à partir de là, un testeur peut souhaiter récupérer le sitemap 
 
 ### Sécurité TXT
 
-[security.txt](https://securitytxt.org) a été ratifié par l'IETF en tant que [RFC 9116 - A File Format to Aid in Security Vulnerability Disclosure](https://www.rfc-editor.org/rfc/rfc9116 .html) qui permet aux sites Web de définir des politiques de sécurité et des coordonnées. Il existe plusieurs raisons pour lesquelles cela pourrait être intéressant dans les scénarios de test, y compris, mais sans s'y limiter :
+[security.txt](https://securitytxt.org) a été ratifié par l'IETF en tant que [RFC 9116 - A File Format to Aid in Security Vulnerability Disclosure](https://www.rfc-editor.org/rfc/rfc9116.html) qui permet aux sites Web de définir des politiques de sécurité et des coordonnées. Il existe plusieurs raisons pour lesquelles cela pourrait être intéressant dans les scénarios de test, y compris, mais sans s'y limiter :
 
 - Identifier d'autres voies ou ressources à inclure dans la découverte/analyse.
 - Collecte de renseignements Open Source.
