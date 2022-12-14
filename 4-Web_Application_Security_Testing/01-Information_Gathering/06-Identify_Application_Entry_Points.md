@@ -16,7 +16,7 @@ L'énumération de l'application et de sa surface d'attaque est un précurseur c
 
 Avant le début de tout test, le testeur doit toujours avoir une bonne compréhension de l'application et de la manière dont l'utilisateur et le navigateur communiquent avec elle. Lorsque le testeur parcourt l'application, il doit prêter attention à toutes les requêtes HTTP ainsi qu'à chaque paramètre et champ de formulaire transmis à l'application. Ils doivent porter une attention particulière au moment où les requêtes GET sont utilisées et au moment où les requêtes POST sont utilisées pour transmettre des paramètres à l'application. En outre, ils doivent également faire attention au moment où d'autres méthodes pour les services RESTful sont utilisées.
 
-Notez que pour voir les paramètres envoyés dans le corps des requêtes telles qu'une requête POST, le testeur peut vouloir utiliser un outil tel qu'un proxy d'interception (Voir [tools](#tools)). Dans la requête POST, le testeur doit également prendre note de tous les champs de formulaire masqués qui sont transmis à l'application, car ils contiennent généralement des informations sensibles, telles que des informations sur l'état, la quantité d'articles, le prix des articles, que le développeur n'a jamais destiné à être vu ou modifié par quiconque.
+Notez que pour voir les paramètres envoyés dans le corps des requêtes telles qu'une requête POST, le testeur peut vouloir utiliser un outil tel qu'un proxy d'interception (Voir [outils](#outils)). Dans la requête POST, le testeur doit également prendre note de tous les champs de formulaire masqués qui sont transmis à l'application, car ils contiennent généralement des informations sensibles, telles que des informations sur l'état, la quantité d'articles, le prix des articles, que le développeur n'a jamais destiné à être vu ou modifié par quiconque.
 
 D'après l'expérience de l'auteur, il a été très utile d'utiliser un proxy d'interception et une feuille de calcul pour cette étape de test. Le proxy gardera une trace de chaque demande et réponse entre le testeur et l'application au fur et à mesure qu'ils l'explorent. De plus, à ce stade, les testeurs interceptent généralement chaque demande et réponse afin qu'ils puissent voir exactement chaque en-tête, paramètre, etc. qui est transmis à l'application et ce qui est renvoyé. Cela peut parfois être assez fastidieux, surtout sur les grands sites interactifs (pensez à une application bancaire). Cependant, l'expérience montrera ce qu'il faut rechercher et cette phase peut être considérablement réduite.
 
@@ -102,7 +102,7 @@ To enable logging include the -debug argument
 
 Vous pouvez également générer un fichier de sortie JSON en utilisant le drapeau `-json`, qui peut être utilisé par le plugin à la fois pour ZAP et Burp Suite. Voir les liens suivants pour plus de détails.
 
-- [Accueil du plugin ASD pour OWASP ZAP] (https://github.com/secdec/attack-surface-detector-zap/wiki)
+- [Accueil du plugin ASD pour OWASP ZAP](https://github.com/secdec/attack-surface-detector-zap/wiki)
 - [Accueil du plugin ASD pour PortSwigger Burp](https://github.com/secdec/attack-surface-detector-burp/wiki)
 
 ### Test des points d'entrée de l'application
