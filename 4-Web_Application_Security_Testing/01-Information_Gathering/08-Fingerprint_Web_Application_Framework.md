@@ -27,7 +27,7 @@ Il existe plusieurs emplacements communs à prendre en compte afin d'identifier 
 
 #### En-têtes HTTP
 
-La forme la plus élémentaire d'identification d'un framework Web consiste à examiner le champ "X-Powered-By" dans l'en-tête de réponse HTTP. De nombreux outils peuvent être utilisés pour identifier une cible, le plus simple est netcat.
+La forme la plus élémentaire d'identification d'un framework Web consiste à examiner le champ `X-Powered-By` dans l'en-tête de réponse HTTP. De nombreux outils peuvent être utilisés pour identifier une cible, le plus simple est netcat.
 
 Considérez la requête-réponse HTTP suivante :
 
@@ -41,9 +41,9 @@ Server: nginx/1.0.14
 X-Powered-By: Mono
 ```
 
-D'après le champ `X-Powered-By`, nous comprenons que le cadre de l'application Web est susceptible d'être `Mono`. Cependant, bien que cette approche soit simple et rapide, cette méthodologie ne fonctionne pas dans 100% des cas. Il est possible de désactiver facilement l'en-tête `X-Powered-By` par une configuration appropriée. Il existe également plusieurs techniques qui permettent à un site Web d'obscurcir les en-têtes HTTP (voir un exemple dans la section [Remediation](#remediation)). Dans l'exemple ci-dessus, nous pouvons également noter qu'une version spécifique de "nginx" est utilisée pour diffuser le contenu.
+D'après le champ `X-Powered-By`, nous comprenons que le cadre de l'application Web est susceptible d'être `Mono`. Cependant, bien que cette approche soit simple et rapide, cette méthodologie ne fonctionne pas dans 100% des cas. Il est possible de désactiver facilement l'en-tête `X-Powered-By` par une configuration appropriée. Il existe également plusieurs techniques qui permettent à un site Web d'obscurcir les en-têtes HTTP (voir un exemple dans la section [Remediation](#remediation)). Dans l'exemple ci-dessus, nous pouvons également noter qu'une version spécifique de `nginx` est utilisée pour diffuser le contenu.
 
-Ainsi, dans le même exemple, le testeur pourrait manquer l'en-tête "X-Powered-By" ou obtenir une réponse comme celle-ci :
+Ainsi, dans le même exemple, le testeur pourrait manquer l'en-tête `X-Powered-By` ou obtenir une réponse comme celle-ci :
 
 ```html
 HTTP/1.1 200 OK
@@ -55,7 +55,7 @@ Vary: Accept-Encoding
 X-Powered-By: Blood, sweat and tears
 ```
 
-Parfois, il y a plus d'en-têtes HTTP qui pointent vers un certain framework. Dans l'exemple suivant, selon les informations de la requête HTTP, on peut voir que l'en-tête `X-Powered-By` contient la version PHP. Cependant, l'en-tête "X-Generator" indique que le framework utilisé est en fait "Swiftlet", ce qui aide un testeur d'intrusion à étendre ses vecteurs d'attaque. Lors de la prise d'empreintes digitales, inspectez soigneusement chaque en-tête HTTP pour détecter de telles fuites.
+Parfois, il y a plus d'en-têtes HTTP qui pointent vers un certain framework. Dans l'exemple suivant, selon les informations de la requête HTTP, on peut voir que l'en-tête `X-Powered-By` contient la version PHP. Cependant, l'en-tête `X-Generator` indique que le framework utilisé est en fait `Swiftlet`, ce qui aide un testeur d'intrusion à étendre ses vecteurs d'attaque. Lors de la prise d'empreintes digitales, inspectez soigneusement chaque en-tête HTTP pour détecter de telles fuites.
 
 ```html
 HTTP/1.1 200 OK
@@ -71,7 +71,7 @@ Pragma: no-cache
 X-Generator: Swiftlet
 ```
 
-#### Biscuits
+#### Cookies
 
 Les cookies spécifiques au framework sont un autre moyen similaire et un peu plus fiable de déterminer le cadre Web actuel.
 
@@ -94,7 +94,7 @@ Le cookie `CAKEPHP` a été automatiquement installé, ce qui donne des informat
 Configure::write('Session.cookie', 'CAKEPHP');
 ```
 
-Cependant, ces modifications sont moins susceptibles d'être apportées que les modifications apportées à l'en-tête "X-Powered-By", de sorte que cette approche de l'identification peut être considérée comme plus fiable.
+Cependant, ces modifications sont moins susceptibles d'être apportées que les modifications apportées à l'en-tête `X-Powered-By`, de sorte que cette approche de l'identification peut être considérée comme plus fiable.
 
 #### Code source HTML
 
@@ -158,7 +158,7 @@ Comme on peut le voir dans la capture d'écran suivante, le chemin du système d
 
 ### Biscuits
 
-| Cadre        | Nom du cookie                     |
+| Framework    | Nom du cookie                     |
 |--------------|-----------------------------------|
 | Zope         | zope3                             |
 | CakePHP      | cakephp                           |
@@ -187,7 +187,7 @@ Comme on peut le voir dans la capture d'écran suivante, le chemin du système d
 
 ### Code source HTML
 
-| Candidature | Mot clé                                                                        |
+| Application | Mot clé                                                                        |
 |-------------|--------------------------------------------------------------------------------|
 | WordPress   | `<meta name="generator" content="WordPress 3.9.2" />`                          |
 | phpBB       | `<body id="phpbb"`                                                             |
@@ -205,7 +205,7 @@ Comme on peut le voir dans la capture d'écran suivante, le chemin du système d
 
 #### Marqueurs spécifiques
 
-| Framework         | Keyword                        |
+| Framework         | Mot clé                        |
 |-------------------|--------------------------------|
 | Adobe ColdFusion  | `<!-- START headerTags.cfm`    |
 | Microsoft ASP.NET | `__VIEWSTATE`                  |
@@ -221,7 +221,7 @@ Bien que des efforts puissent être faits pour utiliser différents noms de cook
 
 Une liste d'outils généraux et bien connus est présentée ci-dessous. Il existe également de nombreux autres utilitaires, ainsi que des outils d'empreintes digitales basés sur un framework.
 
-### What Web
+### WhatWeb
 
 Site Internet : [https://github.com/urbanadventurer/WhatWeb](https://github.com/urbanadventurer/WhatWeb)
 
