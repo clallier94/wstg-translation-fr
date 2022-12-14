@@ -6,40 +6,40 @@
 
 ## Sommaire
 
-Afin de tester efficacement une application et d'être en mesure de fournir des recommandations significatives sur la manière de résoudre les problèmes identifiés, il est important de comprendre ce que vous testez réellement. De plus, cela peut aider à déterminer si des composants spécifiques doivent être considérés comme hors de portée des tests.
+Afin de tester efficacement une application et d'Ãªtre en mesure de fournir des recommandations significatives sur la maniÃ¨re de rÃ©soudre les problÃ¨mes identifiÃ©s, il est important de comprendre ce que vous testez rÃ©ellement. De plus, cela peut aider Ã  dÃ©terminer si des composants spÃ©cifiques doivent Ãªtre considÃ©rÃ©s comme hors de portÃ©e des tests.
 
-Les applications Web modernes peuvent varier considérablement en complexité, allant d'un simple script exécuté sur un seul serveur à une application très complexe répartie sur des dizaines de systèmes, langages et composants différents. Il peut également y avoir des composants supplémentaires au niveau du réseau tels que des pare-feu ou des systèmes de protection contre les intrusions qui peuvent avoir un impact significatif sur les tests.
+Les applications Web modernes peuvent varier considÃ©rablement en complexitÃ©, allant d'un simple script exÃ©cutÃ© sur un seul serveur Ã  une application trÃ¨s complexe rÃ©partie sur des dizaines de systÃ¨mes, langages et composants diffÃ©rents. Il peut Ã©galement y avoir des composants supplÃ©mentaires au niveau du rÃ©seau tels que des pare-feu ou des systÃ¨mes de protection contre les intrusions qui peuvent avoir un impact significatif sur les tests.
 
 ## Objectifs des tests
 
-- Comprendre l'architecture de l'application et les technologies utilisées.
+- Comprendre l'architecture de l'application et les technologies utilisÃ©es.
 
 ## Comment tester
 
-Lorsque vous testez du point de vue de la boîte noire, il est important d'essayer de créer une image claire du fonctionnement de l'application et des technologies et composants en place. Dans certains cas, il est possible de tester des composants spécifiques (comme un pare-feu d'application Web), tandis que d'autres peuvent être identifiés en inspectant le comportement de l'application.
+Lorsque vous testez du point de vue de la boÃ®te noire, il est important d'essayer de crÃ©er une image claire du fonctionnement de l'application et des technologies et composants en place. Dans certains cas, il est possible de tester des composants spÃ©cifiques (comme un pare-feu d'application Web), tandis que d'autres peuvent Ãªtre identifiÃ©s en inspectant le comportement de l'application.
 
-Les sections ci-dessous fournissent une vue d'ensemble de haut niveau des composants architecturaux courants, ainsi que des détails sur la façon dont ils peuvent être identifiés.
+Les sections ci-dessous fournissent une vue d'ensemble de haut niveau des composants architecturaux courants, ainsi que des dÃ©tails sur la faÃ§on dont ils peuvent Ãªtre identifiÃ©s.
 
 ### Application Components
 
 #### Web Server
 
-Simple applications may run on a single server, which can be identified using the steps discussed in the [Fingerprint Web Server](02-Fingerprint_Web_Server.md) section of the guide.
+Des applications simples peuvent s'exÃ©cuter sur un seul serveur, qui peut Ãªtre identifiÃ© Ã  l'aide des Ã©tapes dÃ©crites dans la section [Empreintes sur les serveurs Web](02-Fingerprint_Web_Server.md) du guide.
 
-#### Platform-as-a-Service (PaaS)
+#### Plate-forme en tant que service (PaaS)
 
-In a Platform-as-a-Service (PaaS) model, the web server and underlying infrastructure are managed by the service provider, and the customer is only responsible for the application that this deployed on them. From a testing perspective, there are two main differences:
+Dans un modÃ¨le de plate-forme en tant que service (PaaS), le serveur Web et l'infrastructure sous-jacente sont gÃ©rÃ©s par le fournisseur de services, et le client n'est responsable que de l'application dÃ©ployÃ©e sur lui. Du point de vue des tests, il existe deux diffÃ©rences principalesÂ :
 
-- The application owner has no access to the underlying infrastructure, so will be unable to directly remediate any issues.
-- Infrastructure testing is likely to be out of scope for any engagements.
+- Le propriÃ©taire de l'application n'a pas accÃ¨s Ã  l'infrastructure sous-jacente, il ne sera donc pas en mesure de rÃ©soudre directement les problÃ¨mes.
+- Les tests d'infrastructure sont susceptibles d'Ãªtre hors de portÃ©e de toute mission.
 
-In some cases it is possible to identify the use of PaaS, as the application may use a specific domain name (for example, applications deployed on Azure App Services will have a `*.azurewebsites.net` domain - although they may also use custom domains). However, in other cases it is difficult to determine whether PaaS is in use.
+Dans certains cas, il est possible d'identifier l'utilisation de PaaS, car l'application peut utiliser un nom de domaine spÃ©cifique (par exemple, les applications dÃ©ployÃ©es sur Azure App Services auront un domaine `*.azurewebsites.net` - bien qu'elles puissent Ã©galement utiliser des domaines). Cependant, dans d'autres cas, il est difficile de dÃ©terminer si le PaaS est utilisÃ©.
 
 #### Serverless
 
-In a Serverless model, the developers provide code which is directly run on a hosting platform as individual functions, rather than as an traditional larger web application deployed in a webroot. This makes it well suited to microservice-based architectures. As with a PaaS environment, infrastructure testing is likely to be out of scope.
+Dans un modÃ¨le sans serveur (Serverless), les dÃ©veloppeurs fournissent du code qui est directement exÃ©cutÃ© sur une plate-forme d'hÃ©bergement en tant que fonctions individuelles, plutÃ´t qu'en tant qu'application Web traditionnelle plus grande dÃ©ployÃ©e dans une racine Web. Cela le rend bien adaptÃ© aux architectures basÃ©es sur des microservices. Comme avec un environnement PaaS, les tests d'infrastructure sont susceptibles d'Ãªtre hors de portÃ©e.
 
-In some cases the use of Serverless code may be indicated by the presence of specific HTTP headers. For example, AWS Lambda functions will typically return the following headers:
+Dans certains cas, l'utilisation de code Serverless peut Ãªtre indiquÃ©e par la prÃ©sence d'en-tÃªtes HTTP spÃ©cifiques. Par exemple, les fonctions AWS Lambda renvoient gÃ©nÃ©ralement les en-tÃªtes suivantsÂ :
 
 ```http
 X-Amz-Invocation-Type
@@ -47,145 +47,145 @@ X-Amz-Log-Type
 X-Amz-Client-Context
 ```
 
-Les fonctions Azure sont moins évidentes. Ils renvoient généralement l'en-tête `Server: Kestrel` - mais cela ne suffit pas en soi pour être sûr qu'il s'agit d'une fonction Azure App, plutôt que d'un autre code exécuté sur Kestrel.
+Les fonctions Azure sont moins Ã©videntes. Ils renvoient gÃ©nÃ©ralement l'en-tÃªte `Server: Kestrel` - mais cela ne suffit pas en soi pour Ãªtre sÃ»r qu'il s'agit d'une fonction Azure App, plutÃ´t que d'un autre code exÃ©cutÃ© sur Kestrel.
 
-#### Microservices
+#### Microservices
 
-Dans une architecture basée sur des microservices, l'API de l'application est composée de plusieurs services discrets, plutôt que de s'exécuter comme une application monolithique. Les services eux-mêmes s'exécutent souvent dans des conteneurs (généralement avec Kubernetes) et peuvent utiliser une variété de systèmes d'exploitation et de langages différents. Bien qu'ils se trouvent généralement derrière une passerelle API et un domaine uniques, l'utilisation de plusieurs langues (souvent indiquée dans des messages d'erreur détaillés) peut suggérer que des microservices sont utilisés.
+Dans une architecture basÃ©e sur des microservices, l'API de l'application est composÃ©e de plusieurs services discrets, plutÃ´t que de s'exÃ©cuter comme une application monolithique. Les services eux-mÃªmes s'exÃ©cutent souvent dans des conteneurs (gÃ©nÃ©ralement avec Kubernetes) et peuvent utiliser une variÃ©tÃ© de systÃ¨mes d'exploitation et de langages diffÃ©rents. Bien qu'ils se trouvent gÃ©nÃ©ralement derriÃ¨re une passerelle API et un domaine uniques, l'utilisation de plusieurs langues (souvent indiquÃ©e dans des messages d'erreur dÃ©taillÃ©s) peut suggÃ©rer que des microservices sont utilisÃ©s.
 
 #### Stockage statique
 
-De nombreuses applications stockent le contenu statique sur des plates-formes de stockage dédiées, plutôt que de l'héberger directement sur le serveur Web principal. Les deux plates-formes les plus courantes sont les compartiments S3 d'Amazon et les comptes de stockage d'Azure, et peuvent être facilement identifiées par les noms de domaine :
+De nombreuses applications stockent le contenu statique sur des plates-formes de stockage dÃ©diÃ©es, plutÃ´t que de l'hÃ©berger directement sur le serveur Web principal. Les deux plates-formes les plus courantes sont les compartiments S3 d'Amazon et les comptes de stockage d'Azure, et peuvent Ãªtre facilement identifiÃ©es par les noms de domaineÂ :
 
 - Les compartiments Amazon S3 sont soit `BUCKET.s3.amazonaws.com` ou `s3.REGION.amazonaws.com/BUCKET`
 - Les comptes de stockage Azure sont `ACCOUNT.blob.core.windows.net`
 
-Ces comptes de stockage peuvent souvent exposer des fichiers sensibles, comme indiqué dans la section [Guide de test du stockage dans le cloud](../02-Configuration_and_Deployment_Management_Testing/11-Test_Cloud_Storage.md).
+Ces comptes de stockage peuvent souvent exposer des fichiers sensibles, comme indiquÃ© dans la section [Guide de test du stockage dans le cloud](../02-Configuration_and_Deployment_Management_Testing/11-Test_Cloud_Storage.md).
 
-#### Base de données
+#### Base de donnÃ©es
 
-La plupart des applications Web non triviales utilisent une sorte de base de données pour stocker du contenu dynamique. Dans certains cas, il est possible de déterminer la base de données, bien qu'elle repose généralement sur d'autres problèmes de l'application. Cela peut souvent être fait par :
+La plupart des applications Web non triviales utilisent une sorte de base de donnÃ©es pour stocker du contenu dynamique. Dans certains cas, il est possible de dÃ©terminer la base de donnÃ©es, bien qu'elle repose gÃ©nÃ©ralement sur d'autres problÃ¨mes de l'application. Cela peut souvent Ãªtre fait par :
 
-- Port scannant le serveur et recherchant tous les ports ouverts associés à des bases de données spécifiques.
-- Déclenchement de messages d'erreur liés à SQL (ou NoSQL) (ou recherche d'erreurs existantes à partir d'un [moteur de recherche] (../01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md).
+- Port scannant le serveur et recherchant tous les ports ouverts associÃ©s Ã  des bases de donnÃ©es spÃ©cifiques.
+- DÃ©clenchement de messages d'erreur liÃ©s Ã  SQL (ou NoSQL) (ou recherche d'erreurs existantes Ã  partir d'un [moteur de recherche](../01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md).
 
-Lorsqu'il n'est pas possible de déterminer de manière concluante la base de données, vous pouvez souvent faire une supposition éclairée basée sur d'autres aspects de l'application :
+Lorsqu'il n'est pas possible de dÃ©terminer de maniÃ¨re concluante la base de donnÃ©es, vous pouvez souvent faire une supposition Ã©clairÃ©e basÃ©e sur d'autres aspects de l'applicationÂ :
 
 - Windows, IIS et ASP.NET utilisent souvent le serveur Microsoft SQL.
-- Les systèmes embarqués utilisent souvent SQLite.
+- Les systÃ¨mes embarquÃ©s utilisent souvent SQLite.
 - PHP utilise souvent MySQL ou PostgreSQL.
 - APEX utilise souvent Oracle.
 
-Ce ne sont pas des règles strictes, mais elles peuvent certainement vous donner un point de départ raisonnable si aucune meilleure information n'est disponible.
+Ce ne sont pas des rÃ¨gles strictes, mais elles peuvent certainement vous donner un point de dÃ©part raisonnable si aucune meilleure information n'est disponible.
 
 #### Authentification
 
-La plupart des applications ont une certaine forme d'authentification pour les utilisateurs. Plusieurs back-ends d'authentification peuvent être utilisés, tels que :
+La plupart des applications ont une certaine forme d'authentification pour les utilisateurs. Plusieurs back-ends d'authentification peuvent Ãªtre utilisÃ©s, tels queÂ :
 
 - Configuration du serveur Web (y compris les fichiers `.htaccess`) ou codage en dur des mots de passe dans les scripts.
-    - S'affiche généralement en tant qu'authentification HTTP Basic, indiquée par une fenêtre contextuelle dans le navigateur et un en-tête HTTP "WWW-Authenticate : Basic".
-- Comptes d'utilisateurs locaux dans une base de données.
-    - Généralement intégré dans un formulaire ou un point de terminaison API sur l'application.
+    - S'affiche gÃ©nÃ©ralement en tant qu'authentification HTTP Basic, indiquÃ©e par une fenÃªtre contextuelle dans le navigateur et un en-tÃªte HTTP `WWW-AuthenticateÂ : Basic`.
+- Comptes d'utilisateurs locaux dans une base de donnÃ©es.
+    - GÃ©nÃ©ralement intÃ©grÃ© dans un formulaire ou un point de terminaison API sur l'application.
 - Une source d'authentification centrale existante comme Active Directory ou un serveur LDAP.
-    - Peut utiliser l'authentification NTLM, indiquée par un en-tête HTTP "WWW-Authenticate : NTLM".
-    - Peut être intégré à l'application web dans un formulaire.
-    - Peut exiger que le nom d'utilisateur soit saisi au format « DOMAINE\nom d'utilisateur », ou peut donner une liste déroulante des domaines disponibles.
+    - Peut utiliser l'authentification NTLM, indiquÃ©e par un en-tÃªte HTTP `WWW-AuthenticateÂ : NTLM`.
+    - Peut Ãªtre intÃ©grÃ© Ã  l'application web dans un formulaire.
+    - Peut exiger que le nom d'utilisateur soit saisi au format Â« DOMAINE\nom d'utilisateur Â», ou peut donner une liste dÃ©roulante des domaines disponibles.
 - Single Sign-On (SSO) avec un fournisseur interne ou externe.
-    - Utilise généralement OAuth, OpenID Connect ou SAML.
+    - Utilise gÃ©nÃ©ralement OAuth, OpenID Connect ou SAML.
 
-Les applications peuvent fournir plusieurs options à l'utilisateur pour s'authentifier (telles que l'enregistrement d'un compte local ou l'utilisation de son compte Facebook existant) et peuvent utiliser différents mécanismes pour les utilisateurs normaux et les administrateurs.
+Les applications peuvent fournir plusieurs options Ã  l'utilisateur pour s'authentifier (telles que l'enregistrement d'un compte local ou l'utilisation de son compte Facebook existant) et peuvent utiliser diffÃ©rents mÃ©canismes pour les utilisateurs normaux et les administrateurs.
 
-#### Services et API tiers
+#### Services et API tiers
 
-Presque toutes les applications Web incluent des ressources tierces qui sont chargées ou avec lesquelles le client interagit. Ceux-ci peuvent inclure :
+Presque toutes les applications Web incluent des ressources tierces qui sont chargÃ©es ou avec lesquelles le client interagit. Ceux-ci peuvent inclure :
 
 - [Contenu actif](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content#mixed_active_content) (comme les scripts, les feuilles de style, les polices et les iframes).
-- [Contenu passif](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content#mixed_passivedisplay_content) (comme des images et des vidéos).
+- [Contenu passif](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content#mixed_passivedisplay_content) (comme des images et des vidÃ©os).
 - API externes.
-- Boutons de médias sociaux.
-- Réseaux publicitaires.
+- Boutons de mÃ©dias sociaux.
+- RÃ©seaux publicitaires.
 - Passerelles de paiement.
 
-Ces ressources sont demandées directement par le navigateur de l'utilisateur, elles peuvent donc être facilement identifiées à l'aide des outils de développement ou d'un proxy d'interception. Bien qu'il soit important de les identifier (car ils peuvent avoir un impact sur la sécurité de l'application), n'oubliez pas qu'ils sont généralement hors de portée des tests, car ils appartiennent à des tiers.
+Ces ressources sont demandÃ©es directement par le navigateur de l'utilisateur, elles peuvent donc Ãªtre facilement identifiÃ©es Ã  l'aide des outils de dÃ©veloppement ou d'un proxy d'interception. Bien qu'il soit important de les identifier (car ils peuvent avoir un impact sur la sÃ©curitÃ© de l'application), n'oubliez pas qu'ils sont gÃ©nÃ©ralement hors de portÃ©e des tests, car ils appartiennent Ã  des tiers.
 
-### Composants réseau
+### Composants rÃ©seau
 
-#### Proxy inverse
+#### Proxy inversÃ©
 
-Un proxy inverse se trouve devant un ou plusieurs serveurs principaux et redirige les requêtes vers la destination appropriée. Ils peuvent implémenter diverses fonctionnalités, telles que :
+Un proxy inversÃ© se trouve devant un ou plusieurs serveurs principaux et redirige les requÃªtes vers la destination appropriÃ©e. Ils peuvent implÃ©menter diverses fonctionnalitÃ©s, telles queÂ :
 
-- Agir en tant que [load balancer](#load-balancer) ou [web application firewall](#web-application-firewall-waf).
-- Permettre à plusieurs applications d'être hébergées sur une seule adresse IP ou un seul domaine (dans des sous-dossiers).
+- Agir en tant qu'[Ã©quilibreur de charge](#Ã‰quilibreur-de-charge) ou [web application firewall](#web-application-firewall-waf).
+- Permettre Ã  plusieurs applications d'Ãªtre hÃ©bergÃ©es sur une seule adresse IP ou un seul domaine (dans des sous-dossiers).
 - Mettre en place un filtrage IP ou d'autres restrictions.
-- Mise en cache du contenu du back-end pour améliorer les performances.
+- Mise en cache du contenu du back-end pour amÃ©liorer les performances.
 
-Il n'est pas toujours possible de détecter un reverse proxy (surtout s'il n'y a qu'une application derrière), mais on peut souvent parfois l'identifier par :
+Il n'est pas toujours possible de dÃ©tecter un reverse proxy (surtout s'il n'y a qu'une application derriÃ¨re), mais on peut souvent parfois l'identifier par :
 
-- Une incompatibilité entre le serveur frontal et l'application principale (comme un en-tête `Server: nginx` avec une application ASP.NET).
-    - Cela peut parfois entraîner des [vulnérabilités de contrebande de requêtes](https://portswigger.net/web-security/request-smuggling).
-- En-têtes en double (surtout l'en-tête `Server`).
-- Plusieurs applications hébergées sur la même adresse IP ou le même domaine (surtout si elles utilisent des langues différentes).
+- Une incompatibilitÃ© entre le serveur frontal et l'application principale (comme un en-tÃªte `Server: nginx` avec une application ASP.NET).
+    - Cela peut parfois entraÃ®ner des [vulnÃ©rabilitÃ©s de contrebande de requÃªtes](https://portswigger.net/web-security/request-smuggling).
+- En-tÃªtes en double (surtout l'en-tÃªte `Server`).
+- Plusieurs applications hÃ©bergÃ©es sur la mÃªme adresse IP ou le mÃªme domaine (surtout si elles utilisent des langues diffÃ©rentes).
 
-#### Équilibreur de charge
+#### Ã‰quilibreur de charge
 
-Un équilibreur de charge se trouve devant plusieurs serveurs principaux et alloue les requêtes entre eux afin de fournir une plus grande redondance et une plus grande capacité de traitement pour l'application.
+Un Ã©quilibreur de charge se trouve devant plusieurs serveurs principaux et alloue les requÃªtes entre eux afin de fournir une plus grande redondance et une plus grande capacitÃ© de traitement pour l'application.
 
-Les équilibreurs de charge peuvent être difficiles à détecter, mais peuvent parfois être identifiés en faisant plusieurs requêtes et en examinant les réponses pour les différences, telles que :
+Les Ã©quilibreurs de charge peuvent Ãªtre difficiles Ã  dÃ©tecter, mais peuvent parfois Ãªtre identifiÃ©s en faisant plusieurs requÃªtes et en examinant les rÃ©ponses pour les diffÃ©rences, telles queÂ :
 
-- Heures système incohérentes.
-- Différentes adresses IP internes ou noms d'hôte dans les messages d'erreur détaillés.
-- Différentes adresses renvoyées par [Server-Side Request Forgery (SSRF)](../07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery.md).
+- Heures systÃ¨me incohÃ©rentes.
+- DiffÃ©rentes adresses IP internes ou noms d'hÃ´te dans les messages d'erreur dÃ©taillÃ©s.
+- DiffÃ©rentes adresses renvoyÃ©es par [test de contrefaÃ§on de requÃªte cÃ´tÃ© serveur (SSRF)](../07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery.md).
 
-Ils peuvent également être signalés par la présence de cookies spécifiques (par exemple, les équilibreurs de charge F5 BIG-IP créeront un cookie appelé `BIGipServer`.
+Ils peuvent Ã©galement Ãªtre signalÃ©s par la prÃ©sence de cookies spÃ©cifiques (par exemple, les Ã©quilibreurs de charge F5 BIG-IP crÃ©eront un cookie appelÃ© `BIGipServer`.
 
-#### Réseau de diffusion de contenu (CDN)
+#### RÃ©seau de diffusion de contenu (CDN)
 
-Un réseau de diffusion de contenu (CDN) est un ensemble géographiquement distribué de serveurs proxy de mise en cache, conçu pour améliorer les performances du site Web afin de fournir une résilience supplémentaire à un site Web.
+Un rÃ©seau de diffusion de contenu (CDN) est un ensemble gÃ©ographiquement distribuÃ© de serveurs proxy de mise en cache, conÃ§u pour amÃ©liorer les performances du site Web afin de fournir une rÃ©silience supplÃ©mentaire Ã  un site Web.
 
-Il est généralement configuré en pointant le domaine public vers les serveurs du CDN, puis en configurant le CDN pour qu'il se connecte aux serveurs principaux corrects (parfois appelés "l'origine").
+Il est gÃ©nÃ©ralement configurÃ© en pointant le domaine public vers les serveurs du CDN, puis en configurant le CDN pour qu'il se connecte aux serveurs principaux corrects (parfois appelÃ©s "l'origine").
 
-Le moyen le plus simple de détecter un CDN consiste à effectuer une recherche WHOIS pour les adresses IP auxquelles le domaine se résout. S'ils appartiennent à une société CDN (comme Akamai, Cloudflare ou Fastly - voir [Wikipedia](https://en.wikipedia.org/wiki/Content_delivery_network#Notable_content_delivery_service_providers) pour une liste plus complète), alors c'est comme si un CDN était utilisé.
+Le moyen le plus simple de dÃ©tecter un CDN consiste Ã  effectuer une recherche WHOIS pour les adresses IP auxquelles le domaine se rÃ©sout. S'ils appartiennent Ã  une sociÃ©tÃ© CDN (comme Akamai, Cloudflare ou Fastly - voir [Wikipedia](https://en.wikipedia.org/wiki/Content_delivery_network#Notable_content_delivery_service_providers) pour une liste plus complÃ¨te), alors c'est comme si un CDN Ã©tait utilisÃ©.
 
-Lorsque vous testez un site derrière un CDN, vous devez garder à l'esprit les points suivants :
+Lorsque vous testez un site derriÃ¨re un CDN, vous devez garder Ã  l'esprit les points suivantsÂ :
 
-- Les adresses IP et les serveurs appartiennent au fournisseur de CDN et sont susceptibles d'être hors de portée des tests d'infrastructure.
-- De nombreux CDN incluent également des fonctionnalités telles que la détection de robots, la limitation de débit et les pare-feu d'applications Web.
-- Les CDN mettent généralement en cache le contenu, de sorte que toute modification apportée au site Web principal peut ne pas apparaître immédiatement.
+- Les adresses IP et les serveurs appartiennent au fournisseur de CDN et sont susceptibles d'Ãªtre hors de portÃ©e des tests d'infrastructure.
+- De nombreux CDN incluent Ã©galement des fonctionnalitÃ©s telles que la dÃ©tection de robots, la limitation de dÃ©bit et les pare-feu d'applications Web.
+- Les CDN mettent gÃ©nÃ©ralement en cache le contenu, de sorte que toute modification apportÃ©e au site Web principal peut ne pas apparaÃ®tre immÃ©diatement.
 
-Si le site se trouve derrière un CDN, il peut être utile d'identifier les serveurs principaux. S'ils ne disposent pas d'un contrôle d'accès approprié, vous pourrez peut-être contourner le CDN (et toutes les protections qu'il offre) en accédant directement aux serveurs principaux. Il existe une variété de méthodes différentes qui peuvent vous permettre d'identifier le système back-end :
+Si le site se trouve derriÃ¨re un CDN, il peut Ãªtre utile d'identifier les serveurs principaux. S'ils ne disposent pas d'un contrÃ´le d'accÃ¨s appropriÃ©, vous pourrez peut-Ãªtre contourner le CDN (et toutes les protections qu'il offre) en accÃ©dant directement aux serveurs principaux. Il existe une variÃ©tÃ© de mÃ©thodes diffÃ©rentes qui peuvent vous permettre d'identifier le systÃ¨me back-endÂ :
 
-- Les e-mails envoyés par l'application peuvent provenir directement du serveur principal, ce qui pourrait révéler son adresse IP.
-- Le broyage DNS, les transferts de zone ou les listes de transparence des certificats pour le domaine peuvent le révéler sur un sous-domaine.
-- L'analyse des plages d'adresses IP connues pour être utilisées par l'entreprise peut trouver le serveur principal.
-- L'exploitation de [Server-Side Request Forgery (SSRF)](../07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery.md) peut révéler l'adresse IP.
-- Des messages d'erreur détaillés de l'application peuvent exposer des adresses IP ou des noms d'hôte.
+- Les e-mails envoyÃ©s par l'application peuvent provenir directement du serveur principal, ce qui pourrait rÃ©vÃ©ler son adresse IP.
+- Le broyage DNS, les transferts de zone ou les listes de transparence des certificats pour le domaine peuvent le rÃ©vÃ©ler sur un sous-domaine.
+- L'analyse des plages d'adresses IP connues pour Ãªtre utilisÃ©es par l'entreprise peut trouver le serveur principal.
+- L'exploitation de [test de contrefaÃ§on de requÃªte cÃ´tÃ© serveur (SSRF)](../07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery.md) peut rÃ©vÃ©ler l'adresse IP.
+- Des messages d'erreur dÃ©taillÃ©s de l'application peuvent exposer des adresses IP ou des noms d'hÃ´te.
 
-### Composants de sécurité
+### Composants de sÃ©curitÃ©
 
-#### Pare-feu réseau
+#### Pare-feu rÃ©seau
 
-La plupart des serveurs Web seront protégés par un pare-feu de filtrage de paquets ou d'inspection dynamique, qui bloque tout trafic réseau non requis. Pour le détecter, effectuez une analyse des ports du serveur et examinez les résultats.
+La plupart des serveurs Web seront protÃ©gÃ©s par un pare-feu de filtrage de paquets ou d'inspection dynamique, qui bloque tout trafic rÃ©seau non requis. Pour le dÃ©tecter, effectuez une analyse des ports du serveur et examinez les rÃ©sultats.
 
-Si la majorité des ports sont affichés comme "fermés" (c'est-à-dire qu'ils renvoient un paquet "RST" en réponse au paquet "SYN" initial), cela suggère que le serveur n'est peut-être pas protégé par un pare-feu. Si les ports sont affichés comme "filtrés" (c'est-à-dire qu'aucune réponse n'est reçue lors de l'envoi d'un paquet "SYN" vers un port inutilisé), un pare-feu est très probablement en place.
+Si la majoritÃ© des ports sont affichÃ©s comme "fermÃ©s" (c'est-Ã -dire qu'ils renvoient un paquet `RST` en rÃ©ponse au paquet `SYN` initial), cela suggÃ¨re que le serveur n'est peut-Ãªtre pas protÃ©gÃ© par un pare-feu. Si les ports sont affichÃ©s comme "filtrÃ©s" (c'est-Ã -dire qu'aucune rÃ©ponse n'est reÃ§ue lors de l'envoi d'un paquet `SYN` vers un port inutilisÃ©), un pare-feu est trÃ¨s probablement en place.
 
-De plus, si des services inappropriés sont exposés au monde (tels que SMTP, IMAP, MySQL, etc.), cela suggère soit qu'il n'y a pas de pare-feu en place, soit que le pare-feu est mal configuré.
+De plus, si des services inappropriÃ©s sont exposÃ©s au monde (tels que SMTP, IMAP, MySQL, etc.), cela suggÃ¨re soit qu'il n'y a pas de pare-feu en place, soit que le pare-feu est mal configurÃ©.
 
-#### Système de détection et de prévention des intrusions sur le réseau
+#### SystÃ¨me de dÃ©tection et de prÃ©vention des intrusions sur le rÃ©seau
 
-Un système de détection d'intrusion (IDS) réseau détecte les activités suspectes ou malveillantes au niveau du réseau (telles que l'analyse des ports ou des vulnérabilités) et déclenche des alertes. Un système de prévention des intrusions (IPS) est similaire, mais prend également des mesures pour empêcher l'activité - généralement en bloquant l'adresse IP source.
+Un systÃ¨me de dÃ©tection d'intrusion (IDS) rÃ©seau dÃ©tecte les activitÃ©s suspectes ou malveillantes au niveau du rÃ©seau (telles que l'analyse des ports ou des vulnÃ©rabilitÃ©s) et dÃ©clenche des alertes. Un systÃ¨me de prÃ©vention des intrusions (IPS) est similaire, mais prend Ã©galement des mesures pour empÃªcher l'activitÃ© - gÃ©nÃ©ralement en bloquant l'adresse IP source.
 
-Un IPS peut généralement être détecté en exécutant des outils d'analyse automatisés (tels qu'un analyseur de ports) sur la cible et en vérifiant si l'adresse IP source est bloquée. Cependant, de nombreux outils au niveau de l'application peuvent ne pas être détectés par un IPS (surtout s'il ne déchiffre pas TLS).
+Un IPS peut gÃ©nÃ©ralement Ãªtre dÃ©tectÃ© en exÃ©cutant des outils d'analyse automatisÃ©s (tels qu'un analyseur de ports) sur la cible et en vÃ©rifiant si l'adresse IP source est bloquÃ©e. Cependant, de nombreux outils au niveau de l'application peuvent ne pas Ãªtre dÃ©tectÃ©s par un IPS (surtout s'il ne dÃ©chiffre pas TLS).
 
 #### Pare-feu d'application Web (WAF)
 
-Un pare-feu d'application Web (WAF) inspecte le contenu des requêtes HTTP et bloque celles qui semblent suspectes ou malveillantes, ou applique dynamiquement d'autres contrôles tels que CAPTCHA ou la limitation du débit. Ils sont généralement basés sur un ensemble de mauvaises signatures et d'expressions régulières connues, telles que [OWASP Core Rule Set](https://owasp.org/www-project-modsecurity-core-rule-set/). Les WAF peuvent être efficaces pour protéger contre certains types d'attaques (comme l'injection SQL ou les scripts intersites), mais sont moins efficaces contre d'autres types (comme le contrôle d'accès ou les problèmes liés à la logique métier).
+Un pare-feu d'application Web (WAF) inspecte le contenu des requÃªtes HTTP et bloque celles qui semblent suspectes ou malveillantes, ou applique dynamiquement d'autres contrÃ´les tels que CAPTCHA ou la limitation du dÃ©bit. Ils sont gÃ©nÃ©ralement basÃ©s sur un ensemble de mauvaises signatures et d'expressions rÃ©guliÃ¨res connues, telles que [OWASP Core Rule Set](https://owasp.org/www-project-modsecurity-core-rule-set/). Les WAF peuvent Ãªtre efficaces pour protÃ©ger contre certains types d'attaques (comme l'injection SQL ou les scripts intersites), mais sont moins efficaces contre d'autres types (comme le contrÃ´le d'accÃ¨s ou les problÃ¨mes liÃ©s Ã  la logique mÃ©tier).
 
-Un WAF peut être déployé à plusieurs endroits, notamment :
+Un WAF peut Ãªtre dÃ©ployÃ© Ã  plusieurs endroits, notammentÂ :
 
-- Sur le serveur Web lui-même.
-- Sur une machine virtuelle ou une appliance matérielle distincte.
+- Sur le serveur Web lui-mÃªme.
+- Sur une machine virtuelle ou une appliance matÃ©rielle distincte.
 - Dans le cloud devant le serveur back-end.
 
-Étant donné qu'un WAF bloque les requêtes malveillantes, il peut être détecté en ajoutant des chaînes d'attaque courantes aux paramètres et en observant s'ils sont bloqués ou non. Par exemple, essayez d'ajouter un paramètre appelé `foo` avec une valeur telle que `' UNION SELECT 1` ou `><script>alert(1)</script>`. Si ces demandes sont bloquées, cela suggère qu'il peut y avoir un WAF en place. De plus, le contenu des pages bloquées peut fournir des informations sur la technologie spécifique utilisée. Enfin, certains WAF peuvent ajouter des cookies ou des en-têtes HTTP aux réponses qui peuvent révéler leur présence.
+Ã‰tant donnÃ© qu'un WAF bloque les requÃªtes malveillantes, il peut Ãªtre dÃ©tectÃ© en ajoutant des chaÃ®nes d'attaque courantes aux paramÃ¨tres et en observant s'ils sont bloquÃ©s ou non. Par exemple, essayez d'ajouter un paramÃ¨tre appelÃ© `foo` avec une valeur telle que `' UNION SELECT 1` ou `><script>alert(1)</script>`. Si ces demandes sont bloquÃ©es, cela suggÃ¨re qu'il peut y avoir un WAF en place. De plus, le contenu des pages bloquÃ©es peut fournir des informations sur la technologie spÃ©cifique utilisÃ©e. Enfin, certains WAF peuvent ajouter des cookies ou des en-tÃªtes HTTP aux rÃ©ponses qui peuvent rÃ©vÃ©ler leur prÃ©sence.
 
-Si un WAF basé sur le cloud est utilisé, il peut être possible de le contourner en accédant directement au serveur principal, en utilisant les mêmes méthodes décrites dans la section [Réseau de diffusion de contenu](#content-delivery-network-cdn).
+Si un WAF basÃ© sur le cloud est utilisÃ©, il peut Ãªtre possible de le contourner en accÃ©dant directement au serveur principal, en utilisant les mÃªmes mÃ©thodes dÃ©crites dans la section [RÃ©seau de diffusion de contenu (CDN)](#RÃ©seau-de-diffusion-de-contenu-(CDN)).
