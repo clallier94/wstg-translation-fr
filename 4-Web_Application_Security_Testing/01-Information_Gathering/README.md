@@ -14,7 +14,7 @@
 
 4.1.7 [Mapper les chemins d'exécution via l'application](07-Map_Execution_Paths_Through_Application.md)
 
-4.1.8 [Empreintes sur les Frameworks](08-Fingerprint_Web_Application_Framework.md)
+4.1.8 [Empreintes sur les Frameworks Web](08-Fingerprint_Web_Application_Framework.md)
 
 4.1.9 [Empreintes sur les applications Web](09-Fingerprint_Web_Application.md)
 
