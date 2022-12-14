@@ -4,4 +4,4 @@
 |------------|
 |WSTG-INFO-09|
 
-Ce contenu a été fusionné dans : [Fingerprint Web Application Framework](08-Fingerprint_Web_Application_Framework.md).
+Ce contenu a Ã©tÃ© fusionnÃ© dansÂ : [Cadre d'application Web d'empreintes digitales](08-Fingerprint_Web_Application_Framework.md).
