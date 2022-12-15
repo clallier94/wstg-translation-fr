@@ -40,9 +40,9 @@ Divers outils, documents ou listes de contrôle peuvent être utilisés pour don
 
 - [CIS-CAT Lite](https://www.cisecurity.org/blog/introducing-cis-cat-lite/)
 - [Analyseur de surface d'attaque de Microsoft](https://github.com/microsoft/AttackSurfaceAnalyzer)
-- [Programme national de liste de contrôle du NIST] (https://nvd.nist.gov/ncp/repository)
+- [Programme national de liste de contrôle du NIST](https://nvd.nist.gov/ncp/repository)
 
-### Test de la boîte grise
+### Test de la boîte grise
 
 #### Examen de la configuration
 
@@ -56,13 +56,13 @@ Il est impossible de dire de manière générique comment un serveur doit être 
 - Assurez-vous que le logiciel serveur enregistre correctement les accès légitimes et les erreurs.
 - Assurez-vous que le serveur est configuré pour gérer correctement les surcharges et empêcher les attaques par déni de service. Assurez-vous que les performances du serveur ont été correctement réglées.
 - N'accordez jamais aux identités non administratives (à l'exception de `NT SERVICE\WMSvc`) l'accès à applicationHost.config, redirection.config et administration.config (accès en lecture ou en écriture). Cela inclut `Network Service`, `IIS_IUSRS`, `IUSR` ou toute identité personnalisée utilisée par les pools d'applications IIS. Les processus de travail IIS ne sont pas destinés à accéder directement à ces fichiers.
-- Ne partagez jamais applicationHost.config, redirection.config et administration.config sur le réseau. Lorsque vous utilisez la configuration partagée, préférez exporter applicationHost.config vers un autre emplacement (voir la section intitulée "Définir les autorisations pour la configuration partagée).
+- Ne partagez jamais applicationHost.config, redirection.config et administration.config sur le réseau. Lorsque vous utilisez la configuration partagée, préférez exporter applicationHost.config vers un autre emplacement (voir la section intitulée "Définir les autorisations pour la configuration partagée").
 - Gardez à l'esprit que tous les utilisateurs peuvent lire les fichiers .NET Framework `machine.config` et racine `web.config` par défaut. Ne stockez pas d'informations sensibles dans ces fichiers si elles doivent être réservées aux yeux de l'administrateur.
 - Chiffrez les informations sensibles qui doivent être lues uniquement par les processus de travail IIS et non par les autres utilisateurs de la machine.
 - N'accordez pas l'accès en écriture à l'identité que le serveur Web utilise pour accéder à l'`applicationHost.config` partagé. Cette identité ne doit avoir qu'un accès en lecture.
 - Utilisez une identité distincte pour publier applicationHost.config sur le partage. N'utilisez pas cette identité pour configurer l'accès à la configuration partagée sur les serveurs Web.
 - Utilisez un mot de passe fort lors de l'exportation des clés de cryptage à utiliser avec la configuration partagée.
-- Maintenir un accès restreint au partage contenant la configuration partagée et les clés de chiffrement. Si ce partage est compromis, un attaquant pourra lire et écrire n'importe quelle configuration IIS pour vos serveurs Web, rediriger le trafic de votre site Web vers des sources malveillantes et, dans certains cas, prendre le contrôle de tous les serveurs Web en chargeant du code arbitraire dans IIS worker. processus.
+- Maintenir un accès restreint au partage contenant la configuration partagée et les clés de chiffrement. Si ce partage est compromis, un attaquant pourra lire et écrire n'importe quelle configuration IIS pour vos serveurs Web, rediriger le trafic de votre site Web vers des sources malveillantes et, dans certains cas, prendre le contrôle de tous processus des serveurs Web en chargeant du code arbitraire dans IIS worker.
 - Envisagez de protéger ce partage avec des règles de pare-feu et des stratégies IPsec pour autoriser uniquement les serveurs Web membres à se connecter.
 
 #### Journalisation
@@ -79,9 +79,9 @@ Dans les deux cas (journaux du serveur et des applications), plusieurs problème
 6. Comment les sauvegardes de journaux sont-elles conservées ?
 7. Les données enregistrées sont-elles validées (longueur min/max, caractères, etc.) avant d'être enregistrées ?
 
-##### Informations sensibles dans les journaux
+##### Informations sensibles dans les journaux
 
-Certaines applications peuvent, par exemple, utiliser des requêtes GET pour transférer des données de formulaire qui seront visibles dans les journaux du serveur. Cela signifie que les journaux du serveur peuvent contenir des informations sensibles (telles que des noms d'utilisateur comme des mots de passe ou des détails de compte bancaire). Ces informations sensibles peuvent être utilisées à mauvais escient par un attaquant s'il a obtenu les journaux, par exemple, via des interfaces administratives ou des vulnérabilités ou une mauvaise configuration connues du serveur Web (comme la mauvaise configuration bien connue de l'état du serveur dans les serveurs HTTP basés sur Apache).
+Certaines applications peuvent, par exemple, utiliser des requêtes GET pour transférer des données de formulaire qui seront visibles dans les journaux du serveur. Cela signifie que les journaux du serveur peuvent contenir des informations sensibles (telles que des noms d'utilisateur comme des mots de passe ou des détails de compte bancaire). Ces informations sensibles peuvent être utilisées à mauvais escient par un attaquant s'il a obtenu les journaux, par exemple, via des interfaces administratives ou des vulnérabilités ou une mauvaise configuration connue du serveur Web (comme la mauvaise configuration bien connue de l'état du serveur dans les serveurs HTTP basés sur Apache).
 
 Les journaux d'événements contiennent souvent des données utiles à un attaquant (fuite d'informations) ou peuvent être utilisés directement dans des exploits :
 
@@ -95,7 +95,7 @@ Les journaux d'événements contiennent souvent des données utiles à un attaqu
 
 En outre, dans certaines juridictions, le stockage de certaines informations sensibles dans des fichiers journaux, telles que des données personnelles, peut obliger l'entreprise à appliquer également les lois sur la protection des données qu'elle appliquerait à ses bases de données principales pour les fichiers journaux. Et ne pas le faire, même sans le savoir, peut entraîner des sanctions en vertu des lois sur la protection des données qui s'appliquent.
 
-Une liste plus large d'informations sensibles est:
+Une liste plus large d'informations sensibles est :
 
 - Code source de l'application
 - Valeurs d'identification de session
@@ -116,7 +116,7 @@ Généralement, les serveurs génèrent des journaux locaux de leurs actions et 
 
 Par conséquent, il est plus sage de conserver les journaux dans un emplacement séparé et non sur le serveur Web lui-même. Cela facilite également l'agrégation de journaux provenant de différentes sources qui font référence à la même application (comme ceux d'une batterie de serveurs Web) et facilite également l'analyse des journaux (qui peut être gourmande en CPU) sans affecter le serveur lui-même.
 
-#### Stockage des journaux
+#### Stockage des journaux
 
 Les journaux peuvent introduire une condition de déni de service s'ils ne sont pas correctement stockés. Tout attaquant disposant de ressources suffisantes pourrait être en mesure de produire un nombre suffisant de requêtes qui rempliraient l'espace alloué aux fichiers journaux, s'il n'en est pas spécifiquement empêché. Cependant, si le serveur n'est pas correctement configuré, les fichiers journaux seront stockés dans la même partition de disque que celle utilisée pour le logiciel du système d'exploitation ou l'application elle-même. Cela signifie que si le disque devait être rempli, le système d'exploitation ou l'application pourrait échouer car il ne peut pas écrire sur le disque.
 
@@ -124,7 +124,7 @@ Généralement, dans les systèmes UNIX, les journaux se trouvent dans /var (bie
 
 Cela ne veut pas dire que les journaux doivent être autorisés à croître pour remplir le système de fichiers dans lequel ils résident. La croissance des journaux du serveur doit être surveillée afin de détecter cette condition car elle peut indiquer une attaque.
 
-Tester cette condition est aussi simple et aussi dangereux dans les environnements de production que de lancer un nombre suffisant et soutenu de requêtes pour voir si ces requêtes sont enregistrées et s'il est possible de remplir la partition de journal via ces requêtes. Dans certains environnements où les paramètres QUERY_STRING sont également enregistrés, qu'ils soient produits via des requêtes GET ou POST, de grandes requêtes peuvent être simulées, ce qui remplira les journaux plus rapidement car, généralement, une seule requête ne causera qu'une petite quantité de données. enregistrés, tels que la date et l'heure, l'adresse IP source, la requête URI et le résultat du serveur.
+Tester cette condition est aussi simple et aussi dangereux dans les environnements de production que de lancer un nombre suffisant et soutenu de requêtes pour voir si ces requêtes sont enregistrées et s'il est possible de remplir la partition de journal via ces requêtes. Dans certains environnements où les paramètres QUERY_STRING sont également enregistrés, qu'ils soient produits via des requêtes GET ou POST, de grandes requêtes peuvent être simulées, ce qui remplira les journaux plus rapidement car, généralement, une seule requête ne causera qu'une petite quantité de données enregistrées, tels que la date et l'heure, l'adresse IP source, la requête URI et le résultat du serveur.
 
 #### Rotation du journal
 
@@ -138,7 +138,7 @@ Cette fonctionnalité doit être testée afin de s'assurer que :
 
 Certains serveurs peuvent effectuer une rotation des journaux lorsqu'ils atteignent une taille donnée. Si cela se produit, il faut s'assurer qu'un attaquant ne peut pas forcer les bûches à tourner afin de masquer ses traces.
 
-#### Contrôle d'accès au journal
+#### Contrôle d'accès au journal
 
 Les informations du journal des événements ne doivent jamais être visibles pour les utilisateurs finaux. Même les administrateurs Web ne devraient pas être en mesure de voir ces journaux, car cela rompt les contrôles de séparation des tâches. Assurez-vous que tout schéma de contrôle d'accès utilisé pour protéger l'accès aux journaux bruts et toutes les applications fournissant des fonctionnalités permettant d'afficher ou de rechercher les journaux ne sont pas liés à des schémas de contrôle d'accès pour d'autres rôles d'utilisateur d'application. Les données de journal ne doivent pas non plus être visibles par des utilisateurs non authentifiés.
 
@@ -177,9 +177,9 @@ Les statistiques ou l'analyse des journaux ne doivent pas être générées, ni 
     - IBM WebSphere V5.0 Security, WebSphere Handbook Series, par Peter Kovari et al., IBM, décembre 2002.
     - IBM WebSphere V4.0 Advanced Edition Security, par Peter Kovari et al., IBM, mars 2002.
 - Général
-    - [Feuille de triche de journalisation] (https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html), OWASP
+    - [Feuille de triche de journalisation](https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html), OWASP
     - [SP 800-92](https://csrc.nist.gov/publications/detail/sp/800-92/final) Guide de gestion des journaux de sécurité informatique, NIST
     - [PCI DSS v3.2.1](https://www.pcisecuritystandards.org/document_library) Exigence 10 et PA-DSS v3.2 Exigence 4, Conseil des normes de sécurité PCI
 
-- Générique:
-    - [Modules d'amélioration de la sécurité CERT : sécurisation des serveurs Web publics] (https://resources.sei.cmu.edu/asset_files/SecurityImprovementModule/2000_006_001_13637.pdf)
+- Générique :
+    - [Modules d'amélioration de la sécurité CERT : sécurisation des serveurs Web publics](https://resources.sei.cmu.edu/asset_files/SecurityImprovementModule/2000_006_001_13637.pdf)
