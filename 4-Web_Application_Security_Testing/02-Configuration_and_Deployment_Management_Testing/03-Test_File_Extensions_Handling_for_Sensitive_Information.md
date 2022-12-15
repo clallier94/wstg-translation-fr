@@ -6,28 +6,28 @@
 
 ## Sommaire
 
-Les extensions de fichiers sont couramment utilisées dans les serveurs Web pour déterminer facilement quelles technologies, langues et plug-ins doivent être utilisés pour répondre à la demande Web. Bien que ce comportement soit conforme aux RFC et aux normes Web, l'utilisation d'extensions de fichier standard fournit au testeur d'intrusion des informations utiles sur les technologies sous-jacentes utilisées dans une appliance Web et simplifie considérablement la tâche de détermination du scénario d'attaque à utiliser sur des technologies particulières. De plus, une mauvaise configuration des serveurs Web pourrait facilement révéler des informations confidentielles sur les identifiants d'accès.
+Les extensions de fichiers sont couramment utilisÃ©es dans les serveurs Web pour dÃ©terminer facilement quelles technologies, langues et plug-ins doivent Ãªtre utilisÃ©s pour rÃ©pondre Ã  la demande Web. Bien que ce comportement soit conforme aux RFC et aux normes Web, l'utilisation d'extensions de fichier standard fournit au testeur d'intrusion des informations utiles sur les technologies sous-jacentes utilisÃ©es dans une "appliance" Web et simplifie considÃ©rablement la tÃ¢che de dÃ©termination du scÃ©nario d'attaque Ã  utiliser sur des technologies particuliÃ¨res. De plus, une mauvaise configuration des serveurs Web pourrait facilement rÃ©vÃ©ler des informations confidentielles sur les identifiants d'accÃ¨s.
 
-La vérification des extensions est souvent utilisée pour valider les fichiers à télécharger, ce qui peut entraîner des résultats inattendus car le contenu n'est pas celui attendu ou en raison d'une gestion inattendue des noms de fichiers du système d'exploitation.
+La vÃ©rification des extensions est souvent utilisÃ©e pour valider les fichiers Ã  tÃ©lÃ©charger, ce qui peut entraÃ®ner des rÃ©sultats inattendus car le contenu n'est pas celui attendu ou en raison d'une gestion inattendue des noms de fichiers du systÃ¨me d'exploitation.
 
-Déterminer comment les serveurs Web gèrent les requêtes correspondant aux fichiers ayant des extensions différentes peut aider à comprendre le comportement du serveur Web en fonction du type de fichiers auxquels on accède. Par exemple, cela peut aider à comprendre quelles extensions de fichier sont renvoyées sous forme de texte ou en clair par rapport à celles qui provoquent une exécution côté serveur. Ces derniers indiquent les technologies, les langages ou les plug-ins utilisés par les serveurs Web ou les serveurs d'applications, et peuvent fournir des informations supplémentaires sur la manière dont l'application Web est conçue. Par exemple, une extension ".pl" est généralement associée à la prise en charge de Perl côté serveur. Cependant, l'extension de fichier seule peut être trompeuse et pas totalement concluante. Par exemple, les ressources côté serveur Perl peuvent être renommées pour dissimuler le fait qu'elles sont effectivement liées à Perl. Consultez la section suivante sur les "composants de serveur Web" pour en savoir plus sur l'identification des technologies et des composants côté serveur.
+DÃ©terminer comment les serveurs Web gÃ¨rent les requÃªtes correspondant aux fichiers ayant des extensions diffÃ©rentes peut aider Ã  comprendre le comportement du serveur Web en fonction du type de fichiers auxquels on accÃ¨de. Par exemple, cela peut aider Ã  comprendre quelles extensions de fichier sont renvoyÃ©es sous forme de texte ou en clair par rapport Ã  celles qui provoquent une exÃ©cution cÃ´tÃ© serveur. Ces derniers indiquent les technologies, les langages ou les plug-ins utilisÃ©s par les serveurs Web ou les serveurs d'applications, et peuvent fournir des informations supplÃ©mentaires sur la maniÃ¨re dont l'application Web est conÃ§ue. Par exemple, une extension ".pl" est gÃ©nÃ©ralement associÃ©e Ã  la prise en charge de Perl cÃ´tÃ© serveur. Cependant, l'extension de fichier seule peut Ãªtre trompeuse et pas totalement concluante. Par exemple, les ressources cÃ´tÃ© serveur Perl peuvent Ãªtre renommÃ©es pour dissimuler le fait qu'elles sont effectivement liÃ©es Ã  Perl. Consultez la section suivante sur les "composants de serveur Web" pour en savoir plus sur l'identification des technologies et des composants cÃ´tÃ© serveur.
 
 ## Objectifs des tests
 
-- Extensions de fichiers sensibles à Dirbust ou pouvant contenir des données brutes (*par exemple* des scripts, des données brutes, des informations d'identification, etc.).
-- Valider qu'aucun contournement de framework système n'existe sur l'ensemble de règles.
+- Extensions de fichiers sensibles Ã  Dirbust ou pouvant contenir des donnÃ©es brutes (*par exemple* des scripts, des donnÃ©es brutes, des informations d'identification, etc.).
+- Valider qu'aucun contournement de framework systÃ¨me n'existe sur l'ensemble de rÃ¨gles.
 
 ## Comment tester
 
-### Navigation forcée
+### Navigation forcÃ©e
 
-Soumettez des demandes avec différentes extensions de fichiers et vérifiez comment elles sont traitées. La vérification doit être effectuée par répertoire Web. Vérifiez les répertoires qui permettent l'exécution de scripts. Les répertoires de serveurs Web peuvent être identifiés par des outils d'analyse qui recherchent la présence de répertoires bien connus. De plus, la mise en miroir de la structure du site Web permet au testeur de reconstruire l'arborescence des répertoires Web servis par l'application.
+Soumettez des demandes avec diffÃ©rentes extensions de fichiers et vÃ©rifiez comment elles sont traitÃ©es. La vÃ©rification doit Ãªtre effectuÃ©e par rÃ©pertoire Web. VÃ©rifiez les rÃ©pertoires qui permettent l'exÃ©cution de scripts. Les rÃ©pertoires de serveurs Web peuvent Ãªtre identifiÃ©s par des outils d'analyse qui recherchent la prÃ©sence de rÃ©pertoires bien connus. De plus, la mise en miroir de la structure du site Web permet au testeur de reconstruire l'arborescence des rÃ©pertoires Web servis par l'application.
 
-Si l'architecture de l'application Web est à charge équilibrée, il est important d'évaluer tous les serveurs Web. Cela peut être facile ou non, selon la configuration de l'infrastructure d'équilibrage. Dans une infrastructure avec des composants redondants, il peut y avoir de légères variations dans la configuration des serveurs Web ou d'applications individuels. Cela peut se produire si l'architecture Web utilise des technologies hétérogènes (pensez à un ensemble de serveurs Web IIS et Apache dans une configuration d'équilibrage de charge, qui peut introduire un léger comportement asymétrique entre eux, et éventuellement des vulnérabilités différentes).
+Si l'architecture de l'application Web est Ã  charge Ã©quilibrÃ©e, il est important d'Ã©valuer tous les serveurs Web. Cela peut Ãªtre facile ou non, selon la configuration de l'infrastructure d'Ã©quilibrage. Dans une infrastructure avec des composants redondants, il peut y avoir de lÃ©gÃ¨res variations dans la configuration des serveurs Web ou d'applications individuels. Cela peut se produire si l'architecture Web utilise des technologies hÃ©tÃ©rogÃ¨nes (pensez Ã  un ensemble de serveurs Web IIS et Apache dans une configuration d'Ã©quilibrage de charge, qui peut introduire un lÃ©ger comportement asymÃ©trique entre eux, et Ã©ventuellement des vulnÃ©rabilitÃ©s diffÃ©rentes).
 
 #### Exemple
 
-Le testeur a identifié l'existence d'un fichier nommé `connection.inc`. Essayer d'y accéder directement restitue son contenu, qui sont :
+Le testeur a identifiÃ© l'existence d'un fichier nommÃ© `connection.inc`. Essayer d'y accÃ©der directement restitue son contenu, qui sont :
 
 ```php
 <?
@@ -36,47 +36,47 @@ Le testeur a identifié l'existence d'un fichier nommé `connection.inc`. Essayer 
 ?>
 ```
 
-Le testeur détermine l'existence d'un back-end de SGBD MySQL et les informations d'identification (faibles) utilisées par l'application Web pour y accéder.
+Le testeur dÃ©termine l'existence d'un back-end de SGBD MySQL et les informations d'identification (faibles) utilisÃ©es par l'application Web pour y accÃ©der.
 
-Les extensions de fichier suivantes ne doivent jamais être renvoyées par un serveur Web, car elles sont liées à des fichiers pouvant contenir des informations sensibles ou à des fichiers pour lesquels il n'y a aucune raison d'être servis.
+Les extensions de fichier suivantes ne doivent jamais Ãªtre renvoyÃ©es par un serveur Web, car elles sont liÃ©es Ã  des fichiers pouvant contenir des informations sensibles ou Ã  des fichiers pour lesquels il n'y a aucune raison d'Ãªtre servis.
 
 - `.asa`
 - `.inc`
 - `.config`
 
-Les extensions de fichier suivantes sont liées à des fichiers qui, lorsqu'ils sont consultés, sont soit affichés, soit téléchargés par le navigateur. Par conséquent, les fichiers avec ces extensions doivent être vérifiés pour vérifier qu'ils sont bien censés être servis (et ne sont pas des restes), et qu'ils ne contiennent pas d'informations sensibles.
+Les extensions de fichier suivantes sont liÃ©es Ã  des fichiers qui, lorsqu'ils sont consultÃ©s, sont soit affichÃ©s, soit tÃ©lÃ©chargÃ©s par le navigateur. Par consÃ©quent, les fichiers avec ces extensions doivent Ãªtre vÃ©rifiÃ©s pour vÃ©rifier qu'ils sont bien censÃ©s Ãªtre servis (et ne sont pas des restes), et qu'ils ne contiennent pas d'informations sensibles.
 
-- `.zip`, `.tar`, `.gz`, `.tgz`, `.rar`, etc. : fichiers d'archive (compressés)
-- `.java` : aucune raison de fournir l'accès aux fichiers source Java
-- `.txt` : Fichiers texte
-- `.pdf` : document PDF
+- `.zip`, `.tar`, `.gz`, `.tgz`, `.rar`, etc.Â : fichiers d'archive (compressÃ©s)
+- `.java`Â : aucune raison de fournir l'accÃ¨s aux fichiers source Java
+- `.txt`Â : Fichiers texte
+- `.pdf`Â : document PDF
 - `.docx`, `.rtf`, `.xlsx`, `.pptx`, etc. : Documents Office
-- `.bak`, `.old` et autres extensions indiquant des fichiers de sauvegarde (par exemple : `~` pour les fichiers de sauvegarde Emacs)
+- `.bak`, `.old` et autres extensions indiquant des fichiers de sauvegarde (par exempleÂ : `~` pour les fichiers de sauvegarde Emacs)
 
-La liste donnée ci-dessus ne détaille que quelques exemples, car les extensions de fichiers sont trop nombreuses pour être traitées ici de manière exhaustive. Reportez-vous à [FILExt](https://filext.com/) pour une base de données plus complète des extensions.
+La liste donnÃ©e ci-dessus ne dÃ©taille que quelques exemples, car les extensions de fichiers sont trop nombreuses pour Ãªtre traitÃ©es ici de maniÃ¨re exhaustive. Reportez-vous Ã  [FILExt](https://filext.com/) pour une base de donnÃ©es plus complÃ¨te des extensions.
 
-Pour identifier les fichiers ayant une extension donnée, un mélange de techniques peut être utilisé. Ces techniques peuvent inclure des scanners de vulnérabilité, des outils d'exploration et de mise en miroir, l'inspection manuelle de l'application (cela surmonte les limitations de l'exploration automatique), l'interrogation des moteurs de recherche (voir [Test : exploration et recherche sur Google](../01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md )). Voir aussi [Test des fichiers anciens, de sauvegarde et non référencés](04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information.md) qui traite des problèmes de sécurité liés aux fichiers "oubliés".
+Pour identifier les fichiers ayant une extension donnÃ©e, un mÃ©lange de techniques peut Ãªtre utilisÃ©. Ces techniques peuvent inclure des scanners de vulnÃ©rabilitÃ©, des outils d'exploration et de mise en miroir, l'inspection manuelle de l'application (cela surmonte les limitations de l'exploration automatique), l'interrogation des moteurs de recherche (voir [Effectuer une reconnaissance de dÃ©couverte de moteur de recherche pour les fuites d'informations](../01-Information_Gathering/01-Conduct_Search_Engine_Discovery_Reconnaissance_for_Information_Leakage.md)). Voir aussi [Examiner les anciennes sauvegardes et les fichiers non rÃ©fÃ©rencÃ©s pour les informations sensibles](04-Review_Old_Backup_and_Unreferenced_Files_for_Sensitive_Information.md) qui traite des problÃ¨mes de sÃ©curitÃ© liÃ©s aux fichiers "oubliÃ©s".
 
-### Téléchargement de fichiers
+### TÃ©lÃ©chargement de fichiers
 
-La gestion des fichiers hérités de Windows 8.3 peut parfois être utilisée pour contourner les filtres de téléchargement de fichiers.
+La gestion des fichiers hÃ©ritÃ©s de Windows 8.3 peut parfois Ãªtre utilisÃ©e pour contourner les filtres de tÃ©lÃ©chargement de fichiers.
 
-Exemples d'utilisation :
+Exemples d'utilisationÂ :
 
-1. `file.phtml` est traité comme du code PHP.
-2. `FILE~1.PHT` est servi, mais pas traité par le gestionnaire PHP ISAPI.
-3. `shell.phPWND` peut être téléchargé.
-4. `SHELL~1.PHP` sera développé et renvoyé par le shell du système d'exploitation, puis traité par le gestionnaire PHP ISAPI.
+1. `file.phtml` est traitÃ© comme du code PHP.
+2. `FILE~1.PHT` est servi, mais pas traitÃ© par le gestionnaire PHP ISAPI.
+3. `shell.phPWND` peut Ãªtre tÃ©lÃ©chargÃ©.
+4. `SHELL~1.PHP` sera dÃ©veloppÃ© et renvoyÃ© par le shell du systÃ¨me d'exploitation, puis traitÃ© par le gestionnaire PHP ISAPI.
 
-### Test de la boîte grise
+### Test de la boÃ®te grise
 
-Effectuer des tests en boîte blanche sur la gestion des extensions de fichiers revient à vérifier les configurations des serveurs Web ou des serveurs d'applications participant à l'architecture de l'application Web et à vérifier comment ils sont chargés de servir différentes extensions de fichiers.
+Effectuer des tests en boÃ®te blanche sur la gestion des extensions de fichiers revient Ã  vÃ©rifier les configurations des serveurs Web ou des serveurs d'applications participant Ã  l'architecture de l'application Web et Ã  vÃ©rifier comment ils sont chargÃ©s de servir diffÃ©rentes extensions de fichiers.
 
-Si l'application Web s'appuie sur une infrastructure hétérogène à charge équilibrée, déterminez si cela peut introduire un comportement différent.
+Si l'application Web s'appuie sur une infrastructure hÃ©tÃ©rogÃ¨ne Ã  charge Ã©quilibrÃ©e, dÃ©terminez si cela peut introduire un comportement diffÃ©rent.
 
 ## Outils
 
-Les scanners de vulnérabilité, tels que Nessus et Nikto, vérifient l'existence de répertoires Web bien connus. Ils peuvent permettre au testeur de télécharger la structure du site Web, ce qui est utile pour déterminer la configuration des répertoires Web et la manière dont les extensions de fichiers individuelles sont servies. Parmi les autres outils pouvant être utilisés à cette fin, citons :
+Les scanners de vulnÃ©rabilitÃ©, tels que Nessus et Nikto, vÃ©rifient l'existence de rÃ©pertoires Web bien connus. Ils peuvent permettre au testeur de tÃ©lÃ©charger la structure du site Web, ce qui est utile pour dÃ©terminer la configuration des rÃ©pertoires Web et la maniÃ¨re dont les extensions de fichiers individuelles sont servies. Parmi les autres outils pouvant Ãªtre utilisÃ©s Ã  cette fin, citons :
 
 - [wget](https://www.gnu.org/software/wget)
 - [curl](https://curl.haxx.se)
