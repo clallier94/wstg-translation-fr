@@ -1,132 +1,132 @@
-# Méthodologies de test d'intrusion
+# MÃ©thodologies de test d'intrusion
 
 ## Sommaire
 
-- [Guides de test OWASP](#Guides-de-test-OWASP)
-    - Guide de test de sécurité Web (WSTG)
-    - Guide de test de sécurité mobile (MSTG)
-    - Méthodologie de test de sécurité du micrologiciel
-- [Norme d'exécution des tests d'intrusion](#Norme-d'exécution-des-tests-d'intrusion)
-- [Guide des tests d'intrusion PCI](#Guide-des-tests-d'intrusion-PCI)
-    - [Guide des tests de pénétration PCI DSS](#Guide-des-tests-de-pénétration-PCI-DSS)
-    - [Exigences des tests d'intrusion PCI DSS](#Exigences-des-tests-d'intrusion-PCI-DSS)
-- [Cadre de test d'intrusion](#Cadre-de-test-d'intrusion)
-- [Guide technique des tests et de l'évaluation de la sécurité de l'information](#Guide-technique-des-tests-et-de-l'évaluation-de-la-sécurité-de-l'information)
-- [Manuel de méthodologie de test de sécurité Open Source](#Manuel-de-méthodologie-de-test-de-sécurité-Open-Source)
-- [Références](#Références)
+- [Guides de test OWASP](#guides-de-test-owasp)
+    - [OWASP Guide de test de sÃ©curitÃ© Web](https://owasp.org/www-project-web-security-testing-guide/)
+    - [OWASP Guide de test de sÃ©curitÃ© mobile](https://owasp.org/www-project-mobile-security-testing-guide/)
+    - [OWASP MÃ©thodologie de test de sÃ©curitÃ© du micrologiciel](https://github.com/scriptingxss/owasp-fstm)
+- [Norme d'exÃ©cution des tests d'intrusion](#norme-dex%C3%A9cution-des-tests-dintrusion)
+- [Guide des tests d'intrusion PCI](#guide-de-test-de-p%C3%A9n%C3%A9tration-pci)
+    - [Guide des tests de pÃ©nÃ©tration PCI DSS](#guide-des-tests-de-p%C3%A9n%C3%A9tration-pci-dss)
+    - [Exigences des tests d'intrusion PCI DSS](#exigences-des-tests-dintrusion-pci-dss)
+- [Cadre de test d'intrusion](#cadre-de-test-dintrusion)
+- [Guide technique des tests et de l'Ã©valuation de la sÃ©curitÃ© de l'information](#guide-technique-des-tests-et-de-l%C3%A9valuation-de-la-s%C3%A9curit%C3%A9-de-linformation)
+- [Manuel de mÃ©thodologie de test de sÃ©curitÃ© Open Source](#manuel-de-m%C3%A9thodologie-de-test-de-s%C3%A9curit%C3%A9-open-source)
+- [RÃ©fÃ©rences](#r%C3%A9f%C3%A9rences)
 
 ## Guides de test OWASP
 
-En termes d'exécution des tests de sécurité technique, les guides de test OWASP sont fortement recommandés. Selon les types d'applications, les guides de test sont répertoriés ci-dessous pour les services Web/cloud, l'application mobile (Android/iOS) ou le micrologiciel IoT, respectivement.
+En termes d'exÃ©cution des tests de sÃ©curitÃ© technique, les guides de test OWASP sont fortement recommandÃ©s. Selon les types d'applications, les guides de test sont rÃ©pertoriÃ©s ci-dessous pour les services Web/cloud, l'application mobile (Android/iOS) ou le micrologiciel IoT, respectivement.
 
-- [OWASP Guide de test de sécurité Web](https://owasp.org/www-project-web-security-testing-guide/)
-- [OWASP Guide de test de sécurité mobile](https://owasp.org/www-project-mobile-security-testing-guide/)
-- [OWASP Méthodologie de test de sécurité du micrologiciel](https://github.com/scriptingxss/owasp-fstm)
+- [OWASP Guide de test de sÃ©curitÃ© Web](https://owasp.org/www-project-web-security-testing-guide/)
+- [OWASP Guide de test de sÃ©curitÃ© mobile](https://owasp.org/www-project-mobile-security-testing-guide/)
+- [OWASP MÃ©thodologie de test de sÃ©curitÃ© du micrologiciel](https://github.com/scriptingxss/owasp-fstm)
 
-## Norme d'exécution des tests d'intrusion
+## Norme d'exÃ©cution des tests d'intrusion
 
-La norme d'exécution des tests d'intrusion (PTES) définit les tests d'intrusion en 7 phases. En particulier, les directives techniques PTES donnent des suggestions pratiques sur les procédures de test et des recommandations pour les outils de test de sécurité.
+La norme d'exÃ©cution des tests d'intrusion (PTES) dÃ©finit les tests d'intrusion en 7 phases. En particulier, les directives techniques PTES donnent des suggestions pratiques sur les procÃ©dures de test et des recommandations pour les outils de test de sÃ©curitÃ©.
 
-- Interactions pré-engagement
+- Interactions prÃ©-engagement
 - La collecte de renseignements
-- Modélisation des menaces
-- Analyse de vulnérabilité
+- ModÃ©lisation des menaces
+- Analyse de vulnÃ©rabilitÃ©
 - Exploitation
 - Post Exploitation
 - Rapports
 
 [Directives techniques PTES](http://www.pentest-standard.org/index.php/PTES_Technical_Guidelines)
 
-## Guide de test de pénétration PCI
+## Guide de test de pÃ©nÃ©tration PCI
 
-L'exigence 11.3 de la norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS) définit les tests d'intrusion. PCI définit également les directives sur les tests de pénétration.
+L'exigence 11.3 de la norme de sÃ©curitÃ© des donnÃ©es de l'industrie des cartes de paiement (PCI DSS) dÃ©finit les tests d'intrusion. PCI dÃ©finit Ã©galement les directives sur les tests de pÃ©nÃ©tration.
 
-### Guide des tests de pénétration PCI DSS
+### Guide des tests de pÃ©nÃ©tration PCI DSS
 
-La directive sur les tests de pénétration PCI DSS fournit des conseils sur les points suivants :
+La directive sur les tests de pÃ©nÃ©tration PCI DSS fournit des conseils sur les points suivantsÂ :
 
-- Composants de test de pénétration
+- Composants de test de pÃ©nÃ©tration
 - Qualifications d'un testeur d'intrusion
-- Méthodologies de test d'intrusion
+- MÃ©thodologies de test d'intrusion
 - Lignes directrices pour les rapports sur les tests d'intrusion
 
 ### Exigences des tests d'intrusion PCI DSS
 
-L'exigence PCI DSS fait référence à l'exigence 11.3 de la norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS)
+L'exigence PCI DSS fait rÃ©fÃ©rence Ã  l'exigence 11.3 de la norme de sÃ©curitÃ© des donnÃ©es de l'industrie des cartes de paiement (PCI DSS)
 
-- Basé sur des approches acceptées par l'industrie
-- Couverture pour CDE et systèmes critiques
+- BasÃ© sur des approches acceptÃ©es par l'industrie
+- Couverture pour CDE et systÃ¨mes critiques
 - Comprend des tests externes et internes
-- Test pour valider la réduction de périmètre
+- Test pour valider la rÃ©duction de pÃ©rimÃ¨tre
 - Tests de la couche applicative
-- Tests de la couche réseau pour le réseau et le système d'exploitation
+- Tests de la couche rÃ©seau pour le rÃ©seau et le systÃ¨me d'exploitation
 
-[Guide des tests de pénétration PCI DSS](https://www.pcisecuritystandards.org/documents/Penetration-Testing-Guidance-v1_1.pdf)
+[Guide des tests de pÃ©nÃ©tration PCI DSS](https://www.pcisecuritystandards.org/documents/Penetration-Testing-Guidance-v1_1.pdf)
 
 ## Cadre de test d'intrusion
 
-Le cadre de test d'intrusion (PTF) fournit un guide pratique complet sur les tests d'intrusion. Il répertorie également les utilisations des outils de test de sécurité dans chaque catégorie de test. Le domaine principal des tests d'intrusion comprend :
+Le cadre de test d'intrusion (PTF) fournit un guide pratique complet sur les tests d'intrusion. Il rÃ©pertorie Ã©galement les utilisations des outils de test de sÃ©curitÃ© dans chaque catÃ©gorie de test. Le domaine principal des tests d'intrusion comprendÂ :
 
-- Empreinte Réseau (Reconnaissance)
-- Découverte & Sondage
-- Énumération
+- Empreinte RÃ©seau (Reconnaissance)
+- DÃ©couverte & Sondage
+- Ã‰numÃ©ration
 - Craquage de mot de passe
-- Évaluation de la vulnérabilité
+- Ã‰valuation de la vulnÃ©rabilitÃ©
 - Audit AS/400
-- Tests spécifiques Bluetooth
-- Tests spécifiques Cisco
-- Tests spécifiques à Citrix
-- Dorsale du réseau
-- Tests spécifiques au serveur
-- Sécurité VoIP
-- Pénétration sans fil
-- Sécurité physique
-- Rapport final - modèle
+- Tests spÃ©cifiques Bluetooth
+- Tests spÃ©cifiques Cisco
+- Tests spÃ©cifiques Ã  Citrix
+- Dorsale du rÃ©seau
+- Tests spÃ©cifiques au serveur
+- SÃ©curitÃ© VoIP
+- PÃ©nÃ©tration sans fil
+- SÃ©curitÃ© physique
+- Rapport final - modÃ¨le
 
 [Cadre de test d'intrusion](http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html)
 
-## Guide technique des tests et de l'évaluation de la sécurité de l'information
+## Guide technique des tests et de l'Ã©valuation de la sÃ©curitÃ© de l'information
 
-Le guide technique des tests et de l'évaluation de la sécurité de l'information (NIST 800-115) a été publié par le NIST, il comprend certaines techniques d'évaluation énumérées ci-dessous.
+Le guide technique des tests et de l'Ã©valuation de la sÃ©curitÃ© de l'information (NIST 800-115) a Ã©tÃ© publiÃ© par le NIST, il comprend certaines techniques d'Ã©valuation Ã©numÃ©rÃ©es ci-dessous.
 
-- Techniques de révision
+- Techniques de rÃ©vision
 - Techniques d'identification et d'analyse de cibles
-- Techniques de validation des vulnérabilités cibles
-- Planification de l'évaluation de la sécurité
-- Exécution de l'évaluation de la sécurité
-- Activités post-test
+- Techniques de validation des vulnÃ©rabilitÃ©s cibles
+- Planification de l'Ã©valuation de la sÃ©curitÃ©
+- ExÃ©cution de l'Ã©valuation de la sÃ©curitÃ©
+- ActivitÃ©s post-test
 
 Le NIST 800-115 est accessible [ici](https://csrc.nist.gov/publications/detail/sp/800-115/final)
 
-## Manuel de méthodologie de test de sécurité Open Source
+## Manuel de mÃ©thodologie de test de sÃ©curitÃ© Open Source
 
-Le manuel de méthodologie de test de sécurité Open Source (OSSTMM) est une méthodologie pour tester la sécurité opérationnelle des emplacements physiques, le flux de travail, les tests de sécurité humaine, les tests de sécurité physique, les tests de sécurité sans fil, les tests de sécurité des télécommunications, les tests de sécurité des réseaux de données et la conformité. L'OSSTMM peut prendre en charge la référence ISO 27001 au lieu d'un guide de test de pénétration d'application pratique ou technique.
+Le manuel de mÃ©thodologie de test de sÃ©curitÃ© Open Source (OSSTMM) est une mÃ©thodologie pour tester la sÃ©curitÃ© opÃ©rationnelle des emplacements physiques, le flux de travail, les tests de sÃ©curitÃ© humaine, les tests de sÃ©curitÃ© physique, les tests de sÃ©curitÃ© sans fil, les tests de sÃ©curitÃ© des tÃ©lÃ©communications, les tests de sÃ©curitÃ© des rÃ©seaux de donnÃ©es et la conformitÃ©. L'OSSTMM peut prendre en charge la rÃ©fÃ©rence ISO 27001 au lieu d'un guide de test de pÃ©nÃ©tration d'application pratique ou technique.
 
-L'OSSTMM comprend les sections clés suivantes :
+L'OSSTMM comprend les sections clÃ©s suivantesÂ :
 
-- Analyse de sécurité
-- Métriques de sécurité opérationnelle
+- Analyse de sÃ©curitÃ©
+- MÃ©triques de sÃ©curitÃ© opÃ©rationnelle
 - Analyse de confiance
 - Flux de travail
-- Tests de sécurité humaine
-- Tests de sécurité physique
-- Test de sécurité sans fil
-- Tests de sécurité des télécommunications
-- Tests de sécurité des réseaux de données
-- Règlement de conformité
+- Tests de sÃ©curitÃ© humaine
+- Tests de sÃ©curitÃ© physique
+- Test de sÃ©curitÃ© sans fil
+- Tests de sÃ©curitÃ© des tÃ©lÃ©communications
+- Tests de sÃ©curitÃ© des rÃ©seaux de donnÃ©es
+- RÃ¨glement de conformitÃ©
 - Reporting avec le STAR (Security Test Audit Report)
 
-[Manuel de méthodologie de test de sécurité Open Source](https://www.isecom.org/OSSTMM.3.pdf)
+[Manuel de mÃ©thodologie de test de sÃ©curitÃ© Open Source](https://www.isecom.org/OSSTMM.3.pdf)
 
-## Références
+## RÃ©fÃ©rences
 
-- [Norme de sécurité des données PCI – Guide des tests d'intrusion](https://www.pcisecuritystandards.org/documents/Penetration-Testing-Guidance-v1_1.pdf)
+- [Norme de sÃ©curitÃ© des donnÃ©es PCIÂ â€“ Guide des tests d'intrusion](https://www.pcisecuritystandards.org/documents/Penetration-Testing-Guidance-v1_1.pdf)
 - [Norme PTES](http://www.pentest-standard.org/index.php/Main_Page)
-- [Manuel de méthodologie de test de sécurité Open Source (OSSTMM)](http://www.isecom.org/research/osstmm.html)
-- [Guide technique des tests et de l'évaluation de la sécurité de l'information NIST SP 800-115](https://csrc.nist.gov/publications/detail/sp/800-115/final)
-- [Évaluation des tests de sécurité HIPAA 2012] (http://csrc.nist.gov/news_events/hiipaa_june2012/day2/day2-6_kscarfone-rmetzer_security-testing-assessment.pdf)
-- [Cadre de test de pénétration 0.59](http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html)
-- [Guide de test de sécurité mobile OWASP](https://owasp.org/www-project-mobile-security-testing-guide/)
-- [Directives de test de sécurité pour les applications mobiles](https://owasp.org/www-pdf-archive/Security_Testing_Guidelines_for_mobile_Apps_-_Florian_Stahl+Johannes_Stroeher.pdf)
-- [Kali Linux] (https://www.kali.org/)
-- [Supplément d'information : Exigence 11.3 Test de pénétration](https://www.pcisecuritystandards.org/pdfs/infosupp_11_3_penetration_testing.pdf)
+- [Manuel de mÃ©thodologie de test de sÃ©curitÃ© Open Source (OSSTMM)](http://www.isecom.org/research/osstmm.html)
+- [Guide technique des tests et de l'Ã©valuation de la sÃ©curitÃ© de l'information NIST SP 800-115](https://csrc.nist.gov/publications/detail/sp/800-115/final)
+- [Ã‰valuation des tests de sÃ©curitÃ© HIPAA 2012](http://csrc.nist.gov/news_events/hiipaa_june2012/day2/day2-6_kscarfone-rmetzer_security-testing-assessment.pdf)
+- [Cadre de test de pÃ©nÃ©tration 0.59](http://www.vulnerabilityassessment.co.uk/Penetration%20Test.html)
+- [Guide de test de sÃ©curitÃ© mobile OWASP](https://owasp.org/www-project-mobile-security-testing-guide/)
+- [Directives de test de sÃ©curitÃ© pour les applications mobiles](https://owasp.org/www-pdf-archive/Security_Testing_Guidelines_for_mobile_Apps_-_Florian_Stahl+Johannes_Stroeher.pdf)
+- [Kali Linux](https://www.kali.org/)
+- [SupplÃ©ment d'informationÂ : Exigence 11.3 Test de pÃ©nÃ©tration](https://www.pcisecuritystandards.org/pdfs/infosupp_11_3_penetration_testing.pdf)
