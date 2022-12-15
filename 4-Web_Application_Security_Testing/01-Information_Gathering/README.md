@@ -18,4 +18,4 @@
 
 4.1.9 [Empreintes sur les applications Web](09-Fingerprint_Web_Application.md)
 
-4.1.10 [Architecture d'application de carte](10-Map_Application_Architecture.md)
+4.1.10 [Cartographier l'architecture du réseau et des applications](10-Map_Application_Architecture.md)
