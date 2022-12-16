@@ -25,9 +25,9 @@ Dans de nombreux cas, ces interfaces ne disposent pas de contrôles suffisants p
 
 ### Test de la boîte noire
 
-La section suivante décrit les vecteurs qui peuvent être utilisés pour tester la présence d'interfaces administratives. Ces techniques peuvent également être utilisées pour tester des problèmes connexes, y compris l'élévation des privilèges, et sont décrites ailleurs dans ce guide (par exemple [Test pour contourner le schéma d'autorisation](../05-Authorization_Testing/02-Testing_for_Bypassing_Authorization_Schema.md) et [Test pour Références d'objets directes non sécurisées] (../05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References.md) plus en détail.
+La section suivante décrit les vecteurs qui peuvent être utilisés pour tester la présence d'interfaces administratives. Ces techniques peuvent également être utilisées pour tester des problèmes connexes, y compris l'élévation des privilèges, et sont décrites ailleurs dans ce guide (par exemple [Test du schéma d'autorisation de contournement](../05-Authorization_Testing/02-Testing_for_Bypassing_Authorization_Schema.md) et [Test des références d'objets directes non sécurisées](../05-Authorization_Testing/04-Testing_for_Insecure_Direct_Object_References.md) plus en détail.
 
-- Énumération des répertoires et des fichiers. Une interface administrative peut être présente mais pas visiblement disponible pour le testeur. Tenter de deviner le chemin de l'interface d'administration peut être aussi simple que de demander : */admin ou /administrator etc..* ou, dans certains scénarios, peut être révélé en quelques secondes à l'aide de [Google dorks](https://www.exploit-db .com/google-hacking-database).
+- Énumération des répertoires et des fichiers. Une interface administrative peut être présente mais pas visiblement disponible pour le testeur. Tenter de deviner le chemin de l'interface d'administration peut être aussi simple que de demander : */admin ou /administrator etc..* ou, dans certains scénarios, peut être révélé en quelques secondes à l'aide de [Google dorks](https://www.exploit-db.com/google-hacking-database).
 - Il existe de nombreux outils disponibles pour effectuer un forçage brutal du contenu du serveur, consultez la section outils ci-dessous pour plus d'informations. Un testeur devra peut-être également identifier le nom de fichier de la page d'administration. La navigation forcée vers la page identifiée peut donner accès à l'interface.
 - Commentaires et liens dans le code source. De nombreux sites utilisent un code commun qui est chargé pour tous les utilisateurs du site. En examinant toutes les sources envoyées au client, des liens vers la fonctionnalité d'administrateur peuvent être découverts et doivent être étudiés.
 - Révision de la documentation du serveur et de l'application. Si le serveur d'applications ou l'application est déployé dans sa configuration par défaut, il peut être possible d'accéder à l'interface d'administration à l'aide des informations décrites dans la documentation de configuration ou d'aide. Les listes de mots de passe par défaut doivent être consultées si une interface administrative est trouvée et que des informations d'identification sont requises.
@@ -45,7 +45,7 @@ ou dans un cookie :
 
 Une fois qu'une interface administrative a été découverte, une combinaison des techniques ci-dessus peut être utilisée pour tenter de contourner l'authentification. Si cela échoue, le testeur peut souhaiter tenter une attaque par force brute. Dans un tel cas, le testeur doit être conscient du risque de verrouillage du compte administratif si une telle fonctionnalité est présente.
 
-### Test de la boîte grise
+### Test de la boîte grise
 
 Un examen plus détaillé des composants du serveur et de l'application doit être entrepris pour garantir le renforcement (c'est-à-dire que les pages de l'administrateur ne sont pas accessibles à tous via l'utilisation du filtrage IP ou d'autres contrôles) et, le cas échéant, la vérification que tous les composants n'utilisent pas les informations d'identification par défaut ou configurations.
 Le code source doit être revu pour s'assurer que le modèle d'autorisation et d'authentification assure une séparation claire des tâches entre les utilisateurs normaux et les administrateurs du site. Les fonctions d'interface utilisateur partagées entre les utilisateurs normaux et les administrateurs doivent être revues pour assurer une séparation claire entre le dessin de ces composants et les fuites d'informations provenant de ces fonctionnalités partagées.
@@ -121,12 +121,12 @@ wp-admin/admin-header.php
 
 ## Outils
 
-- [OWASP ZAP - Forced Browse] (https://www.zaproxy.org/docs/desktop/addons/forced-browse/) est une utilisation actuellement maintenue du précédent projet DirBuster d'OWASP.
+- [OWASP ZAP - Forced Browse](https://www.zaproxy.org/docs/desktop/addons/forced-browse/) est une utilisation actuellement maintenue du précédent projet DirBuster d'OWASP.
 - [THC-HYDRA](https://github.com/vanhauser-thc/thc-hydra) est un outil qui permet de forcer brutalement de nombreuses interfaces, y compris l'authentification HTTP basée sur des formulaires.
 - Un "brute force" est bien meilleur quand il utilise un bon dictionnaire, par exemple le dictionnaire [netsparker](https://www.netsparker.com/blog/web-security/svn-digger-better-lists-for-forced-browsing/).
 
 ## Références
 
-- [Cirt : liste de mots de passe par défaut] (https://cirt.net/passwords)
-- [FuzzDB peut être utilisé pour parcourir par force brute le chemin de connexion de l'administrateur] (https://github.com/fuzzdb-project/fuzzdb/blob/master/discovery/predictable-filepaths/login-file-locations/Logins.txt)
-- [Paramètres d'administration ou de débogage communs] (https://github.com/fuzzdb-project/fuzzdb/blob/master/attack/business-logic/CommonDebugParamNames.txt)
+- [Cirt : liste de mots de passe par défaut](https://cirt.net/passwords)
+- [FuzzDB peut être utilisé pour parcourir par force brute le chemin de connexion de l'administrateur](https://github.com/fuzzdb-project/fuzzdb/blob/master/discovery/predictable-filepaths/login-file-locations/Logins.txt)
+- [Paramètres d'administration ou de débogage communs](https://github.com/fuzzdb-project/fuzzdb/blob/master/attack/business-logic/CommonDebugParamNames.txt)
