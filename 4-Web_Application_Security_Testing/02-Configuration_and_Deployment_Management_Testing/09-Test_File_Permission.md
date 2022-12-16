@@ -6,9 +6,9 @@
 
 ## Sommaire
 
-Lorsqu'une ressource se voit attribuer un paramètre d'autorisations qui donne accès à un éventail d'acteurs plus large que nécessaire, cela peut entraîner l'exposition d'informations sensibles ou la modification de cette ressource par des parties non intentionnelles. Ceci est particulièrement dangereux lorsque la ressource est liée à la configuration du programme, à l'exécution ou à des données utilisateur sensibles.
+Lorsqu'une ressource se voit attribuer un paramÃ¨tre d'autorisations qui donne accÃ¨s Ã  un Ã©ventail d'acteurs plus large que nÃ©cessaire, cela peut entraÃ®ner l'exposition d'informations sensibles ou la modification de cette ressource par des parties non intentionnelles. Ceci est particuliÃ¨rement dangereux lorsque la ressource est liÃ©e Ã  la configuration du programme, Ã  l'exÃ©cution ou Ã  des donnÃ©es utilisateur sensibles.
 
-Un exemple clair est un fichier d'exécution qui est exécutable par des utilisateurs non autorisés. Pour un autre exemple, les informations de compte ou une valeur de jeton pour accéder à une API - de plus en plus présentes dans les services Web modernes ou les microservices - peuvent être stockées dans un fichier de configuration dont les autorisations sont définies sur lisibles par le monde depuis l'installation par défaut. Ces données sensibles peuvent être exposées par des acteurs internes malveillants de l'hôte ou par un attaquant distant qui a compromis le service avec d'autres vulnérabilités mais n'a obtenu qu'un privilège d'utilisateur normal.
+Un exemple clair est un fichier d'exÃ©cution qui est exÃ©cutable par des utilisateurs non autorisÃ©s. Pour un autre exemple, les informations de compte ou une valeur de jeton pour accÃ©der Ã  une API - de plus en plus prÃ©sentes dans les services Web modernes ou les microservices - peuvent Ãªtre stockÃ©es dans un fichier de configuration dont les autorisations sont dÃ©finies sur lisibles par le monde depuis l'installation par dÃ©faut. Ces donnÃ©es sensibles peuvent Ãªtre exposÃ©es par des acteurs internes malveillants de l'hÃ´te ou par un attaquant distant qui a compromis le service avec d'autres vulnÃ©rabilitÃ©s mais n'a obtenu qu'un privilÃ¨ge d'utilisateur normal.
 
 ## Objectifs des tests
 
@@ -16,24 +16,24 @@ Un exemple clair est un fichier d'exécution qui est exécutable par des utilisate
 
 ## Comment tester
 
-Sous Linux, utilisez la commande `ls` pour vérifier les autorisations de fichier. Alternativement, `namei` peut également être utilisé pour répertorier récursivement les autorisations de fichiers.
+Sous Linux, utilisez la commande `ls` pour vÃ©rifier les autorisations de fichier. Alternativement, `namei` peut Ã©galement Ãªtre utilisÃ© pour rÃ©pertorier rÃ©cursivement les autorisations de fichiers.
 
-`$ nomi -l /CheminÀVérifier/`
+`$ nomi -l /CheminÃ€VÃ©rifier/`
 
-Les fichiers et répertoires qui nécessitent un test d'autorisation de fichier incluent, sans s'y limiter :
+Les fichiers et rÃ©pertoires qui nÃ©cessitent un test d'autorisation de fichier incluent, sans s'y limiterÂ :
 
-- Fichiers/répertoire Web
-- Fichiers/répertoire de configuration
-- Fichiers sensibles (données cryptées, mot de passe, clé)/répertoire
-- Fichiers journaux (journaux de sécurité, journaux d'opération, journaux d'administration)/répertoire
-- Exécutables (scripts, EXE, JAR, classe, PHP, ASP)/répertoire
-- Fichiers/répertoire de la base de données
-- Fichiers/répertoire temporaires
-- Télécharger des fichiers/répertoire
+- Fichiers/rÃ©pertoire Web
+- Fichiers/rÃ©pertoire de configuration
+- Fichiers sensibles (donnÃ©es cryptÃ©es, mot de passe, clÃ©)/rÃ©pertoire
+- Fichiers journaux (journaux de sÃ©curitÃ©, journaux d'opÃ©ration, journaux d'administration)/rÃ©pertoire
+- ExÃ©cutables (scripts, EXE, JAR, classe, PHP, ASP)/rÃ©pertoire
+- Fichiers/rÃ©pertoire de la base de donnÃ©es
+- Fichiers/rÃ©pertoire temporaires
+- TÃ©lÃ©charger des fichiers/rÃ©pertoire
 
 ## Correction
 
-Définissez correctement les autorisations des fichiers et des répertoires afin que les utilisateurs non autorisés ne puissent pas accéder inutilement aux ressources critiques.
+DÃ©finissez correctement les autorisations des fichiers et des rÃ©pertoires afin que les utilisateurs non autorisÃ©s ne puissent pas accÃ©der inutilement aux ressources critiques.
 
 ## Outils
 
@@ -41,6 +41,6 @@ Définissez correctement les autorisations des fichiers et des répertoires afin q
 - [Windows AccessChk](https://technet.microsoft.com/en-us/sysinternals/accesschk)
 - [nom Linuxi](https://linux.die.net/man/1/namei)
 
-## Références
+## RÃ©fÃ©rences
 
-- [CWE-732 : Attribution d'autorisation incorrecte pour une ressource critique] (https://cwe.mitre.org/data/definitions/732.html)
+- [CWE-732Â : Attribution d'autorisation incorrecte pour une ressource critique](https://cwe.mitre.org/data/definitions/732.html)
