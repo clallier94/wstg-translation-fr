@@ -13,7 +13,7 @@ Une exploitation réussie de ce type de vulnérabilité permet à un adversaire 
 
 Si la prise de contrôle du sous-domaine réussit, une grande variété d'attaques sont possibles (diffusion de contenu malveillant, hameçonnage, vol de cookies de session utilisateur, d'informations d'identification, etc.). Cette vulnérabilité pourrait être exploitée pour une grande variété d'enregistrements de ressources DNS, notamment : `A`, `CNAME`, `MX`, `NS`, `TXT` etc. En termes de gravité d'attaque, une prise de contrôle de sous-domaine `NS` (bien que moins probable) a l'impact le plus élevé, car une attaque réussie pourrait entraîner un contrôle total sur l'ensemble de la zone DNS et le domaine de la victime.
 
-### GitHub
+### GitHub
 
 1. La victime (victim.com) utilise GitHub pour le développement et a configuré un enregistrement DNS (`coderepo.victim.com`) pour y accéder.
 2. La victime décide de migrer son référentiel de code de GitHub vers une plateforme commerciale et ne supprime pas `coderepo.victim.com` de son serveur DNS.
@@ -42,7 +42,7 @@ La première étape consiste à énumérer les serveurs DNS victimes et les enre
 - `REFUSED`
 - `no servers could be reached.`
 
-#### Test de prise de contrôle de sous-domaine d'enregistrement DNS A et CNAME
+#### Test de prise de contrôle de sous-domaine d'enregistrement DNS A et CNAME
 
 Effectuez une énumération DNS de base sur le domaine de la victime (`victim.com`) à l'aide de `dnsrecon` :
 
@@ -98,9 +98,9 @@ nameserver.expireddomain.com
 
 Dans cet exemple fictif, le testeur vérifie si le domaine `expireddomain.com` est actif avec une recherche de registrar de domaine. Si le domaine est disponible à l'achat, le sous-domaine est vulnérable.
 
-Les réponses DNS suivantes justifient une enquête plus approfondie : "SERVFAIL" ou "REFUSED".
+Les réponses DNS suivantes justifient une enquête plus approfondie : `SERVFAIL` ou `REFUSED`.
 
-### Test de la boîte grise
+### Test de la boîte grise
 
 Le testeur dispose du fichier de zone DNS, ce qui signifie que l'énumération DNS n'est pas nécessaire. La méthodologie de test est la même.
 
@@ -115,7 +115,7 @@ Pour atténuer le risque de prise de contrôle de sous-domaine, le ou les enregi
 - [theHarvester - Outil de collecte de renseignements OSINT](https://github.com/laramies/theHarvester)
 - [Sublist3r - Outil d'énumération de sous-domaine OSINT](https://github.com/aboul3la/Sublist3r)
 - [dnsrecon - Script d'énumération DNS](https://github.com/darkoperator/dnsrecon)
-- [Énumération DNS OWASP Amass] (https://github.com/OWASP/Amass)
+- [Énumération DNS OWASP Amass](https://github.com/OWASP/Amass)
 
 ## Références
 
@@ -123,4 +123,4 @@ Pour atténuer le risque de prise de contrôle de sous-domaine, le ou les enregi
 - [Reprise de sous-domaine : principes de base](https://0xpatrik.com/subdomain-takeover-basics/)
 - [Reprise de sous-domaine : aller au-delà de CNAME](https://0xpatrik.com/subdomain-takeover-ns/)
 - [can-i-take-over-xyz - Une liste de services vulnérables](https://github.com/EdOverflow/can-i-take-over-xyz/)
-- [OWASP AppSec Europe 2017 - Frans Rosén : Piratage de DNS à l'aide de fournisseurs de cloud - aucune vérification nécessaire](https://2017.appsec.eu/presos/Developer/DNS%20hijacking%20using%20cloud%20providers%20%E2%80 %93%20aucune%20vérification%20nécessaire%20-%20Frans%20Rosen%20-%20OWASP_AppSec-Eu_2017.pdf)
+- [OWASP AppSec Europe 2017 - Frans Rosén : Piratage de DNS à l'aide de fournisseurs de cloud - aucune vérification nécessaire](https://2017.appsec.eu/presos/Developer/DNS%20hijacking%20using%20cloud%20providers%20%E2%80%93%20aucune%20vérification%20nécessaire%20-%20Frans%20Rosen%20-%20OWASP_AppSec-Eu_2017.pdf)
