@@ -1,4 +1,4 @@
-# Tester les méthodes HTTP
+# Tester les mÃ©thodes HTTP
 
 |ID          |
 |------------|
@@ -6,72 +6,72 @@
 
 ## Sommaire
 
-HTTP propose un certain nombre de méthodes (ou verbes) qui peuvent être utilisées pour effectuer des actions sur le serveur Web. Bien que GET et POST soient de loin les méthodes les plus courantes utilisées pour accéder aux informations fournies par un serveur Web, il existe une variété d'autres méthodes qui peuvent également être prises en charge et peuvent parfois être exploitées par des attaquants.
+HTTP propose un certain nombre de mÃ©thodes (ou verbes) qui peuvent Ãªtre utilisÃ©es pour effectuer des actions sur le serveur Web. Bien que GET et POST soient de loin les mÃ©thodes les plus courantes utilisÃ©es pour accÃ©der aux informations fournies par un serveur Web, il existe une variÃ©tÃ© d'autres mÃ©thodes qui peuvent Ã©galement Ãªtre prises en charge et peuvent parfois Ãªtre exploitÃ©es par des attaquants.
 
-[RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231) définit les principales méthodes de requête HTTP valides (ou verbes), bien que des méthodes supplémentaires aient été ajoutées dans d'autres RFC, telles que [RFC 5789]( https://datatracker.ietf.org/doc/html/rfc5789). Plusieurs de ces verbes ont été réutilisés à différentes fins dans les applications [RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer), répertoriées dans le tableau ci-dessous.
+[RFC 7231](https://datatracker.ietf.org/doc/html/rfc7231) dÃ©finit les principales mÃ©thodes de requÃªte HTTP valides (ou verbes), bien que des mÃ©thodes supplÃ©mentaires aient Ã©tÃ© ajoutÃ©es dans d'autres RFC, telles que [RFC 5789]( https://datatracker.ietf.org/doc/html/rfc5789). Plusieurs de ces verbes ont Ã©tÃ© rÃ©utilisÃ©s Ã  diffÃ©rentes fins dans les applications [RESTful](https://en.wikipedia.org/wiki/Representational_state_transfer), rÃ©pertoriÃ©es dans le tableau ci-dessous.
 
-| Méthode | Objectif initial | Objectif RESTful |
+| MÃ©thode | Objectif initial | Objectif RESTful |
 |---------|------------------|------------------|
 | [`GET`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1) | Demander un dossier. | Demander un objet.|
-| [`TÊTE`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.2) | Demander un fichier, mais ne renvoyer que les en-têtes HTTP. | |
-| [`POST`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.3) | Soumettre des données. | |
-| [`PUT`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4) | Télécharger un fichier. | Créer un objet. |
+| [`TÃŠTE`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.2) | Demander un fichier, mais ne renvoyer que les en-tÃªtes HTTP. | |
+| [`POST`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.3) | Soumettre des donnÃ©es. | |
+| [`PUT`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.4) | TÃ©lÃ©charger un fichier. | CrÃ©er un objet. |
 | [`SUPPRIMER`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.5) | Supprimer un fichier | Supprimer un objet. |
-| [`CONNECTER`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.6) | Établissez une connexion à un autre système. | |
-| [`OPTIONS`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7) | Répertorier les méthodes HTTP prises en charge. | Effectuez une requête [CORS Preflight](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request).
-| [`TRACE`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.8) | Faites écho à la requête HTTP à des fins de débogage. | |
+| [`CONNECTER`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.6) | Ã‰tablissez une connexion Ã  un autre systÃ¨me. | |
+| [`OPTIONS`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.7) | RÃ©pertorier les mÃ©thodes HTTP prises en charge. | Effectuez une requÃªte [CORS Preflight](https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request).
+| [`TRACE`](https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.8) | Faites Ã©cho Ã  la requÃªte HTTP Ã  des fins de dÃ©bogage. | |
 | [`PATCH`](https://datatracker.ietf.org/doc/html/rfc5789#section-2) | | Modifier un objet. |
 
 ## Objectifs des tests
 
-- Énumérer les méthodes HTTP prises en charge.
-- Test de contournement du contrôle d'accès.
-- Testez les techniques de remplacement de la méthode HTTP.
+- Ã‰numÃ©rer les mÃ©thodes HTTP prises en charge.
+- Test de contournement du contrÃ´le d'accÃ¨s.
+- Testez les techniques de remplacement de la mÃ©thode HTTP.
 
 ## Comment tester
 
-### Découvrez les méthodes prises en charge
+### DÃ©couvrez les mÃ©thodes prises en charge
 
-Pour effectuer ce test, le testeur a besoin d'un moyen d'identifier les méthodes HTTP prises en charge par le serveur Web examiné. La façon la plus simple de le faire est de faire une requête `OPTIONS` au serveur :
+Pour effectuer ce test, le testeur a besoin d'un moyen d'identifier les mÃ©thodes HTTP prises en charge par le serveur Web examinÃ©. La faÃ§on la plus simple de le faire est de faire une requÃªte `OPTIONS` au serveurÂ :
 
 ```http
 OPTIONS / HTTP/1.1
 Host: example.org
 ```
 
-Le serveur devrait alors répondre avec une liste des méthodes prises en charge :
+Le serveur devrait alors rÃ©pondre avec une liste des mÃ©thodes prises en chargeÂ :
 
 ```http
 HTTP/1.1 200 OK
 Allow: OPTIONS, GET, HEAD, POST
 ```
 
-Cependant, certains serveurs peuvent ne pas répondre aux requêtes "OPTIONS" ou renvoyer des informations inexactes. De plus, les serveurs peuvent prendre en charge différentes méthodes pour différents chemins - donc ce n'est pas parce qu'une méthode n'est pas prise en charge pour le répertoire racine `/` que cela signifie nécessairement qu'elle ne sera pas prise en charge ailleurs.
+Cependant, certains serveurs peuvent ne pas rÃ©pondre aux requÃªtes `OPTIONS` ou renvoyer des informations inexactes. De plus, les serveurs peuvent prendre en charge diffÃ©rentes mÃ©thodes pour diffÃ©rents chemins - donc ce n'est pas parce qu'une mÃ©thode n'est pas prise en charge pour le rÃ©pertoire racine `/` que cela signifie nÃ©cessairement qu'elle ne sera pas prise en charge ailleurs.
 
-Un moyen plus fiable de tester les méthodes prises en charge consiste simplement à faire une demande avec ce type de méthode et à examiner la réponse du serveur. Si la méthode n'est pas autorisée, le serveur doit renvoyer un état "405 Méthode non autorisée".
+Un moyen plus fiable de tester les mÃ©thodes prises en charge consiste simplement Ã  faire une demande avec ce type de mÃ©thode et Ã  examiner la rÃ©ponse du serveur. Si la mÃ©thode n'est pas autorisÃ©e, le serveur doit renvoyer un Ã©tat `405 MÃ©thode non autorisÃ©e`.
 
-Notez que certains serveurs traitent les méthodes inconnues comme équivalentes à `GET`, ils peuvent donc répondre à des méthodes arbitraires, telles que la requête ci-dessous. Cela peut parfois être utile pour échapper à un pare-feu d'application Web ou à tout autre filtrage qui bloque des méthodes spécifiques.
+Notez que certains serveurs traitent les mÃ©thodes inconnues comme Ã©quivalentes Ã  `GET`, ils peuvent donc rÃ©pondre Ã  des mÃ©thodes arbitraires, telles que la requÃªte ci-dessous. Cela peut parfois Ãªtre utile pour Ã©chapper Ã  un pare-feu d'application Web ou Ã  tout autre filtrage qui bloque des mÃ©thodes spÃ©cifiques.
 
 ```http
 FOO / HTTP/1.1
 Host: example.org
 ```
 
-Les requêtes avec des méthodes arbitraires peuvent également être effectuées en utilisant curl avec l'option `-X` :
+Les requÃªtes avec des mÃ©thodes arbitraires peuvent Ã©galement Ãªtre effectuÃ©es en utilisant curl avec l'option `-X`Â :
 
 ```bash
 curl -X FOO https://example.org
 ```
 
-Il existe également une variété d'outils automatisés qui peuvent tenter de déterminer les méthodes prises en charge, comme le script Nmap [`http-methods`](https://nmap.org/nsedoc/scripts/http-methods.html). Cependant, ces outils peuvent ne pas tester les méthodes dangereuses (c'est-à-dire les méthodes susceptibles de provoquer des modifications telles que `PUT` ou `DELETE`), ou peuvent provoquer involontairement des modifications du serveur Web si ces méthodes sont prises en charge. En tant que tels, ils doivent être utilisés avec précaution.
+Il existe Ã©galement une variÃ©tÃ© d'outils automatisÃ©s qui peuvent tenter de dÃ©terminer les mÃ©thodes prises en charge, comme le script Nmap [`http-methods`](https://nmap.org/nsedoc/scripts/http-methods.html). Cependant, ces outils peuvent ne pas tester les mÃ©thodes dangereuses (c'est-Ã -dire les mÃ©thodes susceptibles de provoquer des modifications telles que `PUT` ou `DELETE`), ou peuvent provoquer involontairement des modifications du serveur Web si ces mÃ©thodes sont prises en charge. En tant que tels, ils doivent Ãªtre utilisÃ©s avec prÃ©caution.
 
 ### METTRE et SUPPRIMER
 
-Les méthodes `PUT` et `DELETE` peuvent avoir des effets différents, selon qu'elles sont interprétées par le serveur Web ou par l'application qui s'y exécute.
+Les mÃ©thodes `PUT` et `DELETE` peuvent avoir des effets diffÃ©rents, selon qu'elles sont interprÃ©tÃ©es par le serveur Web ou par l'application qui s'y exÃ©cute.
 
-#### Serveurs Web hérités
+#### Serveurs Web hÃ©ritÃ©s
 
-Certains serveurs Web hérités autorisaient l'utilisation de la méthode "PUT" pour créer des fichiers sur le serveur. Par exemple, si le serveur est configuré pour autoriser cela, la requête ci-dessous créera un fichier sur le serveur appelé `test.html` avec le contenu `<script>alert(1)</script>`.
+Certains serveurs Web hÃ©ritÃ©s autorisaient l'utilisation de la mÃ©thode "PUT" pour crÃ©er des fichiers sur le serveur. Par exemple, si le serveur est configurÃ© pour autoriser cela, la requÃªte ci-dessous crÃ©era un fichier sur le serveur appelÃ© `test.html` avec le contenu `<script>alert(1)</script>`.
 
 ```http
 PUT /test.html HTTP/1.1
@@ -81,22 +81,22 @@ Content-Length: 25
 <script>alert(1)</script>
 ```
 
-Des requêtes similaires peuvent également être faites avec cURL :
+Des requÃªtes similaires peuvent Ã©galement Ãªtre faites avec cURLÂ :
 
 ```bash
 curl https://example.org --upload-file test.html
 ```
 
-Cela permet à un attaquant de télécharger des fichiers arbitraires sur le serveur Web, ce qui pourrait potentiellement entraîner une compromission complète du système s'il est autorisé à télécharger du code exécutable tel que des fichiers PHP. Cependant, cette configuration est extrêmement rare et il est peu probable qu'elle soit vue sur les systèmes modernes.
+Cela permet Ã  un attaquant de tÃ©lÃ©charger des fichiers arbitraires sur le serveur Web, ce qui pourrait potentiellement entraÃ®ner une compromission complÃ¨te du systÃ¨me s'il est autorisÃ© Ã  tÃ©lÃ©charger du code exÃ©cutable tel que des fichiers PHP. Cependant, cette configuration est extrÃªmement rare et il est peu probable qu'elle soit vue sur les systÃ¨mes modernes.
 
-De même, la méthode `DELETE` peut être utilisée pour supprimer des fichiers du serveur Web. Notez qu'il s'agit d'une **action destructrice**, il convient donc d'être prudent lors du test de cette méthode.
+De mÃªme, la mÃ©thode `DELETE` peut Ãªtre utilisÃ©e pour supprimer des fichiers du serveur Web. Notez qu'il s'agit d'une **action destructrice**, il convient donc d'Ãªtre prudent lors du test de cette mÃ©thode.
 
 ```http
 DELETE /test.html HTTP/1.1
 Host: example.org
 ```
 
-Ou avec cURL :
+Ou avec cURLÂ :
 
 ```bash
 curl http://example.org/test.html -X DELETE
@@ -104,7 +104,7 @@ curl http://example.org/test.html -X DELETE
 
 #### API RESTful
 
-En revanche, les méthodes `PUT` et `DELETE` sont couramment utilisées par les applications RESTful modernes pour créer et supprimer des objets. Par exemple, la requête API ci-dessous pourrait être utilisée pour créer un utilisateur appelé "foo" avec un rôle "user":
+En revanche, les mÃ©thodes `PUT` et `DELETE` sont couramment utilisÃ©es par les applications RESTful modernes pour crÃ©er et supprimer des objets. Par exemple, la requÃªte API ci-dessous pourrait Ãªtre utilisÃ©e pour crÃ©er un utilisateur appelÃ© "foo" avec un rÃ´le "user":
 
 ```http
 PUT /api/users/foo HTTP/1.1
@@ -116,22 +116,22 @@ Content-Length: 34
 }
 ```
 
-Une requête similaire avec la méthode DELETE pourrait être utilisée pour supprimer un objet.
+Une requÃªte similaire avec la mÃ©thode DELETE pourrait Ãªtre utilisÃ©e pour supprimer un objet.
 
 ```http
 DELETE /api/users/foo HTTP/1.1
 Host: example.org
 ```
 
-Bien qu'elle puisse être signalée par des outils d'analyse automatisés, la présence de ces méthodes sur une API RESTful **n'est pas un problème de sécurité**. Cependant, cette fonctionnalité peut présenter d'autres vulnérabilités (telles qu'un contrôle d'accès faible) et doit être testée de manière approfondie.
+Bien qu'elle puisse Ãªtre signalÃ©e par des outils d'analyse automatisÃ©s, la prÃ©sence de ces mÃ©thodes sur une API RESTful **n'est pas un problÃ¨me de sÃ©curitÃ©**. Cependant, cette fonctionnalitÃ© peut prÃ©senter d'autres vulnÃ©rabilitÃ©s (telles qu'un contrÃ´le d'accÃ¨s faible) et doit Ãªtre testÃ©e de maniÃ¨re approfondie.
 
 ### TRACE
 
-La méthode `TRACE` (ou la méthode `TRACK` équivalente de Microsoft) oblige le serveur à renvoyer le contenu de la requête. Cela a conduit à une vulnérabilité appelée Cross-Site Tracing (XST) publiée dans [2003](https://www.cgisecurity.com/whitehat-mirror/WH-WhitePaper_XST_ebook.pdf) (PDF), qui pourrait être utilisée pour accéder les cookies dont l'indicateur `HttpOnly` est défini. La méthode `TRACE` a été bloquée dans tous les navigateurs et plugins pendant de nombreuses années, et en tant que tel, ce problème n'est plus exploitable. Cependant, il peut toujours être signalé par des outils d'analyse automatisés, et la méthode "TRACE" activée sur un serveur Web suggère qu'elle n'a pas été correctement renforcée.
+La mÃ©thode `TRACE` (ou la mÃ©thode `TRACK` Ã©quivalente de Microsoft) oblige le serveur Ã  renvoyer le contenu de la requÃªte. Cela a conduit Ã  une vulnÃ©rabilitÃ© appelÃ©e Cross-Site Tracing (XST) publiÃ©e dans [2003](https://www.cgisecurity.com/whitehat-mirror/WH-WhitePaper_XST_ebook.pdf) (PDF), qui pourrait Ãªtre utilisÃ©e pour accÃ©der les cookies dont l'indicateur `HttpOnly` est dÃ©fini. La mÃ©thode `TRACE` a Ã©tÃ© bloquÃ©e dans tous les navigateurs et plugins pendant de nombreuses annÃ©es, et en tant que tel, ce problÃ¨me n'est plus exploitable. Cependant, il peut toujours Ãªtre signalÃ© par des outils d'analyse automatisÃ©s, et la mÃ©thode `TRACE` activÃ©e sur un serveur Web suggÃ¨re qu'elle n'a pas Ã©tÃ© correctement renforcÃ©e.
 
 ### RELIER
 
-La méthode `CONNECT` oblige le serveur Web à ouvrir une connexion TCP vers un autre système, puis à transmettre le trafic du client à ce système. Cela pourrait permettre à un attaquant de diriger le trafic via le serveur, afin de masquer son adresse source, d'accéder à des systèmes internes ou d'accéder à des services liés à localhost. Un exemple de requête "CONNECT" est illustré ci-dessous :
+La mÃ©thode `CONNECT` oblige le serveur Web Ã  ouvrir une connexion TCP vers un autre systÃ¨me, puis Ã  transmettre le trafic du client Ã  ce systÃ¨me. Cela pourrait permettre Ã  un attaquant de diriger le trafic via le serveur, afin de masquer son adresse source, d'accÃ©der Ã  des systÃ¨mes internes ou d'accÃ©der Ã  des services liÃ©s Ã  localhost. Un exemple de requÃªte `CONNECT` est illustrÃ© ci-dessousÂ :
 
 ```http
 CONNECT 192.168.0.1:443 HTTP/1.1
@@ -140,9 +140,9 @@ Host: example.org
 
 ### CORRECTIF
 
-La méthode `PATCH` est définie dans [RFC 5789](https://datatracker.ietf.org/doc/html/rfc5789) et est utilisée pour fournir des instructions sur la façon dont un objet doit être modifié. La RFC elle-même ne définit pas le format dans lequel ces instructions doivent être, mais diverses méthodes sont définies dans d'autres normes, telles que le [RFC 6902 - JavaScript Object Notation (JSON) Patch](https://datatracker.ietf.org/doc /html/rfc6902).
+La mÃ©thode `PATCH` est dÃ©finie dans [RFC 5789](https://datatracker.ietf.org/doc/html/rfc5789) et est utilisÃ©e pour fournir des instructions sur la faÃ§on dont un objet doit Ãªtre modifiÃ©. La RFC elle-mÃªme ne dÃ©finit pas le format dans lequel ces instructions doivent Ãªtre, mais diverses mÃ©thodes sont dÃ©finies dans d'autres normes, telles que le [RFC 6902 - JavaScript Object Notation (JSON) Patch](https://datatracker.ietf.org/doc /html/rfc6902).
 
-Par exemple, si nous avons un utilisateur appelé "foo" avec les propriétés suivantes :
+Par exemple, si nous avons un utilisateur appelÃ© "foo" avec les propriÃ©tÃ©s suivantesÂ :
 
 ```json
 {
@@ -151,7 +151,7 @@ Par exemple, si nous avons un utilisateur appelé "foo" avec les propriétés suiva
 }
 ```
 
-La requête JSON PATCH suivante pourrait être utilisée pour changer le rôle de cet utilisateur "admin", sans modifier l'adresse email :
+La requÃªte JSON PATCH suivante pourrait Ãªtre utilisÃ©e pour changer le rÃ´le de cet utilisateur "admin", sans modifier l'adresse emailÂ :
 
 ```http
 PATCH /api/users/foo HTTP/1.1
@@ -160,7 +160,7 @@ Host: example.org
 { "op": "replace", "path": "/role", "value": "admin" }
 ```
 
-Bien que la RFC indique qu'elle doit inclure des instructions sur la façon dont l'objet doit être modifié, la méthode `PATCH` est couramment (mal) utilisée pour inclure le contenu modifié à la place, comme indiqué ci-dessous. Tout comme la requête précédente, cela changerait la valeur "role" en "admin" sans modifier le reste de l'objet. Cela contraste avec la méthode `PUT`, qui écraserait l'objet entier (et donnerait ainsi un objet sans attribut "email").
+Bien que la RFC indique qu'elle doit inclure des instructions sur la faÃ§on dont l'objet doit Ãªtre modifiÃ©, la mÃ©thode `PATCH` est couramment (mal) utilisÃ©e pour inclure le contenu modifiÃ© Ã  la place, comme indiquÃ© ci-dessous. Tout comme la requÃªte prÃ©cÃ©dente, cela changerait la valeur "role" en "admin" sans modifier le reste de l'objet. Cela contraste avec la mÃ©thode `PUT`, qui Ã©craserait l'objet entier (et donnerait ainsi un objet sans attribut "email").
 
 ```http
 PATCH /api/users/foo HTTP/1.1
@@ -171,11 +171,11 @@ Host: example.org
 }
 ```
 
-Comme avec la méthode "PUT", cette fonctionnalité peut présenter des faiblesses de contrôle d'accès ou d'autres vulnérabilités. De plus, les applications peuvent ne pas effectuer le même niveau de validation d'entrée lors de la modification d'un objet que lors de la création d'un objet. Cela pourrait potentiellement permettre l'injection de valeurs malveillantes (comme dans une attaque de script intersite stocké), ou pourrait autoriser des objets cassés ou invalides pouvant entraîner des problèmes liés à la logique métier.
+Comme avec la mÃ©thode `PUT`, cette fonctionnalitÃ© peut prÃ©senter des faiblesses de contrÃ´le d'accÃ¨s ou d'autres vulnÃ©rabilitÃ©s. De plus, les applications peuvent ne pas effectuer le mÃªme niveau de validation d'entrÃ©e lors de la modification d'un objet que lors de la crÃ©ation d'un objet. Cela pourrait potentiellement permettre l'injection de valeurs malveillantes (comme dans une attaque de script intersite stockÃ©), ou pourrait autoriser des objets cassÃ©s ou invalides pouvant entraÃ®ner des problÃ¨mes liÃ©s Ã  la logique mÃ©tier.
 
-### Test de contournement du contrôle d'accès
+### Test de contournement du contrÃ´le d'accÃ¨s
 
-Si une page de l'application redirige les utilisateurs vers une page de connexion avec un code `302` lorsqu'ils tentent d'y accéder directement, il peut être possible de contourner cela en faisant une demande avec une méthode HTTP différente, telle que `HEAD`, ` POST` ou même une méthode inventée telle que `FOO`. Si l'application Web répond par un "HTTP/1.1 200 OK" plutôt que par le "HTTP/1.1 302 Found" attendu, il peut être possible de contourner l'authentification ou l'autorisation. L'exemple ci-dessous montre comment une requête `HEAD` peut entraîner une page définissant des cookies administratifs, plutôt que de rediriger l'utilisateur vers une page de connexion :
+Si une page de l'application redirige les utilisateurs vers une page de connexion avec un code `302` lorsqu'ils tentent d'y accÃ©der directement, il peut Ãªtre possible de contourner cela en faisant une demande avec une mÃ©thode HTTP diffÃ©rente, telle que `HEAD`, ` POST` ou mÃªme une mÃ©thode inventÃ©e telle que `FOO`. Si l'application Web rÃ©pond par un `HTTP/1.1 200 OK` plutÃ´t que par le `HTTP/1.1 302 Found` attendu, il peut Ãªtre possible de contourner l'authentification ou l'autorisation. L'exemple ci-dessous montre comment une requÃªte `HEAD` peut entraÃ®ner une page dÃ©finissant des cookies administratifs, plutÃ´t que de rediriger l'utilisateur vers une page de connexionÂ :
 
 ```http
 HEAD /admin/ HTTP/1.1
@@ -188,7 +188,7 @@ HTTP/1.1 200 OK
 Set-Cookie: adminSessionCookie=[...];
 ```
 
-Alternativement, il peut être possible de faire des demandes directes aux pages qui provoquent des actions, telles que :
+Alternativement, il peut Ãªtre possible de faire des demandes directes aux pages qui provoquent des actions, telles queÂ :
 
 ```http
 HEAD /admin/createUser.php?username=foo&password=bar&role=admin HTTP/1.1
@@ -205,17 +205,17 @@ Content-Length: 36
 username=foo&password=bar&role=admin
 ```
 
-### Test du remplacement de la méthode HTTP
+### Test du remplacement de la mÃ©thode HTTP
 
-Certains frameworks Web fournissent un moyen de remplacer la méthode HTTP réelle dans la requête en émulant les verbes HTTP manquants en transmettant un en-tête personnalisé dans les requêtes. L'objectif principal est de contourner une application middleware (telle qu'un proxy ou un pare-feu d'application Web) qui bloque des méthodes spécifiques. Les en-têtes HTTP alternatifs suivants pourraient éventuellement être utilisés :
+Certains frameworks Web fournissent un moyen de remplacer la mÃ©thode HTTP rÃ©elle dans la requÃªte en Ã©mulant les verbes HTTP manquants en transmettant un en-tÃªte personnalisÃ© dans les requÃªtes. L'objectif principal est de contourner une application middleware (telle qu'un proxy ou un pare-feu d'application Web) qui bloque des mÃ©thodes spÃ©cifiques. Les en-tÃªtes HTTP alternatifs suivants pourraient Ã©ventuellement Ãªtre utilisÃ©sÂ :
 
-- `Méthode X-HTTP`
+- `MÃ©thode X-HTTP`
 - `X-HTTP-Method-Override`
 - `X-Method-Override`
 
-Afin de tester cela, dans les scénarios où des verbes restreints tels que `PUT` ou `DELETE` renvoient une `405 Méthode non autorisée`, rejouez la même requête avec l'ajout des en-têtes alternatifs pour le remplacement de la méthode HTTP et observez comment le système répond. L'application doit répondre avec un code d'état différent (*par exemple* `200 OK`) dans les cas où le remplacement de méthode est pris en charge.
+Afin de tester cela, dans les scÃ©narios oÃ¹ des verbes restreints tels que `PUT` ou `DELETE` renvoient une `405 MÃ©thode non autorisÃ©e`, rejouez la mÃªme requÃªte avec l'ajout des en-tÃªtes alternatifs pour le remplacement de la mÃ©thode HTTP et observez comment le systÃ¨me rÃ©pond. L'application doit rÃ©pondre avec un code d'Ã©tat diffÃ©rent (*par exemple* `200 OK`) dans les cas oÃ¹ le remplacement de mÃ©thode est pris en charge.
 
-Le serveur Web de l'exemple suivant n'autorise pas la méthode "DELETE" et la bloque :
+Le serveur Web de l'exemple suivant n'autorise pas la mÃ©thode `DELETE` et la bloqueÂ :
 
 ```http
 DELETE /resource.html HTTP/1.1
@@ -227,7 +227,7 @@ HTTP/1.1 405 Method Not Allowed
 [...]
 ```
 
-Après avoir ajouté l'en-tête `X-HTTP-Method`, le serveur répond à la requête par un 200 :
+AprÃ¨s avoir ajoutÃ© l'en-tÃªte `X-HTTP-Method`, le serveur rÃ©pond Ã  la requÃªte par un 200Â :
 
 ```http
 GET /resource.html HTTP/1.1
@@ -242,19 +242,19 @@ HTTP/1.1 200 OK
 
 ## Correction
 
-- Assurez-vous que seules les méthodes requises sont autorisées et que les méthodes autorisées sont correctement configurées.
-- Assurez-vous qu'aucune solution de contournement n'est mise en œuvre pour contourner les mesures de sécurité mises en œuvre par les agents utilisateurs, les frameworks ou les serveurs Web.
+- Assurez-vous que seules les mÃ©thodes requises sont autorisÃ©es et que les mÃ©thodes autorisÃ©es sont correctement configurÃ©es.
+- Assurez-vous qu'aucune solution de contournement n'est mise en Âœuvre pour contourner les mesures de sÃ©curitÃ© mises en Å“uvre par les agents utilisateurs, les frameworks ou les serveurs Web.
 
 ## Outils
 
 - [Ncat](https://nmap.org/ncat/)
 - [cURL](https://curl.haxx.se/)
-- [Script NSE des méthodes http-Nmap] (https://nmap.org/nsedoc/scripts/http-methods.html)
+- [Script NSE des mÃ©thodes http-Nmap](https://nmap.org/nsedoc/scripts/http-methods.html)
 
-## Références
+## RÃ©fÃ©rences
 
 - [RFC 7231 - Protocole de transfert hypertexte (HTTP/1.1)](https://datatracker.ietf.org/doc/html/rfc7231)
-- [RFC 5789 - Méthode PATCH pour HTTP](https://datatracker.ietf.org/doc/html/rfc5789)
-- [HTACCESS : méthode BILBAO exposée] (https://web.archive.org/web/20160616172703/http://www.kernelpanik.org/docs/kernelpanik/bme.eng.pdf)
-- [Fortify - Remplacement de la méthode HTTP mal utilisé](https://vulncat.fortify.com/en/detail?id=desc.dynamic.xtended_preview.often_misused_http_method_override)
+- [RFC 5789 - MÃ©thode PATCH pour HTTP](https://datatracker.ietf.org/doc/html/rfc5789)
+- [HTACCESSÂ : mÃ©thode BILBAO exposÃ©e](https://web.archive.org/web/20160616172703/http://www.kernelpanik.org/docs/kernelpanik/bme.eng.pdf)
+- [Fortify - Remplacement de la mÃ©thode HTTP mal utilisÃ©](https://vulncat.fortify.com/en/detail?id=desc.dynamic.xtended_preview.often_misused_http_method_override)
 - [Mozilla Developer Network - Safe HTTP Methods](https://developer.mozilla.org/en-US/docs/Glossary/Safe/HTTP)
