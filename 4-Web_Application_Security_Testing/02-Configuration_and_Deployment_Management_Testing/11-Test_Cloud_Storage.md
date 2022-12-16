@@ -6,30 +6,30 @@
 
 ## Sommaire
 
-Les services de stockage en nuage facilitent l'application et les services Web pour stocker et accéder aux objets dans le service de stockage. Cependant, une mauvaise configuration du contrôle d'accès peut entraîner l'exposition d'informations sensibles, la falsification de données ou un accès non autorisé.
+Les services de stockage en nuage facilitent l'application et les services Web pour stocker et accÃ©der aux objets dans le service de stockage. Cependant, une mauvaise configuration du contrÃ´le d'accÃ¨s peut entraÃ®ner l'exposition d'informations sensibles, la falsification de donnÃ©es ou un accÃ¨s non autorisÃ©.
 
-Un exemple connu est celui où un compartiment Amazon S3 est mal configuré, bien que les autres services de stockage en nuage puissent également être exposés à des risques similaires. Par défaut, tous les compartiments S3 sont privés et ne sont accessibles qu'aux utilisateurs auxquels l'accès est explicitement accordé. Les utilisateurs peuvent accorder un accès public au compartiment lui-même et aux objets individuels stockés dans ce compartiment. Cela peut permettre à un utilisateur non autorisé de télécharger de nouveaux fichiers, de modifier ou de lire des fichiers stockés.
+Un exemple connu est celui oÃ¹ un compartiment Amazon S3 est mal configurÃ©, bien que les autres services de stockage en nuage puissent Ã©galement Ãªtre exposÃ©s Ã  des risques similaires. Par dÃ©faut, tous les compartiments S3 sont privÃ©s et ne sont accessibles qu'aux utilisateurs auxquels l'accÃ¨s est explicitement accordÃ©. Les utilisateurs peuvent accorder un accÃ¨s public au compartiment lui-mÃªme et aux objets individuels stockÃ©s dans ce compartiment. Cela peut permettre Ã  un utilisateur non autorisÃ© de tÃ©lÃ©charger de nouveaux fichiers, de modifier ou de lire des fichiers stockÃ©s.
 
 ## Objectifs des tests
 
-- Évaluer que la configuration du contrôle d'accès pour les services de stockage est correctement en place.
+- Ã‰valuer que la configuration du contrÃ´le d'accÃ¨s pour les services de stockage est correctement en place.
 
 ## Comment tester
 
-Identifiez d'abord l'URL permettant d'accéder aux données dans le service de stockage, puis envisagez les tests suivants :
+Identifiez d'abord l'URL permettant d'accÃ©der aux donnÃ©es dans le service de stockage, puis envisagez les tests suivantsÂ :
 
-- lire les données non autorisées
-- télécharger un nouveau fichier arbitraire
+- lire les donnÃ©es non autorisÃ©es
+- tÃ©lÃ©charger un nouveau fichier arbitraire
 
-Vous pouvez utiliser curl pour les tests avec les commandes suivantes et voir si des actions non autorisées peuvent être effectuées avec succès.
+Vous pouvez utiliser curl pour les tests avec les commandes suivantes et voir si des actions non autorisÃ©es peuvent Ãªtre effectuÃ©es avec succÃ¨s.
 
-Pour tester la capacité à lire un objet :
+Pour tester la capacitÃ© Ã  lire un objetÂ :
 
 ```bash
 curl -X GET https://<cloud-storage-service>/<object>
 ```
 
-Pour tester la possibilité de télécharger un fichier :
+Pour tester la possibilitÃ© de tÃ©lÃ©charger un fichierÂ :
 
 ```bash
 curl -X PUT -d 'test' 'https://<cloud-storage-service>/test.txt'
@@ -37,41 +37,41 @@ curl -X PUT -d 'test' 'https://<cloud-storage-service>/test.txt'
 
 ### Test d'une mauvaise configuration du compartiment Amazon S3
 
-Les URL de compartiment Amazon S3 suivent l'un des deux formats suivants, soit le style d'hôte virtuel, soit le style de chemin.
+Les URL de compartiment Amazon S3 suivent l'un des deux formats suivants, soit le style d'hÃ´te virtuel, soit le style de chemin.
 
-- Accès au style hébergé virtuel
+- AccÃ¨s au style hÃ©bergÃ© virtuel
 
 ```text
 https://bucket-name.s3.Region.amazonaws.com/key-name
 ```
 
-Dans l'exemple suivant, "my-bucket" est le nom du bucket, "us-west-2" est la région et "puppy.png" est le nom de la clé :
+Dans l'exemple suivant, `my-bucket` est le nom du bucket, `us-west-2` est la rÃ©gion et `puppy.png` est le nom de la clÃ©Â :
 
 ```text
 https://my-bucket.s3.us-west-2.amazonaws.com/puppy.png
 ```
 
-- Accès au chemin
+- AccÃ¨s au chemin
 
 ```text
 https://s3.Region.amazonaws.com/bucket-name/key-name
 ```
 
-Comme ci-dessus, dans l'exemple suivant, "my-bucket" est le nom du bucket, "us-west-2" est la région et "puppy.png" est le nom de la clé :
+Comme ci-dessus, dans l'exemple suivant, `my-bucket` est le nom du bucket, `us-west-2` est la rÃ©gion et `puppy.png` est le nom de la clÃ©Â :
 
 ```text
 https://s3.us-west-2.amazonaws.com/my-bucket/puppy.jpg
 ```
 
-Pour certaines régions, le point de terminaison global hérité qui ne spécifie pas de point de terminaison spécifique à la région peut être utilisé. Son format est également soit de style hébergé virtuel, soit de style chemin.
+Pour certaines rÃ©gions, le point de terminaison global hÃ©ritÃ© qui ne spÃ©cifie pas de point de terminaison spÃ©cifique Ã  la rÃ©gion peut Ãªtre utilisÃ©. Son format est Ã©galement soit de style hÃ©bergÃ© virtuel, soit de style chemin.
 
-- Accès au style hébergé virtuel
+- AccÃ¨s au style hÃ©bergÃ© virtuel
 
 ```text
 https://bucket-name.s3.amazonaws.com
 ```
 
-- Accès au chemin
+- AccÃ¨s au chemin
 
 ```text
 https://s3.amazonaws.com/bucket-name
@@ -79,7 +79,7 @@ https://s3.amazonaws.com/bucket-name
 
 #### Identifier l'URL du compartiment
 
-Pour les tests de boîte noire, les URL S3 peuvent être trouvées dans les messages HTTP. L'exemple suivant montre qu'une URL de compartiment est envoyée dans la balise "img" d'une réponse HTTP.
+Pour les tests de boÃ®te noire, les URL S3 peuvent Ãªtre trouvÃ©es dans les messages HTTP. L'exemple suivant montre qu'une URL de compartiment est envoyÃ©e dans la balise `img` d'une rÃ©ponse HTTP.
 
 ```html
 ...
@@ -87,36 +87,36 @@ Pour les tests de boîte noire, les URL S3 peuvent être trouvées dans les message
 ...
 ```
 
-Pour les tests en boîte grise, vous pouvez obtenir des URL de compartiment à partir de l'interface Web d'Amazon, des documents, du code source ou de toute autre source disponible.
+Pour les tests en boÃ®te grise, vous pouvez obtenir des URL de compartiment Ã  partir de l'interface Web d'Amazon, des documents, du code source ou de toute autre source disponible.
 
 #### Test avec AWS-CLI
 
-En plus de tester avec curl, vous pouvez également tester avec l'outil de ligne de commande AWS. Dans ce cas, le protocole `s3://` est utilisé.
+En plus de tester avec curl, vous pouvez Ã©galement tester avec l'outil de ligne de commande AWS. Dans ce cas, le protocole `s3://` est utilisÃ©.
 
 ##### Liste
 
-La commande suivante répertorie tous les objets du bucket lorsqu'il est configuré public.
+La commande suivante rÃ©pertorie tous les objets du bucket lorsqu'il est configurÃ© public.
 
 ```bash
 aws s3 ls s3://<bucket-name>
 ```
 
-##### Télécharger
+##### TÃ©lÃ©charger
 
-Voici la commande pour télécharger un fichier
+Voici la commande pour tÃ©lÃ©charger un fichier
 
 ```bash
 aws s3 cp arbitrary-file s3://bucket-name/path-to-save
 ```
 
-Cet exemple montre le résultat lorsque le téléchargement a réussi.
+Cet exemple montre le rÃ©sultat lorsque le tÃ©lÃ©chargement a rÃ©ussi.
 
 ```bash
 $ aws s3 cp test.txt s3://bucket-name/test.txt
 upload: ./test.txt to s3://bucket-name/test.txt
 ```
 
-Cet exemple montre le résultat lorsque le téléchargement a échoué.
+Cet exemple montre le rÃ©sultat lorsque le tÃ©lÃ©chargement a Ã©chouÃ©.
 
 ```bash
 $ aws s3 cp test.txt s3://bucket-name/test.txt
