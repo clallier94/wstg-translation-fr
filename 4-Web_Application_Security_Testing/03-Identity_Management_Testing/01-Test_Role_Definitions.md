@@ -1,4 +1,4 @@
-# Définitions de rôle de test
+# DÃ©finitions de rÃ´le de test
 
 |ID          |
 |------------|
@@ -6,60 +6,60 @@
 
 ## Sommaire
 
-Les applications ont plusieurs types de fonctionnalités et de services, et ceux-ci nécessitent des autorisations d'accès en fonction des besoins de l'utilisateur. Cet utilisateur pourrait être :
+Les applications ont plusieurs types de fonctionnalitÃ©s et de services, et ceux-ci nÃ©cessitent des autorisations d'accÃ¨s en fonction des besoins de l'utilisateur. Cet utilisateur pourrait ÃªtreÂ :
 
-- un administrateur, où ils gèrent les fonctionnalités de l'application.
-- un auditeur, où ils examinent les opérations d'application et fournissent un rapport détaillé.
-- un ingénieur de support, où ils aident les clients à déboguer et à résoudre les problèmes sur leurs comptes.
-- un client, où il interagit avec l'application et bénéficie de ses services.
+- un administrateur, oÃ¹ ils gÃ¨rent les fonctionnalitÃ©s de l'application.
+- un auditeur, oÃ¹ ils examinent les opÃ©rations d'application et fournissent un rapport dÃ©taillÃ©.
+- un ingÃ©nieur de support, oÃ¹ ils aident les clients Ã  dÃ©boguer et Ã  rÃ©soudre les problÃ¨mes sur leurs comptes.
+- un client, oÃ¹ il interagit avec l'application et bÃ©nÃ©ficie de ses services.
 
-Afin de gérer ces utilisations et tout autre cas d'utilisation pour cette application, des définitions de rôles sont configurées (plus communément appelées [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control)). Sur la base de ces rôles, l'utilisateur est capable d'accomplir la tâche requise.
+Afin de gÃ©rer ces utilisations et tout autre cas d'utilisation pour cette application, des dÃ©finitions de rÃ´les sont configurÃ©es (plus communÃ©ment appelÃ©es [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control)). Sur la base de ces rÃ´les, l'utilisateur est capable d'accomplir la tÃ¢che requise.
 
 ## Objectifs des tests
 
-- Identifier et documenter les rôles utilisés par l'application.
-- Tenter de changer, de changer ou d'accéder à un autre rôle.
-- Revoir la granularité des rôles et des besoins derrière les permissions données.
+- Identifier et documenter les rÃ´les utilisÃ©s par l'application.
+- Tenter de changer, de changer ou d'accÃ©der Ã  un autre rÃ´le.
+- Revoir la granularitÃ© des rÃ´les et des besoins derriÃ¨re les permissions donnÃ©es.
 
 ## Comment tester
 
-### Identification des rôles
+### Identification des rÃ´les
 
-Le testeur doit commencer par identifier les rôles d'application testés via l'une des méthodes suivantes :
+Le testeur doit commencer par identifier les rÃ´les d'application testÃ©s via l'une des mÃ©thodes suivantesÂ :
 
 - Dossier de candidature.
-- Accompagnement par les développeurs ou administrateurs de l'application.
+- Accompagnement par les dÃ©veloppeurs ou administrateurs de l'application.
 - Commentaires d'application.
-- Fuzz rôles possibles :
+- RÃ´les Fuzz possibles :
      - variable de cookie (*par exemple* `role=admin`, `isAdmin=True`)
      - variable de compte (*e.g.* `Role: manager`)
-     - répertoires ou fichiers cachés (*par exemple* `/admin`, `/mod`, `/backups`)
-     - passer à des utilisateurs bien connus (*e.g.* `admin`, `backups`, etc.)
+     - rÃ©pertoires ou fichiers cachÃ©s (*par exemple* `/admin`, `/mod`, `/backups`)
+     - passer Ã  des utilisateurs bien connus (*e.g.* `admin`, `backups`, etc.)
 
-### Passer aux rôles disponibles
+### Passer aux rÃ´les disponibles
 
-Après avoir identifié les vecteurs d'attaque possibles, le testeur doit tester et valider qu'il peut accéder aux rôles disponibles.
+AprÃ¨s avoir identifiÃ© les vecteurs d'attaque possibles, le testeur doit tester et valider qu'il peut accÃ©der aux rÃ´les disponibles.
 
-> Certaines applications définissent les rôles de l'utilisateur à la création, par des contrôles et politiques rigoureux, ou en s'assurant que le rôle de l'utilisateur est correctement protégé par une signature créée par le backend. Découvrir que des rôles existent ne signifie pas qu'ils sont une vulnérabilité.
+> Certaines applications dÃ©finissent les rÃ´les de l'utilisateur Ã  la crÃ©ation, par des contrÃ´les et politiques rigoureux, ou en s'assurant que le rÃ´le de l'utilisateur est correctement protÃ©gÃ© par une signature crÃ©Ã©e par le backend. DÃ©couvrir que des rÃ´les existent ne signifie pas qu'ils sont une vulnÃ©rabilitÃ©.
 
-### Examiner les autorisations des rôles
+### Examiner les autorisations des rÃ´les
 
-Après avoir obtenu l'accès aux rôles sur le système, le testeur doit comprendre les autorisations accordées à chaque rôle.
+AprÃ¨s avoir obtenu l'accÃ¨s aux rÃ´les sur le systÃ¨me, le testeur doit comprendre les autorisations accordÃ©es Ã  chaque rÃ´le.
 
-Un ingénieur de support ne doit pas être en mesure de gérer les fonctionnalités administratives, de gérer les sauvegardes ou d'effectuer des transactions à la place d'un utilisateur.
+Un ingÃ©nieur de support ne doit pas Ãªtre en mesure de gÃ©rer les fonctionnalitÃ©s administratives, de gÃ©rer les sauvegardes ou d'effectuer des transactions Ã  la place d'un utilisateur.
 
-Un administrateur ne devrait pas avoir les pleins pouvoirs sur le système. Les fonctionnalités d'administration sensibles doivent tirer parti d'un principe de fabricant-vérificateur ou utiliser MFA pour s'assurer que l'administrateur effectue la transaction. Un exemple clair à ce sujet est l'[incident Twitter en 2020](https://blog.twitter.com/en_us/topics/company/2020/an-update-on-our-security-incident.html).
+Un administrateur ne devrait pas avoir les pleins pouvoirs sur le systÃ¨me. Les fonctionnalitÃ©s d'administration sensibles doivent tirer parti d'un principe de fabricant-vÃ©rificateur ou utiliser MFA pour s'assurer que l'administrateur effectue la transaction. Un exemple clair Ã  ce sujet est l'[incident Twitter en 2020](https://blog.twitter.com/en_us/topics/company/2020/an-update-on-our-security-incident.html).
 
 ## Outils
 
-Les tests mentionnés ci-dessus peuvent être effectués sans l'utilisation d'aucun outil, à l'exception de celui utilisé pour accéder au système.
+Les tests mentionnÃ©s ci-dessus peuvent Ãªtre effectuÃ©s sans l'utilisation d'aucun outil, Ã  l'exception de celui utilisÃ© pour accÃ©der au systÃ¨me.
 
-Pour rendre les choses plus faciles et plus documentées, on peut utiliser :
+Pour rendre les choses plus faciles et plus documentÃ©es, on peut utiliser :
 
-- [Extension d'autorisation de Burp] (https://github.com/Quitten/Autorize)
-- [Module complémentaire de test de contrôle d'accès de ZAP] (https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
+- [Extension d'autorisation de Burp](https://github.com/Quitten/Autorize)
+- [Module complÃ©mentaire de test de contrÃ´le d'accÃ¨s de ZAP](https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
 
-## Références
+## RÃ©fÃ©rences
 
-- [Ingénierie de rôle pour la gestion de la sécurité d'entreprise, E Coyne & J Davis, 2007](https://www.bookdepository.co.uk/Role-Engineering-for-Enterprise-Security-Management-Edward-Coyne/9781596932180)
-- [Ingénierie des rôles et normes RBAC](https://csrc.nist.gov/projects/role-based-access-control#rbac-standard)
+- [IngÃ©nierie de rÃ´le pour la gestion de la sÃ©curitÃ© d'entreprise, E Coyne & J Davis, 2007](https://www.bookdepository.co.uk/Role-Engineering-for-Enterprise-Security-Management-Edward-Coyne/9781596932180)
+- [IngÃ©nierie des rÃ´les et normes RBAC](https://csrc.nist.gov/projects/role-based-access-control#rbac-standard)
