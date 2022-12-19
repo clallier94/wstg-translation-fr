@@ -1,4 +1,4 @@
-# Test d'énumération de compte et de compte d'utilisateur devinable
+# Tester l'énumération du compte et du compte Invité
 
 |ID          |
 |------------|
@@ -31,7 +31,7 @@ Enregistrez la réponse du serveur lorsque vous soumettez un ID utilisateur vali
 
 > A l'aide d'un proxy web, notez les informations récupérées de cette authentification réussie (réponse HTTP 200, longueur de la réponse).
 
-#### Test pour un utilisateur valide avec un mot de passe erroné
+#### Test pour un utilisateur valide avec un mot de passe erroné
 
 Maintenant, le testeur doit essayer d'insérer un ID utilisateur valide et un mot de passe erroné et enregistrer le message d'erreur généré par l'application.
 
@@ -78,7 +78,7 @@ Les testeurs peuvent énumérer les utilisateurs de plusieurs manières, telles 
 
 Certaines applications Web publient un code ou un message d'erreur spécifique que nous pouvons analyser.
 
-#### Analyse des URL et des redirections d'URL
+#### Analyse des URL et des redirections d'URL
 
 Par exemple:
 
@@ -152,7 +152,7 @@ Encore une fois, nous pouvons deviner un nom d'utilisateur à partir des informa
 
 > En énumérant les comptes d'utilisateurs, vous risquez de verrouiller des comptes après un nombre prédéfini d'échecs de vérification (basé sur la politique de l'application). De plus, parfois, votre adresse IP peut être interdite par des règles dynamiques sur le pare-feu de l'application ou le système de prévention des intrusions.
 
-### Test de la boîte grise
+### Test de la boîte grise
 
 #### Test des messages d'erreur d'authentification
 
@@ -170,12 +170,12 @@ Assurez-vous que les comptes système par défaut et les comptes de test sont su
 
 ## Outils
 
-- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP (ZAP)](https://www.zaproxy.org)
 - [curl](https://curl.haxx.se/)
 - [PERL](https://www.perl.org)
 
 ## Références
 
-- [Vulnérabilités d'énumération de nom d'utilisateur] (https://www.gnucitizen.org/blog/username-enumeration-vulnerabilities/)
-- [Empêcher l'énumération du nom d'utilisateur WordPress] (https://www.jinsonvarghese.com/prevent-wordpress-username-enumeration/)
+- [Vulnérabilités d'énumération de nom d'utilisateur](https://www.gnucitizen.org/blog/username-enumeration-vulnerabilities/)
+- [Empêcher l'énumération du nom d'utilisateur WordPress](https://www.jinsonvarghese.com/prevent-wordpress-username-enumeration/)
 - [Marco Mella, énumération des utilisateurs de Sun Java Access & Identity Manager](https://www.exploit-db.com/exploits/32762)
