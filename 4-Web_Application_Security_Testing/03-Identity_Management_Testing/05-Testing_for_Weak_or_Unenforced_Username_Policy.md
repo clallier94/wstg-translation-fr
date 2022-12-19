@@ -1,4 +1,4 @@
-# Test de la politique de nom d'utilisateur faible ou non appliquée
+# Tester la politique de nom d'utilisateur faible ou non appliquÃ©e
 
 |ID          |
 |------------|
@@ -6,20 +6,20 @@
 
 ## Sommaire
 
-Les noms de compte utilisateur sont souvent très structurés (par exemple, le nom du compte Joe Bloggs est jbloggs et le nom du compte Fred Nurks est fnurks) et les noms de compte valides peuvent facilement être devinés.
+Les noms de compte utilisateur sont souvent trÃ¨s structurÃ©s (par exemple, le nom du compte Joe Bloggs est jbloggs et le nom du compte Fred Nurks est fnurks) et les noms de compte valides peuvent facilement Ãªtre devinÃ©s.
 
 ## Objectifs des tests
 
-- Déterminez si une structure de nom de compte cohérente rend l'application vulnérable à l'énumération des comptes.
-- Déterminez si les messages d'erreur de l'application permettent l'énumération des comptes.
+- DÃ©terminez si une structure de nom de compte cohÃ©rente rend l'application vulnÃ©rable Ã  l'Ã©numÃ©ration des comptes.
+- DÃ©terminez si les messages d'erreur de l'application permettent l'Ã©numÃ©ration des comptes.
 
 ## Comment tester
 
-- Déterminer la structure des noms de compte.
-- Évaluer la réponse de l'application aux noms de compte valides et non valides.
-- Utilisez des réponses différentes aux noms de compte valides et non valides pour énumérer les noms de compte valides.
-- Utilisez des dictionnaires de noms de compte pour énumérer les noms de compte valides.
+- DÃ©terminer la structure des noms de compte.
+- Ã‰valuer la rÃ©ponse de l'application aux noms de compte valides et non valides.
+- Utilisez des rÃ©ponses diffÃ©rentes aux noms de compte valides et non valides pour Ã©numÃ©rer les noms de compte valides.
+- Utilisez des dictionnaires de noms de compte pour Ã©numÃ©rer les noms de compte valides.
 
 ## Correction
 
-Assurez-vous que l'application renvoie des messages d'erreur génériques cohérents en réponse à un nom de compte, un mot de passe ou d'autres informations d'identification d'utilisateur non valides saisis lors du processus de connexion.
+Assurez-vous que l'application renvoie des messages d'erreur gÃ©nÃ©riques cohÃ©rents en rÃ©ponse Ã  un nom de compte, un mot de passe ou d'autres informations d'identification d'utilisateur non valides saisis lors du processus de connexion.
