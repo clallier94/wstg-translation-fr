@@ -1,4 +1,4 @@
-# Test des fonctionnalités de changement ou de réinitialisation de mot de passe faibles
+# Test des fonctionnalitÃ©s de changement ou de rÃ©initialisation de mot de passe faibles
 
 |ID          |
 |------------|
@@ -6,183 +6,183 @@
 
 ## Sommaire
 
-Pour toute application qui demande à l'utilisateur de s'authentifier avec un mot de passe, il doit y avoir un mécanisme par lequel l'utilisateur peut retrouver l'accès à son compte s'il oublie son mot de passe. Bien que cela puisse parfois être un processus manuel qui implique de contacter le propriétaire du site Web ou une équipe d'assistance, les utilisateurs sont souvent autorisés à effectuer une réinitialisation de mot de passe en libre-service et à retrouver l'accès à leur compte en fournissant d'autres preuves de leur identité. .
+Pour toute application qui demande Ã  l'utilisateur de s'authentifier avec un mot de passe, il doit y avoir un mÃ©canisme par lequel l'utilisateur peut retrouver l'accÃ¨s Ã  son compte s'il oublie son mot de passe. Bien que cela puisse parfois Ãªtre un processus manuel qui implique de contacter le propriÃ©taire du site Web ou une Ã©quipe d'assistance, les utilisateurs sont souvent autorisÃ©s Ã  effectuer une rÃ©initialisation de mot de passe en libre-service et Ã  retrouver l'accÃ¨s Ã  leur compte en fournissant d'autres preuves de leur identitÃ©. .
 
-Étant donné que cette fonctionnalité fournit un moyen direct de compromettre le compte de l'utilisateur, il est crucial qu'elle soit implémentée en toute sécurité.
+Ã‰tant donnÃ© que cette fonctionnalitÃ© fournit un moyen direct de compromettre le compte de l'utilisateur, il est crucial qu'elle soit implÃ©mentÃ©e en toute sÃ©curitÃ©.
 
 ## Objectifs des tests
 
-- Déterminez si la fonctionnalité de modification et de réinitialisation du mot de passe permet de compromettre les comptes.
+- DÃ©terminez si la fonctionnalitÃ© de modification et de rÃ©initialisation du mot de passe permet de compromettre les comptes.
 
 ## Comment tester
 
 ### La collecte d'informations
 
-La première étape consiste à recueillir des informations sur les mécanismes disponibles pour permettre à l'utilisateur de réinitialiser son mot de passe sur l'application. S'il existe plusieurs interfaces sur le même site (telles qu'une interface Web, une application mobile et une API), elles doivent toutes être examinées, au cas où elles fourniraient des fonctionnalités différentes.
+La premiÃ¨re Ã©tape consiste Ã  recueillir des informations sur les mÃ©canismes disponibles pour permettre Ã  l'utilisateur de rÃ©initialiser son mot de passe sur l'application. S'il existe plusieurs interfaces sur le mÃªme site (telles qu'une interface Web, une application mobile et une API), elles doivent toutes Ãªtre examinÃ©es, au cas oÃ¹ elles fourniraient des fonctionnalitÃ©s diffÃ©rentes.
 
-Une fois que cela a été établi, déterminez quelles informations sont requises pour qu'un utilisateur lance une réinitialisation de mot de passe. Il peut s'agir du nom d'utilisateur ou de l'adresse e-mail (qui peuvent tous deux être obtenus à partir d'informations publiques), mais il peut également s'agir d'un identifiant d'utilisateur généré en interne.
+Une fois que cela a Ã©tÃ© Ã©tabli, dÃ©terminez quelles informations sont requises pour qu'un utilisateur lance une rÃ©initialisation de mot de passe. Il peut s'agir du nom d'utilisateur ou de l'adresse e-mail (qui peuvent tous deux Ãªtre obtenus Ã  partir d'informations publiques), mais il peut Ã©galement s'agir d'un identifiant d'utilisateur gÃ©nÃ©rÃ© en interne.
 
-### Préoccupations générales
+### PrÃ©occupations gÃ©nÃ©rales
 
-Quelles que soient les méthodes spécifiques utilisées pour réinitialiser les mots de passe, il existe un certain nombre de domaines communs qui doivent être pris en compte :
+Quelles que soient les mÃ©thodes spÃ©cifiques utilisÃ©es pour rÃ©initialiser les mots de passe, il existe un certain nombre de domaines communs qui doivent Ãªtre pris en compteÂ :
 
-- Le processus de réinitialisation du mot de passe est-il plus faible que le processus d'authentification ?
+- Le processus de rÃ©initialisation du mot de passe est-il plus faible que le processus d'authentificationÂ ?
 
-  Le processus de réinitialisation du mot de passe fournit un mécanisme alternatif pour accéder au compte d'un utilisateur et doit donc être au moins aussi sécurisé que le processus d'authentification habituel. Cependant, cela peut fournir un moyen plus simple de compromettre le compte, en particulier s'il utilise des facteurs d'authentification plus faibles tels que des questions de sécurité.
+  Le processus de rÃ©initialisation du mot de passe fournit un mÃ©canisme alternatif pour accÃ©der au compte d'un utilisateur et doit donc Ãªtre au moins aussi sÃ©curisÃ© que le processus d'authentification habituel. Cependant, cela peut fournir un moyen plus simple de compromettre le compte, en particulier s'il utilise des facteurs d'authentification plus faibles tels que des questions de sÃ©curitÃ©.
 
-  De plus, le processus de réinitialisation du mot de passe peut contourner l'obligation d'utiliser l'authentification multifacteur (MFA), ce qui peut réduire considérablement la sécurité de l'application.
+  De plus, le processus de rÃ©initialisation du mot de passe peut contourner l'obligation d'utiliser l'authentification multifacteur (MFA), ce qui peut rÃ©duire considÃ©rablement la sÃ©curitÃ© de l'application.
 
-- Existe-t-il une limitation du débit ou une autre protection contre les attaques automatisées ?
+- Existe-t-il une limitation du dÃ©bit ou une autre protection contre les attaques automatisÃ©esÂ ?
 
-  Comme pour tout mécanisme d'authentification, le processus de réinitialisation du mot de passe doit être protégé contre les attaques automatisées ou par force brute. Il existe une variété de méthodes différentes qui peuvent être utilisées pour y parvenir, telles que la limitation du débit ou l'utilisation de CAPTCHA. Celles-ci sont particulièrement importantes pour les fonctionnalités qui déclenchent des actions externes (telles que l'envoi d'un e-mail ou d'un SMS), ou lorsque l'utilisateur saisit un jeton de réinitialisation de mot de passe.
+  Comme pour tout mÃ©canisme d'authentification, le processus de rÃ©initialisation du mot de passe doit Ãªtre protÃ©gÃ© contre les attaques automatisÃ©es ou par force brute. Il existe une variÃ©tÃ© de mÃ©thodes diffÃ©rentes qui peuvent Ãªtre utilisÃ©es pour y parvenir, telles que la limitation du dÃ©bit ou l'utilisation de CAPTCHA. Celles-ci sont particuliÃ¨rement importantes pour les fonctionnalitÃ©s qui dÃ©clenchent des actions externes (telles que l'envoi d'un e-mail ou d'un SMS), ou lorsque l'utilisateur saisit un jeton de rÃ©initialisation de mot de passe.
 
-  Il est également possible de se protéger contre les attaques par force brute en excluant le compte du processus de réinitialisation du mot de passe après un certain nombre de tentatives consécutives. Cependant, cela pourrait également empêcher un utilisateur légitime de réinitialiser son mot de passe et de retrouver l'accès à son compte.
+  Il est Ã©galement possible de se protÃ©ger contre les attaques par force brute en excluant le compte du processus de rÃ©initialisation du mot de passe aprÃ¨s un certain nombre de tentatives consÃ©cutives. Cependant, cela pourrait Ã©galement empÃªcher un utilisateur lÃ©gitime de rÃ©initialiser son mot de passe et de retrouver l'accÃ¨s Ã  son compte.
 
-- Est-il vulnérable aux attaques courantes ?
+- Est-il vulnÃ©rable aux attaques courantes ?
 
-  Outre les domaines spécifiques abordés dans ce guide, il est également important de rechercher d'autres vulnérabilités courantes telles que l'injection SQL ou les scripts intersites.
+  Outre les domaines spÃ©cifiques abordÃ©s dans ce guide, il est Ã©galement important de rechercher d'autres vulnÃ©rabilitÃ©s courantes telles que l'injection SQL ou les scripts intersites.
 
-- Le processus de réinitialisation permet-il l'énumération des utilisateurs ?
+- Le processus de rÃ©initialisation permet-il l'Ã©numÃ©ration des utilisateursÂ ?
 
-  Consultez le guide [Test d'énumération de compte](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md) pour plus d'informations.
+  Consultez le guide [Test d'Ã©numÃ©ration de compte](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md) pour plus d'informations.
 
-### E-mail - Nouveau mot de passe envoyé
+### E-mail - Nouveau mot de passe envoyÃ©
 
-Dans ce modèle, l'utilisateur reçoit un nouveau mot de passe par e-mail une fois qu'il a prouvé son identité. Ceci est considéré comme moins sûr pour deux raisons principales :
+Dans ce modÃ¨le, l'utilisateur reÃ§oit un nouveau mot de passe par e-mail une fois qu'il a prouvÃ© son identitÃ©. Ceci est considÃ©rÃ© comme moins sÃ»r pour deux raisons principalesÂ :
 
-- Le mot de passe est envoyé à l'utilisateur sous une forme non cryptée.
-- Le mot de passe du compte est modifié lorsque la demande est faite, bloquant ainsi l'accès de l'utilisateur à son compte jusqu'à ce qu'il reçoive l'e-mail. En faisant des demandes répétées, il est possible d'empêcher un utilisateur de pouvoir accéder à son compte.
+- Le mot de passe est envoyÃ© Ã  l'utilisateur sous une forme non cryptÃ©e.
+- Le mot de passe du compte est modifiÃ© lorsque la demande est faite, bloquant ainsi l'accÃ¨s de l'utilisateur Ã  son compte jusqu'Ã  ce qu'il reÃ§oive l'e-mail. En faisant des demandes rÃ©pÃ©tÃ©es, il est possible d'empÃªcher un utilisateur de pouvoir accÃ©der Ã  son compte.
 
-Lorsque cette approche est utilisée, les domaines suivants doivent être examinés :
+Lorsque cette approche est utilisÃ©e, les domaines suivants doivent Ãªtre examinÃ©sÂ :
 
-- L'utilisateur est-il obligé de changer de mot de passe lors de la première connexion ?
+- L'utilisateur est-il obligÃ© de changer de mot de passe lors de la premiÃ¨re connexionÂ ?
 
-  Le nouveau mot de passe est envoyé par e-mail non crypté et peut rester indéfiniment dans la boîte de réception de l'utilisateur s'il ne supprime pas l'e-mail. En tant que tel, l'utilisateur devrait être tenu de changer le mot de passe dès qu'il se connecte pour la première fois.
+  Le nouveau mot de passe est envoyÃ© par e-mail non cryptÃ© et peut rester indÃ©finiment dans la boÃ®te de rÃ©ception de l'utilisateur s'il ne supprime pas l'e-mail. En tant que tel, l'utilisateur devrait Ãªtre tenu de changer le mot de passe dÃ¨s qu'il se connecte pour la premiÃ¨re fois.
 
-- Le mot de passe est-il généré de manière sécurisée ?
+- Le mot de passe est-il gÃ©nÃ©rÃ© de maniÃ¨re sÃ©curisÃ©eÂ ?
 
-  Le mot de passe doit être généré à l'aide d'un générateur de nombres pseudo-aléatoires cryptographiquement sécurisés (CSPRNG) et doit être suffisamment long pour empêcher la devinette du mot de passe ou les attaques par force brute. Pour une expérience utilisateur sécurisée et conviviale, il doit être généré à l'aide d'une approche de type phrase de passe sécurisée (c'est-à-dire en combinant plusieurs mots), plutôt qu'une chaîne de caractères aléatoires.
+  Le mot de passe doit Ãªtre gÃ©nÃ©rÃ© Ã  l'aide d'un gÃ©nÃ©rateur de nombres pseudo-alÃ©atoires cryptographiquement sÃ©curisÃ©s (CSPRNG) et doit Ãªtre suffisamment long pour empÃªcher la devinette du mot de passe ou les attaques par force brute. Pour une expÃ©rience utilisateur sÃ©curisÃ©e et conviviale, il doit Ãªtre gÃ©nÃ©rÃ© Ã  l'aide d'une approche de type phrase de passe sÃ©curisÃ©e (c'est-Ã -dire en combinant plusieurs mots), plutÃ´t qu'une chaÃ®ne de caractÃ¨res alÃ©atoires.
 
-- Le mot de passe existant de l'utilisateur lui est-il envoyé ?
+- Le mot de passe existant de l'utilisateur lui est-il envoyÃ©Â ?
 
-  Plutôt que de générer un nouveau mot de passe pour l'utilisateur, certaines applications enverront à l'utilisateur leur mot de passe existant. Il s'agit d'une approche très peu sécurisée, car elle expose leur mot de passe actuel sur des e-mails non cryptés. De plus, si le site est capable de récupérer le mot de passe existant, cela implique que les mots de passe sont soit stockés à l'aide d'un cryptage réversible, soit (plus probablement) en texte brut non crypté, les deux représentant une grave faiblesse de sécurité.
+  PlutÃ´t que de gÃ©nÃ©rer un nouveau mot de passe pour l'utilisateur, certaines applications enverront Ã  l'utilisateur leur mot de passe existant. Il s'agit d'une approche trÃ¨s peu sÃ©curisÃ©e, car elle expose leur mot de passe actuel sur des e-mails non cryptÃ©s. De plus, si le site est capable de rÃ©cupÃ©rer le mot de passe existant, cela implique que les mots de passe sont soit stockÃ©s Ã  l'aide d'un cryptage rÃ©versible, soit (plus probablement) en texte brut non cryptÃ©, les deux reprÃ©sentant une grave faiblesse de sÃ©curitÃ©.
 
-- Les e-mails sont-ils envoyés depuis un domaine avec une protection anti-spoofing ?
+- Les e-mails sont-ils envoyÃ©s depuis un domaine avec une protection anti-spoofingÂ ?
 
-  Le domaine doit implémenter SPF, DKIM et DMARC pour empêcher les attaquants d'usurper ses e-mails, ce qui pourrait être utilisé dans le cadre d'une attaque d'ingénierie sociale.
+  Le domaine doit implÃ©menter SPF, DKIM et DMARC pour empÃªcher les attaquants d'usurper ses e-mails, ce qui pourrait Ãªtre utilisÃ© dans le cadre d'une attaque d'ingÃ©nierie sociale.
 
-- Le courrier électronique est-il considéré comme suffisamment sécurisé ?
+- Le courrier Ã©lectronique est-il considÃ©rÃ© comme suffisamment sÃ©curisÃ© ?
 
-  Les e-mails sont généralement envoyés non chiffrés et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protégé par MFA. Il peut également être partagé entre plusieurs personnes, en particulier dans un environnement d'entreprise.
+  Les e-mails sont gÃ©nÃ©ralement envoyÃ©s non chiffrÃ©s et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protÃ©gÃ© par MFA. Il peut Ã©galement Ãªtre partagÃ© entre plusieurs personnes, en particulier dans un environnement d'entreprise.
 
-  Déterminez si la fonctionnalité de réinitialisation du mot de passe par e-mail est appropriée, en fonction du contexte de l'application testée.
+  DÃ©terminez si la fonctionnalitÃ© de rÃ©initialisation du mot de passe par e-mail est appropriÃ©e, en fonction du contexte de l'application testÃ©e.
 
-### E-mail - Lien envoyé
+### E-mail - Lien envoyÃ©
 
-Dans ce modèle, l'utilisateur reçoit par e-mail un lien contenant un jeton. Ils peuvent alors cliquer sur ce lien, et sont invités à entrer un nouveau mot de passe sur le site. Il s'agit de l'approche la plus couramment utilisée pour la réinitialisation du mot de passe, mais elle est plus complexe à mettre en œuvre que l'approche décrite précédemment. Les principaux domaines à tester sont :
+Dans ce modÃ¨le, l'utilisateur reÃ§oit par e-mail un lien contenant un jeton. Ils peuvent alors cliquer sur ce lien, et sont invitÃ©s Ã  entrer un nouveau mot de passe sur le site. Il s'agit de l'approche la plus couramment utilisÃ©e pour la rÃ©initialisation du mot de passe, mais elle est plus complexe Ã  mettre en Å“uvre que l'approche dÃ©crite prÃ©cÃ©demment. Les principaux domaines Ã  tester sont :
 
-- Le lien utilise-t-il HTTPS ?
+- Le lien utilise-t-il HTTPSÂ ?
 
-  Si le jeton est envoyé via HTTP non chiffré, il peut être possible pour un attaquant de l'intercepter.
+  Si le jeton est envoyÃ© via HTTP non chiffrÃ©, il peut Ãªtre possible pour un attaquant de l'intercepter.
 
-- Le lien peut-il être utilisé plusieurs fois ?
+- Le lien peut-il Ãªtre utilisÃ© plusieurs fois ?
 
-  Les liens doivent expirer après leur utilisation, sinon ils fournissent une porte dérobée persistante pour le compte.
+  Les liens doivent expirer aprÃ¨s leur utilisation, sinon ils fournissent une porte dÃ©robÃ©e persistante pour le compte.
 
-- Le lien expire-t-il s'il reste inutilisé ?
+- Le lien expire-t-il s'il reste inutilisÃ©Â ?
 
-  Les liens doivent être limités dans le temps. La durée exacte dépendra du site, mais elle devrait rarement dépasser une heure.
+  Les liens doivent Ãªtre limitÃ©s dans le temps. La durÃ©e exacte dÃ©pendra du site, mais elle devrait rarement dÃ©passer une heure.
 
-- Le jeton est-il suffisamment long et aléatoire ?
+- Le jeton est-il suffisamment long et alÃ©atoire ?
 
-  La sécurité du processus dépend entièrement de l'incapacité d'un attaquant à deviner ou à forcer brutalement un jeton. Les jetons doivent être générés avec un générateur de nombres pseudo-aléatoires cryptographiquement sécurisés (CSPRNG) et doivent être suffisamment longs pour qu'il soit impossible pour un attaquant de deviner ou de forcer brutalement. Au moins 128 bits (ou 32 caractères hexadécimaux) est un minimum suffisant pour rendre une telle attaque en ligne impraticable.
+  La sÃ©curitÃ© du processus dÃ©pend entiÃ¨rement de l'incapacitÃ© d'un attaquant Ã  deviner ou Ã  forcer brutalement un jeton. Les jetons doivent Ãªtre gÃ©nÃ©rÃ©s avec un gÃ©nÃ©rateur de nombres pseudo-alÃ©atoires cryptographiquement sÃ©curisÃ©s (CSPRNG) et doivent Ãªtre suffisamment longs pour qu'il soit impossible pour un attaquant de deviner ou de forcer brutalement. Au moins 128 bits (ou 32 caractÃ¨res hexadÃ©cimaux) est un minimum suffisant pour rendre une telle attaque en ligne impraticable.
 
-  Les jetons ne doivent jamais être générés sur la base de valeurs connues, comme en prenant le hachage MD5 de l'e-mail de l'utilisateur avec `md5($email)`, ou en utilisant des GUID qui peuvent utiliser des fonctions PRNG non sécurisées, ou peuvent même ne pas être aléatoires selon le type .
+  Les jetons ne doivent jamais Ãªtre gÃ©nÃ©rÃ©s sur la base de valeurs connues, comme en prenant le hachage MD5 de l'e-mail de l'utilisateur avec `md5($email)`, ou en utilisant des GUID qui peuvent utiliser des fonctions PRNG non sÃ©curisÃ©es, ou peuvent mÃªme ne pas Ãªtre alÃ©atoires selon le type .
 
-  Une approche alternative aux jetons aléatoires consiste à utiliser un jeton signé cryptographiquement tel qu'un JWT. Dans ce cas, les vérifications JWT habituelles doivent être effectuées (la signature est-elle vérifiée, l'algorithme "nONe" peut-il être utilisé, la clé HMAC peut-elle être brute-forcée, etc.). Consultez le guide [Test des jetons Web JSON](../06-Session_Management_Testing/10-Testing_JSON_Web_Tokens.md) pour plus d'informations.
+  Une approche alternative aux jetons alÃ©atoires consiste Ã  utiliser un jeton signÃ© cryptographiquement tel qu'un JWT. Dans ce cas, les vÃ©rifications JWT habituelles doivent Ãªtre effectuÃ©es (la signature est-elle vÃ©rifiÃ©e, l'algorithme "nONe" peut-il Ãªtre utilisÃ©, la clÃ© HMAC peut-elle Ãªtre brute-forcÃ©e, etc.). Consultez le guide [Test des jetons Web JSON](../06-Session_Management_Testing/10-Testing_JSON_Web_Tokens.md) pour plus d'informations.
 
-- Le lien contient-il un ID utilisateur ?
+- Le lien contient-il un ID utilisateurÂ ?
 
-  Parfois, le lien de réinitialisation du mot de passe peut inclure un ID utilisateur ainsi qu'un jeton, tel que `reset.php?userid=1&token=123456`. Dans ce cas, il peut être possible de modifier le paramètre `userid` pour réinitialiser les mots de passe des autres utilisateurs.
+  Parfois, le lien de rÃ©initialisation du mot de passe peut inclure un ID utilisateur ainsi qu'un jeton, tel que `reset.php?userid=1&token=123456`. Dans ce cas, il peut Ãªtre possible de modifier le paramÃ¨tre `userid` pour rÃ©initialiser les mots de passe des autres utilisateurs.
 
-- Pouvez-vous injecter un en-tête d'hôte différent ?
+- Pouvez-vous injecter un en-tÃªte d'hÃ´te diffÃ©rentÂ ?
 
-  Si l'application fait confiance à la valeur de l'en-tête "Host" et l'utilise pour générer le lien de réinitialisation du mot de passe, il peut être possible de voler des jetons en injectant un en-tête "Host" modifié dans la requête. Consultez le guide [Test pour l'injection d'en-tête d'hôte](../07-Input_Validation_Testing/17-Testing_for_Host_Header_Injection.md) pour plus d'informations.
+  Si l'application fait confiance Ã  la valeur de l'en-tÃªte "Host" et l'utilise pour gÃ©nÃ©rer le lien de rÃ©initialisation du mot de passe, il peut Ãªtre possible de voler des jetons en injectant un en-tÃªte "Host" modifiÃ© dans la requÃªte. Consultez le guide [Test pour l'injection d'en-tÃªte d'hÃ´te](../07-Input_Validation_Testing/17-Testing_for_Host_Header_Injection.md) pour plus d'informations.
 
-- Le lien est-il exposé à des tiers ?
+- Le lien est-il exposÃ© Ã  des tiers ?
 
-  Si la page vers laquelle l'utilisateur est redirigé inclut du contenu d'autres parties (comme le chargement de scripts à partir d'autres domaines), le jeton de réinitialisation dans l'URL peut être exposé dans l'en-tête HTTP "Referer" envoyé dans ces requêtes. L'en-tête HTTP "Referrer-Policy" peut être utilisé pour se protéger contre cela, alors vérifiez si un est défini pour la page.
+  Si la page vers laquelle l'utilisateur est redirigÃ© inclut du contenu d'autres parties (comme le chargement de scripts Ã  partir d'autres domaines), le jeton de rÃ©initialisation dans l'URL peut Ãªtre exposÃ© dans l'en-tÃªte HTTP "Referer" envoyÃ© dans ces requÃªtes. L'en-tÃªte HTTP "Referrer-Policy" peut Ãªtre utilisÃ© pour se protÃ©ger contre cela, alors vÃ©rifiez si un est dÃ©fini pour la page.
 
-  De plus, si la page comprend des scripts de suivi, d'analyse ou de publicité, le jeton leur sera également exposé.
+  De plus, si la page comprend des scripts de suivi, d'analyse ou de publicitÃ©, le jeton leur sera Ã©galement exposÃ©.
 
-- Les e-mails sont-ils envoyés depuis un domaine avec une protection anti-spoofing ?
+- Les e-mails sont-ils envoyÃ©s depuis un domaine avec une protection anti-spoofingÂ ?
 
-  Le domaine doit implémenter SPF, DKIM et DMARC pour empêcher les attaquants d'usurper ses e-mails, ce qui pourrait être utilisé dans le cadre d'une attaque d'ingénierie sociale.
+  Le domaine doit implÃ©menter SPF, DKIM et DMARC pour empÃªcher les attaquants d'usurper ses e-mails, ce qui pourrait Ãªtre utilisÃ© dans le cadre d'une attaque d'ingÃ©nierie sociale.
 
-- Le courrier électronique est-il considéré comme suffisamment sécurisé ?
+- Le courrier Ã©lectronique est-il considÃ©rÃ© comme suffisamment sÃ©curisÃ© ?
 
-  Les e-mails sont généralement envoyés non chiffrés et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protégé par MFA. Il peut également être partagé entre plusieurs personnes, en particulier dans un environnement d'entreprise.
+  Les e-mails sont gÃ©nÃ©ralement envoyÃ©s non chiffrÃ©s et, dans de nombreux cas, le compte de messagerie de l'utilisateur ne sera pas protÃ©gÃ© par MFA. Il peut Ã©galement Ãªtre partagÃ© entre plusieurs personnes, en particulier dans un environnement d'entreprise.
 
-  Déterminez si la fonctionnalité de réinitialisation du mot de passe par e-mail est appropriée, en fonction du contexte de l'application testée.
+  DÃ©terminez si la fonctionnalitÃ© de rÃ©initialisation du mot de passe par e-mail est appropriÃ©e, en fonction du contexte de l'application testÃ©e.
 
-### Jetons envoyés par SMS ou appel téléphonique
+### Jetons envoyÃ©s par SMS ou appel tÃ©lÃ©phonique
 
-Plutôt que d'envoyer un jeton dans un e-mail, une approche alternative consiste à l'envoyer via SMS ou un appel téléphonique automatisé, que l'utilisateur saisira ensuite sur l'application. Les principaux domaines à tester sont :
+PlutÃ´t que d'envoyer un jeton dans un e-mail, une approche alternative consiste Ã  l'envoyer via SMS ou un appel tÃ©lÃ©phonique automatisÃ©, que l'utilisateur saisira ensuite sur l'application. Les principaux domaines Ã  tester sont :
 
-- Le jeton est-il suffisamment long et aléatoire ?
+- Le jeton est-il suffisamment long et alÃ©atoire ?
 
-  Les jetons envoyés de cette manière sont généralement plus courts, car ils sont destinés à être saisis manuellement par l'utilisateur, plutôt que d'être intégrés dans un lien. Il est assez courant que les applications utilisent six chiffres numériques, ce qui ne fournit qu'environ 20 bits de sécurité (réalisable pour une attaque par force brute en ligne), plutôt que le jeton d'e-mail généralement plus long.
+  Les jetons envoyÃ©s de cette maniÃ¨re sont gÃ©nÃ©ralement plus courts, car ils sont destinÃ©s Ã  Ãªtre saisis manuellement par l'utilisateur, plutÃ´t que d'Ãªtre intÃ©grÃ©s dans un lien. Il est assez courant que les applications utilisent six chiffres numÃ©riques, ce qui ne fournit qu'environ 20 bits de sÃ©curitÃ© (rÃ©alisable pour une attaque par force brute en ligne), plutÃ´t que le jeton d'e-mail gÃ©nÃ©ralement plus long.
 
-  Il est donc beaucoup plus important que la fonctionnalité de réinitialisation du mot de passe soit protégée contre les attaques par force brute.
+  Il est donc beaucoup plus important que la fonctionnalitÃ© de rÃ©initialisation du mot de passe soit protÃ©gÃ©e contre les attaques par force brute.
 
-- Le jeton peut-il être utilisé plusieurs fois ?
+- Le jeton peut-il Ãªtre utilisÃ© plusieurs fois ?
 
-  Les jetons doivent être invalidés après leur utilisation, sinon ils fournissent une porte dérobée persistante pour le compte.
+  Les jetons doivent Ãªtre invalidÃ©s aprÃ¨s leur utilisation, sinon ils fournissent une porte dÃ©robÃ©e persistante pour le compte.
 
-- Le jeton expire-t-il s'il reste inutilisé ?
+- Le jeton expire-t-il s'il reste inutilisÃ©Â ?
 
-  Comme les jetons plus courts sont plus sensibles aux attaques par force brute, un délai d'expiration plus court doit être mis en œuvre pour limiter la fenêtre disponible pour qu'un attaquant puisse mener une attaque.
+  Comme les jetons plus courts sont plus sensibles aux attaques par force brute, un dÃ©lai d'expiration plus court doit Ãªtre mis en Å“uvre pour limiter la fenÃªtre disponible pour qu'un attaquant puisse mener une attaque.
 
-- Existe-t-il des limites et des restrictions de débit appropriées ?
+- Existe-t-il des limites et des restrictions de dÃ©bit appropriÃ©esÂ ?
 
-  L'envoi d'un SMS ou le déclenchement d'un appel téléphonique automatisé à un utilisateur est nettement plus perturbateur que l'envoi d'un e-mail, et pourrait être utilisé pour harceler un utilisateur, voire mener une attaque par déni de service contre son téléphone. L'application doit implémenter une limitation de débit pour éviter cela.
+  L'envoi d'un SMS ou le dÃ©clenchement d'un appel tÃ©lÃ©phonique automatisÃ© Ã  un utilisateur est nettement plus perturbateur que l'envoi d'un e-mail, et pourrait Ãªtre utilisÃ© pour harceler un utilisateur, voire mener une attaque par dÃ©ni de service contre son tÃ©lÃ©phone. L'application doit implÃ©menter une limitation de dÃ©bit pour Ã©viter cela.
 
-  De plus, les SMS et les appels téléphoniques entraînent souvent des coûts financiers pour l'expéditeur. Si un attaquant est capable de provoquer l'envoi d'un grand nombre de messages, cela pourrait entraîner des coûts importants pour l'opérateur du site Web. Cela est particulièrement vrai s'ils sont envoyés vers des numéros internationaux ou surtaxés. Cependant, l'autorisation des numéros internationaux peut être une exigence de l'application.
+  De plus, les SMS et les appels tÃ©lÃ©phoniques entraÃ®nent souvent des coÃ»ts financiers pour l'expÃ©diteur. Si un attaquant est capable de provoquer l'envoi d'un grand nombre de messages, cela pourrait entraÃ®ner des coÃ»ts importants pour l'opÃ©rateur du site Web. Cela est particuliÃ¨rement vrai s'ils sont envoyÃ©s vers des numÃ©ros internationaux ou surtaxÃ©s. Cependant, l'autorisation des numÃ©ros internationaux peut Ãªtre une exigence de l'application.
 
-- Un SMS ou un appel téléphonique est-il considéré comme suffisamment sécurisé ?
+- Un SMS ou un appel tÃ©lÃ©phonique est-il considÃ©rÃ© comme suffisamment sÃ©curisÃ© ?
 
-  [Une variété d'attaques](https://www.ncsc.gov.uk/guidance/protecting-sms-messages-used-in-critical-business-processes#section_4) ont été démontrées et permettraient à un attaquant de détourner efficacement SMS, les points de vue divergent quant à savoir si le SMS est suffisamment sécurisé pour être utilisé comme facteur d'authentification.
+  [Une variÃ©tÃ© d'attaques](https://www.ncsc.gov.uk/guidance/protecting-sms-messages-used-in-critical-business-processes#section_4) ont Ã©tÃ© dÃ©montrÃ©es et permettraient Ã  un attaquant de dÃ©tourner efficacement SMS, les points de vue divergent quant Ã  savoir si le SMS est suffisamment sÃ©curisÃ© pour Ãªtre utilisÃ© comme facteur d'authentification.
 
-  Il est généralement possible de répondre à un appel téléphonique automatisé avec un accès physique à un appareil, sans avoir besoin d'un code PIN ou d'une empreinte digitale pour déverrouiller le téléphone. Dans certaines circonstances (comme un environnement de bureau partagé), cela pourrait permettre à un attaquant interne de réinitialiser de manière triviale le mot de passe d'un autre utilisateur en se dirigeant vers son bureau lorsqu'il n'est pas au bureau.
+  Il est gÃ©nÃ©ralement possible de rÃ©pondre Ã  un appel tÃ©lÃ©phonique automatisÃ© avec un accÃ¨s physique Ã  un appareil, sans avoir besoin d'un code PIN ou d'une empreinte digitale pour dÃ©verrouiller le tÃ©lÃ©phone. Dans certaines circonstances (comme un environnement de bureau partagÃ©), cela pourrait permettre Ã  un attaquant interne de rÃ©initialiser de maniÃ¨re triviale le mot de passe d'un autre utilisateur en se dirigeant vers son bureau lorsqu'il n'est pas au bureau.
 
-  Déterminez si les SMS ou les appels téléphoniques automatisés sont appropriés, en fonction du contexte de l'application testée.
+  DÃ©terminez si les SMS ou les appels tÃ©lÃ©phoniques automatisÃ©s sont appropriÃ©s, en fonction du contexte de l'application testÃ©e.
 
-### Questions de sécurité
+### Questions de sÃ©curitÃ©
 
-Plutôt que de leur envoyer un lien ou un nouveau mot de passe, les questions de sécurité peuvent être utilisées comme mécanisme pour authentifier l'utilisateur. Cette approche est considérée comme faible et ne doit pas être utilisée si de meilleures options sont disponibles.
+PlutÃ´t que de leur envoyer un lien ou un nouveau mot de passe, les questions de sÃ©curitÃ© peuvent Ãªtre utilisÃ©es comme mÃ©canisme pour authentifier l'utilisateur. Cette approche est considÃ©rÃ©e comme faible et ne doit pas Ãªtre utilisÃ©e si de meilleures options sont disponibles.
 
-Consultez le guide [Test des questions de sécurité faible](08-Testing_for_Weak_Security_Question_Answer.md) pour plus d'informations.
+Consultez le guide [Test des questions de sÃ©curitÃ© faible](08-Testing_for_Weak_Security_Question_Answer.md) pour plus d'informations.
 
-### Changements de mot de passe authentifiés
+### Changements de mot de passe authentifiÃ©s
 
-Une fois que l'utilisateur a prouvé son identité (soit par un lien de réinitialisation de mot de passe, un code de récupération, soit en se connectant sur l'application), il devrait pouvoir changer son mot de passe. Les principaux domaines à tester sont :
+Une fois que l'utilisateur a prouvÃ© son identitÃ© (soit par un lien de rÃ©initialisation de mot de passe, un code de rÃ©cupÃ©ration, soit en se connectant sur l'application), il devrait pouvoir changer son mot de passe. Les principaux domaines Ã  tester sontÂ :
 
-- Lors de la définition du mot de passe, pouvez-vous spécifier l'ID utilisateur ?
+- Lors de la dÃ©finition du mot de passe, pouvez-vous spÃ©cifier l'ID utilisateurÂ ?
 
-  Si l'ID utilisateur est inclus dans la demande de réinitialisation du mot de passe et n'est pas validé, il peut être possible de le modifier et de changer les mots de passe des autres utilisateurs.
+  Si l'ID utilisateur est inclus dans la demande de rÃ©initialisation du mot de passe et n'est pas validÃ©, il peut Ãªtre possible de le modifier et de changer les mots de passe des autres utilisateurs.
 
-- L'utilisateur doit-il se ré-authentifier ?
+- L'utilisateur doit-il se rÃ©-authentifierÂ ?
 
-  Si un utilisateur connecté essaie de changer son mot de passe, il doit être invité à se ré-authentifier avec son mot de passe actuel afin de se protéger contre un attaquant obtenant un accès temporaire à une session sans surveillance. Si l'authentification MFA est activée pour l'utilisateur, il se réauthentifiera généralement avec cela, plutôt qu'avec son mot de passe.
+  Si un utilisateur connectÃ© essaie de changer son mot de passe, il doit Ãªtre invitÃ© Ã  se rÃ©-authentifier avec son mot de passe actuel afin de se protÃ©ger contre un attaquant obtenant un accÃ¨s temporaire Ã  une session sans surveillance. Si l'authentification MFA est activÃ©e pour l'utilisateur, il se rÃ©authentifiera gÃ©nÃ©ralement avec cela, plutÃ´t qu'avec son mot de passe.
 
-- Le formulaire de changement de mot de passe est-il vulnérable au CSRF ?
+- Le formulaire de changement de mot de passe est-il vulnÃ©rable au CSRFÂ ?
 
-  Si l'utilisateur n'est pas tenu de se ré-authentifier, il peut alors être possible d'effectuer une attaque CSRF contre le formulaire de réinitialisation du mot de passe, permettant à son compte d'être compromis. Pour plus d'informations, consultez le guide [Testing for Cross-Site Request Forgery](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md).
+  Si l'utilisateur n'est pas tenu de se rÃ©-authentifier, il peut alors Ãªtre possible d'effectuer une attaque CSRF contre le formulaire de rÃ©initialisation du mot de passe, permettant Ã  son compte d'Ãªtre compromis. Pour plus d'informations, consultez le guide [Testing for Cross-Site Request Forgery](../06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery.md).
 
-- Une politique de mot de passe forte et efficace est-elle appliquée ?
+- Une politique de mot de passe forte et efficace est-elle appliquÃ©eÂ ?
 
-  La politique de mot de passe doit être cohérente pour l'ensemble des fonctionnalités d'enregistrement, de changement de mot de passe et de réinitialisation du mot de passe. Consultez le guide [Testing for Weak Password Policy](07-Testing_for_Weak_Password_Policy.md) pour plus d'informations.
+  La politique de mot de passe doit Ãªtre cohÃ©rente pour l'ensemble des fonctionnalitÃ©s d'enregistrement, de changement de mot de passe et de rÃ©initialisation du mot de passe. Consultez le guide [Testing for Weak Password Policy](07-Testing_for_Weak_Password_Policy.md) pour plus d'informations.
 
-## Références
+## RÃ©fÃ©rences
 
-- [Feuille de triche de mot de passe oublié OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)
+- [Feuille de triche de mot de passe oubliÃ© OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html)
