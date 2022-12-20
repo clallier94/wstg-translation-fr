@@ -1,4 +1,4 @@
-# Test de contournement du schéma d'authentification
+# Test de contournement du schÃ©ma d'authentification
 
 |ID          |
 |------------|
@@ -6,41 +6,41 @@
 
 ## Sommaire
 
-En sécurité informatique, l'authentification est le processus consistant à tenter de vérifier l'identité numérique de l'expéditeur d'une communication. Un exemple courant d'un tel processus est le processus de connexion. Tester le schéma d'authentification signifie comprendre le fonctionnement du processus d'authentification et utiliser ces informations pour contourner le mécanisme d'authentification.
+En sÃ©curitÃ© informatique, l'authentification est le processus consistant Ã  tenter de vÃ©rifier l'identitÃ© numÃ©rique de l'expÃ©diteur d'une communication. Un exemple courant d'un tel processus est le processus de connexion. Tester le schÃ©ma d'authentification signifie comprendre le fonctionnement du processus d'authentification et utiliser ces informations pour contourner le mÃ©canisme d'authentification.
 
-Alors que la plupart des applications nécessitent une authentification pour accéder à des informations privées ou pour exécuter des tâches, toutes les méthodes d'authentification ne sont pas en mesure de fournir une sécurité adéquate. La négligence, l'ignorance ou la simple sous-estimation des menaces de sécurité entraînent souvent des schémas d'authentification qui peuvent être contournés en sautant simplement la page de connexion et en appelant directement une page interne qui est censée être accessible uniquement après l'authentification.
+Alors que la plupart des applications nÃ©cessitent une authentification pour accÃ©der Ã  des informations privÃ©es ou pour exÃ©cuter des tÃ¢ches, toutes les mÃ©thodes d'authentification ne sont pas en mesure de fournir une sÃ©curitÃ© adÃ©quate. La nÃ©gligence, l'ignorance ou la simple sous-estimation des menaces de sÃ©curitÃ© entraÃ®nent souvent des schÃ©mas d'authentification qui peuvent Ãªtre contournÃ©s en sautant simplement la page de connexion et en appelant directement une page interne qui est censÃ©e Ãªtre accessible uniquement aprÃ¨s l'authentification.
 
-De plus, il est souvent possible de contourner les mesures d'authentification en falsifiant les requêtes et en faisant croire à l'application que l'utilisateur est déjà authentifié. Cela peut être accompli soit en modifiant le paramètre d'URL donné, soit en manipulant le formulaire, soit en contrefaisant des sessions.
+De plus, il est souvent possible de contourner les mesures d'authentification en falsifiant les requÃªtes et en faisant croire Ã  l'application que l'utilisateur est dÃ©jÃ  authentifiÃ©. Cela peut Ãªtre accompli soit en modifiant le paramÃ¨tre d'URL donnÃ©, soit en manipulant le formulaire, soit en contrefaisant des sessions.
 
-Les problèmes liés au schéma d'authentification peuvent se trouver à différentes étapes du cycle de vie du développement logiciel (SDLC), comme les phases de conception, de développement et de déploiement :
+Les problÃ¨mes liÃ©s au schÃ©ma d'authentification peuvent se trouver Ã  diffÃ©rentes Ã©tapes du cycle de vie du dÃ©veloppement logiciel (SDLC), comme les phases de conception, de dÃ©veloppement et de dÃ©ploiementÂ :
 
-- Dans la phase de conception, les erreurs peuvent inclure une mauvaise définition des sections d'application à protéger, le choix de ne pas appliquer de protocoles de cryptage forts pour sécuriser la transmission des informations d'identification, et bien d'autres.
-- Dans la phase de développement, les erreurs peuvent inclure la mise en œuvre incorrecte de la fonctionnalité de validation des entrées ou le non-respect des meilleures pratiques de sécurité pour le langage spécifique.
-- Dans la phase de déploiement de l'application, il peut y avoir des problèmes lors de la configuration de l'application (activités d'installation et de configuration) en raison d'un manque de compétences techniques requises ou d'un manque de bonne documentation.
+- Dans la phase de conception, les erreurs peuvent inclure une mauvaise dÃ©finition des sections d'application Ã  protÃ©ger, le choix de ne pas appliquer de protocoles de cryptage forts pour sÃ©curiser la transmission des informations d'identification, et bien d'autres.
+- Dans la phase de dÃ©veloppement, les erreurs peuvent inclure la mise en Å“uvre incorrecte de la fonctionnalitÃ© de validation des entrÃ©es ou le non-respect des meilleures pratiques de sÃ©curitÃ© pour le langage spÃ©cifique.
+- Dans la phase de dÃ©ploiement de l'application, il peut y avoir des problÃ¨mes lors de la configuration de l'application (activitÃ©s d'installation et de configuration) en raison d'un manque de compÃ©tences techniques requises ou d'un manque de bonne documentation.
 
 ## Objectifs des tests
 
-- Assurez-vous que l'authentification est appliquée à tous les services qui en ont besoin.
+- Assurez-vous que l'authentification est appliquÃ©e Ã  tous les services qui en ont besoin.
 
 ## Comment tester
 
-Il existe plusieurs méthodes pour contourner le schéma d'authentification utilisé par une application Web :
+Il existe plusieurs mÃ©thodes pour contourner le schÃ©ma d'authentification utilisÃ© par une application WebÂ :
 
-- Demande de page directe ([navigation forcée](https://owasp.org/www-community/attacks/Forced_browsing))
-- Modification des paramètres
-- Prédiction d'ID de session
+- Demande de page directe ([navigation forcÃ©e](https://owasp.org/www-community/attacks/Forced_browsing))
+- Modification des paramÃ¨tres
+- PrÃ©diction d'ID de session
 - Injection SQL
 
 ### Demande de page directe
 
-Si une application Web implémente le contrôle d'accès uniquement sur la page de connexion, le schéma d'authentification peut être contourné. Par exemple, si un utilisateur demande directement une autre page via la navigation forcée, cette page peut ne pas vérifier les informations d'identification de l'utilisateur avant d'accorder l'accès. Essayez d'accéder directement à une page protégée via la barre d'adresse de votre navigateur pour tester cette méthode.
+Si une application Web implÃ©mente le contrÃ´le d'accÃ¨s uniquement sur la page de connexion, le schÃ©ma d'authentification peut Ãªtre contournÃ©. Par exemple, si un utilisateur demande directement une autre page via la navigation forcÃ©e, cette page peut ne pas vÃ©rifier les informations d'identification de l'utilisateur avant d'accorder l'accÃ¨s. Essayez d'accÃ©der directement Ã  une page protÃ©gÃ©e via la barre d'adresse de votre navigateur pour tester cette mÃ©thode.
 
-![Demande directe à la page protégée](images/Basm-directreq.jpg)\
-*Figure 4.4.4-1 : Demande directe à la page protégée*
+![Demande directe Ã  la page protÃ©gÃ©e](images/Basm-directreq.jpg)\
+*Figure 4.4.4-1 : Demande directe Ã  la page protÃ©gÃ©e*
 
-### Modification des paramètres
+### Modification des paramÃ¨tres
 
-Un autre problème lié à la conception de l'authentification est lorsque l'application vérifie une connexion réussie sur la base de paramètres à valeur fixe. Un utilisateur pourrait modifier ces paramètres pour accéder aux zones protégées sans fournir d'informations d'identification valides. Dans l'exemple ci-dessous, le paramètre « authentifié » est remplacé par la valeur « oui », ce qui permet à l'utilisateur d'avoir accès. Dans cet exemple, le paramètre est dans l'URL, mais un proxy peut également être utilisé pour modifier le paramètre, en particulier lorsque les paramètres sont envoyés sous forme d'éléments de formulaire dans une requête POST ou lorsque les paramètres sont stockés dans un cookie.
+Un autre problÃ¨me liÃ© Ã  la conception de l'authentification est lorsque l'application vÃ©rifie une connexion rÃ©ussie sur la base de paramÃ¨tres Ã  valeur fixe. Un utilisateur pourrait modifier ces paramÃ¨tres pour accÃ©der aux zones protÃ©gÃ©es sans fournir d'informations d'identification valides. Dans l'exemple ci-dessous, le paramÃ¨tre Â«Â authentifiÃ©Â Â» est remplacÃ© par la valeur Â«Â ouiÂ Â», ce qui permet Ã  l'utilisateur d'avoir accÃ¨s. Dans cet exemple, le paramÃ¨tre est dans l'URL, mais un proxy peut Ã©galement Ãªtre utilisÃ© pour modifier le paramÃ¨tre, en particulier lorsque les paramÃ¨tres sont envoyÃ©s sous forme d'Ã©lÃ©ments de formulaire dans une requÃªte POST ou lorsque les paramÃ¨tres sont stockÃ©s dans un cookie.
 
 ```html
 http://www.site.com/page.asp?authenticated=no
@@ -61,26 +61,26 @@ Content-Type: text/html; charset=iso-8859-1
 </BODY></HTML>
 ```
 
-![Demande de modification de paramètre](images/Basm-parammod.jpg)\
-*Figure 4.4.4-2 : Requête de modification de paramètre*
+![Demande de modification de paramÃ¨tre](images/Basm-parammod.jpg)\
+*Figure 4.4.4-2 : RequÃªte de modification de paramÃ¨tre*
 
-### Prédiction d'ID de session
+### PrÃ©diction d'ID de session
 
-De nombreuses applications Web gèrent l'authentification à l'aide d'identificateurs de session (ID de session). Par conséquent, si la génération d'ID de session est prévisible, un utilisateur malveillant pourrait être en mesure de trouver un ID de session valide et d'obtenir un accès non autorisé à l'application, en se faisant passer pour un utilisateur précédemment authentifié.
+De nombreuses applications Web gÃ¨rent l'authentification Ã  l'aide d'identificateurs de session (ID de session). Par consÃ©quent, si la gÃ©nÃ©ration d'ID de session est prÃ©visible, un utilisateur malveillant pourrait Ãªtre en mesure de trouver un ID de session valide et d'obtenir un accÃ¨s non autorisÃ© Ã  l'application, en se faisant passer pour un utilisateur prÃ©cÃ©demment authentifiÃ©.
 
-Dans la figure suivante, les valeurs à l'intérieur des cookies augmentent de manière linéaire, il pourrait donc être facile pour un attaquant de deviner un ID de session valide.
+Dans la figure suivante, les valeurs Ã  l'intÃ©rieur des cookies augmentent de maniÃ¨re linÃ©aire, il pourrait donc Ãªtre facile pour un attaquant de deviner un ID de session valide.
 
 ![Valeurs des cookies au fil du temps](images/Basm-sessid.jpg)\
 *Figure 4.4.4-3 : Valeurs des cookies au fil du temps*
 
-Dans la figure suivante, les valeurs à l'intérieur des cookies ne changent que partiellement, il est donc possible de restreindre une attaque par force brute aux champs définis indiqués ci-dessous.
+Dans la figure suivante, les valeurs Ã  l'intÃ©rieur des cookies ne changent que partiellement, il est donc possible de restreindre une attaque par force brute aux champs dÃ©finis indiquÃ©s ci-dessous.
 
-![Valeurs des cookies partiellement modifiées](images/Basm-sessid2.jpg)\
-*Figure 4.4.4-4 : Valeurs de cookies partiellement modifiées*
+![Valeurs des cookies partiellement modifiÃ©es](images/Basm-sessid2.jpg)\
+*Figure 4.4.4-4 : Valeurs de cookies partiellement modifiÃ©es*
 
 ### Injection SQL (authentification par formulaire HTML)
 
-L'injection SQL est une technique d'attaque largement connue. Cette section ne va pas décrire cette technique en détail car il y a plusieurs sections dans ce guide qui expliquent les techniques d'injection au-delà de la portée de cette section.
+L'injection SQL est une technique d'attaque largement connue. Cette section ne va pas dÃ©crire cette technique en dÃ©tail car il y a plusieurs sections dans ce guide qui expliquent les techniques d'injection au-delÃ  de la portÃ©e de cette section.
 
 ![Injection SQL](images/Basm-sqlinj.jpg)\
 *Figure 4.4.4-5 : Injection SQL*
@@ -90,11 +90,11 @@ La figure suivante montre qu'avec une simple attaque par injection SQL, il est p
 ![Attaque par injection SQL simple](images/Basm-sqlinj2.gif)\
 *Figure 4.4.4-6 : Attaque par injection SQL simple*
 
-### Comparaison simplifiée de PHP
+### Comparaison simplifiÃ©e de PHP
 
-Si un attaquant a pu récupérer le code source de l'application en exploitant une vulnérabilité précédemment découverte (par exemple, la traversée de répertoires) ou à partir d'un référentiel Web (applications Open Source), il pourrait être possible d'effectuer des attaques raffinées contre la mise en œuvre de l'authentification. traiter.
+Si un attaquant a pu rÃ©cupÃ©rer le code source de l'application en exploitant une vulnÃ©rabilitÃ© prÃ©cÃ©demment dÃ©couverte (par exemple, la traversÃ©e de rÃ©pertoires) ou Ã  partir d'un rÃ©fÃ©rentiel Web (applications Open Source), il pourrait Ãªtre possible d'effectuer des attaques raffinÃ©es contre la mise en Å“uvre de l'authentification. traiter.
 
-Dans l'exemple suivant (PHPBB 2.0.12 - Vulnérabilité de contournement d'authentification), à la ligne 2, la fonction `unserialize()` analyse un cookie fourni par l'utilisateur et définit des valeurs dans le tableau `$sessiondata`. À la ligne 7, le hachage du mot de passe MD5 de l'utilisateur stocké dans la base de données principale (`$auto_login_key`) est comparé à celui fourni (`$sessiondata['autologinid']`) par l'utilisateur.
+Dans l'exemple suivant (PHPBB 2.0.12 - VulnÃ©rabilitÃ© de contournement d'authentification), Ã  la ligne 2, la fonction `unserialize()` analyse un cookie fourni par l'utilisateur et dÃ©finit des valeurs dans le tableau `$sessiondata`. Ã€ la ligne 7, le hachage du mot de passe MD5 de l'utilisateur stockÃ© dans la base de donnÃ©es principale (`$auto_login_key`) est comparÃ© Ã  celui fourni (`$sessiondata['autologinid']`) par l'utilisateur.
 
 ```php
 1. if (isset($HTTP_COOKIE_VARS[$cookiename . '_sid'])) {
@@ -112,23 +112,23 @@ Dans l'exemple suivant (PHPBB 2.0.12 - Vulnérabilité de contournement d'authenti
 
 ```
 
-En PHP, une comparaison entre une valeur de chaîne et une valeur booléenne `true` est toujours `true` (car la chaîne contient une valeur), donc en fournissant la chaîne suivante à la fonction `unserialize()`, il est possible de contourner le contrôle d'authentification et connectez-vous en tant qu'administrateur, dont l'`userid` est 2 :
+En PHP, une comparaison entre une valeur de chaÃ®ne et une valeur boolÃ©enne `true` est toujours `true` (car la chaÃ®ne contient une valeur), donc en fournissant la chaÃ®ne suivante Ã  la fonction `unserialize()`, il est possible de contourner le contrÃ´le d'authentification et connectez-vous en tant qu'administrateur, dont l'`userid` est 2Â :
 
 ```php
 a:2:{s:11:"autologinid";b:1;s:6:"userid";s:1:"2";}  // original value: a:2:{s:11:"autologinid";s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a";s:6:"userid";s:4:"1337";}
 ```
 
-Démontons ce que nous avons fait dans cette chaîne :
+DÃ©montons ce que nous avons fait dans cette chaÃ®neÂ :
 
-1. `autologinid` est maintenant un booléen défini sur `true` : cela peut être vu en remplaçant la valeur MD5 du hachage du mot de passe (`s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a"`) par `b:1`
-2. `userid` est maintenant défini sur l'ID administrateur : cela peut être vu dans le dernier morceau de la chaîne, où nous avons remplacé notre ID utilisateur habituel (`s:4:"1337"`) par `s:1:" 2"`
+1. `autologinid` est maintenant un boolÃ©en dÃ©fini sur `true`Â : cela peut Ãªtre vu en remplaÃ§ant la valeur MD5 du hachage du mot de passe (`s:32:"8b8e9715d12e4ca12c4c3eb4865aaf6a"`) par `b:1`
+2. `userid` est maintenant dÃ©fini sur l'ID administrateurÂ : cela peut Ãªtre vu dans le dernier morceau de la chaÃ®ne, oÃ¹ nous avons remplacÃ© notre ID utilisateur habituel (`s:4:"1337"`) par `s:1:" 2"`
 
 ## Outils
 
 - [WebGoat](https://owasp.org/www-project-webgoat/)
-- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP (ZAP)](https://www.zaproxy.org)
 
-## Références
+## RÃ©fÃ©rences
 
 - [Niels Teusink : contournement de l'authentification phpBB 2.0.12](http://blog.teusink.net/2008/12/classic-bug-phpbb-2012-authentication.html)
-- [David Endler : "Exploitation et prédiction de la force brute de l'identifiant de session"](https://www.cgisecurity.com/lib/SessionIDs.pdf)
+- [David EndlerÂ : "Exploitation et prÃ©diction de la force brute de l'identifiant de session"](https://www.cgisecurity.com/lib/SessionIDs.pdf)
