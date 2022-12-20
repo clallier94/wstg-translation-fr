@@ -6,7 +6,7 @@
 
 ## Sommaire
 
-Souvent appelées questions et réponses "secrètes", les questions et réponses de sécurité sont souvent utilisées pour récupérer les mots de passe oubliés (voir [Test des fonctionnalités de changement ou de réinitialisation de mot de passe faible](09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md), ou comme sécurité supplémentaire en plus du mot de passe.
+Souvent appelées questions et réponses "secrètes", les questions et réponses de sécurité sont souvent utilisées pour récupérer les mots de passe oubliés (voir [Test des fonctionnalités de changement ou de réinitialisation de mot de passe faible](09-Testing_for_Weak_Password_Change_or_Reset_Functionalities.md), ou comme sécurité supplémentaire en plus du mot de passe).
 
 Ils sont généralement générés lors de la création du compte et obligent l'utilisateur à sélectionner parmi certaines questions pré-générées et à fournir une réponse appropriée. Ils peuvent permettre à l'utilisateur de générer ses propres paires de questions et de réponses. Les deux méthodes sont sujettes à des incertitudes. Idéalement, les questions de sécurité devraient générer des réponses qui ne sont connues que de l'utilisateur, et qui ne peuvent être devinées ou découvertes par personne d'autre. C'est plus difficile qu'il n'y paraît.
 Les questions et réponses de sécurité reposent sur le secret de la réponse. Les questions et les réponses doivent être choisies de manière à ce que les réponses ne soient connues que du titulaire du compte. Cependant, bien que de nombreuses réponses ne soient pas connues du public, la plupart des questions mises en œuvre par les sites Web promeuvent des réponses pseudo-privées.
@@ -41,7 +41,7 @@ Essayez d'obtenir une liste de questions de sécurité en créant un nouveau com
 
 ### Test des questions auto-générées faibles
 
-Essayez de créer des questions de sécurité en créant un nouveau compte ou en configurant les propriétés de récupération de mot de passe de votre compte existant. Si le système permet à l'utilisateur de générer ses propres questions de sécurité, il est vulnérable à la création de questions non sécurisées. Si le système utilise les questions de sécurité auto-générées pendant la fonctionnalité de mot de passe oublié et si les noms d'utilisateur peuvent être énumérés (voir [Test d'énumération de compte et de compte d'utilisateur devinable](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md), alors il devrait être facile pour le testeur d'énumérer un certain nombre de questions auto-générées. On devrait s'attendre à trouver plusieurs questions auto-générées faibles en utilisant cette méthode.
+Essayez de créer des questions de sécurité en créant un nouveau compte ou en configurant les propriétés de récupération de mot de passe de votre compte existant. Si le système permet à l'utilisateur de générer ses propres questions de sécurité, il est vulnérable à la création de questions non sécurisées. Si le système utilise les questions de sécurité auto-générées pendant la fonctionnalité de mot de passe oublié et si les noms d'utilisateur peuvent être énumérés (voir [Test d'énumération de compte et de compte d'utilisateur devinable](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md)), alors il devrait être facile pour le testeur d'énumérer un certain nombre de questions auto-générées. On devrait s'attendre à trouver plusieurs questions auto-générées faibles en utilisant cette méthode.
 
 ### Tester les réponses brutales
 
@@ -67,4 +67,4 @@ La clé pour exploiter et contourner avec succès un schéma de questions de sé
 ## Références
 
 - [La malédiction de la question secrète](https://www.schneier.com/essay-081.html)
-- [La feuille de triche des questions de sécurité OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html)
+- [La feuille de triche des questions de sécurité OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Choosing_and_Using_Security_Questions_Cheat_Sheet.html)
