@@ -6,41 +6,41 @@
 
 ## Sommaire
 
-Dans cette phase, le testeur vérifie que l'application indique correctement au navigateur de ne pas conserver les données sensibles.
+Dans cette phase, le testeur vÃ©rifie que l'application indique correctement au navigateur de ne pas conserver les donnÃ©es sensibles.
 
-Les navigateurs peuvent stocker des informations à des fins de mise en cache et d'historique. La mise en cache est utilisée pour améliorer les performances, afin que les informations précédemment affichées n'aient pas besoin d'être téléchargées à nouveau. Les mécanismes d'historique sont utilisés pour la commodité de l'utilisateur, afin que l'utilisateur puisse voir exactement ce qu'il a vu au moment où la ressource a été récupérée. Si des informations sensibles sont présentées à l'utilisateur (telles que son adresse, les détails de sa carte de crédit, son numéro de sécurité sociale ou son nom d'utilisateur), ces informations peuvent être stockées à des fins de mise en cache ou d'historique, et donc récupérables en examinant le cache du navigateur ou simplement en en appuyant sur le bouton **Précédent** du navigateur.
+Les navigateurs peuvent stocker des informations Ã  des fins de mise en cache et d'historique. La mise en cache est utilisÃ©e pour amÃ©liorer les performances, afin que les informations prÃ©cÃ©demment affichÃ©es n'aient pas besoin d'Ãªtre tÃ©lÃ©chargÃ©es Ã  nouveau. Les mÃ©canismes d'historique sont utilisÃ©s pour la commoditÃ© de l'utilisateur, afin que l'utilisateur puisse voir exactement ce qu'il a vu au moment oÃ¹ la ressource a Ã©tÃ© rÃ©cupÃ©rÃ©e. Si des informations sensibles sont prÃ©sentÃ©es Ã  l'utilisateur (telles que son adresse, les dÃ©tails de sa carte de crÃ©dit, son numÃ©ro de sÃ©curitÃ© sociale ou son nom d'utilisateur), ces informations peuvent Ãªtre stockÃ©es Ã  des fins de mise en cache ou d'historique, et donc rÃ©cupÃ©rables en examinant le cache du navigateur ou simplement en en appuyant sur le bouton **PrÃ©cÃ©dent** du navigateur.
 
 ## Objectifs des tests
 
-- Vérifiez si l'application stocke des informations sensibles côté client.
-- Vérifiez si l'accès peut se produire sans autorisation.
+- VÃ©rifiez si l'application stocke des informations sensibles cÃ´tÃ© client.
+- VÃ©rifiez si l'accÃ¨s peut se produire sans autorisation.
 
 ## Comment tester
 
 ### Historique du navigateur
 
-Techniquement, le bouton **Retour** est un historique et non un cache (voir [Mise en cache dans HTTP : Listes d'historique](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13 )). Le cache et l'historique sont deux entités différentes. Cependant, ils partagent la même faiblesse de présenter des informations sensibles précédemment affichées.
+Techniquement, le bouton **Retour** est un historique et non un cache (voir [Mise en cache dans HTTPÂ : Listes d'historique](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html#sec13.13 )). Le cache et l'historique sont deux entitÃ©s diffÃ©rentes. Cependant, ils partagent la mÃªme faiblesse de prÃ©senter des informations sensibles prÃ©cÃ©demment affichÃ©es.
 
-Le premier test, le plus simple, consiste à entrer des informations sensibles dans l'application et à se déconnecter. Ensuite, le testeur clique sur le bouton **Retour** du navigateur pour vérifier si les informations sensibles précédemment affichées sont accessibles sans authentification.
+Le premier test, le plus simple, consiste Ã  entrer des informations sensibles dans l'application et Ã  se dÃ©connecter. Ensuite, le testeur clique sur le bouton **Retour** du navigateur pour vÃ©rifier si les informations sensibles prÃ©cÃ©demment affichÃ©es sont accessibles sans authentification.
 
-Si, en appuyant sur le bouton **Retour**, le testeur peut accéder aux pages précédentes mais pas aux nouvelles, il ne s'agit pas d'un problème d'authentification, mais d'un problème d'historique du navigateur. Si ces pages contiennent des données sensibles, cela signifie que l'application n'a pas interdit au navigateur de les stocker.
+Si, en appuyant sur le bouton **Retour**, le testeur peut accÃ©der aux pages prÃ©cÃ©dentes mais pas aux nouvelles, il ne s'agit pas d'un problÃ¨me d'authentification, mais d'un problÃ¨me d'historique du navigateur. Si ces pages contiennent des donnÃ©es sensibles, cela signifie que l'application n'a pas interdit au navigateur de les stocker.
 
-L'authentification n'a pas nécessairement besoin d'être impliquée dans les tests. Par exemple, lorsqu'un utilisateur saisit son adresse e-mail pour s'inscrire à une newsletter, cette information peut être récupérable si elle n'est pas correctement gérée.
+L'authentification n'a pas nÃ©cessairement besoin d'Ãªtre impliquÃ©e dans les tests. Par exemple, lorsqu'un utilisateur saisit son adresse e-mail pour s'inscrire Ã  une newsletter, cette information peut Ãªtre rÃ©cupÃ©rable si elle n'est pas correctement gÃ©rÃ©e.
 
-Le bouton **Retour** peut être empêché d'afficher des données sensibles. Cela peut être fait par :
+Le bouton **Retour** peut Ãªtre empÃªchÃ© d'afficher des donnÃ©es sensibles. Cela peut Ãªtre fait par :
 
 - Delivering the page over HTTPS.
 - Setting `Cache-Control: must-revalidate`
 
 ### Cache du navigateur
 
-Ici, les testeurs vérifient que l'application ne divulgue aucune donnée sensible dans le cache du navigateur. Pour ce faire, ils peuvent utiliser un proxy (tel que OWASP ZAP) et rechercher dans les réponses du serveur appartenant à la session, en vérifiant que pour chaque page contenant des informations sensibles, le serveur a demandé au navigateur de ne mettre aucune donnée en cache. Une telle directive peut être émise dans les en-têtes de réponse HTTP avec les directives suivantes :
+Ici, les testeurs vÃ©rifient que l'application ne divulgue aucune donnÃ©e sensible dans le cache du navigateur. Pour ce faire, ils peuvent utiliser un proxy (tel que OWASP ZAP) et rechercher dans les rÃ©ponses du serveur appartenant Ã  la session, en vÃ©rifiant que pour chaque page contenant des informations sensibles, le serveur a demandÃ© au navigateur de ne mettre aucune donnÃ©e en cache. Une telle directive peut Ãªtre Ã©mise dans les en-tÃªtes de rÃ©ponse HTTP avec les directives suivantesÂ :
 
 - `Cache-Control: no-cache, no-store`
 - `Expires: 0`
 - `Pragma: no-cache`
 
-Ces directives sont généralement robustes, bien que des drapeaux supplémentaires puissent être nécessaires pour l'en-tête `Cache-Control` afin de mieux empêcher les fichiers liés de manière persistante sur le système de fichiers. Ceux-ci inclus :
+Ces directives sont gÃ©nÃ©ralement robustes, bien que des drapeaux supplÃ©mentaires puissent Ãªtre nÃ©cessaires pour l'en-tÃªte `Cache-Control` afin de mieux empÃªcher les fichiers liÃ©s de maniÃ¨re persistante sur le systÃ¨me de fichiers. Ceux-ci inclus :
 
 - `Cache-Control: must-revalidate, max-age=0, s-maxage=0`
 
@@ -55,9 +55,9 @@ Pragma: no-cache
 Expires: "past date or illegal value (e.g., 0)"
 ```
 
-Par exemple, si les testeurs testent une application de commerce électronique, ils doivent rechercher toutes les pages contenant un numéro de carte de crédit ou d'autres informations financières, et vérifier que toutes ces pages appliquent la directive "no-cache". S'ils trouvent des pages qui contiennent des informations critiques mais qui ne demandent pas au navigateur de ne pas mettre en cache leur contenu, ils savent que des informations sensibles seront stockées sur le disque, et ils peuvent vérifier cela simplement en recherchant la page dans le cache du navigateur.
+Par exemple, si les testeurs testent une application de commerce Ã©lectronique, ils doivent rechercher toutes les pages contenant un numÃ©ro de carte de crÃ©dit ou d'autres informations financiÃ¨res, et vÃ©rifier que toutes ces pages appliquent la directive "no-cache". S'ils trouvent des pages qui contiennent des informations critiques mais qui ne demandent pas au navigateur de ne pas mettre en cache leur contenu, ils savent que des informations sensibles seront stockÃ©es sur le disque, et ils peuvent vÃ©rifier cela simplement en recherchant la page dans le cache du navigateur.
 
-L'emplacement exact où ces informations sont stockées dépend du système d'exploitation client et du navigateur utilisé. Voici quelques exemples :
+L'emplacement exact oÃ¹ ces informations sont stockÃ©es dÃ©pend du systÃ¨me d'exploitation client et du navigateur utilisÃ©. Voici quelques exemples :
 
 - Mozilla Firefox:
     - Unix/Linux: `~/.cache/mozilla/firefox/`
@@ -70,25 +70,25 @@ L'emplacement exact où ces informations sont stockées dépend du système d'exploi
 
 #### Examen des informations mises en cache
 
-Firefox fournit une fonctionnalité pour afficher les informations mises en cache, ce qui peut être à votre avantage en tant que testeur. Bien sûr, l'industrie a également produit diverses extensions et applications externes que vous préférez ou dont vous avez peut-être besoin pour Chrome, Internet Explorer ou Edge.
+Firefox fournit une fonctionnalitÃ© pour afficher les informations mises en cache, ce qui peut Ãªtre Ã  votre avantage en tant que testeur. Bien sÃ»r, l'industrie a Ã©galement produit diverses extensions et applications externes que vous prÃ©fÃ©rez ou dont vous avez peut-Ãªtre besoin pour Chrome, Internet Explorer ou Edge.
 
-Les détails du cache sont également disponibles via des outils de développement dans la plupart des navigateurs modernes, tels que [Firefox](https://developer.mozilla.org/en-US/docs/Tools/Storage_Inspector#Cache_Storage), [Chrome](https:// développeurs.google.com/web/tools/chrome-devtools/storage/cache) et Edge. Avec Firefox, il est également possible d'utiliser l'URL `about:cache` pour vérifier les détails du cache.
+Les dÃ©tails du cache sont Ã©galement disponibles via des outils de dÃ©veloppement dans la plupart des navigateurs modernes, tels que [Firefox](https://developer.mozilla.org/en-US/docs/Tools/Storage_Inspector#Cache_Storage), [Chrome](https://developer.google.com/web/tools/chrome-devtools/storage/cache) et Edge. Avec Firefox, il est Ã©galement possible d'utiliser l'URL `about:cache` pour vÃ©rifier les dÃ©tails du cache.
 
-#### Traitement des vérifications pour les navigateurs mobiles
+#### Traitement des vÃ©rifications pour les navigateurs mobiles
 
-La gestion des directives de cache peut être complètement différente pour les navigateurs mobiles. Par conséquent, les testeurs doivent démarrer une nouvelle session de navigation avec des caches propres et profiter de fonctionnalités telles que le [mode appareil] de Chrome(https://developers.google.com/web/tools/chrome-devtools/device-mode) ou le [mode réactif] de Firefox. Design Mode] (https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode) pour tester à nouveau ou tester séparément les concepts décrits ci-dessus.
+La gestion des directives de cache peut Ãªtre complÃ¨tement diffÃ©rente pour les navigateurs mobiles. Par consÃ©quent, les testeurs doivent dÃ©marrer une nouvelle session de navigation avec des caches propres et profiter de fonctionnalitÃ©s telles que le [mode appareil](https://developers.google.com/web/tools/chrome-devtools/device-mode) de Chrome ou le [mode rÃ©actif](https://developer.mozilla.org/en-US/docs/Tools/Responsive_Design_Mode) de Firefox. pour tester Ã  nouveau ou tester sÃ©parÃ©ment les concepts dÃ©crits ci-dessus.
 
-De plus, les proxys personnels tels que ZAP et Burp Suite permettent au testeur de spécifier quel `User-Agent` doit être envoyé par ses spiders/crawlers. Cela peut être défini pour correspondre à une chaîne `User-Agent` de navigateur mobile et utilisé pour voir quelles directives de mise en cache sont envoyées par l'application testée.
+De plus, les proxys personnels tels que ZAP et Burp Suite permettent au testeur de spÃ©cifier quel `User-Agent` doit Ãªtre envoyÃ© par ses spiders/crawlers. Cela peut Ãªtre dÃ©fini pour correspondre Ã  une chaÃ®ne `User-Agent` de navigateur mobile et utilisÃ© pour voir quelles directives de mise en cache sont envoyÃ©es par l'application testÃ©e.
 
-### Test de la boîte grise
+### Test de la boÃ®te grise
 
-La méthodologie de test est équivalente au cas de la boîte noire, car dans les deux scénarios, les testeurs ont un accès complet aux en-têtes de réponse du serveur et au code HTML. Cependant, avec les tests en boîte grise, le testeur peut avoir accès aux informations d'identification du compte qui lui permettront de tester des pages sensibles accessibles uniquement aux utilisateurs authentifiés.
+La mÃ©thodologie de test est Ã©quivalente au cas de la boÃ®te noire, car dans les deux scÃ©narios, les testeurs ont un accÃ¨s complet aux en-tÃªtes de rÃ©ponse du serveur et au code HTML. Cependant, avec les tests en boÃ®te grise, le testeur peut avoir accÃ¨s aux informations d'identification du compte qui lui permettront de tester des pages sensibles accessibles uniquement aux utilisateurs authentifiÃ©s.
 
 ## Outils
 
-- [Proxy d'attaque Zed OWASP] (https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP](https://www.zaproxy.org)
 
-## Références
+## RÃ©fÃ©rences
 
 ### Papiers blanc
 
