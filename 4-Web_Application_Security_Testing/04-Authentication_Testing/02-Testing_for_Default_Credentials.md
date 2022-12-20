@@ -1,4 +1,4 @@
-# Test des informations d'identification par défaut
+# Test des informations d'identification par dÃ©faut
 
 |ID          |
 |------------|
@@ -6,68 +6,68 @@
 
 ## Sommaire
 
-De nombreuses applications Web et périphériques matériels ont des mots de passe par défaut pour le compte administratif intégré. Bien que dans certains cas, ceux-ci puissent être générés de manière aléatoire, ils sont souvent statiques, ce qui signifie qu'ils peuvent être facilement devinés ou obtenus par un attaquant.
+De nombreuses applications Web et pÃ©riphÃ©riques matÃ©riels ont des mots de passe par dÃ©faut pour le compte administratif intÃ©grÃ©. Bien que dans certains cas, ceux-ci puissent Ãªtre gÃ©nÃ©rÃ©s de maniÃ¨re alÃ©atoire, ils sont souvent statiques, ce qui signifie qu'ils peuvent Ãªtre facilement devinÃ©s ou obtenus par un attaquant.
 
-De plus, lorsque de nouveaux utilisateurs sont créés sur les applications, ceux-ci peuvent avoir des mots de passe prédéfinis. Ceux-ci peuvent être soit générés automatiquement par l'application, soit créés manuellement par le personnel. Dans les deux cas, s'ils ne sont pas générés de manière sécurisée, les mots de passe peuvent être devinés par un attaquant.
+De plus, lorsque de nouveaux utilisateurs sont crÃ©Ã©s sur les applications, ceux-ci peuvent avoir des mots de passe prÃ©dÃ©finis. Ceux-ci peuvent Ãªtre soit gÃ©nÃ©rÃ©s automatiquement par l'application, soit crÃ©Ã©s manuellement par le personnel. Dans les deux cas, s'ils ne sont pas gÃ©nÃ©rÃ©s de maniÃ¨re sÃ©curisÃ©e, les mots de passe peuvent Ãªtre devinÃ©s par un attaquant.
 
 ## Objectifs des tests
 
-- Déterminez si l'application possède des comptes d'utilisateurs avec des mots de passe par défaut.
-- Vérifiez si de nouveaux comptes d'utilisateurs sont créés avec des mots de passe faibles ou prévisibles.
+- DÃ©terminez si l'application possÃ¨de des comptes d'utilisateurs avec des mots de passe par dÃ©faut.
+- VÃ©rifiez si de nouveaux comptes d'utilisateurs sont crÃ©Ã©s avec des mots de passe faibles ou prÃ©visibles.
 
 ## Comment tester
 
-### Test des informations d'identification par défaut du fournisseur
+### Test des informations d'identification par dÃ©faut du fournisseur
 
-La première étape pour identifier les mots de passe par défaut consiste à identifier le logiciel utilisé. Ceci est couvert en détail dans la section [La collecte d'informations](../01-Information_Gathering/README.md) du guide.
+La premiÃ¨re Ã©tape pour identifier les mots de passe par dÃ©faut consiste Ã  identifier le logiciel utilisÃ©. Ceci est couvert en dÃ©tail dans la section [La collecte d'informations](../01-Information_Gathering/README.md) du guide.
 
-Une fois le logiciel identifié, essayez de savoir s'il utilise des mots de passe par défaut, et si oui, quels sont-ils. Cela devrait inclure :
+Une fois le logiciel identifiÃ©, essayez de savoir s'il utilise des mots de passe par dÃ©faut, et si oui, quels sont-ils. Cela devrait inclure :
 
-- Recherche du "[LOGICIEL] mot de passe par défaut".
+- Recherche du "[LOGICIEL] mot de passe par dÃ©faut".
 - Examiner le manuel ou la documentation du fournisseur.
-- Vérification des bases de données de mots de passe par défaut courantes, telles que [CIRT.net](https://cirt.net/passwords), [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/ Default-Credentials) ou [DefaultCreds-cheat-sheet](https://github.com/ihebski/DefaultCreds-cheat-sheet/blob/main/DefaultCreds-Cheat-Sheet.csv).
+- VÃ©rification des bases de donnÃ©es de mots de passe par dÃ©faut courantes, telles que [CIRT.net](https://cirt.net/passwords), [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/Default-Credentials) ou [DefaultCreds-cheat-sheet](https://github.com/ihebski/DefaultCreds-cheat-sheet/blob/main/DefaultCreds-Cheat-Sheet.csv).
 - Inspecter le code source de l'application (si disponible).
 - Installer l'application sur une machine virtuelle et l'inspecter.
-- Inspecter le matériel physique pour les autocollants (souvent présents sur les périphériques réseau).
+- Inspecter le matÃ©riel physique pour les autocollants (souvent prÃ©sents sur les pÃ©riphÃ©riques rÃ©seau).
 
-Si un mot de passe par défaut est introuvable, essayez les options courantes telles que :
+Si un mot de passe par dÃ©faut est introuvable, essayez les options courantes telles queÂ :
 
-- "admin", "password", "12345", ou d'autres [mots de passe par défaut communs](https://github.com/nixawk/fuzzdb/blob/master/bruteforce/passwds/default_devices_users%2Bpasswords.txt).
+- "admin", "password", "12345", ou d'autres [mots de passe par dÃ©faut communs](https://github.com/nixawk/fuzzdb/blob/master/bruteforce/passwds/default_devices_users%2Bpasswords.txt).
 - Un mot de passe vide ou vide.
-- Le numéro de série ou l'adresse MAC de l'appareil.
+- Le numÃ©ro de sÃ©rie ou l'adresse MAC de l'appareil.
 
-Si le nom d'utilisateur est inconnu, il existe différentes options pour énumérer les utilisateurs, décrites dans le guide [Test de l'énumération des comptes](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md). Vous pouvez également essayer des options courantes telles que "admin", "root" ou "system".
+Si le nom d'utilisateur est inconnu, il existe diffÃ©rentes options pour Ã©numÃ©rer les utilisateurs, dÃ©crites dans le guide [Test de l'Ã©numÃ©ration des comptes](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md). Vous pouvez Ã©galement essayer des options courantes telles que "admin", "root" ou "system".
 
-### Test des mots de passe par défaut de l'organisation
+### Test des mots de passe par dÃ©faut de l'organisation
 
-Lorsque le personnel d'une organisation crée manuellement des mots de passe pour de nouveaux comptes, il peut le faire de manière prévisible. Cela peut souvent être :
+Lorsque le personnel d'une organisation crÃ©e manuellement des mots de passe pour de nouveaux comptes, il peut le faire de maniÃ¨re prÃ©visible. Cela peut souvent Ãªtre :
 
 - Un seul mot de passe commun tel que "Password1".
-- Détails spécifiques à l'organisation, tels que le nom ou l'adresse de l'organisation.
-- Les mots de passe qui suivent un modèle simple, comme "Monday123" si le compte est créé un lundi.
+- DÃ©tails spÃ©cifiques Ã  l'organisation, tels que le nom ou l'adresse de l'organisation.
+- Les mots de passe qui suivent un modÃ¨le simple, comme "Monday123" si le compte est crÃ©Ã© un lundi.
 
-Ces types de mots de passe sont souvent difficiles à identifier du point de vue de la boîte noire, à moins qu'ils ne puissent être devinés ou forcés avec succès. Cependant, ils sont faciles à identifier lors de l'exécution de tests en boîte grise ou en boîte blanche.
+Ces types de mots de passe sont souvent difficiles Ã  identifier du point de vue de la boÃ®te noire, Ã  moins qu'ils ne puissent Ãªtre devinÃ©s ou forcÃ©s avec succÃ¨s. Cependant, ils sont faciles Ã  identifier lors de l'exÃ©cution de tests en boÃ®te grise ou en boÃ®te blanche.
 
-### Test des mots de passe par défaut générés par l'application
+### Test des mots de passe par dÃ©faut gÃ©nÃ©rÃ©s par l'application
 
-Si l'application génère automatiquement des mots de passe pour les nouveaux comptes d'utilisateurs, ceux-ci peuvent également être prévisibles. Afin de les tester, créez plusieurs comptes sur l'application avec des détails similaires en même temps et comparez les mots de passe qui leur sont attribués.
+Si l'application gÃ©nÃ¨re automatiquement des mots de passe pour les nouveaux comptes d'utilisateurs, ceux-ci peuvent Ã©galement Ãªtre prÃ©visibles. Afin de les tester, crÃ©ez plusieurs comptes sur l'application avec des dÃ©tails similaires en mÃªme temps et comparez les mots de passe qui leur sont attribuÃ©s.
 
-Les mots de passe peuvent être basés sur :
+Les mots de passe peuvent Ãªtre basÃ©s sur :
 
-- Une seule chaîne statique partagée entre les comptes.
-- Une partie hachée ou masquée des détails du compte, telle que `md5($username)`.
-- Un algorithme basé sur le temps.
-- Un générateur de nombres pseudo-aléatoires faibles (PRNG).
+- Une seule chaÃ®ne statique partagÃ©e entre les comptes.
+- Une partie hachÃ©e ou masquÃ©e des dÃ©tails du compte, telle que `md5($username)`.
+- Un algorithme basÃ© sur le temps.
+- Un gÃ©nÃ©rateur de nombres pseudo-alÃ©atoires faibles (PRNG).
 
-Ce type de problème est souvent difficile à identifier du point de vue de la boîte noire.
+Ce type de problÃ¨me est souvent difficile Ã  identifier du point de vue de la boÃ®te noire.
 
 ## Outils
 
-- [Burp Intruder] (https://portswigger.net/burp/documentation/desktop/tools/intrus)
+- [Burp Intruder](https://portswigger.net/burp/documentation/desktop/tools/intrus)
 - [THC Hydra](https://github.com/vanhauser-thc/thc-hydra)
 - [Nikto2](https://www.cirt.net/nikto2)
 
-## Références
+## RÃ©fÃ©rences
 
 - [CIRT](https://cirt.net/passwords)
 - [SecLists Default Passwords](https://github.com/danielmiessler/SecLists/tree/master/Passwords/Default-Credentials)
