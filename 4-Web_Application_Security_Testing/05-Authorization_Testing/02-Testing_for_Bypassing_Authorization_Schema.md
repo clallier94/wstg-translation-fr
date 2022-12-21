@@ -99,9 +99,9 @@ D'autres questions ou considérations iraient dans le sens suivant :
 - L'utilisateur sera-t-il créé ?
 - Si oui, le nouvel utilisateur peut-il utiliser ses privilèges ?
 
-### Test d'accès aux ressources affectées à un rôle différent
+### Test d'accès aux ressources affectées à un rôle différent
 
-Diverses applications configurent des contrôles de ressources en fonction des rôles d'utilisateur. Prenons un exemple de CV ou de CV (curriculum vitae) téléchargé sur un formulaire de carrière vers un compartiment S3.
+Diverses applications configurent des contrôles de ressources en fonction des rôles d'utilisateur. Prenons un exemple de CV (curriculum vitae) ou de CV téléchargé sur un formulaire de carrière vers un compartiment S3.
 
 En tant qu'utilisateur normal, essayez d'accéder à l'emplacement de ces fichiers. Si vous parvenez à les récupérer, les modifier ou les supprimer, alors l'application est vulnérable.
 
@@ -175,10 +175,10 @@ Utilisez les principes du moindre privilège sur les utilisateurs, les rôles et
 ## Outils
 
 - [OWASP Zed Attack Proxy (ZAP)](https://www.zaproxy.org/)
-     - [Module complémentaire ZAP : test de contrôle d'accès] (https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
-- [Suite Port Swigger Burp] (https://portswigger.net/burp)
+     - [Module complémentaire ZAP : test de contrôle d'accès](https://www.zaproxy.org/docs/desktop/addons/access-control-testing/)
+- [Suite Port Swigger Burp](https://portswigger.net/burp)
      - [Extension Burp : AuthMatrix](https://github.com/SecurityInnovation/AuthMatrix/)
-     - [Extension Burp : Autorize] (https://github.com/Quitten/Autorize)
+     - [Extension Burp : Autorize](https://github.com/Quitten/Autorize)
 
 ## Références
 
