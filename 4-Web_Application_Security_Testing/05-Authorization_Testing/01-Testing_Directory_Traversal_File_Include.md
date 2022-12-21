@@ -16,7 +16,7 @@ De nombreuses applications Web utilisent des scripts côté serveur pour inclure
 
 Dans les serveurs Web et les applications Web, ce type de problème survient dans les attaques par le chemin transversal/inclusion de fichier. En exploitant ce type de vulnérabilité, un attaquant peut lire des répertoires ou des fichiers qu'il ne peut normalement pas lire, accéder à des données en dehors de la racine du document Web ou inclure des scripts et d'autres types de fichiers provenant de sites Web externes.
 
-Aux fins du Guide de test OWASP, seules les menaces de sécurité liées aux applications Web seront prises en compte et non les menaces aux serveurs Web (par exemple, le tristement célèbre code d'échappement `% 5c` dans le serveur Web Microsoft IIS). D'autres suggestions de lecture seront fournies dans la section des références pour les lecteurs intéressés.
+Aux fins du Guide de test OWASP, seules les menaces de sécurité liées aux applications Web seront prises en compte et non les menaces aux serveurs Web (par exemple, le tristement célèbre code d'échappement `%5c` dans le serveur Web Microsoft IIS). D'autres suggestions de lecture seront fournies dans la section des références pour les lecteurs intéressés.
 
 Ce type d'attaque est également connu sous le nom d'attaque point-point-barre (`../`), parcours de répertoire, escalade de répertoire ou retour en arrière.
 
@@ -110,7 +110,7 @@ Vous pouvez trouver des techniques d'encodage et des charges utiles de traversé
      - Peut être équivalent à une lettre de lecteur telle que `c:\`, ou même à un volume de lecteur sans lettre attribuée : `\\.\GLOBALROOT\Device\HarddiskVolume1\`
      - Fait référence au premier lecteur de disque de la machine : `\\.\CdRom0\`
 
-### Test de la boîte grise
+### Test de la boîte grise
 
 Lorsque l'analyse est effectuée avec une approche de test en boîte grise, les testeurs doivent suivre la même méthodologie que pour les tests en boîte noire. Cependant, comme ils peuvent consulter le code source, il est possible de rechercher les vecteurs d'entrée plus facilement et plus précisément. Lors d'une révision du code source, ils peuvent utiliser des outils simples (tels que la commande *grep*) pour rechercher un ou plusieurs modèles courants dans le code de l'application : fonctions/méthodes d'inclusion, opérations sur le système de fichiers, etc.
 
@@ -128,7 +128,7 @@ Pour PHP, les testeurs peuvent utiliser l'expression régulière suivante :
 
 En utilisant la méthode de test de la boîte grise, il est possible de découvrir des vulnérabilités qui sont généralement plus difficiles à découvrir, voire impossibles à trouver lors d'une évaluation standard de la boîte noire.
 
-Certaines applications Web génèrent des pages dynamiques à l'aide de valeurs et de paramètres stockés dans une base de données. Il peut être possible d'insérer des chaînes de traversée de chemin spécialement conçues lorsque l'application ajoute des données à la base de données. Ce type de problème de sécurité est difficile à découvrir car les paramètres à l'intérieur des fonctions d'inclusion semblent internes et ** sûrs ** mais ne le sont pas en réalité.
+Certaines applications Web génèrent des pages dynamiques à l'aide de valeurs et de paramètres stockés dans une base de données. Il peut être possible d'insérer des chaînes de traversée de chemin spécialement conçues lorsque l'application ajoute des données à la base de données. Ce type de problème de sécurité est difficile à découvrir car les paramètres à l'intérieur des fonctions d'inclusion semblent internes et **sûrs** mais ne le sont pas en réalité.
 
 De plus, en examinant le code source, il est possible d'analyser les fonctions censées gérer les entrées non valides : certains développeurs tentent de modifier les entrées non valides pour les rendre valides, en évitant les avertissements et les erreurs. Ces fonctions sont généralement sujettes à des failles de sécurité.
 
@@ -153,7 +153,7 @@ file= ..\..\boot.ini
 - [DotDotPwn - Le fuzzer de traversée de répertoire](https://github.com/wireghoul/dotdotpwn)
 - [Path Traversal Fuzz Strings (from WFuzz Tool)](https://github.com/xmendez/wfuzz/blob/master/wordlist/Injections/Traversal.txt)
 - [OWASP ZAP](https://www.zaproxy.org/)
-- [Burp Suite] (https://portswigger.net)
+- [Burp Suite](https://portswigger.net)
 - Outils d'encodage/décodage
 - [Chercheur de chaînes "grep"](https://www.gnu.org/software/grep/)
 - [DirBuster](https://wiki.owasp.org/index.php/Category:OWASP_DirBuster_Project)
@@ -165,5 +165,5 @@ file= ..\..\boot.ini
 
 ### Papiers blanc
 
-- [Injection HTTP POST de phpBB Attachment Mod Directory Traversal] (https://seclists.org/vulnwatch/2004/q4/33)
+- [Injection HTTP POST de phpBB Attachment Mod Directory Traversal](https://seclists.org/vulnwatch/2004/q4/33)
 - [Pseudonymes de fichiers Windows : Pwnage et Poésie](https://www.slideshare.net/BaronZor/windows-file-pseudonyms)
