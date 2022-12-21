@@ -108,7 +108,7 @@ Pour chaque rôle :
 3. Pour chaque demande, remplacez l'identifiant de session de l'original par l'identifiant de session d'un autre rôle et évaluez les réponses pour chacune.
 4. Une application sera considérée comme vulnérable si la session privilégiée la plus faible contient les mêmes données ou indique des opérations réussies sur des fonctions privilégiées plus élevées.
 
-#### Scénario des rôles sur le site bancaire
+#### Scénario des rôles sur le site bancaire
 
 Le tableau suivant illustre les rôles système sur un site bancaire. Chaque rôle est lié à des autorisations spécifiques pour la fonctionnalité du menu des événements :
 
@@ -164,7 +164,7 @@ Supposons que le menu administrateur fasse partie du compte administrateur.
 
 L'application sera considérée comme vulnérable si un rôle autre que l'administrateur peut accéder au menu administrateur. Parfois, les développeurs effectuent une validation d'autorisation uniquement au niveau de l'interface graphique et laissent les fonctions sans validation d'autorisation, ce qui peut entraîner une vulnérabilité.
 
-### Parcours d'URL
+### Parcours d'URL
 
 Essayez de parcourir le site Web et vérifiez si certaines des pages peuvent manquer la vérification d'autorisation.
 
