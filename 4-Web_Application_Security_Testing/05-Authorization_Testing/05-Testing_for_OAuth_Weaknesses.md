@@ -6,47 +6,47 @@
 
 ## Sommaire
 
-[OAuth2.0](https://oauth.net/2/) (ci-après dénommé OAuth) est un cadre d'autorisation qui permet à un client d'accéder à des ressources au nom de son utilisateur.
+[OAuth2.0](https://oauth.net/2/) (ci-aprÃ¨s dÃ©nommÃ© OAuth) est un cadre d'autorisation qui permet Ã  un client d'accÃ©der Ã  des ressources au nom de son utilisateur.
 
-Pour ce faire, OAuth s'appuie fortement sur les jetons pour communiquer entre les différentes entités, chaque entité ayant un [rôle] différent (https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) :
+Pour ce faire, OAuth s'appuie fortement sur les jetons pour communiquer entre les diffÃ©rentes entitÃ©s, chaque entitÃ© ayant un [rÃ´le](https://datatracker.ietf.org/doc/html/rfc6749#section-1.1) diffÃ©rent :
 
-- **Propriétaire de la ressource :** L'entité qui accorde l'accès à une ressource, le propriétaire et, dans la plupart des cas, l'utilisateur lui-même
-- **Client :** L'application qui demande l'accès à une ressource au nom du propriétaire de la ressource. Ces clients sont disponibles en deux [types](https://oauth.net/2/client-types/) :
-    - **Public :** clients qui ne peuvent pas protéger un secret (*par exemple* applications axées sur le front-end, telles que les SPA, les applications mobiles, etc.)
-    - **Confidentiel :** clients capables de s'authentifier en toute sécurité auprès du serveur d'autorisation en protégeant leurs secrets enregistrés (*par exemple* services back-end)
-- **Serveur d'autorisation :** Le serveur qui détient les informations d'autorisation et accorde l'accès
-- **Serveur de ressources :** L'application qui sert le contenu auquel accède le client
+- **PropriÃ©taire de la ressourceÂ :** L'entitÃ© qui accorde l'accÃ¨s Ã  une ressource, le propriÃ©taire et, dans la plupart des cas, l'utilisateur lui-mÃªme
+- **ClientÂ :** L'application qui demande l'accÃ¨s Ã  une ressource au nom du propriÃ©taire de la ressource. Ces clients sont disponibles en deux [types](https://oauth.net/2/client-types/)Â :
+    -Â **PublicÂ :**Â clients qui ne peuvent pas protÃ©ger un secret (*par exemple* applications axÃ©es sur le front-end, telles que les SPA, les applications mobiles, etc.)
+    -Â **ConfidentielÂ :**Â clients capables de s'authentifier en toute sÃ©curitÃ© auprÃ¨s du serveur d'autorisation en protÃ©geant leurs secrets enregistrÃ©s (*par exemple* services back-end)
+- **Serveur d'autorisationÂ :** Le serveur qui dÃ©tient les informations d'autorisation et accorde l'accÃ¨s
+- **Serveur de ressourcesÂ :** L'application qui sert le contenu auquel accÃ¨de le client
 
-Étant donné que la responsabilité d'OAuth est de déléguer les droits d'accès du propriétaire au client, il s'agit d'une cible très attrayante pour les attaquants, et de mauvaises implémentations conduisent à un accès non autorisé aux ressources et aux informations des utilisateurs.
+Ã‰tant donnÃ© que la responsabilitÃ© d'OAuth est de dÃ©lÃ©guer les droits d'accÃ¨s du propriÃ©taire au client, il s'agit d'une cible trÃ¨s attrayante pour les attaquants, et de mauvaises implÃ©mentations conduisent Ã  un accÃ¨s non autorisÃ© aux ressources et aux informations des utilisateurs.
 
-Afin de fournir un accès à une application cliente, OAuth s'appuie sur plusieurs [types d'octroi d'autorisation](https://oauth.net/2/grant-types/) pour générer un jeton d'accès :
+Afin de fournir un accÃ¨s Ã  une application cliente, OAuth s'appuie sur plusieurs [types d'octroi d'autorisation](https://oauth.net/2/grant-types/) pour gÃ©nÃ©rer un jeton d'accÃ¨sÂ :
 
-- [Code d'autorisation](https://oauth.net/2/grant-types/authorization-code/) : utilisé par les clients confidentiels et publics pour échanger un code d'autorisation contre un jeton d'accès, mais recommandé uniquement pour les clients confidentiels
-- [Clé de preuve pour l'échange de code (PKCE)](https://oauth.net/2/pkce/) : PKCE s'appuie sur la subvention du code d'autorisation, offrant une sécurité renforcée pour son utilisation par les clients publics et améliorant la posture des confidentiels
-- [Client Credentials](https://oauth.net/2/grant-types/client-credentials/) : utilisé pour la communication de machine à machine, où "l'utilisateur" est ici la machine qui demande l'accès à ses propres ressources depuis le Serveur de ressources
-- [Device Code](https://oauth.net/2/grant-types/device-code/) : utilisé pour les appareils avec des capacités d'entrée limitées.
-- [Refresh Token](https://oauth.net/2/grant-types/refresh-token/) : jetons fournis par le serveur d'autorisation pour permettre aux clients d'actualiser les jetons d'accès des utilisateurs une fois qu'ils deviennent invalides ou expirent. Ce type de subvention est utilisé conjointement avec un autre type de subvention.
+- [Code d'autorisation](https://oauth.net/2/grant-types/authorization-code/)Â : utilisÃ© par les clients confidentiels et publics pour Ã©changer un code d'autorisation contre un jeton d'accÃ¨s, mais recommandÃ© uniquement pour les clients confidentiels
+- [ClÃ© de preuve pour l'Ã©change de code (PKCE)](https://oauth.net/2/pkce/)Â : PKCE s'appuie sur la subvention du code d'autorisation, offrant une sÃ©curitÃ© renforcÃ©e pour son utilisation par les clients publics et amÃ©liorant la posture des confidentiels
+- [Client Credentials](https://oauth.net/2/grant-types/client-credentials/)Â : utilisÃ© pour la communication de machine Ã  machine, oÃ¹ "l'utilisateur" est ici la machine qui demande l'accÃ¨s Ã  ses propres ressources depuis le Serveur de ressources
+- [Device Code](https://oauth.net/2/grant-types/device-code/) : utilisÃ© pour les appareils avec des capacitÃ©s d'entrÃ©e limitÃ©es.
+- [Refresh Token](https://oauth.net/2/grant-types/refresh-token/)Â : jetons fournis par le serveur d'autorisation pour permettre aux clients d'actualiser les jetons d'accÃ¨s des utilisateurs une fois qu'ils deviennent invalides ou expirent. Ce type de subvention est utilisÃ© conjointement avec un autre type de subvention.
 
-Deux flux seront obsolètes dans la version [OAuth2.1](https://oauth.net/2.1/), et leur utilisation n'est pas recommandée :
+Deux flux seront obsolÃ¨tes dans la version [OAuth2.1](https://oauth.net/2.1/), et leur utilisation n'est pas recommandÃ©eÂ :
 
-- [Flux implicite*](https://oauth.net/2/grant-types/implicit/) : l'implémentation sécurisée de PKCE rend ce flux obsolète. Avant PKCE, le flux implicite était utilisé par les applications côté client telles que les [applications à page unique](https://en.wikipedia.org/wiki/Single-page_application) depuis [CORS](https://developer.mozilla .org/en-US/docs/Web/HTTP/CORS) a assoupli la [politique d'origine identique](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) pour les sites Web pour communiquer entre eux. Pour plus d'informations sur les raisons pour lesquelles l'octroi implicite n'est pas recommandé, consultez cette [section](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-2.1.2).
-- [Resource Owner Password Credentials](https://oauth.net/2/grant-types/password/) : utilisé pour échanger les identifiants des utilisateurs directement avec le client, qui les envoie ensuite à l'autorisation pour les échanger contre un accès jeton. Pour savoir pourquoi ce flux n'est pas recommandé, consultez cette [section](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-2.4).
+- [Flux implicite*](https://oauth.net/2/grant-types/implicit/)Â : l'implÃ©mentation sÃ©curisÃ©e de PKCE rend ce flux obsolÃ¨te. Avant PKCE, le flux implicite Ã©tait utilisÃ© par les applications cÃ´tÃ© client telles que les [applications Ã  page unique](https://en.wikipedia.org/wiki/Single-page_application) depuis [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) a assoupli la [politique d'origine identique](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) pour les sites Web pour communiquer entre eux. Pour plus d'informations sur les raisons pour lesquelles l'octroi implicite n'est pas recommandÃ©, consultez cette [section](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-2.1.2).
+- [Resource Owner Password Credentials](https://oauth.net/2/grant-types/password/)Â : utilisÃ© pour Ã©changer les identifiants des utilisateurs directement avec le client, qui les envoie ensuite Ã  l'autorisation pour les Ã©changer contre un accÃ¨s jeton. Pour savoir pourquoi ce flux n'est pas recommandÃ©, consultez cette [section](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics#section-2.4).
 
-* : Le flux implicite dans OAuth uniquement est obsolète, mais reste une solution viable au sein d'Open ID Connect (OIDC) pour récupérer les "id_tokens". Veillez à comprendre comment le flux implicite est utilisé, qui peut être identifié si seul le point de terminaison `/authorization` est utilisé pour obtenir un jeton d'accès, sans compter sur le point de terminaison `/token` de quelque manière que ce soit. Un exemple à ce sujet peut être trouvé [ici](https://auth0.com/docs/get-started/authentication-and-authorization-flow/implicit-flow-with-form-post).
+* : Le flux implicite dans OAuth uniquement est obsolÃ¨te, mais reste une solution viable au sein d'Open ID Connect (OIDC) pour rÃ©cupÃ©rer les "id_tokens". Veillez Ã  comprendre comment le flux implicite est utilisÃ©, qui peut Ãªtre identifiÃ© si seul le point de terminaison `/authorization` est utilisÃ© pour obtenir un jeton d'accÃ¨s, sans compter sur le point de terminaison `/token` de quelque maniÃ¨re que ce soit. Un exemple Ã  ce sujet peut Ãªtre trouvÃ© [ici](https://auth0.com/docs/get-started/authentication-and-authorization-flow/implicit-flow-with-form-post).
 
-*Veuillez noter que les flux OAuth sont un sujet complexe et que ce qui précède ne comprend qu'un résumé des domaines clés. Les références en ligne contiennent des informations supplémentaires sur les flux spécifiques.*
+*Veuillez noter que les flux OAuth sont un sujet complexe et que ce qui prÃ©cÃ¨de ne comprend qu'un rÃ©sumÃ© des domaines clÃ©s. Les rÃ©fÃ©rences en ligne contiennent des informations supplÃ©mentaires sur les flux spÃ©cifiques.*
 
 ## Objectifs des tests
 
-- Déterminez si l'implémentation OAuth2 est vulnérable ou utilise une implémentation obsolète ou personnalisée.
+- DÃ©terminez si l'implÃ©mentation OAuth2 est vulnÃ©rable ou utilise une implÃ©mentation obsolÃ¨te ou personnalisÃ©e.
 
 ## Comment tester
 
-### Test pour les types de subventions obsolètes
+### Test pour les types de subventions obsolÃ¨tes
 
-Les types de subventions obsolètes sont devenus obsolètes pour des raisons de sécurité et de fonctionnalité. Identifier s'ils sont utilisés nous permet de vérifier rapidement s'ils sont sensibles à l'une des menaces liées à leur utilisation. Certains peuvent être hors de portée de l'attaquant, comme la façon dont un client peut utiliser les informations d'identification des utilisateurs. Cela doit être documenté et transmis aux équipes d'ingénierie internes.
+Les types de subventions obsolÃ¨tes sont devenus obsolÃ¨tes pour des raisons de sÃ©curitÃ© et de fonctionnalitÃ©. Identifier s'ils sont utilisÃ©s nous permet de vÃ©rifier rapidement s'ils sont sensibles Ã  l'une des menaces liÃ©es Ã  leur utilisation. Certains peuvent Ãªtre hors de portÃ©e de l'attaquant, comme la faÃ§on dont un client peut utiliser les informations d'identification des utilisateurs. Cela doit Ãªtre documentÃ© et transmis aux Ã©quipes d'ingÃ©nierie internes.
 
-Pour les clients publics, il est généralement possible d'identifier le type d'octroi dans la demande au point de terminaison `/token`. Il est indiqué dans l'échange de jeton avec le paramètre `grant_type`.
+Pour les clients publics, il est gÃ©nÃ©ralement possible d'identifier le type d'octroi dans la demande au point de terminaison `/token`. Il est indiquÃ© dans l'Ã©change de jeton avec le paramÃ¨tre `grant_type`.
 
 L'exemple suivant montre l'attribution du code d'autorisation avec PKCE.
 
@@ -64,13 +64,13 @@ Host: as.example.com
 }
 ```
 
-Les valeurs du paramètre "grant_type" et le type de subvention qu'elles indiquent sont :
+Les valeurs du paramÃ¨tre "grant_type" et le type de subvention qu'elles indiquent sontÂ :
 
-- `password` : indique l'octroi du ROPC.
-- `client_credentials` : indique l'octroi des informations d'identification du client.
-- `authorization_code` : indique l'attribution du code d'autorisation.
+- `password`Â : indique l'octroi du ROPC.
+- `client_credentials`Â : indique l'octroi des informations d'identification du client.
+- `authorization_code`Â : indique l'attribution du code d'autorisation.
 
-Le type de flux implicite n'est pas indiqué par le paramètre `grant_type` puisque le jeton est présenté dans la réponse à la demande de point de terminaison `/authorization` et peut à la place être identifié via le `response_type`. Ci-dessous un exemple.
+Le type de flux implicite n'est pas indiquÃ© par le paramÃ¨tre `grant_type` puisque le jeton est prÃ©sentÃ© dans la rÃ©ponse Ã  la demande de point de terminaison `/authorization` et peut Ã  la place Ãªtre identifiÃ© via le `response_type`. Ci-dessous un exemple.
 
 ```http
 GET /authorize
@@ -81,13 +81,13 @@ GET /authorize
   &state=<random_state>
 ```
 
-Les paramètres d'URL suivants indiquent le flux OAuth utilisé :
+Les paramÃ¨tres d'URL suivants indiquent le flux OAuth utilisÃ©Â :
 
-- `response_type=token` : indique un flux implicite, car le client demande directement au serveur d'autorisation de renvoyer un jeton.
-- `response_type=code` : indique le flux de code d'autorisation, car le client demande au serveur d'autorisation de renvoyer un code, qui sera ensuite échangé avec un jeton.
-- `code_challenge=sha256(xyz)` : indique l'extension PKCE, car aucun autre flux n'utilise ce paramètre.
+- `response_type=token`Â : indique un flux implicite, car le client demande directement au serveur d'autorisation de renvoyer un jeton.
+- `response_type=code`Â : indique le flux de code d'autorisation, car le client demande au serveur d'autorisation de renvoyer un code, qui sera ensuite Ã©changÃ© avec un jeton.
+- `code_challenge=sha256(xyz)`Â : indique l'extension PKCE, car aucun autre flux n'utilise ce paramÃ¨tre.
 
-Voici un exemple de demande d'autorisation pour le flux de code d'autorisation avec PKCE :
+Voici un exemple de demande d'autorisation pour le flux de code d'autorisation avec PKCEÂ :
 
 ```http
 GET /authorize
@@ -106,11 +106,11 @@ Host: as.example.com
 
 #### Clients publics
 
-L'attribution du code d'autorisation avec l'extension PKCE est recommandée pour les clients publics. Une demande d'autorisation pour le flux de code d'autorisation avec PKCE doit contenir `response_type=code` et `code_challenge=sha256(xyz)`.
+L'attribution du code d'autorisation avec l'extension PKCE est recommandÃ©e pour les clients publics. Une demande d'autorisation pour le flux de code d'autorisation avec PKCE doit contenir `response_type=code` et `code_challenge=sha256(xyz)`.
 
-L'échange de jetons doit contenir le type d'autorisation "authorization_code" et un "code_verifier".
+L'Ã©change de jetons doit contenir le type d'autorisation "authorization_code" et un "code_verifier".
 
-Les types de subventions inappropriés pour les clients publics sont :
+Les types de subventions inappropriÃ©s pour les clients publics sontÂ :
 
 - Octroi de code d'autorisation sans l'extension PKCE
 - Identifiants clients
@@ -119,17 +119,17 @@ Les types de subventions inappropriés pour les clients publics sont :
 
 #### Clients confidentiels
 
-L'attribution du code d'autorisation est recommandée pour les clients confidentiels. L'extension PKCE peut également être utilisée.
+L'attribution du code d'autorisation est recommandÃ©e pour les clients confidentiels. L'extension PKCE peut Ã©galement Ãªtre utilisÃ©e.
 
-Les types de subvention inappropriés pour les clients confidentiels sont :
+Les types de subvention inappropriÃ©s pour les clients confidentiels sontÂ :
 
 - Informations d'identification du client (sauf pour le machine-to-machine -- voir ci-dessous)
 - Flux implicite
 - ROPC
 
-##### Machine à machine
+##### Machine Ã  machine
 
-Dans les situations où aucune interaction de l'utilisateur ne se produit et où les clients ne sont que des clients confidentiels, l'octroi des informations d'identification du client peut être utilisé.
+Dans les situations oÃ¹ aucune interaction de l'utilisateur ne se produit et oÃ¹ les clients ne sont que des clients confidentiels, l'octroi des informations d'identification du client peut Ãªtre utilisÃ©.
 
 Si vous connaissez le `client_id` et `client_secret`, il est possible d'obtenir un jeton en passant le type de subvention `client_credentials`.
 
@@ -142,38 +142,38 @@ $ curl --request POST \
 
 ### Fuite d'informations d'identification
 
-Selon le flux, OAuth transporte plusieurs types d'informations d'identification sous forme de paramètres d'URL.
+Selon le flux, OAuth transporte plusieurs types d'informations d'identification sous forme de paramÃ¨tres d'URL.
 
-Les jetons suivants peuvent être considérés comme des informations d'identification divulguées :
+Les jetons suivants peuvent Ãªtre considÃ©rÃ©s comme des informations d'identification divulguÃ©esÂ :
 
-- jeton d'accès
-- jeton de rafraîchissement
+- jeton d'accÃ¨s
+- jeton de rafraÃ®chissement
 - Code d'autorisation
-- Défi de code PKCE / vérificateur de code
+- DÃ©fi de code PKCE / vÃ©rificateur de code
 
-En raison du fonctionnement d'OAuth, le "code" d'autorisation ainsi que le "code_challenge" et le "code_verifier" peuvent faire partie de l'URL. Le flux implicite transporte le jeton d'autorisation dans le cadre de l'URL si le `response_mode` n'est pas défini sur [`form_post`](https://openid.net/specs/oauth-v2-form-post-response-mode-1_0 .html). Cela peut entraîner une fuite du jeton ou du code demandé dans l'en-tête du référent, dans les fichiers journaux et les proxys en raison de la transmission de ces paramètres dans la requête ou le fragment.
+En raison du fonctionnement d'OAuth, le "code" d'autorisation ainsi que le "code_challenge" et le "code_verifier" peuvent faire partie de l'URL. Le flux implicite transporte le jeton d'autorisation dans le cadre de l'URL si le `response_mode` n'est pas dÃ©fini sur [`form_post`](https://openid.net/specs/oauth-v2-form-post-response-mode-1_0 .html). Cela peut entraÃ®ner une fuite du jeton ou du code demandÃ© dans l'en-tÃªte du rÃ©fÃ©rent, dans les fichiers journaux et les proxys en raison de la transmission de ces paramÃ¨tres dans la requÃªte ou le fragment.
 
-Le risque porté par le flux implicite de fuite des jetons est bien plus élevé que celui de la fuite du `code` ou de tout autre paramètre `code_*`, car ils sont liés à des clients spécifiques et sont plus difficiles à abuser en cas de fuite.
+Le risque portÃ© par le flux implicite de fuite des jetons est bien plus Ã©levÃ© que celui de la fuite du `code` ou de tout autre paramÃ¨tre `code_*`, car ils sont liÃ©s Ã  des clients spÃ©cifiques et sont plus difficiles Ã  abuser en cas de fuite.
 
-Afin de tester ce scénario, utilisez un proxy d'interception HTTP tel que OWASP ZAP et interceptez le trafic OAuth.
+Afin de tester ce scÃ©nario, utilisez un proxy d'interception HTTP tel que OWASP ZAP et interceptez le trafic OAuth.
 
-- Parcourez le processus d'autorisation et identifiez toutes les informations d'identification présentes dans l'URL.
-- Si des ressources externes sont incluses dans une page concernée par le flux OAuth, analysez la demande qui leur est faite. Les informations d'identification pourraient être divulguées dans l'en-tête du référent.
+- Parcourez le processus d'autorisation et identifiez toutes les informations d'identification prÃ©sentes dans l'URL.
+- Si des ressources externes sont incluses dans une page concernÃ©e par le flux OAuth, analysez la demande qui leur est faite. Les informations d'identification pourraient Ãªtre divulguÃ©es dans l'en-tÃªte du rÃ©fÃ©rent.
 
-Après avoir parcouru le flux OAuth et utilisé l'application, quelques requêtes sont capturées dans l'historique des requêtes d'un proxy d'interception HTTP. Recherchez l'en-tête du référent HTTP (par exemple, `Referer : https://idp.exemple.com/`) contenant le serveur d'autorisation et l'URL du client dans l'historique des requêtes.
+AprÃ¨s avoir parcouru le flux OAuth et utilisÃ© l'application, quelques requÃªtes sont capturÃ©es dans l'historique des requÃªtes d'un proxy d'interception HTTP. Recherchez l'en-tÃªte du rÃ©fÃ©rent HTTP (par exemple, `RefererÂ : https://idp.exemple.com/`) contenant le serveur d'autorisation et l'URL du client dans l'historique des requÃªtes.
 
-Passer en revue les balises méta HTML (bien que cette balise ne soit [pas prise en charge](https://caniuse.com/mdn-html_elements_meta_name_referrer) sur tous les navigateurs), ou la [Referrer-Policy](https://developer.mozilla.org/ en-US/docs/Web/HTTP/Headers/Referrer-Policy) pourrait aider à évaluer si une fuite d'informations d'identification se produit via l'en-tête du référent.
+Passer en revue les balises mÃ©ta HTML (bien que cette balise ne soit [pas prise en charge](https://caniuse.com/mdn-html_elements_meta_name_referrer) sur tous les navigateurs), ou la [Referrer-Policy](https://developer.mozilla.org/ en-US/docs/Web/HTTP/Headers/Referrer-Policy) pourrait aider Ã  Ã©valuer si une fuite d'informations d'identification se produit via l'en-tÃªte du rÃ©fÃ©rent.
 
-## Cas de test associés
+## Cas de test associÃ©s
 
 - [Test des jetons Web JSON](../06-Session_Management_Testing/10-Testing_JSON_Web_Tokens.md)
 
 ## Correction
 
-- Lors de la mise en œuvre d'OAuth, considérez toujours la technologie utilisée et si l'application est une application côté serveur qui peut éviter de révéler des secrets, ou une application côté client qui ne le peut pas.
-- Dans presque tous les cas, utilisez le flux de code d'autorisation avec PKCE. Une exception peut être les flux de machine à machine.
-- Utilisez les paramètres POST ou les valeurs d'en-tête pour transporter les secrets.
-- Lorsqu'aucune autre possibilité n'existe (par exemple, dans les applications héritées qui ne peuvent pas être migrées), implémentez des en-têtes de sécurité supplémentaires tels qu'un "Referrer-Policy".
+- Lors de la mise en Âœuvre d'OAuth, considÃ©rez toujours la technologie utilisÃ©e et si l'application est une application cÃ´tÃ© serveur qui peut Ã©viter de rÃ©vÃ©ler des secrets, ou une application cÃ´tÃ© client qui ne le peut pas.
+- Dans presque tous les cas, utilisez le flux de code d'autorisation avec PKCE. Une exception peut Ãªtre les flux de machine Ã  machine.
+- Utilisez les paramÃ¨tres POST ou les valeurs d'en-tÃªte pour transporter les secrets.
+- Lorsqu'aucune autre possibilitÃ© n'existe (par exemple, dans les applications hÃ©ritÃ©es qui ne peuvent pas Ãªtre migrÃ©es), implÃ©mentez des en-tÃªtes de sÃ©curitÃ© supplÃ©mentaires tels qu'un "Referrer-Policy".
 
 ## Outils
 
@@ -181,11 +181,11 @@ Passer en revue les balises méta HTML (bien que cette balise ne soit [pas prise 
 - [EsPReSSO](https://github.com/portswigger/espresso)
 - [OWASP ZAP](https://www.zaproxy.org/)
 
-## Références
+## RÃ©fÃ©rences
 
 - [Authentification de l'utilisateur avec OAuth 2.0](https://oauth.net/articles/authentication/)
 - [Le ??cadre d'autorisation OAuth 2.0](https://datatracker.ietf.org/doc/html/rfc6749)
-- [Cadre d'autorisation OAuth 2.0 : utilisation du jeton porteur](https://datatracker.ietf.org/doc/html/rfc6750)
-- [Modèle de menace OAuth 2.0 et considérations de sécurité](https://datatracker.ietf.org/doc/html/rfc6819)
-- [Meilleures pratiques actuelles en matière de sécurité OAuth 2.0](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-16)
-- [Flux de code d'autorisation avec clé de preuve pour l'échange de code] (https://auth0.com/docs/authorization/flows/authorization-code-flow-with-proof-key-for-code-exchange-pkce)
+- [Cadre d'autorisation OAuthÂ 2.0Â : utilisation du jeton porteur](https://datatracker.ietf.org/doc/html/rfc6750)
+- [ModÃ¨le de menace OAuth 2.0 et considÃ©rations de sÃ©curitÃ©](https://datatracker.ietf.org/doc/html/rfc6819)
+- [Meilleures pratiques actuelles en matiÃ¨re de sÃ©curitÃ© OAuth 2.0](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-security-topics-16)
+- [Flux de code d'autorisation avec clÃ© de preuve pour l'Ã©change de code](https://auth0.com/docs/authorization/flows/authorization-code-flow-with-proof-key-for-code-exchange-pkce)
