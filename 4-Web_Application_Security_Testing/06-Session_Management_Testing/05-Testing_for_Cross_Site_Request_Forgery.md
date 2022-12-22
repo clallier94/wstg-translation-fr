@@ -32,7 +32,7 @@ La requête GET peut être envoyée par l'utilisateur de plusieurs manières dif
 - Taper l'URL directement dans le navigateur
 - Suite à un lien externe qui pointe vers l'URL
 
-Ces invocations ne peuvent pas être distinguées par l'application. En particulier, le troisième peut être assez dangereux. Il existe un certain nombre de techniques et de vulnérabilités qui peuvent masquer les propriétés réelles d'un lien. Le lien peut être intégré dans un e-mail, apparaître sur un site Web malveillant vers lequel l'utilisateur est attiré ou apparaître dans un contenu hébergé par un tiers (tel qu'un autre site Web ou un e-mail HTML) et pointer vers une ressource de l'application. . Si l'utilisateur clique sur le lien, puisqu'il est déjà authentifié par l'application Web sur *site*, le navigateur émettra une requête GET à l'application Web, accompagnée d'informations d'authentification (le cookie d'identification de session). Cela se traduit par une opération valide effectuée sur l'application Web à laquelle l'utilisateur ne s'attend pas ; par exemple, un virement sur une application web banking.
+Ces invocations ne peuvent pas être distinguées par l'application. En particulier, le troisième peut être assez dangereux. Il existe un certain nombre de techniques et de vulnérabilités qui peuvent masquer les propriétés réelles d'un lien. Le lien peut être intégré dans un e-mail, apparaître sur un site Web malveillant vers lequel l'utilisateur est attiré ou apparaître dans un contenu hébergé par un tiers (tel qu'un autre site Web ou un e-mail HTML) et pointer vers une ressource de l'application. Si l'utilisateur clique sur le lien, puisqu'il est déjà authentifié par l'application Web sur *site*, le navigateur émettra une requête GET à l'application Web, accompagnée d'informations d'authentification (le cookie d'identification de session). Cela se traduit par une opération valide effectuée sur l'application Web à laquelle l'utilisateur ne s'attend pas ; par exemple, un virement sur une application web banking.
 
 En utilisant une balise telle que `img`, comme précisé au point 4 ci-dessus, il n'est même pas nécessaire que l'utilisateur suive un lien particulier. Supposons que l'attaquant envoie à l'utilisateur un e-mail l'incitant à visiter une URL renvoyant à une page contenant le code HTML (simplifié) suivant.
 
@@ -46,7 +46,7 @@ En utilisant une balise telle que `img`, comme précisé au point 4 ci-dessus, i
 </html>
 ```
 
-Lorsque le navigateur affichera cette page, il essaiera d'afficher également l'image de dimension zéro spécifiée (donc invisible) de `https://www.company.exemple`. Cela se traduit par l'envoi automatique d'une requête à l'application Web hébergée sur *site*. Il n'est pas important que l'URL de l'image ne fasse pas référence à une image appropriée, car sa présence déclenchera de toute façon la requête "action" spécifiée dans le champ "src". Cela se produit à condition que le téléchargement d'images ne soit pas désactivé dans le navigateur. La plupart des navigateurs n'ont pas de téléchargements d'images désactivés car cela paralyserait la plupart des applications Web au-delà de la convivialité.
+Lorsque le navigateur affichera cette page, il essaiera d'afficher également l'image de dimension zéro spécifiée (donc invisible) de `https://www.company.exemple`. Cela se traduit par l'envoi automatique d'une requête à l'application Web hébergée sur *site*. Il n'est pas important que l'URL de l'image ne fasse pas référence à une image appropriée, car sa présence déclenchera de toute façon la requête `action` spécifiée dans le champ `src`. Cela se produit à condition que le téléchargement d'images ne soit pas désactivé dans le navigateur. La plupart des navigateurs n'ont pas de téléchargements d'images désactivés car cela paralyserait la plupart des applications Web au-delà de la convivialité.
 
 Le problème ici est une conséquence de:
 
@@ -102,7 +102,7 @@ L'utilisateur peut également avoir obtenu les mêmes résultats en envoyant man
 https://[target]/fwmgt/delete?rule=*
 ```
 
-Soit en suivant un lien pointant, directement ou via une redirection, vers l'URL ci-dessus. Ou, encore une fois, en accédant à une page HTML avec une balise "img" intégrée pointant vers la même URL.
+Soit en suivant un lien pointant, directement ou via une redirection, vers l'URL ci-dessus. Ou, encore une fois, en accédant à une page HTML avec une balise `img` intégrée pointant vers la même URL.
 
 Dans tous ces cas, si l'utilisateur est actuellement connecté à l'application de gestion du pare-feu, la requête aboutira et modifiera la configuration du pare-feu. On peut imaginer des attaques ciblant des applications sensibles et faisant des enchères automatiques, des transferts d'argent, des commandes, modifiant la configuration de composants logiciels critiques, etc.
 
