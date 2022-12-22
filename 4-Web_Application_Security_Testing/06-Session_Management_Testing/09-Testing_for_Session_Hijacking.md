@@ -6,55 +6,55 @@
 
 ## Sommaire
 
-Un attaquant qui accède aux cookies de session utilisateur peut se faire passer pour eux en présentant ces cookies. Cette attaque est connue sous le nom de détournement de session. Lorsque l'on considère les attaquants de réseau, c'est-à-dire les attaquants qui contrôlent le réseau utilisé par la victime, les cookies de session peuvent être indûment exposés à l'attaquant via HTTP. Pour éviter cela, les cookies de session doivent être marqués avec l'attribut "Sécurisé" afin qu'ils ne soient communiqués que via HTTPS.
+Un attaquant qui accÃ¨de aux cookies de session utilisateur peut se faire passer pour eux en prÃ©sentant ces cookies. Cette attaque est connue sous le nom de dÃ©tournement de session. Lorsque l'on considÃ¨re les attaquants de rÃ©seau, c'est-Ã -dire les attaquants qui contrÃ´lent le rÃ©seau utilisÃ© par la victime, les cookies de session peuvent Ãªtre indÃ»ment exposÃ©s Ã  l'attaquant via HTTP. Pour Ã©viter cela, les cookies de session doivent Ãªtre marquÃ©s avec l'attribut "SÃ©curisÃ©" afin qu'ils ne soient communiquÃ©s que via HTTPS.
 
-Notez que l'attribut `Secure` doit également être utilisé lorsque l'application Web est entièrement déployée sur HTTPS, sinon l'attaque de vol de cookie suivante est possible. Supposons que `exemple.com` est entièrement déployé sur HTTPS, mais ne marque pas ses cookies de session comme `Secure`. Les étapes d'attaque suivantes sont possibles :
+Notez que l'attribut `Secure` doit Ã©galement Ãªtre utilisÃ© lorsque l'application Web est entiÃ¨rement dÃ©ployÃ©e sur HTTPS, sinon l'attaque de vol de cookie suivante est possible. Supposons que `exemple.com` est entiÃ¨rement dÃ©ployÃ© sur HTTPS, mais ne marque pas ses cookies de session comme `Secure`. Les Ã©tapes d'attaque suivantes sont possiblesÂ :
 
-1. La victime envoie une requête à `http://another-site.com`.
-2. L'attaquant corrompt la réponse correspondante pour qu'elle déclenche une requête vers `http://exemple.com`.
-3. Le navigateur essaie maintenant d'accéder à `http://exemple.com`.
-4. Bien que la demande échoue, les cookies de session sont divulgués en clair via HTTP.
+1. La victime envoie une requÃªte Ã  `http://another-site.com`.
+2. L'attaquant corrompt la rÃ©ponse correspondante pour qu'elle dÃ©clenche une requÃªte vers `http://exemple.com`.
+3. Le navigateur essaie maintenant d'accÃ©der Ã  `http://exemple.com`.
+4. Bien que la demande Ã©choue, les cookies de session sont divulguÃ©s en clair via HTTP.
 
-Alternativement, le piratage de session peut être empêché en interdisant l'utilisation de HTTP à l'aide de [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security). Notez qu'il y a ici une subtilité liée à la portée des cookies. En particulier, l'adoption complète du HSTS est requise lorsque les cookies de session sont émis avec l'ensemble d'attributs "Domaine".
+Alternativement, le piratage de session peut Ãªtre empÃªchÃ© en interdisant l'utilisation de HTTP Ã  l'aide de [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security). Notez qu'il y a ici une subtilitÃ© liÃ©e Ã  la portÃ©e des cookies. En particulier, l'adoption complÃ¨te du HSTS est requise lorsque les cookies de session sont Ã©mis avec l'ensemble d'attributs `Domain`.
 
-L'adoption complète du HSTS est décrite dans un article intitulé *Testing for Integrity Flaws in Web Sessions* par Stefano Calzavara, Alvise Rabitti, Alessio Ragazzo et Michele Bugliesi. L'adoption complète du HSTS se produit lorsqu'un hôte active le HSTS pour lui-même et tous ses sous-domaines. L'adoption partielle du HSTS se produit lorsqu'un hôte active le HSTS uniquement pour lui-même.
+L'adoption complÃ¨te du HSTS est dÃ©crite dans un article intitulÃ© *Testing for Integrity Flaws in Web Sessions* par Stefano Calzavara, Alvise Rabitti, Alessio Ragazzo et Michele Bugliesi. L'adoption complÃ¨te du HSTS se produit lorsqu'un hÃ´te active le HSTS pour lui-mÃªme et tous ses sous-domaines. L'adoption partielle du HSTS se produit lorsqu'un hÃ´te active le HSTS uniquement pour lui-mÃªme.
 
-Avec l'attribut `Domain` défini, les cookies de session peuvent être partagés entre les sous-domaines. L'utilisation de HTTP avec des sous-domaines doit être évitée pour empêcher la divulgation de cookies non chiffrés envoyés via HTTP. Pour illustrer cette faille de sécurité, supposons que le site Web `exemple.com` active HSTS sans l'option `includeSubDomains`. Le site Web émet des cookies de session avec l'attribut `Domain` défini sur `exemple.com`. L'attaque suivante est possible :
+Avec l'attribut `Domain` dÃ©fini, les cookies de session peuvent Ãªtre partagÃ©s entre les sous-domaines. L'utilisation de HTTP avec des sous-domaines doit Ãªtre Ã©vitÃ©e pour empÃªcher la divulgation de cookies non chiffrÃ©s envoyÃ©s via HTTP. Pour illustrer cette faille de sÃ©curitÃ©, supposons que le site Web `exemple.com` active HSTS sans l'option `includeSubDomains`. Le site Web Ã©met des cookies de session avec l'attribut `Domain` dÃ©fini sur `exemple.com`. L'attaque suivante est possible :
 
-1. La victime envoie une requête à `http://another-site.com`.
-2. L'attaquant corrompt la réponse correspondante pour qu'elle déclenche une requête vers `http://fake.exemple.com`.
-3. Le navigateur essaie maintenant d'accéder à `http://fake.exemple.com`, ce qui est autorisé par la configuration HSTS.
-4. Étant donné que la requête est envoyée à un sous-domaine de `exemple.com` avec l'attribut `Domain` défini, elle inclut les cookies de session, qui sont divulgués en clair via HTTP.
+1. La victime envoie une requÃªte Ã  `http://another-site.com`.
+2. L'attaquant corrompt la rÃ©ponse correspondante pour qu'elle dÃ©clenche une requÃªte vers `http://fake.exemple.com`.
+3. Le navigateur essaie maintenant d'accÃ©der Ã  `http://fake.exemple.com`, ce qui est autorisÃ© par la configuration HSTS.
+4. Ã‰tant donnÃ© que la requÃªte est envoyÃ©e Ã  un sous-domaine de `exemple.com` avec l'attribut `Domain` dÃ©fini, elle inclut les cookies de session, qui sont divulguÃ©s en clair via HTTP.
 
-Le HSTS complet doit être activé sur le domaine apex pour empêcher cette attaque.
+Le HSTS complet doit Ãªtre activÃ© sur le domaine apex pour empÃªcher cette attaque.
 
 ## Objectifs des tests
 
-- Identifier les cookies de session vulnérables.
-- Détourner les cookies vulnérables et évaluer le niveau de risque.
+- Identifier les cookies de session vulnÃ©rables.
+- DÃ©tourner les cookies vulnÃ©rables et Ã©valuer le niveau de risque.
 
 ## Comment tester
 
-La stratégie de test est ciblée sur les attaquants du réseau, elle ne doit donc être appliquée qu'aux sites sans adoption complète du HSTS (les sites avec une adoption complète du HSTS sont sécurisés, car leurs cookies ne sont pas communiqués via HTTP). Nous supposons que nous avons deux comptes de test sur le site Web testé, un pour agir en tant que victime et un pour agir en tant qu'attaquant. Nous simulons un scénario dans lequel l'attaquant vole tous les cookies qui ne sont pas protégés contre la divulgation via HTTP et les présente au site Web pour accéder au compte de la victime. Si ces cookies sont suffisants pour agir au nom de la victime, le détournement de session est possible.
+La stratÃ©gie de test est ciblÃ©e sur les attaquants du rÃ©seau, elle ne doit donc Ãªtre appliquÃ©e qu'aux sites sans adoption complÃ¨te du HSTS (les sites avec une adoption complÃ¨te du HSTS sont sÃ©curisÃ©s, car leurs cookies ne sont pas communiquÃ©s via HTTP). Nous supposons que nous avons deux comptes de test sur le site Web testÃ©, un pour agir en tant que victime et un pour agir en tant qu'attaquant. Nous simulons un scÃ©nario dans lequel l'attaquant vole tous les cookies qui ne sont pas protÃ©gÃ©s contre la divulgation via HTTP et les prÃ©sente au site Web pour accÃ©der au compte de la victime. Si ces cookies sont suffisants pour agir au nom de la victime, le dÃ©tournement de session est possible.
 
-Voici les étapes pour exécuter ce test :
+Voici les Ã©tapes pour exÃ©cuter ce test :
 
-1. Connectez-vous au site en tant que victime et accédez à toute page proposant une fonction sécurisée nécessitant une authentification.
-2. Supprimez de la boîte à cookies tous les cookies qui satisfont à l'une des conditions suivantes.
-    - s'il n'y a pas d'adoption du HSTS : l'attribut "Sécurisé" est défini.
-    - en cas d'adoption partielle du HSTS : l'attribut `Secure` est défini ou l'attribut `Domain` n'est pas défini.
-3. Enregistrez un instantané de la boîte à biscuits.
-4. Déclenchez la fonction sécurisée identifiée à l'étape 1.
-5. Observez si l'opération à l'étape 4 a été effectuée avec succès. Si c'est le cas, l'attaque a réussi.
-6. Effacez la boîte à cookies, connectez-vous en tant qu'attaquant et accédez à la page à l'étape 1.
-7. Écrivez dans la boîte à biscuits, un par un, les cookies enregistrés à l'étape 3.
-8. Déclenchez à nouveau la fonction sécurisée identifiée à l'étape 1.
-9. Videz la boîte à cookies et reconnectez-vous en tant que victime.
-10. Observez si l'opération à l'étape 8 a été effectuée avec succès dans le compte de la victime. Si tel est le cas, l'attaque a réussi; sinon, le site est sécurisé contre le détournement de session.
+1. Connectez-vous au site en tant que victime et accÃ©dez Ã  toute page proposant une fonction sÃ©curisÃ©e nÃ©cessitant une authentification.
+2. Supprimez de la boÃ®te Ã  cookies tous les cookies qui satisfont Ã  l'une des conditions suivantes.
+    - s'il n'y a pas d'adoption du HSTSÂ : l'attribut `Secure` est dÃ©fini.
+    - en cas d'adoption partielle du HSTSÂ : l'attribut `Secure` est dÃ©fini ou l'attribut `Domain` n'est pas dÃ©fini.
+3. Enregistrez un instantanÃ© de la boÃ®te Ã  biscuits.
+4. DÃ©clenchez la fonction sÃ©curisÃ©e identifiÃ©e Ã  l'Ã©tape 1.
+5. Observez si l'opÃ©ration Ã  l'Ã©tape 4 a Ã©tÃ© effectuÃ©e avec succÃ¨s. Si c'est le cas, l'attaque a rÃ©ussi.
+6. Effacez la boÃ®te Ã  cookies, connectez-vous en tant qu'attaquant et accÃ©dez Ã  la page Ã  l'Ã©tape 1.
+7. Ã‰crivez dans la boÃ®te Ã  biscuits, un par un, les cookies enregistrÃ©s Ã  l'Ã©tape 3.
+8. DÃ©clenchez Ã  nouveau la fonction sÃ©curisÃ©e identifiÃ©e Ã  l'Ã©tape 1.
+9. Videz la boÃ®te Ã  cookies et reconnectez-vous en tant que victime.
+10. Observez si l'opÃ©ration Ã  l'Ã©tape 8 a Ã©tÃ© effectuÃ©e avec succÃ¨s dans le compte de la victime. Si tel est le cas, l'attaque a rÃ©ussi; sinon, le site est sÃ©curisÃ© contre le dÃ©tournement de session.
 
-Nous recommandons d'utiliser deux machines ou navigateurs différents pour la victime et l'attaquant. Cela vous permet de réduire le nombre de faux positifs si l'application Web prend des empreintes digitales pour vérifier l'accès activé à partir d'un cookie donné. Une variante plus courte mais moins précise de la stratégie de test ne nécessite qu'un seul compte de test. Il suit le même schéma, mais il s'arrête à l'étape 5 (notez que cela rend l'étape 3 inutile).
+Nous recommandons d'utiliser deux machines ou navigateurs diffÃ©rents pour la victime et l'attaquant. Cela vous permet de rÃ©duire le nombre de faux positifs si l'application Web prend des empreintes digitales pour vÃ©rifier l'accÃ¨s activÃ© Ã  partir d'un cookie donnÃ©. Une variante plus courte mais moins prÃ©cise de la stratÃ©gie de test ne nÃ©cessite qu'un seul compte de test. Il suit le mÃªme schÃ©ma, mais il s'arrÃªte Ã  l'Ã©tape 5 (notez que cela rend l'Ã©tape 3 inutile).
 
 ## Outils
 
-- [OWASP ZAP] (https://www.zaproxy.org)
-- [JHijack - un outil de piratage de session numérique](https://sourceforge.net/projects/jhijack/)
+- [OWASP ZAP](https://www.zaproxy.org)
+- [JHijack - un outil de piratage de session numÃ©rique](https://sourceforge.net/projects/jhijack/)
