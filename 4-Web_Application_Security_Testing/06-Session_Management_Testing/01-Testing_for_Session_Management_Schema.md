@@ -191,7 +191,7 @@ Plus d'informations ici : [Test des attributs des cookies](02-Testing_for_Cooki
 ## Outils
 
 - [OWASP Zed Attack Proxy Project (ZAP)](https://www.zaproxy.org) - dispose d'un mécanisme d'analyse des jetons de session.
-- [Burp Sequencer] (https://portswigger.net/burp/documentation/desktop/tools/sequencer)
+- [Burp Sequencer](https://portswigger.net/burp/documentation/desktop/tools/sequencer)
 - [JHijack de YEHG](https://github.com/yehgdotnet/JHijack)
 
 ## Références
