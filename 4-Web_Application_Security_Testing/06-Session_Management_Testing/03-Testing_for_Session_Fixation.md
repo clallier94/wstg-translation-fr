@@ -10,9 +10,9 @@ La fixation de session est activée par la pratique non sécurisée consistant �
 
 Dans l'exploit générique des vulnérabilités de fixation de session, un attaquant peut obtenir un ensemble de cookies de session à partir du site Web cible sans s'authentifier au préalable. L'attaquant peut alors forcer ces cookies dans le navigateur de la victime en utilisant différentes techniques. Si la victime s'authentifie ultérieurement sur le site Web cible et que les cookies ne sont pas actualisés lors de la connexion, la victime sera identifiée par les cookies de session choisis par l'attaquant. L'attaquant est alors en mesure de se faire passer pour la victime avec ces cookies connus.
 
-Ce problème peut être résolu en actualisant les cookies de session après le processus d'authentification. Alternativement, l'attaque peut être empêchée en garantissant l'intégrité des cookies de session. Lorsque vous envisagez des attaquants de réseau, c'est-à-dire des attaquants qui contrôlent le réseau utilisé par la victime, utilisez le [HSTS] complet (https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) ou ajoutez le préfixe `__Host-` / `__Secure-` au nom du cookie.
+Ce problème peut être résolu en actualisant les cookies de session après le processus d'authentification. Alternativement, l'attaque peut être empêchée en garantissant l'intégrité des cookies de session. Lorsque vous envisagez des attaquants de réseau, c'est-à-dire des attaquants qui contrôlent le réseau utilisé par la victime, utilisez le [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) complet ou ajoutez le préfixe `__Host-` / `__Secure-` au nom du cookie.
 
-L'adoption complète du HSTS se produit lorsqu'un hôte active le HSTS pour lui-même et tous ses sous-domaines. Ceci est décrit dans un article intitulé * Testing for Integrity Flaws in Web Sessions * par Stefano Calzavara, Alvise Rabitti, Alessio Ragazzo et Michele Bugliesi.
+L'adoption complète du HSTS se produit lorsqu'un hôte active le HSTS pour lui-même et tous ses sous-domaines. Ceci est décrit dans un article intitulé *Testing for Integrity Flaws in Web Sessions* par Stefano Calzavara, Alvise Rabitti, Alessio Ragazzo et Michele Bugliesi.
 
 ## Objectifs des tests
 
@@ -111,7 +111,7 @@ L'application doit toujours d'abord invalider l'ID de session existant avant d'a
 
 ## Outils
 
-- [OWASP ZAP] (https://www.zaproxy.org)
+- [OWASP ZAP](https://www.zaproxy.org)
 
 ## Références
 
