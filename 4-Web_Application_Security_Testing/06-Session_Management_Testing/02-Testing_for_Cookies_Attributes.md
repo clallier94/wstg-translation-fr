@@ -49,7 +49,7 @@ L'attribut [`Domain`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies#
 
 Notez que seuls les hôtes appartenant au domaine spécifié peuvent définir un cookie pour ce domaine. De plus, l'attribut `domain` ne peut pas être un domaine de premier niveau (tel que `.gov` ou `.com`) pour empêcher les serveurs de définir des cookies arbitraires pour un autre domaine (comme définir un cookie pour `owasp.org`). Si l'attribut de domaine n'est pas défini, le nom d'hôte du serveur qui a généré le cookie est utilisé comme valeur par défaut du "domaine".
 
-Par exemple, si un cookie est défini par une application sur `app.mydomain.com` sans définir d'attribut de domaine, le cookie sera soumis à nouveau pour toutes les demandes ultérieures pour `app.mydomain.com` et ses sous-domaines (tels que ` hacker.app.mydomain.com`), mais pas à `otherapp.mydomain.com`. Si un développeur souhaitait assouplir cette restriction, il pourrait définir l'attribut `domain` sur `mydomain.com`. Dans ce cas, le cookie serait envoyé à toutes les requêtes pour les sous-domaines `app.mydomain.com` et `mydomain.com`, tels que `hacker.app.mydomain.com`, et même `bank.mydomain.com`. S'il y avait un serveur vulnérable sur un sous-domaine (par exemple, `otherapp.mydomain.com`) et que l'attribut `domain` a été défini de manière trop lâche (par exemple, `mydomain.com`), alors le serveur vulnérable pourrait être utilisé pour récolter des cookies (tels que des jetons de session) sur l'ensemble de `mydomain.com`.
+Par exemple, si un cookie est défini par une application sur `app.mydomain.com` sans définir d'attribut de domaine, le cookie sera soumis à nouveau pour toutes les demandes ultérieures pour `app.mydomain.com` et ses sous-domaines (tels que `hacker.app.mydomain.com`), mais pas à `otherapp.mydomain.com`. Si un développeur souhaitait assouplir cette restriction, il pourrait définir l'attribut `domain` sur `mydomain.com`. Dans ce cas, le cookie serait envoyé à toutes les requêtes pour les sous-domaines `app.mydomain.com` et `mydomain.com`, tels que `hacker.app.mydomain.com`, et même `bank.mydomain.com`. S'il y avait un serveur vulnérable sur un sous-domaine (par exemple, `otherapp.mydomain.com`) et que l'attribut `domain` a été défini de manière trop lâche (par exemple, `mydomain.com`), alors le serveur vulnérable pourrait être utilisé pour récolter des cookies (tels que des jetons de session) sur l'ensemble de `mydomain.com`.
 
 #### Attribut de chemin
 
@@ -78,7 +78,7 @@ L'attribut [`SameSite`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookie
 - `Lax`
 - `None`
 
-##### Valeur stricte
+##### Valeur stricte
 
 La valeur `Strict` est l'utilisation la plus restrictive de `SameSite`, permettant au navigateur d'envoyer le cookie uniquement au contexte propriétaire sans navigation de niveau supérieur. En d'autres termes, les données associées au cookie ne seront envoyées que sur les requêtes correspondant au site actuel affiché dans la barre d'URL du navigateur. Le cookie ne sera pas envoyé sur les demandes générées par des sites Web tiers. Cette valeur est particulièrement recommandée pour les actions effectuées sur le même domaine. Cependant, il peut avoir certaines limites avec certains systèmes de gestion de session affectant négativement l'expérience de navigation de l'utilisateur. Étant donné que le navigateur n'enverrait pas le cookie sur les demandes générées à partir d'un domaine ou d'un e-mail tiers, l'utilisateur serait tenu de se reconnecter même s'il a déjà une session authentifiée.
 
@@ -92,7 +92,7 @@ La valeur `None` spécifie que le navigateur enverra le cookie dans tous les con
 
 ### Préfixes de cookies
 
-De par leur conception, les cookies n'ont pas la capacité de garantir l'intégrité et la confidentialité des informations qui y sont stockées. Ces limitations empêchent un serveur d'avoir confiance dans la façon dont les attributs d'un cookie donné ont été définis lors de la création. Afin de donner aux serveurs de telles fonctionnalités d'une manière rétrocompatible, l'industrie a introduit le concept de [`Cookie Name Prefixes`](https://tools.ietf.org/html/draft-ietf-httpbis-cookie- préfixes-00) pour faciliter la transmission de ces détails intégrés dans le nom du cookie.
+De par leur conception, les cookies n'ont pas la capacité de garantir l'intégrité et la confidentialité des informations qui y sont stockées. Ces limitations empêchent un serveur d'avoir confiance dans la façon dont les attributs d'un cookie donné ont été définis lors de la création. Afin de donner aux serveurs de telles fonctionnalités d'une manière rétrocompatible, l'industrie a introduit le concept de [`Cookie Name Prefixes`](https://tools.ietf.org/html/draft-ietf-httpbis-cookie-préfixes-00) pour faciliter la transmission de ces détails intégrés dans le nom du cookie.
 
 #### Préfixe d'hôte
 
@@ -127,12 +127,12 @@ En rassemblant tout cela, nous pouvons définir la configuration d'attribut de c
 
 ### Proxy d'interception
 
-- [Projet OWASP Zed Attack Proxy] (https://www.zaproxy.org)
-- [Suite Web Proxy Burp] (https://portswigger.net)
+- [Projet OWASP Zed Attack Proxy](https://www.zaproxy.org)
+- [Suite Web Proxy Burp](https://portswigger.net)
 
 ### Plug-in de navigateur
 
-- [Tamper Data for FF Quantum] (https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum/)
+- [Tamper Data for FF Quantum](https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum/)
 - ["FireSheep" pour FireFox](https://github.com/codebutler/firesheep)
 - ["EditThisCookie" pour Chrome](https://chrome.google.com/webstore/detail/editthiscookie/fngmhnnpilhplaeedifhccceomclgfbg?hl=en)
 - ["Cookiebro - Gestionnaire de cookies" pour FireFox](https://addons.mozilla.org/en-US/firefox/addon/cookiebro/)
@@ -143,5 +143,5 @@ En rassemblant tout cela, nous pouvons définir la configuration d'attribut de c
 - [RFC 2616 – Protocole de transfert hypertexte – HTTP 1.1](https://tools.ietf.org/html/rfc2616)
 - [Cookies du même site - draft-ietf-httpbis-cookie-same-site-00](https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00)
 - [L'important attribut "expire" de Set-Cookie](https://seckb.yehg.net/2012/02/important-expires-attribute-of-set.html)
-- [ID de session HttpOnly dans l'URL et le corps de la page] (https://seckb.yehg.net/2012/06/httponly-session-id-in-url-and-page.html)
+- [ID de session HttpOnly dans l'URL et le corps de la page](https://seckb.yehg.net/2012/06/httponly-session-id-in-url-and-page.html)
 
