@@ -27,7 +27,7 @@ Par exemple, un vecteur d'attaque de contournement d'authentification peut être
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boîte noire
 
 Cette vulnérabilité peut être détectée et exploitée en énumérant toutes les variables de session utilisées par l'application et dans quel contexte elles sont valides. Ceci est notamment possible en accédant à une séquence de points d'entrée puis en examinant les points de sortie. En cas de test en boîte noire, cette procédure est difficile et nécessite un peu de chance car chaque séquence différente peut conduire à un résultat différent.
 
@@ -35,7 +35,7 @@ Cette vulnérabilité peut être détectée et exploitée en énumérant toutes 
 
 Un exemple très simple pourrait être la fonctionnalité de réinitialisation du mot de passe qui, dans le point d'entrée, pourrait demander à l'utilisateur de fournir des informations d'identification telles que le nom d'utilisateur ou l'adresse e-mail. Cette page peut ensuite remplir la session avec ces valeurs d'identification, qui sont reçues directement du côté client, ou obtenues à partir de requêtes ou de calculs basés sur l'entrée reçue. À ce stade, certaines pages de l'application peuvent afficher des données privées basées sur cet objet de session. De cette manière, l'attaquant pourrait contourner le processus d'authentification.
 
-### Test de la boîte grise
+### Test en boîte grise
 
 Le moyen le plus efficace de détecter ces vulnérabilités consiste à passer en revue le code source.
 
@@ -45,5 +45,5 @@ Les variables de session ne doivent être utilisées que dans un seul but cohér
 
 ## Références
 
-- [Session Puzzling](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/puzzlemall/Session%20Puzzles%20-%20Indirect%20Application%20Attack%20Vectors%20 -%20May%202011%20-%20Whitepaper.pdf)
-- [Session Puzzling et Session Race Conditions] (http://sectooladdict.blogspot.com/2011/09/session-puzzling-and-session-race.html)
+- [Session Puzzling](https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/puzzlemall/Session%20Puzzles%20-%20Indirect%20Application%20Attack%20Vectors%20-%20May%202011%20-%20Whitepaper.pdf)
+- [Session Puzzling et Session Race Conditions](http://sectooladdict.blogspot.com/2011/09/session-puzzling-and-session-race.html)
