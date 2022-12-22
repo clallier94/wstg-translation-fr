@@ -24,7 +24,7 @@ Le scénario le plus courant pour ce type d'attaque est un ordinateur public uti
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boîte noire
 
 La même approche vue dans la section [Test de la fonctionnalité de déconnexion](06-Testing_for_Logout_Functionality.md) peut être appliquée lors de la mesure du délai de déconnexion.
 La méthodologie de test est très similaire. Tout d'abord, les testeurs doivent vérifier s'il existe un délai d'attente, par exemple en se connectant et en attendant que le délai de déconnexion soit déclenché. Comme dans la fonction de déconnexion, une fois le délai d'expiration écoulé, tous les jetons de session doivent être détruits ou être inutilisables.
@@ -33,7 +33,7 @@ Ensuite, si le délai d'attente est configuré, les testeurs doivent comprendre 
 
 En règle générale, tout doit être vérifié côté serveur et il ne doit pas être possible, en réinitialisant les cookies de session aux valeurs précédentes, d'accéder à nouveau à l'application.
 
-### Test de la boîte grise
+### Test en boîte grise
 
 Le testeur doit vérifier que :
 
