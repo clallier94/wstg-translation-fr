@@ -6,85 +6,85 @@
 
 ## Sommaire
 
-Le protocole LDAP (Lightweight Directory Access Protocol) est utilisé pour stocker des informations sur les utilisateurs, les hôtes et de nombreux autres objets. [Injection LDAP](https://wiki.owasp.org/index.php/LDAP_injection) est une attaque côté serveur, qui pourrait permettre la divulgation, la modification ou l'insertion d'informations sensibles sur les utilisateurs et les hôtes représentés dans une structure LDAP. . Cela se fait en manipulant les paramètres d'entrée transmis ensuite aux fonctions internes de recherche, d'ajout et de modification.
+Le protocole LDAP (Lightweight Directory Access Protocol) est utilisÃ© pour stocker des informations sur les utilisateurs, les hÃ´tes et de nombreux autres objets. [Injection LDAP](https://wiki.owasp.org/index.php/LDAP_injection) est une attaque cÃ´tÃ© serveur, qui pourrait permettre la divulgation, la modification ou l'insertion d'informations sensibles sur les utilisateurs et les hÃ´tes reprÃ©sentÃ©s dans une structure LDAP. . Cela se fait en manipulant les paramÃ¨tres d'entrÃ©e transmis ensuite aux fonctions internes de recherche, d'ajout et de modification.
 
-Une application Web peut utiliser LDAP afin de permettre aux utilisateurs de s'authentifier ou de rechercher les informations d'autres utilisateurs au sein d'une structure d'entreprise. Le but des attaques par injection LDAP est d'injecter des métacaractères de filtres de recherche LDAP dans une requête qui sera exécutée par l'application.
+Une application Web peut utiliser LDAP afin de permettre aux utilisateurs de s'authentifier ou de rechercher les informations d'autres utilisateurs au sein d'une structure d'entreprise. Le but des attaques par injection LDAP est d'injecter des mÃ©tacaractÃ¨res de filtres de recherche LDAP dans une requÃªte qui sera exÃ©cutÃ©e par l'application.
 
-[Rfc2254](https://www.ietf.org/rfc/rfc2254.txt) définit une grammaire sur la manière de créer un filtre de recherche sur LDAPv3 et étend [Rfc1960](https://www.ietf.org/rfc/ rfc1960.txt) (LDAPv2).
+[Rfc2254](https://www.ietf.org/rfc/rfc2254.txt) dÃ©finit une grammaire sur la maniÃ¨re de crÃ©er un filtre de recherche sur LDAPv3 et Ã©tend [Rfc1960](https://www.ietf.org/rfc/rfc1960.txt) (LDAPv2).
 
-Un filtre de recherche LDAP est construit en notation polonaise, également appelée [notation de préfixe de notation polonaise](https://en.wikipedia.org/wiki/Polish_notation).
+Un filtre de recherche LDAP est construit en notation polonaise, Ã©galement appelÃ©e [notation de prÃ©fixe de notation polonaise](https://en.wikipedia.org/wiki/Polish_notation).
 
-Cela signifie qu'une condition de pseudo-code sur un filtre de recherche comme celui-ci :
+Cela signifie qu'une condition de pseudo-code sur un filtre de recherche comme celui-ciÂ :
 
 `find("cn=John & userPassword=mypass")`
 
-sera représenté par :
+sera reprÃ©sentÃ© par :
 
 `find("(&(cn=John)(userPassword=mypass))")`
 
-Les conditions booléennes et les agrégations de groupes sur un filtre de recherche LDAP peuvent être appliquées en utilisant les métacaractères suivants :
+Les conditions boolÃ©ennes et les agrÃ©gations de groupes sur un filtre de recherche LDAP peuvent Ãªtre appliquÃ©es en utilisant les mÃ©tacaractÃ¨res suivantsÂ :
 
-| Métachar |  Sens                 |
+| MÃ©tachar |  Sens                 |
 |----------|-----------------------|
-| &        |  Booléen AND          |
-| \|       |  Booléen OR           |
-| !        |  Booléen NOT          |
+| &        |  BoolÃ©en AND          |
+| \|       |  BoolÃ©en OR           |
+| !        |  BoolÃ©en NOT          |
 | =        |  Egal                 |
 | ~=       |  Environ              |
 | >=       |  plus grand que       |
 | <=       |  plus petit que       |
-| *        |  N'importe quel caractère |
-| ()       |  Parenthèse de regroupement |
+| *        |  N'importe quel caractÃ¨re |
+| ()       |  ParenthÃ¨se de regroupement |
 
-Des exemples plus complets sur la façon de créer un filtre de recherche peuvent être trouvés dans la RFC associée.
+Des exemples plus complets sur la faÃ§on de crÃ©er un filtre de recherche peuvent Ãªtre trouvÃ©s dans la RFC associÃ©e.
 
-Une exploitation réussie d'une vulnérabilité d'injection LDAP pourrait permettre au testeur de :
+Une exploitation rÃ©ussie d'une vulnÃ©rabilitÃ© d'injection LDAP pourrait permettre au testeur deÂ :
 
-- Accéder à du contenu non autorisé
-- Éviter les restrictions d'application
-- Recueillir des informations non autorisées
+- AccÃ©der Ã  du contenu non autorisÃ©
+- Ã‰viter les restrictions d'application
+- Recueillir des informations non autorisÃ©es
 - Ajouter ou modifier des objets dans l'arborescence LDAP
 
 ## Objectifs des tests
 
 - Identifier les points d'injection LDAP.
-- Évaluer la sévérité de l'injection.
+- Ã‰valuer la sÃ©vÃ©ritÃ© de l'injection.
 
 ## Comment tester
 
-### Exemple 1 : Filtres de recherche
+### ExempleÂ 1Â : Filtres de recherche
 
-Supposons que nous ayons une application Web utilisant un filtre de recherche comme celui-ci :
+Supposons que nous ayons une application Web utilisant un filtre de recherche comme celui-ciÂ :
 
 `searchfilter="(cn="+user+")"`
 
-qui est instancié par une requête HTTP comme celle-ci :
+qui est instanciÃ© par une requÃªte HTTP comme celle-ciÂ :
 
 `http://www.exemple.com/ldapsearch?user=John`
 
-Si la valeur `John` est remplacée par un `*`, en envoyant la requête :
+Si la valeur `John` est remplacÃ©e par un `*`, en envoyant la requÃªteÂ :
 
 `http://www.exemple.com/ldapsearch?user=*`
 
-le filtre ressemblera à :
+le filtre ressemblera Ã  :
 
 `searchfilter="(cn=*)"`
 
-qui correspond à chaque objet avec un attribut 'cn' égal à n'importe quoi.
+qui correspond Ã  chaque objet avec un attribut 'cn' Ã©gal Ã  n'importe quoi.
 
-Si l'application est vulnérable à l'injection LDAP, elle affichera tout ou partie des attributs de l'utilisateur, en fonction du flux d'exécution de l'application et des autorisations de l'utilisateur connecté LDAP.
+Si l'application est vulnÃ©rable Ã  l'injection LDAP, elle affichera tout ou partie des attributs de l'utilisateur, en fonction du flux d'exÃ©cution de l'application et des autorisations de l'utilisateur connectÃ© LDAP.
 
-Un testeur pourrait utiliser une approche par essais et erreurs, en insérant dans le paramètre `(`, `|`, `&`, `*` et les autres caractères, afin de vérifier l'application pour les erreurs.
+Un testeur pourrait utiliser une approche par essais et erreurs, en insÃ©rant dans le paramÃ¨tre `(`, `|`, `&`, `*` et les autres caractÃ¨res, afin de vÃ©rifier l'application pour les erreurs.
 
 ### exemple 2 : Connexion
 
-Si une application Web utilise LDAP pour vérifier les informations d'identification de l'utilisateur pendant le processus de connexion et qu'elle est vulnérable à l'injection LDAP, il est possible de contourner la vérification d'authentification en injectant une requête LDAP toujours vraie (de la même manière que l'injection SQL et XPATH).
+Si une application Web utilise LDAP pour vÃ©rifier les informations d'identification de l'utilisateur pendant le processus de connexion et qu'elle est vulnÃ©rable Ã  l'injection LDAP, il est possible de contourner la vÃ©rification d'authentification en injectant une requÃªte LDAP toujours vraie (de la mÃªme maniÃ¨re que l'injection SQL et XPATH).
 
 Supposons qu'une application Web utilise un filtre pour faire correspondre la paire utilisateur/mot de passe LDAP.
 
 `searchlogin= "(&(uid="+user+")(userPassword={MD5}"+base64(pack("H*",md5(pass)))+"))";`
 
-En utilisant les valeurs suivantes :
+En utilisant les valeurs suivantesÂ :
 
 ```txt
 user=*)(uid=*))(|(uid=*
@@ -95,19 +95,19 @@ le filtre de recherche donnera :
 
 `searchlogin="(&(uid=*)(uid=*))(|(uid=*)(userPassword={MD5}X03MO1qnZdYdgyfeuILPmQ==))";`
 
-ce qui est correct et toujours vrai. De cette façon, le testeur obtiendra le statut de connexion en tant que premier utilisateur dans l'arborescence LDAP.
+ce qui est correct et toujours vrai. De cette faÃ§on, le testeur obtiendra le statut de connexion en tant que premier utilisateur dans l'arborescence LDAP.
 
 ## Outils
 
-- [Navigateur LDAP Softerra] (https://www.ldapadministrator.com)
+- [Navigateur LDAP Softerra](https://www.ldapadministrator.com)
 
-## Références
+## RÃ©fÃ©rences
 
-- [Aide-mémoire sur la prévention des injections LDAP](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html)
+- [Aide-mÃ©moire sur la prÃ©vention des injections LDAP](https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html)
 
 ### Papiers blanc
 
-- [Sacha Faust : Injection LDAP : vos applications sont-elles vulnérables ?](http://www.networkdls.com/articles/ldapinjection.pdf)
-- [Article IBM : Comprendre LDAP] (https://www.redbooks.ibm.com/redbooks/pdfs/sg244986.pdf)
-- [RFC 1960 : une représentation sous forme de chaîne des filtres de recherche LDAP] (https://www.ietf.org/rfc/rfc1960.txt)
+- [Sacha Faust : Injection LDAP : vos applications sont-elles vulnÃ©rables ?](http://www.networkdls.com/articles/ldapinjection.pdf)
+- [Article IBMÂ : Comprendre LDAP](https://www.redbooks.ibm.com/redbooks/pdfs/sg244986.pdf)
+- [RFC 1960Â : une reprÃ©sentation sous forme de chaÃ®ne des filtres de recherche LDAP](https://www.ietf.org/rfc/rfc1960.txt)
 - [Injection LDAP](https://www.blackhat.com/presentations/bh-europe-08/Alonso-Parada/Whitepaper/bh-eu-08-alonso-parada-WP.pdf)
