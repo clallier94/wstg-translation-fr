@@ -6,7 +6,7 @@
 
 ## Sommaire
 
-Le [Cross-site Scripting (XSS)] stocké (https://owasp.org/www-community/attacks/xss/) est le type le plus dangereux de Cross Site Scripting. Les applications Web qui permettent aux utilisateurs de stocker des données sont potentiellement exposées à ce type d'attaque. Ce chapitre illustre des exemples d'injection de scripts intersites stockés et des scénarios d'exploitation associés.
+Le [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) stocké  est le type le plus dangereux de Cross Site Scripting. Les applications Web qui permettent aux utilisateurs de stocker des données sont potentiellement exposées à ce type d'attaque. Ce chapitre illustre des exemples d'injection de scripts intersites stockés et des scénarios d'exploitation associés.
 
 Le XSS stocké se produit lorsqu'une application Web recueille les entrées d'un utilisateur qui pourraient être malveillantes, puis stocke ces entrées dans un magasin de données pour une utilisation ultérieure. L'entrée stockée n'est pas correctement filtrée. Par conséquent, les données malveillantes apparaîtront comme faisant partie du site Web et s'exécuteront dans le navigateur de l'utilisateur avec les privilèges de l'application Web. Étant donné que cette vulnérabilité implique généralement au moins deux requêtes à l'application, cela peut également être appelé XSS de second ordre.
 
@@ -37,7 +37,7 @@ Le XSS stocké est particulièrement dangereux dans les zones d'application auxq
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boîte noire
 
 Le processus d'identification des vulnérabilités XSS stockées est similaire au processus décrit lors du [test du XSS reflété](01-Testing_for_Reflected_Cross_Site_Scripting.md).
 
@@ -85,7 +85,7 @@ Cela implique de tester la validation des entrées et les contrôles de filtrage
 
 Assurez-vous que l'entrée est soumise via l'application. Cela implique normalement de désactiver JavaScript si des contrôles de sécurité côté client sont mis en œuvre ou de modifier la requête HTTP avec un proxy Web. Il est également important de tester la même injection avec les requêtes HTTP GET et POST. L'injection ci-dessus entraîne une fenêtre contextuelle contenant les valeurs des cookies.
 
-> ![Exemple XSS stocké](images/Exemple_xss_stocké.jpg)\
+> ![Exemple XSS stocké](images/Stored_xss_example.jpg)\
 > *Figure 4.7.2-2 : Exemple d'entrée stockée*
 >
 > Le code HTML suite à l'injection :
@@ -151,11 +151,11 @@ Considérez également qu'Internet Explorer ne gère pas les types MIME de la m�
 
 ### Script intersite aveugle
 
-Blind Cross-site Scripting est une forme de XSS stocké. Cela se produit généralement lorsque la charge utile de l'attaquant est enregistrée sur le serveur/l'infrastructure et renvoyée ultérieurement à la victime à partir de l'application principale. Par exemple, dans les formulaires de commentaires, un attaquant peut soumettre la charge utile malveillante à l'aide du formulaire, et une fois que l'utilisateur/administrateur principal de l'application a vu la soumission de l'attaquant via l'application principale, la charge utile de l'attaquant sera exécutée. Blind Cross-site Scripting est difficile à confirmer dans le scénario du monde réel, mais l'un des meilleurs outils pour cela est [XSS Hunter] (https://xsshunter.com/).
+Blind Cross-site Scripting est une forme de XSS stocké. Cela se produit généralement lorsque la charge utile de l'attaquant est enregistrée sur le serveur/l'infrastructure et renvoyée ultérieurement à la victime à partir de l'application principale. Par exemple, dans les formulaires de commentaires, un attaquant peut soumettre la charge utile malveillante à l'aide du formulaire, et une fois que l'utilisateur/administrateur principal de l'application a vu la soumission de l'attaquant via l'application principale, la charge utile de l'attaquant sera exécutée. Blind Cross-site Scripting est difficile à confirmer dans le scénario du monde réel, mais l'un des meilleurs outils pour cela est [XSS Hunter](https://xsshunter.com/).
 
 > Remarque : Les testeurs doivent examiner attentivement les implications en matière de confidentialité de l'utilisation de services publics ou tiers lors de la réalisation de tests de sécurité. (Voir #outils.)
 
-### Test de la boîte grise
+### Test en boîte grise
 
 Les tests en boîte grise sont similaires aux tests en boîte noire. Dans les tests en boîte grise, le pen-testeur a une connaissance partielle de l'application. Dans ce cas, les informations concernant l'entrée de l'utilisateur, les contrôles de validation des entrées et le stockage des données peuvent être connues du testeur de stylo.
 
@@ -195,7 +195,7 @@ Le tableau suivant résume certaines variables et fonctions spéciales à examin
 
 ### Ressources OWASP
 
-- [Fiche de triche pour l'évasion du filtre XSS] (https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
+- [Fiche de triche pour l'évasion du filtre XSS](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
 
 ### Livres
 
