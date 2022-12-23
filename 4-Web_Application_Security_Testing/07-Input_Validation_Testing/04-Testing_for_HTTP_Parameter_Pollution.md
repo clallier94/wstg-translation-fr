@@ -10,7 +10,7 @@ HTTP Parameter Pollution teste la réponse des applications à la réception de 
 
 La fourniture de plusieurs paramètres HTTP avec le même nom peut amener une application à interpréter des valeurs de manière imprévue. En exploitant ces effets, un attaquant peut être en mesure de contourner la validation des entrées, de déclencher des erreurs d'application ou de modifier les valeurs des variables internes. Étant donné que la pollution des paramètres HTTP (en abrégé * HPP *) affecte un élément constitutif de toutes les technologies Web, des attaques côté serveur et côté client existent.
 
-Les normes HTTP actuelles n'incluent pas de conseils sur la façon d'interpréter plusieurs paramètres d'entrée portant le même nom. Par exemple, [RFC 3986](https://www.ietf.org/rfc/rfc3986.txt) définit simplement le terme *Query String* comme une série de paires champ-valeur et [RFC 2396](https:// www.ietf.org/rfc/rfc2396.txt) définit les classes de caractères de chaîne de requête inversés et non réservés. Sans norme en place, les composants d'application Web gèrent ce cas marginal de différentes manières (voir le tableau ci-dessous pour plus de détails).
+Les normes HTTP actuelles n'incluent pas de conseils sur la façon d'interpréter plusieurs paramètres d'entrée portant le même nom. Par exemple, [RFC 3986](https://www.ietf.org/rfc/rfc3986.txt) définit simplement le terme *Query String* comme une série de paires champ-valeur et [RFC 2396](https://www.ietf.org/rfc/rfc2396.txt) définit les classes de caractères de chaîne de requête inversés et non réservés. Sans norme en place, les composants d'application Web gèrent ce cas marginal de différentes manières (voir le tableau ci-dessous pour plus de détails).
 
 En soi, ce n'est pas nécessairement une indication de vulnérabilité. Cependant, si le développeur n'est pas conscient du problème, la présence de paramètres dupliqués peut produire un comportement anormal dans l'application qui peut être potentiellement exploité par un attaquant. Comme souvent en sécurité, les comportements inattendus sont une source habituelle de faiblesses pouvant conduire dans ce cas à des attaques HTTP Parameter Pollution. Pour mieux présenter cette classe de vulnérabilités et le résultat des attaques HPP, il est intéressant d'analyser quelques exemples réels qui ont été découverts dans le passé.
 
@@ -124,7 +124,7 @@ En particulier, faites attention aux réponses ayant des vecteurs HPP dans les a
 
 ## Outils
 
-- [Analyseurs passifs/actifs OWASP ZAP] (https://www.zaproxy.org)
+- [Analyseurs passifs/actifs OWASP ZAP](https://www.zaproxy.org)
 
 ## Références
 
