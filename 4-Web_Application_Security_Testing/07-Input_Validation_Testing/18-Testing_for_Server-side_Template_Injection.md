@@ -1,4 +1,4 @@
-# Test de l'injection de modèle côté serveur
+# Test de l'injection de modÃ¨le cÃ´tÃ© serveur
 
 |ID          |
 |------------|
@@ -6,7 +6,7 @@
 
 ## Sommaire
 
-Les applications Web utilisent couramment des technologies de modélisation côté serveur (Jinja2, Twig, FreeMaker, etc.) pour générer des réponses HTML dynamiques. Les vulnérabilités d'injection de modèle côté serveur (SSTI) se produisent lorsque l'entrée de l'utilisateur est intégrée dans un modèle de manière non sécurisée et entraîne l'exécution de code à distance sur le serveur. Toutes les fonctionnalités prenant en charge le balisage avancé fourni par l'utilisateur peuvent être vulnérables au SSTI, y compris les pages wiki, les critiques, les applications marketing, les systèmes CMS, etc. Certains moteurs de modèles utilisent divers mécanismes (par exemple, bac à sable, autoriser la liste, etc.)
+Les applications Web utilisent couramment des technologies de modÃ©lisation cÃ´tÃ© serveur (Jinja2, Twig, FreeMaker, etc.) pour gÃ©nÃ©rer des rÃ©ponses HTML dynamiques. Les vulnÃ©rabilitÃ©s d'injection de modÃ¨le cÃ´tÃ© serveur (SSTI) se produisent lorsque l'entrÃ©e de l'utilisateur est intÃ©grÃ©e dans un modÃ¨le de maniÃ¨re non sÃ©curisÃ©e et entraÃ®ne l'exÃ©cution de code Ã  distance sur le serveur. Toutes les fonctionnalitÃ©s prenant en charge le balisage avancÃ© fourni par l'utilisateur peuvent Ãªtre vulnÃ©rables au SSTI, y compris les pages wiki, les critiques, les applications marketing, les systÃ¨mes CMS, etc. Certains moteurs de modÃ¨les utilisent divers mÃ©canismes (par exemple, bac Ã  sable, autoriser la liste, etc.)
 
 ### Exemple - Brindille
 
@@ -25,14 +25,14 @@ public function getFilter($name)
 }
 ```
 
-Dans la fonction getFilter, `call_user_func($callback, $name)` est vulnérable à SSTI : le paramètre `name` est extrait de la requête HTTP GET et exécuté par le serveur :
+Dans la fonction getFilter, `call_user_func($callback, $name)` est vulnÃ©rable Ã  SSTIÂ : le paramÃ¨tre `name` est extrait de la requÃªte HTTP GET et exÃ©cutÃ© par le serveurÂ :
 
 ![Exemple SSTI XVWA](images/SSTI_XVWA.jpeg)\
 *Figure 4.7.18-1 : Exemple SSTI XVWA*
 
 ### Exemple - Flacon/Jinja2
 
-L'exemple suivant utilise le moteur de template Flask et Jinja2. La fonction `page` accepte un paramètre 'name' d'une requête HTTP GET et affiche une réponse HTML avec le contenu de la variable `name` :
+L'exemple suivant utilise le moteur de template Flask et Jinja2. La fonction `page` accepte un paramÃ¨tre 'name' d'une requÃªte HTTP GET et affiche une rÃ©ponse HTML avec le contenu de la variable `name`Â :
 
 ```python
 @app.route("/page")
@@ -42,7 +42,7 @@ def page():
     return output
 ```
 
-Cet extrait de code est vulnérable à XSS mais il est également vulnérable à SSTI. Utiliser ce qui suit comme charge utile dans le paramètre `name` :
+Cet extrait de code est vulnÃ©rable Ã  XSS mais il est Ã©galement vulnÃ©rable Ã  SSTI. Utiliser ce qui suit comme charge utile dans le paramÃ¨tre `name`Â :
 
 ```bash
 $ curl -g 'http://www.target.com/page?name={{7*7}}'
@@ -51,19 +51,19 @@ Hello 49!
 
 ## Objectifs des tests
 
-- Détecter les points de vulnérabilité d'injection de template.
+- DÃ©tecter les points de vulnÃ©rabilitÃ© d'injection de template.
 - Identifier le moteur de template.
 - Construire l'exploit.
 
 ## Comment tester
 
-Les vulnérabilités SSTI existent dans le contexte du texte ou du code. Dans un contexte de texte en clair, les utilisateurs sont autorisés à utiliser du 'texte' libre avec du code HTML direct. Dans le contexte du code, l'entrée de l'utilisateur peut également être placée dans une instruction de modèle (par exemple, dans un nom de variable)
+Les vulnÃ©rabilitÃ©s SSTI existent dans le contexte du texte ou du code. Dans un contexte de texte en clair, les utilisateurs sont autorisÃ©s Ã  utiliser du 'texte' libre avec du code HTML direct. Dans le contexte du code, l'entrÃ©e de l'utilisateur peut Ã©galement Ãªtre placÃ©e dans une instruction de modÃ¨le (par exemple, dans un nom de variable)
 
-### Identifier la vulnérabilité d'injection de modèle
+### Identifier la vulnÃ©rabilitÃ© d'injection de modÃ¨le
 
-La première étape du test de SSTI dans un contexte de texte en clair consiste à construire des expressions de modèle communes utilisées par divers moteurs de modèle en tant que charges utiles et à surveiller les réponses du serveur pour identifier quelle expression de modèle a été exécutée par le serveur.
+La premiÃ¨re Ã©tape du test de SSTI dans un contexte de texte en clair consiste Ã  construire des expressions de modÃ¨le communes utilisÃ©es par divers moteurs de modÃ¨le en tant que charges utiles et Ã  surveiller les rÃ©ponses du serveur pour identifier quelle expression de modÃ¨le a Ã©tÃ© exÃ©cutÃ©e par le serveur.
 
-Exemples d'expressions de modèle courantes :
+Exemples d'expressions de modÃ¨le courantesÂ :
 
 ```text
 a{{bar}}b
@@ -71,23 +71,23 @@ a{{7*7}}
 {var} ${var} {{var}} <%var%> [% var %]
 ```
 
-Dans cette étape, une [chaînes de test d'expression de modèle/liste de charges utiles](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection) complète est recommandée.
+Dans cette Ã©tape, une [chaÃ®nes de test d'expression de modÃ¨le/liste de charges utiles](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection) complÃ¨te est recommandÃ©e.
 
-Le test de SSTI dans le contexte du code est légèrement différent. Tout d'abord, le testeur construit la requête qui aboutit à des réponses vides ou erronées du serveur. Dans l'exemple ci-dessous, le paramètre HTTP GET est inséré dans la variable `personal_greeting` dans une déclaration de modèle :
+Le test de SSTI dans le contexte du code est lÃ©gÃ¨rement diffÃ©rent. Tout d'abord, le testeur construit la requÃªte qui aboutit Ã  des rÃ©ponses vides ou erronÃ©es du serveur. Dans l'exemple ci-dessous, le paramÃ¨tre HTTP GET est insÃ©rÃ© dans la variable `personal_greeting` dans une dÃ©claration de modÃ¨leÂ :
 
 ```text
 personal_greeting=username
 Hello user01
 ```
 
-En utilisant la charge utile suivante - la réponse du serveur est vide "Hello":
+En utilisant la charge utile suivante - la rÃ©ponse du serveur est vide "Hello":
 
 ```text
 personal_greeting=username<tag>
 Hello
 ```
 
-L'étape suivante consiste à sortir de l'instruction de modèle et à injecter la balise HTML après celle-ci en utilisant la charge utile suivante
+L'Ã©tape suivante consiste Ã  sortir de l'instruction de modÃ¨le et Ã  injecter la balise HTML aprÃ¨s celle-ci en utilisant la charge utile suivante
 
 ```text
 personal_greeting=username}}<tag>
@@ -96,31 +96,31 @@ Hello user01 <tag>
 
 ### Identifier le moteur de template
 
-Sur la base des informations de l'étape précédente, le testeur doit maintenant identifier le moteur de modèle utilisé en fournissant diverses expressions de modèle. Sur la base des réponses du serveur, le testeur déduit le moteur de template utilisé. Cette approche manuelle est décrite plus en détail dans [cet](https://portswigger.net/blog/server-side-template-injection?#Identify) article PortSwigger. Pour automatiser l'identification de la vulnérabilité SSTI et le moteur de template, divers outils sont disponibles, notamment [Tplmap](https://github.com/epinna/tplmap) ou l'[extension Backslash Powered Scanner Burp Suite](https://github. com/PortSwigger/backslash-powered-scanner).
+Sur la base des informations de l'Ã©tape prÃ©cÃ©dente, le testeur doit maintenant identifier le moteur de modÃ¨le utilisÃ© en fournissant diverses expressions de modÃ¨le. Sur la base des rÃ©ponses du serveur, le testeur dÃ©duit le moteur de template utilisÃ©. Cette approche manuelle est dÃ©crite plus en dÃ©tail dans [cet](https://portswigger.net/blog/server-side-template-injection?#Identify) article PortSwigger. Pour automatiser l'identification de la vulnÃ©rabilitÃ© SSTI et le moteur de template, divers outils sont disponibles, notamment [Tplmap](https://github.com/epinna/tplmap) ou l'[extension Backslash Powered Scanner Burp Suite](https://github.com/PortSwigger/backslash-powered-scanner).
 
 ### Construire l'exploit RCE
 
-L'objectif principal de cette étape est d'identifier pour obtenir un contrôle supplémentaire sur le serveur avec un exploit RCE en étudiant la documentation et la recherche du modèle. Les principaux domaines d'intérêt sont :
+L'objectif principal de cette Ã©tape est d'identifier pour obtenir un contrÃ´le supplÃ©mentaire sur le serveur avec un exploit RCE en Ã©tudiant la documentation et la recherche du modÃ¨le. Les principaux domaines d'intÃ©rÃªt sontÂ :
 
-- Sections **Pour les auteurs de modèles** couvrant la syntaxe de base.
-- Sections **Considérations de sécurité**.
-- Listes de méthodes, fonctions, filtres et variables intégrés.
+- Sections **Pour les auteurs de modÃ¨les** couvrant la syntaxe de base.
+- Sections **ConsidÃ©rations de sÃ©curitÃ©**.
+- Listes de mÃ©thodes, fonctions, filtres et variables intÃ©grÃ©s.
 - Listes d'extensions/plugins.
 
-Le testeur peut également identifier quels autres objets, méthodes et propriétés peuvent être exposés en se concentrant sur l'objet "soi". Si l'objet `self` n'est pas disponible et que la documentation ne révèle pas les détails techniques, une force brute du nom de la variable est recommandée. Une fois l'objet identifié, l'étape suivante consiste à parcourir l'objet pour identifier toutes les méthodes, propriétés et attributs accessibles via le moteur de modèle. Cela pourrait conduire à d'autres types de résultats de sécurité, notamment des escalades de privilèges, la divulgation d'informations sur les mots de passe d'application, les clés API, les configurations et les variables d'environnement, etc.
+Le testeur peut Ã©galement identifier quels autres objets, mÃ©thodes et propriÃ©tÃ©s peuvent Ãªtre exposÃ©s en se concentrant sur l'objet "soi". Si l'objet `self` n'est pas disponible et que la documentation ne rÃ©vÃ¨le pas les dÃ©tails techniques, une force brute du nom de la variable est recommandÃ©e. Une fois l'objet identifiÃ©, l'Ã©tape suivante consiste Ã  parcourir l'objet pour identifier toutes les mÃ©thodes, propriÃ©tÃ©s et attributs accessibles via le moteur de modÃ¨le. Cela pourrait conduire Ã  d'autres types de rÃ©sultats de sÃ©curitÃ©, notamment des escalades de privilÃ¨ges, la divulgation d'informations sur les mots de passe d'application, les clÃ©s API, les configurations et les variables d'environnement, etc.
 
 ## Outils
 
-- [Tplmap] (https://github.com/epinna/tplmap)
-- [Extension Backslash Powered Scanner Burp Suite] (https://github.com/PortSwigger/backslash-powered-scanner)
-- [Chaînes de test d'expression de modèle/liste de charges utiles] (https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection)
+- [Tplmap](https://github.com/epinna/tplmap)
+- [Extension Backslash Powered Scanner Burp Suite](https://github.com/PortSwigger/backslash-powered-scanner)
+- [ChaÃ®nes de test d'expression de modÃ¨le/liste de charges utiles](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection)
 
-## Références
+## RÃ©fÃ©rences
 
-- [James Kettle : Injection de modèles côté serveur : RCE pour l'application Web moderne (livre blanc)] (https://portswigger.net/kb/papers/serversidetemplateinjection.pdf)
-- [Injection de modèle côté serveur] (https://portswigger.net/blog/server-side-template-injection)
+- [James KettleÂ : Injection de modÃ¨les cÃ´tÃ© serveurÂ : RCE pour l'application Web moderne (livre blanc)](https://portswigger.net/kb/papers/serversidetemplateinjection.pdf)
+- [Injection de modÃ¨le cÃ´tÃ© serveur](https://portswigger.net/blog/server-side-template-injection)
 - [Explorer SSTI dans Flask/Jinja2](https://www.lanmaster53.com/2016/03/exploring-ssti-flask-jinja2/)
-- [Injection de modèle côté serveur : de la détection au shell distant] (https://www.okiok.com/server-side-template-injection-from-detection-to-remote-shell/)
-- [Application Web extrêmement vulnérable] (https://github.com/s4n7h0/xvwa)
-- [Divine Selorm Tsa : Exploitation de l'injection de modèle côté serveur avec tplmap](https://owasp.org/www-pdf-archive/Owasp_SSTI_final.pdf)
+- [Injection de modÃ¨le cÃ´tÃ© serveurÂ : de la dÃ©tection au shell distant](https://www.okiok.com/server-side-template-injection-from-detection-to-remote-shell/)
+- [Application Web extrÃªmement vulnÃ©rable](https://github.com/s4n7h0/xvwa)
+- [Divine Selorm TsaÂ : Exploitation de l'injection de modÃ¨le cÃ´tÃ© serveur avec tplmap](https://owasp.org/www-pdf-archive/Owasp_SSTI_final.pdf)
 - [Exploitation de SSTI dans Thymeleaf](https://www.acunetix.com/blog/web-security-zone/exploiting-ssti-in-thymeleaf/)
