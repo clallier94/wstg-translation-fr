@@ -1,12 +1,12 @@
-# 4.7 Test de validation des entrées
+# 4.7 Test de validation des entrÃ©es
 
-4.7.1 [Test du script intersite réfléchi](01-Testing_for_Reflected_Cross_Site_Scripting.md)
+4.7.1 [Test du script intersite reflÃ©tÃ©](01-Testing_for_Reflected_Cross_Site_Scripting.md)
 
-4.7.2 [Test pour les scripts intersites stockés](02-Testing_for_Stored_Cross_Site_Scripting.md)
+4.7.2 [Test pour les scripts intersites stockÃ©s](02-Testing_for_Stored_Cross_Site_Scripting.md)
 
 4.7.3 [Test de falsification de verbe HTTP](03-Testing_for_HTTP_Verb_Tampering.md)
 
-4.7.4 [Test de la pollution des paramètres HTTP](04-Testing_for_HTTP_Parameter_Pollution.md)
+4.7.4 [Test de la pollution des paramÃ¨tres HTTP](04-Testing_for_HTTP_Parameter_Pollution.md)
 
 4.7.5 [Test pour l'injection SQL](05-Testing_for_SQL_Injection.md)
 
@@ -24,7 +24,7 @@
 
 - 4.7.5.7 [Test d'injection ORM](05.7-Testing_for_ORM_Injection.md)
 
-- 4.7.5.8 [Test pour le côté client](05.8-Testing_for_Client-side.md)
+- 4.7.5.8 [Test pour le cÃ´tÃ© client](05.8-Testing_for_Client-side.md)
 
 4.7.6 [Test pour l'injection LDAP](06-Testing_for_LDAP_Injection.md)
 
@@ -42,18 +42,18 @@
 
 4.7.12 [Test pour l'injection de commande](12-Testing_for_Command_Injection.md)
 
-4.7.13 [Test pour l'injection de chaîne de format](13-Testing_for_Format_String_Injection.md)
+4.7.13 [Test pour l'injection de chaÃ®ne de format](13-Testing_for_Format_String_Injection.md)
 
-4.7.14 [Test de vulnérabilité incubée](14-Testing_for_Incubated_Vulnerability.md)
+4.7.14 [Test de vulnÃ©rabilitÃ© incubÃ©e](14-Testing_for_Incubated_Vulnerability.md)
 
 4.7.15 [Test de la contrebande de fractionnement HTTP](15-Testing_for_HTTP_Splitting_Smuggling.md)
 
-4.7.16 [Test des requêtes entrantes HTTP](16-Testing_for_HTTP_Incoming_Requests.md)
+4.7.16 [Test des requÃªtes entrantes HTTP](16-Testing_for_HTTP_Incoming_Requests.md)
 
-4.7.17 [Test pour l'injection d'en-tête d'hôte](17-Testing_for_Host_Header_Injection.md)
+4.7.17 [Test pour l'injection d'en-tÃªte d'hÃ´te](17-Testing_for_Host_Header_Injection.md)
 
-4.7.18 [Test pour l'injection de modèle côté serveur](18-Testing_for_Server-side_Template_Injection.md)
+4.7.18 [Test pour l'injection de modÃ¨le cÃ´tÃ© serveur](18-Testing_for_Server-side_Template_Injection.md)
 
-4.7.19 [Test de contrefaçon de requête côté serveur](19-Testing_for_Server-Side_Request_Forgery.md)
+4.7.19 [Test de contrefaÃ§on de requÃªte cÃ´tÃ© serveur](19-Testing_for_Server-Side_Request_Forgery.md)
 
 4.7.20 [Test d'affectation en masse](20-Testing_for_Mass_Assignment.md)
