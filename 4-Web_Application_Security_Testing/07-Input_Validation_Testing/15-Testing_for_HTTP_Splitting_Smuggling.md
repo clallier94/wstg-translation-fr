@@ -6,30 +6,30 @@
 
 ## Sommaire
 
-Cette section illustre des exemples d'attaques qui exploitent des fonctionnalités spécifiques du protocole HTTP, soit en exploitant les faiblesses de l'application Web, soit des particularités dans la manière dont différents agents interprètent les messages HTTP.
-Cette section analysera deux attaques différentes qui ciblent des en-têtes HTTP spécifiques :
+Cette section illustre des exemples d'attaques qui exploitent des fonctionnalitÃ©s spÃ©cifiques du protocole HTTP, soit en exploitant les faiblesses de l'application Web, soit des particularitÃ©s dans la maniÃ¨re dont diffÃ©rents agents interprÃ¨tent les messages HTTP.
+Cette section analysera deux attaques diffÃ©rentes qui ciblent des en-tÃªtes HTTP spÃ©cifiquesÂ :
 
 - Fractionnement HTTP
 - Contrebande HTTP
 
-La première attaque exploite un manque de nettoyage des entrées qui permet à un intrus d'insérer des caractères CR et LF dans les en-têtes de la réponse de l'application et de "diviser" cette réponse en deux messages HTTP différents. L'objectif de l'attaque peut varier d'un empoisonnement du cache à un cross site scripting.
+La premiÃ¨re attaque exploite un manque de nettoyage des entrÃ©es qui permet Ã  un intrus d'insÃ©rer des caractÃ¨res CR et LF dans les en-tÃªtes de la rÃ©ponse de l'application et de "diviser" cette rÃ©ponse en deux messages HTTP diffÃ©rents. L'objectif de l'attaque peut varier d'un empoisonnement du cache Ã  un cross site scripting.
 
-Dans la deuxième attaque, l'attaquant exploite le fait que certains messages HTTP spécialement conçus peuvent être analysés et interprétés de différentes manières selon l'agent qui les reçoit. La contrebande HTTP nécessite un certain niveau de connaissances sur les différents agents qui traitent les messages HTTP (serveur Web, proxy, pare-feu) et ne sera donc inclus que dans la section de test de la boîte grise.
+Dans la deuxiÃ¨me attaque, l'attaquant exploite le fait que certains messages HTTP spÃ©cialement conÃ§us peuvent Ãªtre analysÃ©s et interprÃ©tÃ©s de diffÃ©rentes maniÃ¨res selon l'agent qui les reÃ§oit. La contrebande HTTP nÃ©cessite un certain niveau de connaissances sur les diffÃ©rents agents qui traitent les messages HTTP (serveur Web, proxy, pare-feu) et ne sera donc inclus que dans la section de test de la boÃ®te grise.
 
 ## Objectifs des tests
 
-- Évaluer si l'application est vulnérable au fractionnement, en identifiant quelles attaques possibles sont réalisables.
-- Évaluer si la chaîne de communication est vulnérable à la contrebande, en identifiant quelles attaques possibles sont réalisables.
+- Ã‰valuer si l'application est vulnÃ©rable au fractionnement, en identifiant quelles attaques possibles sont rÃ©alisables.
+- Ã‰valuer si la chaÃ®ne de communication est vulnÃ©rable Ã  la contrebande, en identifiant quelles attaques possibles sont rÃ©alisables.
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boÃ®te noire
 
 #### Fractionnement HTTP
 
-Certaines applications Web utilisent une partie de l'entrée utilisateur pour générer les valeurs de certains en-têtes de leurs réponses. L'exemple le plus simple est fourni par les redirections dans lesquelles l'URL cible dépend d'une valeur soumise par l'utilisateur. Disons par exemple que l'utilisateur est invité à choisir s'il préfère une interface Web standard ou avancée. Le choix sera passé en paramètre qui sera utilisé dans l'entête de la réponse pour déclencher la redirection vers la page correspondante.
+Certaines applications Web utilisent une partie de l'entrÃ©e utilisateur pour gÃ©nÃ©rer les valeurs de certains en-tÃªtes de leurs rÃ©ponses. L'exemple le plus simple est fourni par les redirections dans lesquelles l'URL cible dÃ©pend d'une valeur soumise par l'utilisateur. Disons par exemple que l'utilisateur est invitÃ© Ã  choisir s'il prÃ©fÃ¨re une interface Web standard ou avancÃ©e. Le choix sera passÃ© en paramÃ¨tre qui sera utilisÃ© dans l'entÃªte de la rÃ©ponse pour dÃ©clencher la redirection vers la page correspondante.
 
-Plus précisément, si le paramètre 'interface' a la valeur 'advanced', l'application répondra par ceci :
+Plus prÃ©cisÃ©ment, si le paramÃ¨tre 'interface' a la valeur 'advanced', l'application rÃ©pondra par ceci :
 
 ```http
 HTTP/1.1 302 Moved Temporarily
@@ -38,13 +38,13 @@ Location: http://victim.com/main.jsp?interface=advanced
 <snip>
 ```
 
-Lors de la réception de ce message, le navigateur amènera l'utilisateur à la page indiquée dans l'en-tête Emplacement. Cependant, si l'application ne filtre pas l'entrée utilisateur, il sera possible d'insérer dans le paramètre 'interface' la séquence %0d%0a, qui représente la séquence CRLF utilisée pour séparer les différentes lignes. À ce stade, les testeurs pourront déclencher une réponse qui sera interprétée comme deux réponses différentes par quiconque l'analysera, par exemple un cache Web situé entre nous et l'application. Cela peut être exploité par un attaquant pour empoisonner ce cache Web afin qu'il fournisse un faux contenu dans toutes les requêtes ultérieures.
+Lors de la rÃ©ception de ce message, le navigateur amÃ¨nera l'utilisateur Ã  la page indiquÃ©e dans l'en-tÃªte Emplacement. Cependant, si l'application ne filtre pas l'entrÃ©e utilisateur, il sera possible d'insÃ©rer dans le paramÃ¨tre 'interface' la sÃ©quence %0d%0a, qui reprÃ©sente la sÃ©quence CRLF utilisÃ©e pour sÃ©parer les diffÃ©rentes lignes. Ã€ ce stade, les testeurs pourront dÃ©clencher une rÃ©ponse qui sera interprÃ©tÃ©e comme deux rÃ©ponses diffÃ©rentes par quiconque l'analysera, par exemple un cache Web situÃ© entre nous et l'application. Cela peut Ãªtre exploitÃ© par un attaquant pour empoisonner ce cache Web afin qu'il fournisse un faux contenu dans toutes les requÃªtes ultÃ©rieures.
 
-Disons que dans l'exemple précédent, le testeur passe les données suivantes comme paramètre d'interface :
+Disons que dans l'exemple prÃ©cÃ©dent, le testeur passe les donnÃ©es suivantes comme paramÃ¨tre d'interfaceÂ :
 
 `Advanced%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a% 0d%0a<html>Sorry,%20System%20Down</html>`
 
-La réponse résultante de l'application vulnérable sera donc la suivante :
+La rÃ©ponse rÃ©sultante de l'application vulnÃ©rable sera donc la suivante :
 
 ```http
 HTTP/1.1 302 Moved Temporarily
@@ -60,40 +60,40 @@ Content-Length: 35
 <other data>
 ```
 
-Le cache Web verra deux réponses différentes, donc si l'attaquant envoie, immédiatement après la première requête, une seconde demandant `/index.html`, le cache Web fera correspondre cette requête avec la deuxième réponse et mettra son contenu en cache, donc que toutes les requêtes ultérieures dirigées vers `victim.com/index.html` passant par ce cache Web recevront le message "système en panne". De cette manière, un attaquant serait en mesure de défigurer efficacement le site pour tous les utilisateurs utilisant ce cache Web (l'ensemble d'Internet, si le cache Web est un proxy inverse pour l'application Web).
+Le cache Web verra deux rÃ©ponses diffÃ©rentes, donc si l'attaquant envoie, immÃ©diatement aprÃ¨s la premiÃ¨re requÃªte, une seconde demandant `/index.html`, le cache Web fera correspondre cette requÃªte avec la deuxiÃ¨me rÃ©ponse et mettra son contenu en cache, donc que toutes les requÃªtes ultÃ©rieures dirigÃ©es vers `victim.com/index.html` passant par ce cache Web recevront le message "systÃ¨me en panne". De cette maniÃ¨re, un attaquant serait en mesure de dÃ©figurer efficacement le site pour tous les utilisateurs utilisant ce cache Web (l'ensemble d'Internet, si le cache Web est un proxy inverse pour l'application Web).
 
-Alternativement, l'attaquant pourrait transmettre à ces utilisateurs un extrait de code JavaScript qui monte une attaque de script intersite, par exemple pour voler les cookies. Notez que bien que la vulnérabilité soit dans l'application, la cible ici est ses utilisateurs. Par conséquent, afin de rechercher cette vulnérabilité, le testeur doit identifier toutes les entrées contrôlées par l'utilisateur qui influencent un ou plusieurs en-têtes dans la réponse, et vérifier s'il peut y injecter avec succès une séquence CR+LF.
+Alternativement, l'attaquant pourrait transmettre Ã  ces utilisateurs un extrait de code JavaScript qui monte une attaque de script intersite, par exemple pour voler les cookies. Notez que bien que la vulnÃ©rabilitÃ© soit dans l'application, la cible ici est ses utilisateurs. Par consÃ©quent, afin de rechercher cette vulnÃ©rabilitÃ©, le testeur doit identifier toutes les entrÃ©es contrÃ´lÃ©es par l'utilisateur qui influencent un ou plusieurs en-tÃªtes dans la rÃ©ponse, et vÃ©rifier s'il peut y injecter avec succÃ¨s une sÃ©quence CR+LF.
 
-Les en-têtes qui sont les candidats les plus probables pour cette attaque sont :
+Les en-tÃªtes qui sont les candidats les plus probables pour cette attaque sontÂ :
 
 - `Location`
 - `Set-Cookie`
 
-Il faut noter qu'une exploitation réussie de cette vulnérabilité dans un scénario réel peut être assez complexe, car plusieurs facteurs doivent être pris en compte :
+Il faut noter qu'une exploitation rÃ©ussie de cette vulnÃ©rabilitÃ© dans un scÃ©nario rÃ©el peut Ãªtre assez complexe, car plusieurs facteurs doivent Ãªtre pris en compteÂ :
 
-1. Le testeur de stylo doit correctement définir les en-têtes dans la fausse réponse pour qu'elle soit mise en cache avec succès (par exemple, un en-tête Last-Modified avec une date définie dans le futur). Ils peuvent également avoir à détruire les versions précédemment mises en cache des pagers cibles, en émettant une requête préliminaire avec "Pragma : no-cache" dans les en-têtes de requête.
-2. L'application, bien qu'elle ne filtre pas la séquence CR+LF, peut filtrer d'autres caractères nécessaires à une attaque réussie (par exemple, `<` et `>`). Dans ce cas, le testeur peut essayer d'utiliser d'autres encodages (par exemple, UTF-7)
-3. Certaines cibles (par exemple, ASP) coderont en URL la partie chemin de l'en-tête Location (par exemple, `www.victim.com/redirect.asp`), rendant une séquence CRLF inutile. Cependant, ils ne parviennent pas à encoder la section de requête (par exemple, ?interface=advanced), ce qui signifie qu'un point d'interrogation principal suffit pour contourner ce filtrage.
+1. Le testeur de stylo doit correctement dÃ©finir les en-tÃªtes dans la fausse rÃ©ponse pour qu'elle soit mise en cache avec succÃ¨s (par exemple, un en-tÃªte Last-Modified avec une date dÃ©finie dans le futur). Ils peuvent Ã©galement avoir Ã  dÃ©truire les versions prÃ©cÃ©demment mises en cache des pagers cibles, en Ã©mettant une requÃªte prÃ©liminaire avec "PragmaÂ : no-cache" dans les en-tÃªtes de requÃªte.
+2. L'application, bien qu'elle ne filtre pas la sÃ©quence CR+LF, peut filtrer d'autres caractÃ¨res nÃ©cessaires Ã  une attaque rÃ©ussie (par exemple, `<` et `>`). Dans ce cas, le testeur peut essayer d'utiliser d'autres encodages (par exemple, UTF-7)
+3. Certaines cibles (par exemple, ASP) coderont en URL la partie chemin de l'en-tÃªte Location (par exemple, `www.victim.com/redirect.asp`), rendant une sÃ©quence CRLF inutile. Cependant, ils ne parviennent pas Ã  encoder la section de requÃªte (par exemple, ?interface=advanced), ce qui signifie qu'un point d'interrogation principal suffit pour contourner ce filtrage.
 
-Pour une discussion plus détaillée sur cette attaque et d'autres informations sur les scénarios et applications possibles, consultez les documents référencés au bas de cette section.
+Pour une discussion plus dÃ©taillÃ©e sur cette attaque et d'autres informations sur les scÃ©narios et applications possibles, consultez les documents rÃ©fÃ©rencÃ©s au bas de cette section.
 
-### Test de la boîte grise
+### Test en boÃ®te grise
 
 #### Fractionnement HTTP
 
-Une exploitation réussie de HTTP Splitting est grandement facilitée par la connaissance de certains détails de l'application Web et de la cible de l'attaque. Par exemple, différentes cibles peuvent utiliser différentes méthodes pour décider quand le premier message HTTP se termine et quand le second commence. Certains utiliseront les limites de message, comme dans l'exemple précédent. D'autres cibles supposeront que différents messages seront transportés par différents paquets. D'autres alloueront pour chaque message un nombre de morceaux de longueur prédéterminée : dans ce cas, le deuxième message devra commencer exactement au début d'un morceau et cela obligera le testeur à utiliser un bourrage entre les deux messages. Cela peut causer des problèmes lorsque le paramètre vulnérable doit être envoyé dans l'URL, car une URL très longue est susceptible d'être tronquée ou filtrée. Un scénario de boîte grise peut aider l'attaquant à trouver une solution de contournement : plusieurs serveurs d'application, par exemple, autoriseront l'envoi de la requête en utilisant POST au lieu de GET.
+Une exploitation rÃ©ussie de HTTP Splitting est grandement facilitÃ©e par la connaissance de certains dÃ©tails de l'application Web et de la cible de l'attaque. Par exemple, diffÃ©rentes cibles peuvent utiliser diffÃ©rentes mÃ©thodes pour dÃ©cider quand le premier message HTTP se termine et quand le second commence. Certains utiliseront les limites de message, comme dans l'exemple prÃ©cÃ©dent. D'autres cibles supposeront que diffÃ©rents messages seront transportÃ©s par diffÃ©rents paquets. D'autres alloueront pour chaque message un nombre de morceaux de longueur prÃ©dÃ©terminÃ©e : dans ce cas, le deuxiÃ¨me message devra commencer exactement au dÃ©but d'un morceau et cela obligera le testeur Ã  utiliser un bourrage entre les deux messages. Cela peut causer des problÃ¨mes lorsque le paramÃ¨tre vulnÃ©rable doit Ãªtre envoyÃ© dans l'URL, car une URL trÃ¨s longue est susceptible d'Ãªtre tronquÃ©e ou filtrÃ©e. Un scÃ©nario de boÃ®te grise peut aider l'attaquant Ã  trouver une solution de contournementÂ : plusieurs serveurs d'application, par exemple, autoriseront l'envoi de la requÃªte en utilisant POST au lieu de GET.
 
 #### Contrebande HTTP
 
-Comme mentionné dans l'introduction, HTTP Smuggling exploite les différentes façons dont un message HTTP particulièrement conçu peut être analysé et interprété par différents agents (navigateurs, caches Web, pare-feu d'application). Ce type d'attaque relativement nouveau a été découvert par Chaim Linhart, Amit Klein, Ronen Heled et Steve Orrin en 2005. Il existe plusieurs applications possibles et nous analyserons l'une des plus spectaculaires : le contournement d'un pare-feu applicatif. Reportez-vous au livre blanc d'origine (lié au bas de cette page) pour des informations plus détaillées et d'autres scénarios.
+Comme mentionnÃ© dans l'introduction, HTTP Smuggling exploite les diffÃ©rentes faÃ§ons dont un message HTTP particuliÃ¨rement conÃ§u peut Ãªtre analysÃ© et interprÃ©tÃ© par diffÃ©rents agents (navigateurs, caches Web, pare-feu d'application). Ce type d'attaque relativement nouveau a Ã©tÃ© dÃ©couvert par Chaim Linhart, Amit Klein, Ronen Heled et Steve Orrin en 2005. Il existe plusieurs applications possibles et nous analyserons l'une des plus spectaculaires : le contournement d'un pare-feu applicatif. Reportez-vous au livre blanc d'origine (liÃ© au bas de cette page) pour des informations plus dÃ©taillÃ©es et d'autres scÃ©narios.
 
 ##### Contournement du pare-feu applicatif
 
-Il existe plusieurs produits qui permettent à une administration système de détecter et de bloquer une requête Web hostile en fonction d'un schéma malveillant connu intégré à la requête. Par exemple, considérez l'infâme et ancienne [attaque de traversée de répertoire Unicode contre le serveur IIS] (https://www.securityfocus.com/bid/1806), dans laquelle un attaquant pourrait casser la racine www en émettant une requête comme :
+Il existe plusieurs produits qui permettent Ã  une administration systÃ¨me de dÃ©tecter et de bloquer une requÃªte Web hostile en fonction d'un schÃ©ma malveillant connu intÃ©grÃ© Ã  la requÃªte. Par exemple, considÃ©rez l'infÃ¢me et ancienne [attaque de traversÃ©e de rÃ©pertoire Unicode contre le serveur IIS](https://www.securityfocus.com/bid/1806), dans laquelle un attaquant pourrait casser la racine www en Ã©mettant une requÃªte commeÂ :
 
 `http://target/scripts/..%c1%1c../winnt/system32/cmd.exe?/c+<command_to_execute>`
 
-Bien sûr, il est assez facile de repérer et de filtrer cette attaque par la présence de chaînes comme ".." et "cmd.exe" dans l'URL. Cependant, IIS 5.0 est assez pointilleux sur les requêtes POST dont le corps est jusqu'à 48 Ko et tronque tout le contenu qui dépasse cette limite lorsque l'en-tête Content-Type est différent de application/x-www-form-urlencoded. Le pen-testeur peut en tirer parti en créant une requête très volumineuse, structurée comme suit :
+Bien sÃ»r, il est assez facile de repÃ©rer et de filtrer cette attaque par la prÃ©sence de chaÃ®nes comme ".." et "cmd.exe" dans l'URL. Cependant, IIS 5.0 est assez pointilleux sur les requÃªtes POST dont le corps est jusqu'Ã  48 Ko et tronque tout le contenu qui dÃ©passe cette limite lorsque l'en-tÃªte Content-Type est diffÃ©rent de application/x-www-form-urlencoded. Le pen-testeur peut en tirer parti en crÃ©ant une requÃªte trÃ¨s volumineuse, structurÃ©e comme suitÂ :
 
 ```html
 POST /target.asp HTTP/1.1        <-- Request #1
@@ -118,20 +118,20 @@ Connection: Keep-Alive
 <CRLF>
 ```
 
-Ce qui se passe ici est que la `Request #1` est composée de 49223 octets, ce qui inclut également les lignes de `Request #2`. Par conséquent, un pare-feu (ou tout autre agent à côté d'IIS 5.0) verra la requête n° 1, ne verra pas la requête n° 2 (ses données ne feront partie que de la n° 1), verra la requête n° 3 et ratera ` Requête #4` (parce que le POST ne sera qu'une partie du faux en-tête xxxx).
+Ce qui se passe ici est que la `Request #1` est composÃ©e de 49223 octets, ce qui inclut Ã©galement les lignes de `Request #2`. Par consÃ©quent, un pare-feu (ou tout autre agent Ã  cÃ´tÃ© d'IIS 5.0) verra la requÃªte nÂ°Â 1, ne verra pas la requÃªte nÂ°Â 2 (ses donnÃ©es ne feront partie que de la nÂ°Â 1), verra la requÃªte nÂ°Â 3 et ratera ` RequÃªte #4` (parce que le POST ne sera qu'une partie du faux en-tÃªte xxxx).
 
-Maintenant, qu'arrive-t-il à IIS 5.0 ? Il arrêtera d'analyser `Request #1` juste après les 49152 octets de déchets (car il aura atteint la limite de 48K = 49152 octets) et analysera donc `Request #2` comme une nouvelle demande distincte. `Request #2` prétend que son contenu est de 33 octets, ce qui inclut tout jusqu'à "xxxx: ", ce qui fait que IIS manque `Request #3` (interprété comme faisant partie de `Request #2`) mais repère `Request #4`, comme son POST commence juste après le 33ème octet ou `Request #2`. C'est un peu compliqué, mais le fait est que l'URL d'attaque ne sera pas détectée par le pare-feu (elle sera interprétée comme le corps d'une requête précédente) mais sera correctement analysée (et exécutée) par IIS.
+Maintenant, qu'arrive-t-il Ã  IIS 5.0 ? Il arrÃªtera d'analyser `Request #1` juste aprÃ¨s les 49152 octets de dÃ©chets (car il aura atteint la limite de 48K = 49152 octets) et analysera donc `Request #2` comme une nouvelle demande distincte. `Request #2` prÃ©tend que son contenu est de 33 octets, ce qui inclut tout jusqu'Ã  "xxxx: ", ce qui fait que IIS manque `Request #3` (interprÃ©tÃ© comme faisant partie de `Request #2`) mais repÃ¨re `Request #4`, comme son POST commence juste aprÃ¨s le 33Ã¨me octet ou `Request #2`. C'est un peu compliquÃ©, mais le fait est que l'URL d'attaque ne sera pas dÃ©tectÃ©e par le pare-feu (elle sera interprÃ©tÃ©e comme le corps d'une requÃªte prÃ©cÃ©dente) mais sera correctement analysÃ©e (et exÃ©cutÃ©e) par IIS.
 
-Alors que dans le cas susmentionné, la technique exploite un bogue d'un serveur Web, il existe d'autres scénarios dans lesquels nous pouvons tirer parti des différentes façons dont différents appareils compatibles HTTP analysent les messages qui ne sont pas conformes à la RFC 1005. Par exemple, le protocole HTTP n'autorise qu'un seul en-tête Content-Length, mais ne spécifie pas comment gérer un message qui a deux instances de cet en-tête. Certaines implémentations utiliseront la première tandis que d'autres préféreront la seconde, ouvrant la voie aux attaques HTTP Smuggling. Un autre exemple est l'utilisation de l'en-tête Content-Length dans un message GET.
+Alors que dans le cas susmentionnÃ©, la technique exploite un bogue d'un serveur Web, il existe d'autres scÃ©narios dans lesquels nous pouvons tirer parti des diffÃ©rentes faÃ§ons dont diffÃ©rents appareils compatibles HTTP analysent les messages qui ne sont pas conformes Ã  la RFC 1005. Par exemple, le protocole HTTP n'autorise qu'un seul en-tÃªte Content-Length, mais ne spÃ©cifie pas comment gÃ©rer un message qui a deux instances de cet en-tÃªte. Certaines implÃ©mentations utiliseront la premiÃ¨re tandis que d'autres prÃ©fÃ©reront la seconde, ouvrant la voie aux attaques HTTP Smuggling. Un autre exemple est l'utilisation de l'en-tÃªte Content-Length dans un message GET.
 
-Notez que HTTP Smuggling n'exploite "*pas*" les vulnérabilités de l'application Web cible. Par conséquent, il peut être quelque peu difficile, dans un engagement de test de pénétration, de convaincre le client qu'une contre-mesure doit être recherchée de toute façon.
+Notez que HTTP Smuggling n'exploite "*pas*" les vulnÃ©rabilitÃ©s de l'application Web cible. Par consÃ©quent, il peut Ãªtre quelque peu difficile, dans un engagement de test de pÃ©nÃ©tration, de convaincre le client qu'une contre-mesure doit Ãªtre recherchÃ©e de toute faÃ§on.
 
-## Références
+## RÃ©fÃ©rences
 
 ### Papiers blanc
 
-- [Amit Klein, "Diviser pour mieux régner : Fractionnement des réponses HTTP, attaques par empoisonnement du cache Web et sujets connexes"](https://packetstormsecurity.com/files/32815/Divide-and-Conquer-HTTP-Response-Splitting-Whitepaper .html)
-- [Amit Klein : "Fractionnement de messages HTTP, contrebande et autres animaux"](https://www.slideserve.com/alicia/http-message-splitting-smuggling-and-other-animals-powerpoint-ppt-presentation)
-- [Amit Klein : " Smuggling de requêtes HTTP - ERRATA (le phénomène de tampon IIS 48K)"](https://www.securityfocus.com/archive/1/411418)
-- [Amit Klein : « Contrebande de réponses HTTP »](https://www.securityfocus.com/archive/1/425593)
-- [Chaim Linhart, Amit Klein, Ronen Heled, Steve Orrin : « Contrebande de requêtes HTTP »](https://www.cgisecurity.com/lib/http-request-smuggling.pdf)
+- [AmitÂ Klein, "Diviser pour mieux rÃ©gnerÂ : Fractionnement des rÃ©ponses HTTP, attaques par empoisonnement du cache Web et sujets connexes"](https://packetstormsecurity.com/files/32815/Divide-and-Conquer-HTTP-Response-Splitting-Whitepaper .html)
+- [Amit KleinÂ : "Fractionnement de messages HTTP, contrebande et autres animaux"](https://www.slideserve.com/alicia/http-message-splitting-smuggling-and-other-animals-powerpoint-ppt-presentation)
+- [AmitÂ KleinÂ : "Â Smuggling de requÃªtes HTTP - ERRATA (le phÃ©nomÃ¨ne de tampon IIS 48K)"](https://www.securityfocus.com/archive/1/411418)
+- [AmitÂ KleinÂ : Â«Â Contrebande de rÃ©ponses HTTPÂ Â»](https://www.securityfocus.com/archive/1/425593)
+- [Chaim Linhart, Amit Klein, Ronen Heled, Steve Orrin : Â« Contrebande de requÃªtes HTTP Â»](https://www.cgisecurity.com/lib/http-request-smuggling.pdf)
