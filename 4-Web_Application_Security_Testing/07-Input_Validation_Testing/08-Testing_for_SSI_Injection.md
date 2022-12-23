@@ -6,54 +6,54 @@
 
 ## Sommaire
 
-Les serveurs Web donnent généralement aux développeurs la possibilité d'ajouter de petits morceaux de code dynamique dans des pages HTML statiques, sans avoir à gérer des langages complets côté serveur ou côté client. Cette fonctionnalité est fournie par [Server-Side Include](https://owasp.org/www-community/attacks/Server-Side_Includes_%28SSI%29_Injection)(SSI).
+Les serveurs Web donnent gÃ©nÃ©ralement aux dÃ©veloppeurs la possibilitÃ© d'ajouter de petits morceaux de code dynamique dans des pages HTML statiques, sans avoir Ã  gÃ©rer des langages complets cÃ´tÃ© serveur ou cÃ´tÃ© client. Cette fonctionnalitÃ© est fournie par [Server-Side Include](https://owasp.org/www-community/attacks/Server-Side_Includes_%28SSI%29_Injection)(SSI).
 
-Les inclusions côté serveur sont des directives que le serveur Web analyse avant de servir la page à l'utilisateur. Ils représentent une alternative à l'écriture de programmes CGI ou à l'intégration de code à l'aide de langages de script côté serveur, lorsqu'il suffit d'effectuer des tâches très simples. Les implémentations SSI courantes fournissent des directives (commandes) pour inclure des fichiers externes, pour définir et imprimer des variables d'environnement CGI de serveur Web ou pour exécuter des scripts CGI externes ou des commandes système.
+Les inclusions cÃ´tÃ© serveur sont des directives que le serveur Web analyse avant de servir la page Ã  l'utilisateur. Ils reprÃ©sentent une alternative Ã  l'Ã©criture de programmes CGI ou Ã  l'intÃ©gration de code Ã  l'aide de langages de script cÃ´tÃ© serveur, lorsqu'il suffit d'effectuer des tÃ¢ches trÃ¨s simples. Les implÃ©mentations SSI courantes fournissent des directives (commandes) pour inclure des fichiers externes, pour dÃ©finir et imprimer des variables d'environnement CGI de serveur Web ou pour exÃ©cuter des scripts CGI externes ou des commandes systÃ¨me.
 
-SSI peut conduire à une exécution de commande à distance (RCE), mais la directive "exec" est désactivée par défaut sur la plupart des serveurs Web.
+SSI peut conduire Ã  une exÃ©cution de commande Ã  distance (RCE), mais la directive `exec` est dÃ©sactivÃ©e par dÃ©faut sur la plupart des serveurs Web.
 
-Il s'agit d'une vulnérabilité très similaire à une vulnérabilité d'injection de langage de script classique. Une atténuation est que le serveur Web doit être configuré pour autoriser SSI. D'autre part, les vulnérabilités d'injection SSI sont souvent plus simples à exploiter, car les directives SSI sont faciles à comprendre et, en même temps, assez puissantes, par exemple, elles peuvent afficher le contenu des fichiers et exécuter des commandes système.
+Il s'agit d'une vulnÃ©rabilitÃ© trÃ¨s similaire Ã  une vulnÃ©rabilitÃ© d'injection de langage de script classique. Une attÃ©nuation est que le serveur Web doit Ãªtre configurÃ© pour autoriser SSI. D'autre part, les vulnÃ©rabilitÃ©s d'injection SSI sont souvent plus simples Ã  exploiter, car les directives SSI sont faciles Ã  comprendre et, en mÃªme temps, assez puissantes, par exemple, elles peuvent afficher le contenu des fichiers et exÃ©cuter des commandes systÃ¨me.
 
 ## Objectifs des tests
 
 - Identifier les points d'injection SSI.
-- Évaluer la sévérité de l'injection.
+- Ã‰valuer la sÃ©vÃ©ritÃ© de l'injection.
 
 ## Comment tester
 
-Pour tester les SSI exploitables, injectez des directives SSI en tant qu'entrée utilisateur. Si les SSI sont activés et que la validation des entrées utilisateur n'a pas été correctement implémentée, le serveur exécutera la directive. Ceci est très similaire à une vulnérabilité d'injection de langage de script classique en ce sens qu'elle se produit lorsque l'entrée de l'utilisateur n'est pas correctement validée et filtrée.
+Pour tester les SSI exploitables, injectez des directives SSI en tant qu'entrÃ©e utilisateur. Si les SSI sont activÃ©s et que la validation des entrÃ©es utilisateur n'a pas Ã©tÃ© correctement implÃ©mentÃ©e, le serveur exÃ©cutera la directive. Ceci est trÃ¨s similaire Ã  une vulnÃ©rabilitÃ© d'injection de langage de script classique en ce sens qu'elle se produit lorsque l'entrÃ©e de l'utilisateur n'est pas correctement validÃ©e et filtrÃ©e.
 
-Déterminez d'abord si le serveur Web prend en charge les directives SSI. Souvent, la réponse est oui, car le support SSI est assez courant. Pour déterminer si les directives SSI sont prises en charge, découvrez le type de serveur Web que la cible exécute à l'aide de techniques de collecte d'informations (voir [Fingerprint Web Server](../01-Information_Gathering/02-Fingerprint_Web_Server.md)). Si vous avez accès au code, déterminez si les directives SSI sont utilisées en recherchant dans les fichiers de configuration du serveur Web des mots-clés spécifiques.
+DÃ©terminez d'abord si le serveur Web prend en charge les directives SSI. Souvent, la rÃ©ponse est oui, car le support SSI est assez courant. Pour dÃ©terminer si les directives SSI sont prises en charge, dÃ©couvrez le type de serveur Web que la cible exÃ©cute Ã  l'aide de techniques de collecte d'informations (voir [Fingerprint Web Server](../01-Information_Gathering/02-Fingerprint_Web_Server.md)). Si vous avez accÃ¨s au code, dÃ©terminez si les directives SSI sont utilisÃ©es en recherchant dans les fichiers de configuration du serveur Web des mots-clÃ©s spÃ©cifiques.
 
-Une autre façon de vérifier que les directives SSI sont activées consiste à vérifier les pages avec l'extension `.shtml`, qui est associée aux directives SSI. L'utilisation de l'extension `.shtml` n'est pas obligatoire, donc ne pas avoir trouvé de fichiers `.shtml` ne signifie pas nécessairement que la cible n'est pas vulnérable aux attaques par injection SSI.
+Une autre faÃ§on de vÃ©rifier que les directives SSI sont activÃ©es consiste Ã  vÃ©rifier les pages avec l'extension `.shtml`, qui est associÃ©e aux directives SSI. L'utilisation de l'extension `.shtml` n'est pas obligatoire, donc ne pas avoir trouvÃ© de fichiers `.shtml` ne signifie pas nÃ©cessairement que la cible n'est pas vulnÃ©rable aux attaques par injection SSI.
 
-L'étape suivante consiste à déterminer tous les vecteurs d'entrée utilisateur possibles et à tester pour voir si l'injection SSI est exploitable.
+L'Ã©tape suivante consiste Ã  dÃ©terminer tous les vecteurs d'entrÃ©e utilisateur possibles et Ã  tester pour voir si l'injection SSI est exploitable.
 
-Recherchez d'abord toutes les pages où la saisie de l'utilisateur est autorisée. Les vecteurs d'entrée possibles peuvent également inclure des en-têtes et des cookies. Déterminez comment l'entrée est stockée et utilisée, c'est-à-dire si l'entrée est renvoyée sous forme de message d'erreur ou d'élément de page et si elle a été modifiée d'une manière ou d'une autre. L'accès au code source peut vous aider à déterminer plus facilement où se trouvent les vecteurs d'entrée et comment l'entrée est gérée.
+Recherchez d'abord toutes les pages oÃ¹ la saisie de l'utilisateur est autorisÃ©e. Les vecteurs d'entrÃ©e possibles peuvent Ã©galement inclure des en-tÃªtes et des cookies. DÃ©terminez comment l'entrÃ©e est stockÃ©e et utilisÃ©e, c'est-Ã -dire si l'entrÃ©e est renvoyÃ©e sous forme de message d'erreur ou d'Ã©lÃ©ment de page et si elle a Ã©tÃ© modifiÃ©e d'une maniÃ¨re ou d'une autre. L'accÃ¨s au code source peut vous aider Ã  dÃ©terminer plus facilement oÃ¹ se trouvent les vecteurs d'entrÃ©e et comment l'entrÃ©e est gÃ©rÃ©e.
 
-Une fois que vous avez une liste de points d'injection potentiels, vous pouvez déterminer si l'entrée est correctement validée. Assurez-vous qu'il est possible d'injecter des caractères utilisés dans les directives SSI telles que `<!#=/."->` et `[a-zA-Z0-9]`
+Une fois que vous avez une liste de points d'injection potentiels, vous pouvez dÃ©terminer si l'entrÃ©e est correctement validÃ©e. Assurez-vous qu'il est possible d'injecter des caractÃ¨res utilisÃ©s dans les directives SSI telles que `<!#=/."->` et `[a-zA-Z0-9]`
 
-L'exemple ci-dessous renvoie la valeur de la variable. La section [references](#references) contient des liens utiles avec une documentation spécifique au serveur pour vous aider à mieux évaluer un système particulier.
+L'exemple ci-dessous renvoie la valeur de la variable. La section [references](#rÃ©fÃ©rences) contient des liens utiles avec une documentation spÃ©cifique au serveur pour vous aider Ã  mieux Ã©valuer un systÃ¨me particulier.
 
 ```html
 <!--#echo var="VAR" -->
 ```
 
-Lors de l'utilisation de la directive `include`, si le fichier fourni est un script CGI, cette directive inclura la sortie du script CGI. Cette directive peut également être utilisée pour inclure le contenu d'un fichier ou lister les fichiers d'un répertoire :
+Lors de l'utilisation de la directive `include`, si le fichier fourni est un script CGI, cette directive inclura la sortie du script CGI. Cette directive peut Ã©galement Ãªtre utilisÃ©e pour inclure le contenu d'un fichier ou lister les fichiers d'un rÃ©pertoireÂ :
 
 ```html
 <!--#include virtual="FILENAME" -->
 ```
 
-Pour renvoyer la sortie d'une commande système :
+Pour renvoyer la sortie d'une commande systÃ¨meÂ :
 
 ```html
 <!--#exec cmd="OS_COMMAND" -->
 ```
 
-Si l'application est vulnérable, la directive est injectée et elle sera interprétée par le serveur la prochaine fois que la page sera servie.
+Si l'application est vulnÃ©rable, la directive est injectÃ©e et elle sera interprÃ©tÃ©e par le serveur la prochaine fois que la page sera servie.
 
-Les directives SSI peuvent également être injectées dans les en-têtes HTTP, si l'application Web utilise ces données pour créer une page générée dynamiquement :
+Les directives SSI peuvent Ã©galement Ãªtre injectÃ©es dans les en-tÃªtes HTTP, si l'application Web utilise ces donnÃ©es pour crÃ©er une page gÃ©nÃ©rÃ©e dynamiquementÂ :
 
 ```text
 GET / HTTP/1.1
@@ -64,17 +64,17 @@ User-Agent: <!--#include virtual="/proc/version"-->
 
 ## Outils
 
-- [Suite Web Proxy Burp] (https://portswigger.net/burp/communitydownload)
+- [Suite Web Proxy Burp](https://portswigger.net/burp/communitydownload)
 - [OWASP ZAP](https://www.zaproxy.org/)
-- [Chercheur de chaîne : grep](https://www.gnu.org/software/grep)
+- [Chercheur de chaÃ®ne : grep](https://www.gnu.org/software/grep)
 
-## Références
+## RÃ©fÃ©rences
 
 - [Module Nginx SSI](http://nginx.org/en/docs/http/ngx_http_ssi_module.html)
-- [Apache : Module mod_include](https://httpd.apache.org/docs/current/mod/mod_include.html)
-- [IIS : directives côté serveur inclus](https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525185%28v=vs.90%29)
-- [Tutoriel Apache : Introduction aux ajouts côté serveur](https://httpd.apache.org/docs/current/howto/ssi.html)
-- [Apache : Conseils de sécurité pour la configuration du serveur] (https://httpd.apache.org/docs/current/misc/security_tips.html#ssi)
+- [ApacheÂ : Module mod_include](https://httpd.apache.org/docs/current/mod/mod_include.html)
+- [IISÂ : directives cÃ´tÃ© serveur inclus](https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525185%28v=vs.90%29)
+- [Tutoriel ApacheÂ : Introduction aux ajouts cÃ´tÃ© serveur](https://httpd.apache.org/docs/current/howto/ssi.html)
+- [ApacheÂ : Conseils de sÃ©curitÃ© pour la configuration du serveur](https://httpd.apache.org/docs/current/misc/security_tips.html#ssi)
 - [Injection SSI au lieu de JavaScript Malware](https://jeremiahgrossman.blogspot.com/2006/08/ssi-injection-instead-of-javascript.html)
-- [IIS : Syntaxe des notes sur le côté serveur (SSI)] (https://blogs.iis.net/robert_mcmurray/archive/2010/12/28/iis-notes-on-server-side-includes-ssi-syntaxe-kb-203064-revisited.aspx)
+- [IISÂ : Syntaxe des notes sur le cÃ´tÃ© serveur (SSI)](https://blogs.iis.net/robert_mcmurray/archive/2010/12/28/iis-notes-on-server-side-includes-ssi-syntaxe-kb-203064-revisited.aspx)
 - [Header Based Exploitation](https://www.cgisecurity.com/papers/header-based-exploitation.txt)
