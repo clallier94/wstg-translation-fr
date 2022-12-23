@@ -171,6 +171,6 @@ L'application Web et ses composants doivent être exécutés avec des autorisati
 ## Références
 
 - [Tests d'intrusion pour les applications Web (deuxième partie)](https://www.symantec.com/connect/articles/penetration-testing-web-applications-part-two)
-- [Commande du système d'exploitation] (http://projects.webappsec.org/w/page/13246950/OS%20Commanding)
+- [Commande du système d'exploitation](http://projects.webappsec.org/w/page/13246950/OS%20Commanding)
 - [CWE-78 : Neutralisation incorrecte d'éléments spéciaux utilisés dans une commande de système d'exploitation ("injection de commande de système d'exploitation")](https://cwe.mitre.org/data/definitions/78.html)
 - [ENV33-C. Ne pas appeler system()](https://wiki.sei.cmu.edu/confluence/pages/viewpage.action?pageId=87152177)
