@@ -1,4 +1,4 @@
-# Test pour les scripts intersites réfléchis
+# Test pour les scripts intersites
 
 |ID          |
 |------------|
@@ -6,9 +6,9 @@
 
 ## Sommaire
 
-Les [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) réfléchis se produisent lorsqu'un attaquant injecte du code exécutable de navigateur dans une seule réponse HTTP. L'attaque injectée n'est pas stockée dans l'application elle-même ; il n'est pas persistant et n'affecte que les utilisateurs qui ouvrent un lien ou une page Web tiers construit de manière malveillante. La chaîne d'attaque est incluse dans les paramètres URI ou HTTP spécialement conçus, traitée de manière incorrecte par l'application et renvoyée à la victime.
+Les [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) se produisent lorsqu'un attaquant injecte du code exécutable de navigateur dans une seule réponse HTTP. L'attaque injectée n'est pas stockée dans l'application elle-même ; il n'est pas persistant et n'affecte que les utilisateurs qui ouvrent un lien ou une page Web tiers construit de manière malveillante. La chaîne d'attaque est incluse dans les paramètres URI ou HTTP spécialement conçus, traitée de manière incorrecte par l'application et renvoyée à la victime.
 
-Les XSS réfléchis sont le type le plus fréquent d'attaques XSS trouvées dans la nature. Les attaques XSS réfléchies sont également appelées attaques XSS non persistantes et, puisque la charge utile de l'attaque est livrée et exécutée via une seule demande et réponse, elles sont également appelées XSS de premier ordre ou de type 1.
+Les XSS sont le type le plus fréquent d'attaques XSS trouvées dans la nature. Les attaques XSS sont également appelées attaques XSS non persistantes et, puisque la charge utile de l'attaque est livrée et exécutée via une seule demande et réponse, elles sont également appelées XSS de premier ordre ou de type 1.
 
 Lorsqu'une application Web est vulnérable à ce type d'attaque, elle transmet au client les entrées non validées envoyées via les requêtes. Le modus operandi commun de l'attaque comprend une étape de conception, dans laquelle l'attaquant crée et teste un URI incriminé, une étape d'ingénierie sociale, dans laquelle il convainc ses victimes de charger cet URI sur leurs navigateurs, et l'exécution éventuelle du code incriminé en utilisant le navigateur de la victime.
 
@@ -23,7 +23,7 @@ L'un des principaux obstacles à la prévention des vulnérabilités XSS est le 
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boîte noire
 
 Un test boîte noire comprendra au moins trois phases :
 
@@ -70,7 +70,7 @@ Pour une référence plus complète, consultez le [guide JavaScript de Mozilla](
 
 Par exemple, considérez un site qui a un avis de bienvenue "Welcome %username%" et un lien de téléchargement.
 
-![Exemple XSS 1](images/XSS_exemple1.png)\
+![Exemple XSS 1](images/XSS_Example1.png)\
 *Figure 4.7.1-1 : Exemple XSS 1*
 
 Le testeur doit soupçonner que chaque point d'entrée de données peut entraîner une attaque XSS. Pour l'analyser, le testeur jouera avec la variable utilisateur et tentera de déclencher la vulnérabilité.
@@ -83,7 +83,7 @@ http://exemple.com/index.php?user=<script>alert(123)</script>
 
 Si aucune désinfection n'est appliquée, cela entraînera la fenêtre contextuelle suivante :
 
-![Alerte](images/Alerte.png)\
+![Alerte](images/Alert.png)\
 *Figure 4.7.1-2 : XSS exemple 1*
 
 Cela indique qu'il existe une vulnérabilité XSS et il apparaît que le testeur peut exécuter le code de son choix dans le navigateur de n'importe qui s'il clique sur le lien du testeur.
@@ -98,14 +98,14 @@ http://exemple.com/index.php?user=<script>window.onload = function() {var AllLin
 
 Cela produit le comportement suivant :
 
-![XSS exemple 2](images/XSS_exemple2.png)\
+![XSS exemple 2](images/XSS_Example2.png)\
 *Figure 4.7.1-3 : XSS exemple 2*
 
 Cela amènera l'utilisateur, en cliquant sur le lien fourni par le testeur, à télécharger le fichier `malicious.exe` à partir d'un site qu'il contrôle.
 
 ### Contourner les filtres XSS
 
-Les attaques de script intersite réfléchies sont empêchées car l'application Web nettoie les entrées, un pare-feu d'application Web bloque les entrées malveillantes ou par des mécanismes intégrés dans les navigateurs Web modernes. Le testeur doit tester les vulnérabilités en supposant que les navigateurs Web n'empêcheront pas l'attaque. Les navigateurs peuvent être obsolètes ou avoir des fonctions de sécurité intégrées désactivées. De même, il n'est pas garanti que les pare-feu d'applications Web reconnaissent les nouvelles attaques inconnues. Un attaquant pourrait créer une chaîne d'attaque qui n'est pas reconnue par le pare-feu de l'application Web.
+Les attaques de script intersite sont empêchées car l'application Web nettoie les entrées, un pare-feu d'application Web bloque les entrées malveillantes ou par des mécanismes intégrés dans les navigateurs Web modernes. Le testeur doit tester les vulnérabilités en supposant que les navigateurs Web n'empêcheront pas l'attaque. Les navigateurs peuvent être obsolètes ou avoir des fonctions de sécurité intégrées désactivées. De même, il n'est pas garanti que les pare-feu d'applications Web reconnaissent les nouvelles attaques inconnues. Un attaquant pourrait créer une chaîne d'attaque qui n'est pas reconnue par le pare-feu de l'application Web.
 
 Ainsi, la majorité de la prévention XSS doit dépendre de la désinfection par l'application Web des entrées utilisateur non fiables. Il existe plusieurs mécanismes à la disposition des développeurs pour le nettoyage, tels que le renvoi d'une erreur, la suppression, l'encodage ou le remplacement d'une entrée non valide. Le moyen par lequel l'application détecte et corrige les entrées non valides est une autre faiblesse principale dans la prévention du XSS. Une liste de refus peut ne pas inclure toutes les chaînes d'attaque possibles, une liste d'autorisation peut être trop permissive, le nettoyage peut échouer ou un type d'entrée peut être incorrectement approuvé et rester non nettoyé. Tous ces éléments permettent aux attaquants de contourner les filtres XSS.
 
@@ -179,7 +179,7 @@ Cela exploitera la vulnérabilité de cross site scripting illustrée précédem
 
 #### exemple 7 : pollution des paramètres HTTP (HPP)
 
-Une autre méthode pour contourner les filtres est la pollution des paramètres HTTP, cette technique a été présentée pour la première fois par Stefano di Paola et Luca Carettoni en 2009 lors de la conférence OWASP Pologne. Voir le [Test de la pollution des paramètres HTTP] (04-Testing_for_HTTP_Parameter_Pollution.md) pour plus d'informations. Cette technique d'évasion consiste à scinder un vecteur d'attaque entre plusieurs paramètres portant le même nom. La manipulation de la valeur de chaque paramètre dépend de la façon dont chaque technologie Web analyse ces paramètres, de sorte que ce type d'évasion n'est pas toujours possible. Si l'environnement testé concatène les valeurs de tous les paramètres avec le même nom, alors un attaquant pourrait utiliser cette technique afin de contourner les mécanismes de sécurité basés sur des modèles.
+Une autre méthode pour contourner les filtres est la pollution des paramètres HTTP, cette technique a été présentée pour la première fois par Stefano di Paola et Luca Carettoni en 2009 lors de la conférence OWASP Pologne. Voir le [Test de la pollution des paramètres HTTP](04-Testing_for_HTTP_Parameter_Pollution.md) pour plus d'informations. Cette technique d'évasion consiste à scinder un vecteur d'attaque entre plusieurs paramètres portant le même nom. La manipulation de la valeur de chaque paramètre dépend de la façon dont chaque technologie Web analyse ces paramètres, de sorte que ce type d'évasion n'est pas toujours possible. Si l'environnement testé concatène les valeurs de tous les paramètres avec le même nom, alors un attaquant pourrait utiliser cette technique afin de contourner les mécanismes de sécurité basés sur des modèles.
 Attaque régulière :
 
 ```text
@@ -194,7 +194,7 @@ http://exemple/page.php?param=<script&param=>[...]</&param=script>
 
 Voir la [XSS Filter Evasion Cheat Sheet](https://owasp.org/www-community/xss-filter-evasion-cheatsheet) pour une liste plus détaillée des techniques d'évasion de filtre. Enfin, l'analyse des réponses peut devenir complexe. Une façon simple de le faire est d'utiliser du code qui fait apparaître une boîte de dialogue, comme dans notre exemple. Cela indique généralement qu'un attaquant pourrait exécuter du code JavaScript arbitraire de son choix dans les navigateurs des visiteurs.
 
-### Test de la boîte grise
+### Test en boîte grise
 
 Les tests en boîte grise sont similaires aux tests en boîte noire. Dans les tests en boîte grise, le pen-testeur a une connaissance partielle de l'application. Dans ce cas, les informations concernant l'entrée de l'utilisateur, les contrôles de validation d'entrée et la manière dont l'entrée de l'utilisateur est restituée à l'utilisateur peuvent être connues du testeur de plume.
 
@@ -213,7 +213,7 @@ Si le code source est disponible (test en boîte blanche), toutes les variables 
 
 ### Ressources OWASP
 
-- [Fiche de triche pour l'évasion du filtre XSS] (https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
+- [Fiche de triche pour l'évasion du filtre XSS](https://owasp.org/www-community/xss-filter-evasion-cheatsheet)
 
 ### Livres
 
@@ -223,7 +223,7 @@ Si le code source est disponible (test en boîte blanche), toutes les variables 
 
 ### Papiers blanc
 
-- [CERT - Balises HTML malveillantes intégrées dans les requêtes Web des clients] (https://resources.sei.cmu.edu/asset_files/WhitePaper/2000_019_001_496188.pdf)
+- [CERT - Balises HTML malveillantes intégrées dans les requêtes Web des clients](https://resources.sei.cmu.edu/asset_files/WhitePaper/2000_019_001_496188.pdf)
 - [cgisecurity.com - La FAQ sur les scripts intersites](https://www.cgisecurity.com/xss-faq.html)
 - [G.Ollmann - Injection de code HTML et script intersite](http://www.technicalinfo.net/papers/CSS.html)
 - [S. Frei, T. Dübendorfer, G. Ollmann, M. May - Comprendre la menace du navigateur Web](https://www.techzoom.net/Publications/Insecurity-Iceberg)
