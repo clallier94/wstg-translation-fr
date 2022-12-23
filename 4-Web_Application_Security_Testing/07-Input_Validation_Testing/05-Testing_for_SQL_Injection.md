@@ -214,7 +214,7 @@ S'il n'y a pas de message d'erreur ou un message d'erreur personnalisé, le test
 - Oracle : ‘test’||’ing’
 - PostgreSQL : ‘test’||’ing’
 
-### Techniques d'exploitation
+### Techniques d'exploitation
 
 #### Technique d'exploitation syndicale
 
@@ -580,7 +580,7 @@ Des pages de guide de test spécifiques à la technologie ont été créées pou
 - [MySQL](05.2-Testing_for_MySQL.md)
 - [SQL Server](05.3-Testing_for_SQL_Server.md)
 - [PostgreSQL](05.4-Testing_PostgreSQL.md)
-- [MS Access] (05.5-Testing_for_MS_Access.md)
+- [MS Access](05.5-Testing_for_MS_Access.md)
 - [NoSQL](05.6-Testing_for_NoSQL_Injection.md)
 - [ORM](05.7-Testing_for_ORM_Injection.md)
 - [Côté client](05.8-Testing_for_Client-side.md)
@@ -598,4 +598,4 @@ Des pages de guide de test spécifiques à la technologie ont été créées pou
 
 ### Documentation sur les vulnérabilités d'injection SQL dans les produits
 
-- [Anatomie de l'injection SQL dans le système de filtrage des commentaires de la base de données Drupal SA-CORE-2015-003](https://www.vanstechelman.eu/content/anatomy-of-the-sql-injection-in-drupals-database- système-de-filtrage-des-commentaires-sa-core-2015-003)
+- [Anatomie de l'injection SQL dans le système de filtrage des commentaires de la base de données Drupal SA-CORE-2015-003](https://www.vanstechelman.eu/content/anatomy-of-the-sql-injection-in-drupals-database-système-de-filtrage-des-commentaires-sa-core-2015-003)
