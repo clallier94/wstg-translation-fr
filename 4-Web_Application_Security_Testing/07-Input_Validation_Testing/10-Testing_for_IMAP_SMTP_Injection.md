@@ -51,7 +51,7 @@ Les paramètres spéciaux IMAP qui doivent être utilisés sont :
 | Déconnexion | Corps du message |
 | | Fichiers joints |
 
-Dans cet exemple, le paramètre "mailbox" est testé en manipulant toutes les requêtes avec le paramètre dans :
+Dans cet exemple, le paramètre `mailbox` est testé en manipulant toutes les requêtes avec le paramètre dans :
 
 `http://<webmail>/src/read_body.php?mailbox=INBOX&passed_id=46106&startMessage=1`
 
@@ -158,7 +158,7 @@ Dans tous les cas, la structure typique d'une injection IMAP/SMTP est la suivant
 
 Il est important de se rappeler que, pour exécuter une commande IMAP/SMTP, la commande précédente doit se terminer par la séquence CRLF (`%0d%0a`).
 
-Supposons qu'à l'étape [Identification des paramètres vulnérables](#identifying-vulnerable-parameters), l'attaquant détecte que le paramètre `message_id` dans la requête suivante est vulnérable :
+Supposons qu'à l'étape [Identification des paramètres vulnérables](#Identification-des-paramètres-vulnérables), l'attaquant détecte que le paramètre `message_id` dans la requête suivante est vulnérable :
 
 `http://<webmail>/read_email.php?message_id=4791`
 
@@ -196,4 +196,4 @@ Footer = V101 FETCH 4791
 
 - [RFC 0821 "Protocole de transfert de courrier simple"](https://tools.ietf.org/html/rfc821)
 - [RFC 3501 "Protocole d'accès aux messages Internet - Version 4rev1"](https://tools.ietf.org/html/rfc3501)
-- [Vicente Aguilera Díaz : " Injection MX : Capturer et exploiter des serveurs de messagerie cachés"] (http://www.webappsec.org/projects/articles/121106.pdf)
+- [Vicente Aguilera Díaz : " Injection MX : Capturer et exploiter des serveurs de messagerie cachés"](http://www.webappsec.org/projects/articles/121106.pdf)
