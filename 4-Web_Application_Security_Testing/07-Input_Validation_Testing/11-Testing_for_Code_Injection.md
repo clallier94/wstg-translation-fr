@@ -17,7 +17,7 @@ Dans les tests [Code Injection](https://owasp.org/www-community/attacks/Code_Inj
 
 ## Comment tester
 
-### Test de la boîte noire
+### Test en boîte noire
 
 #### Test des vulnérabilités d'injection PHP
 
@@ -27,7 +27,7 @@ Dans les tests [Code Injection](https://owasp.org/www-community/attacks/Code_Inj
 
 > L'URL malveillante est acceptée en paramètre de la page PHP, qui utilisera ultérieurement la valeur dans un fichier inclus.
 
-### Test de la boîte grise
+### Test en boîte grise
 
 #### Test des vulnérabilités d'injection de code ASP
 
@@ -64,5 +64,5 @@ End If
 
 - [Security Focus](http://www.securityfocus.com)
 - [Insecure.org](http://www.insecure.org)
-- [Wikipédia] (http://www.wikipedia.org)
-- [Révision du code pour l'injection de système d'exploitation] (https://wiki.owasp.org/index.php/OS_Injection)
+- [Wikipédia](http://www.wikipedia.org)
+- [Révision du code pour l'injection de système d'exploitation](https://wiki.owasp.org/index.php/OS_Injection)
