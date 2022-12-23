@@ -1,4 +1,4 @@
-# Test de l'injection d'en-tête d'hôte
+# Test de l'injection d'en-tÃªte d'hÃ´te
 
 |ID          |
 |------------|
@@ -6,22 +6,22 @@
 
 ## Sommaire
 
-Un serveur Web héberge généralement plusieurs applications Web sur la même adresse IP, se référant à chaque application via l'hôte virtuel. Dans une requête HTTP entrante, les serveurs Web envoient souvent la requête à l'hôte virtuel cible en fonction de la valeur fournie dans l'en-tête Host. Sans une validation correcte de la valeur de l'en-tête, l'attaquant peut fournir une entrée non valide pour amener le serveur Web à :
+Un serveur Web hÃ©berge gÃ©nÃ©ralement plusieurs applications Web sur la mÃªme adresse IP, se rÃ©fÃ©rant Ã  chaque application via l'hÃ´te virtuel. Dans une requÃªte HTTP entrante, les serveurs Web envoient souvent la requÃªte Ã  l'hÃ´te virtuel cible en fonction de la valeur fournie dans l'en-tÃªte Host. Sans une validation correcte de la valeur de l'en-tÃªte, l'attaquant peut fournir une entrÃ©e non valide pour amener le serveur Web Ã Â :
 
-- Envoi des demandes au premier hôte virtuel de la liste.
-- Effectuer une redirection vers un domaine contrôlé par un attaquant.
+- Envoi des demandes au premier hÃ´te virtuel de la liste.
+- Effectuer une redirection vers un domaine contrÃ´lÃ© par un attaquant.
 - Effectuer un empoisonnement du cache Web.
-- Manipuler la fonctionnalité de réinitialisation du mot de passe.
-- Autoriser l'accès aux hôtes virtuels qui n'étaient pas destinés à être accessibles de l'extérieur.
+- Manipuler la fonctionnalitÃ© de rÃ©initialisation du mot de passe.
+- Autoriser l'accÃ¨s aux hÃ´tes virtuels qui n'Ã©taient pas destinÃ©s Ã  Ãªtre accessibles de l'extÃ©rieur.
 
 ## Objectifs des tests
 
-- Évaluer si l'en-tête Host est analysé dynamiquement dans l'application.
-- Contourner les contrôles de sécurité qui reposent sur l'en-tête.
+- Ã‰valuer si l'en-tÃªte Host est analysÃ© dynamiquement dans l'application.
+- Contourner les contrÃ´les de sÃ©curitÃ© qui reposent sur l'en-tÃªte.
 
 ## Comment tester
 
-Le test initial est aussi simple que de fournir un autre domaine (c'est-à-dire "attaquant.com") dans le champ d'en-tête Host. C'est la façon dont le serveur Web traite la valeur d'en-tête qui dicte l'impact. L'attaque est valide lorsque le serveur Web traite l'entrée pour envoyer la demande à un hôte contrôlé par l'attaquant qui réside dans le domaine fourni, et non à un hôte virtuel interne qui réside sur le serveur Web.
+Le test initial est aussi simple que de fournir un autre domaine (c'est-Ã -dire "attaquant.com") dans le champ d'en-tÃªte Host. C'est la faÃ§on dont le serveur Web traite la valeur d'en-tÃªte qui dicte l'impact. L'attaque est valide lorsque le serveur Web traite l'entrÃ©e pour envoyer la demande Ã  un hÃ´te contrÃ´lÃ© par l'attaquant qui rÃ©side dans le domaine fourni, et non Ã  un hÃ´te virtuel interne qui rÃ©side sur le serveur Web.
 
 ```http
 GET / HTTP/1.1
@@ -38,11 +38,11 @@ Location: http://www.attacker.com/login.php
 
 ```
 
-Alternativement, le serveur Web peut envoyer la demande au premier hôte virtuel de la liste.
+Alternativement, le serveur Web peut envoyer la demande au premier hÃ´te virtuel de la liste.
 
-### Contournement d'en-tête d'hôte transmis par X
+### Contournement d'en-tÃªte d'hÃ´te transmis par X
 
-Dans le cas où l'injection d'en-tête Host est atténuée en vérifiant les entrées non valides injectées via l'en-tête Host, vous pouvez fournir la valeur à l'en-tête `X-Forwarded-Host`.
+Dans le cas oÃ¹ l'injection d'en-tÃªte Host est attÃ©nuÃ©e en vÃ©rifiant les entrÃ©es non valides injectÃ©es via l'en-tÃªte Host, vous pouvez fournir la valeur Ã  l'en-tÃªte `X-Forwarded-Host`.
 
 ```http
 GET / HTTP/1.1
@@ -51,7 +51,7 @@ X-Forwarded-Host: www.attacker.com
 [...]
 ```
 
-Produisant potentiellement une sortie côté client telle que :
+Produisant potentiellement une sortie cÃ´tÃ© client telle queÂ :
 
 ```html
 [...]
@@ -59,11 +59,11 @@ Produisant potentiellement une sortie côté client telle que :
 [...]
 ```
 
-Encore une fois, cela dépend de la façon dont le serveur Web traite la valeur d'en-tête.
+Encore une fois, cela dÃ©pend de la faÃ§on dont le serveur Web traite la valeur d'en-tÃªte.
 
 ### Empoisonnement du cache Web
 
-En utilisant cette technique, un attaquant peut manipuler un cache Web pour fournir un contenu empoisonné à toute personne qui en fait la demande. Cela repose sur la capacité d'empoisonner le proxy de mise en cache exécuté par l'application elle-même, les CDN ou d'autres fournisseurs en aval. Par conséquent, la victime n'aura aucun contrôle sur la réception du contenu malveillant lors de la demande de l'application vulnérable.
+En utilisant cette technique, un attaquant peut manipuler un cache Web pour fournir un contenu empoisonnÃ© Ã  toute personne qui en fait la demande. Cela repose sur la capacitÃ© d'empoisonner le proxy de mise en cache exÃ©cutÃ© par l'application elle-mÃªme, les CDN ou d'autres fournisseurs en aval. Par consÃ©quent, la victime n'aura aucun contrÃ´le sur la rÃ©ception du contenu malveillant lors de la demande de l'application vulnÃ©rable.
 
 ```http
 GET / HTTP/1.1
@@ -71,7 +71,7 @@ Host: www.attacker.com
 [...]
 ```
 
-Les éléments suivants seront servis à partir du cache Web, lorsqu'une victime visite l'application vulnérable.
+Les Ã©lÃ©ments suivants seront servis Ã  partir du cache Web, lorsqu'une victime visite l'application vulnÃ©rable.
 
 ```html
 [...]
@@ -79,18 +79,18 @@ Les éléments suivants seront servis à partir du cache Web, lorsqu'une victime vi
 [...]
 ```
 
-### Empoisonnement de réinitialisation de mot de passe
+### Empoisonnement de rÃ©initialisation de mot de passe
 
-Il est courant que la fonctionnalité de réinitialisation de mot de passe inclue la valeur d'en-tête Host lors de la création de liens de réinitialisation de mot de passe qui utilisent un jeton secret généré. Si l'application traite un domaine contrôlé par l'attaquant pour créer un lien de réinitialisation du mot de passe, la victime peut cliquer sur le lien dans l'e-mail et permettre à l'attaquant d'obtenir le jeton de réinitialisation, réinitialisant ainsi le mot de passe de la victime.
+Il est courant que la fonctionnalitÃ© de rÃ©initialisation de mot de passe inclue la valeur d'en-tÃªte Host lors de la crÃ©ation de liens de rÃ©initialisation de mot de passe qui utilisent un jeton secret gÃ©nÃ©rÃ©. Si l'application traite un domaine contrÃ´lÃ© par l'attaquant pour crÃ©er un lien de rÃ©initialisation du mot de passe, la victime peut cliquer sur le lien dans l'e-mail et permettre Ã  l'attaquant d'obtenir le jeton de rÃ©initialisation, rÃ©initialisant ainsi le mot de passe de la victime.
 
-L'exemple ci-dessous montre un lien de réinitialisation de mot de passe généré en PHP à l'aide de la valeur de `$_SERVER['HTTP_HOST']`, qui est définie en fonction du contenu de l'en-tête HTTP Host :
+L'exemple ci-dessous montre un lien de rÃ©initialisation de mot de passe gÃ©nÃ©rÃ© en PHP Ã  l'aide de la valeur de `$_SERVER['HTTP_HOST']`, qui est dÃ©finie en fonction du contenu de l'en-tÃªte HTTP HostÂ :
 
 ```php
 $reset_url = "https://" . $_SERVER['HTTP_HOST'] . "/reset.php?token=" .$token;
 send_reset_email($email,$rset_url);
 ```
 
-En faisant une requête HTTP à la page de réinitialisation du mot de passe avec un en-tête Host falsifié, nous pouvons modifier l'endroit où pointe l'URL :
+En faisant une requÃªte HTTP Ã  la page de rÃ©initialisation du mot de passe avec un en-tÃªte Host falsifiÃ©, nous pouvons modifier l'endroit oÃ¹ pointe l'URLÂ :
 
 ```http
 POST /request_password_reset.php HTTP/1.1
@@ -100,7 +100,7 @@ Host: www.attacker.com
 email=user@exemple.org
 ```
 
-Le domaine spécifié ("www.attacker.com") sera alors utilisé dans le lien de réinitialisation, qui est envoyé par e-mail à l'utilisateur. Lorsque l'utilisateur clique sur ce lien, l'attaquant peut voler le jeton et compromettre son compte.
+Le domaine spÃ©cifiÃ© (`www.attacker.com`) sera alors utilisÃ© dans le lien de rÃ©initialisation, qui est envoyÃ© par e-mail Ã  l'utilisateur. Lorsque l'utilisateur clique sur ce lien, l'attaquant peut voler le jeton et compromettre son compte.
 
 ```text
 ... Email snippet ...
@@ -112,20 +112,20 @@ https://www.attacker.com/reset.php?token=12345
 ... Email snippet ...
 ```
 
-### Accès aux hôtes virtuels privés
+### AccÃ¨s aux hÃ´tes virtuels privÃ©s
 
-Dans certains cas, un serveur peut avoir des hôtes virtuels qui ne sont pas destinés à être accessibles de l'extérieur. Ceci est plus courant avec une configuration DNS [split-horizon](https://en.wikipedia.org/wiki/Split-horizon_DNS) (où les serveurs DNS internes et externes renvoient des enregistrements différents pour le même domaine).
+Dans certains cas, un serveur peut avoir des hÃ´tes virtuels qui ne sont pas destinÃ©s Ã  Ãªtre accessibles de l'extÃ©rieur. Ceci est plus courant avec une configuration DNS [split-horizon](https://en.wikipedia.org/wiki/Split-horizon_DNS) (oÃ¹ les serveurs DNS internes et externes renvoient des enregistrements diffÃ©rents pour le mÃªme domaine).
 
-Par exemple, une organisation peut avoir un seul serveur Web sur son réseau interne, qui héberge à la fois son site Web public (sur `www.exemple.org`) et son intranet interne (sur `intranet.exemple.org`, mais cet enregistrement n'existe que sur le serveur DNS interne). Bien qu'il ne soit pas possible de naviguer directement vers `intranet.exemple.org` depuis l'extérieur du réseau (car le domaine ne serait pas résolu), il peut être possible d'accéder à l'intranet en faisant une demande depuis l'extérieur avec l'`Hôte` suivant entête:
+Par exemple, une organisation peut avoir un seul serveur Web sur son rÃ©seau interne, qui hÃ©berge Ã  la fois son site Web public (sur `www.exemple.org`) et son intranet interne (sur `intranet.exemple.org`, mais cet enregistrement n'existe que sur le serveur DNS interne). Bien qu'il ne soit pas possible de naviguer directement vers `intranet.exemple.org` depuis l'extÃ©rieur du rÃ©seau (car le domaine ne serait pas rÃ©solu), il peut Ãªtre possible d'accÃ©der Ã  l'intranet en faisant une demande depuis l'extÃ©rieur avec l'`HÃ´te` suivant entÃªte:
 
 ``` http
-Hébergeur : intranet.exemple.org
+HÃ©bergeur : intranet.exemple.org
 ```
 
-Cela peut également être réalisé en ajoutant une entrée pour `intranet.exemple.org` à votre fichier hosts avec l'adresse IP publique de `www.exemple.org`, ou en remplaçant la résolution DNS dans votre outil de test.
+Cela peut Ã©galement Ãªtre rÃ©alisÃ© en ajoutant une entrÃ©e pour `intranet.exemple.org` Ã  votre fichier hosts avec l'adresse IP publique de `www.exemple.org`, ou en remplaÃ§ant la rÃ©solution DNS dans votre outil de test.
 
-## Références
+## RÃ©fÃ©rences
 
-- [Qu'est-ce qu'une attaque d'en-tête d'hôte ?] (https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/)
+- [Qu'est-ce qu'une attaque d'en-tÃªte d'hÃ´teÂ ?](https://www.acunetix.com/blog/articles/automated-detection-of-host-header-attacks/)
 - [Host Header Attack](https://www.briskinfosec.com/blogs/blogsdetail/Host-Header-Attack)
-- [Attaques d'en-tête d'hôte HTTP] (https://portswigger.net/web-security/host-header)
+- [Attaques d'en-tÃªte d'hÃ´te HTTP](https://portswigger.net/web-security/host-header)
