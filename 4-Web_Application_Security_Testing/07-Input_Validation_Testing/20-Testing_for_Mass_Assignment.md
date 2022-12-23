@@ -6,26 +6,26 @@
 
 ## Sommaire
 
-Les applications web modernes sont très souvent basées sur des frameworks. Bon nombre de ces cadres d'application Web permettent la liaison automatique de l'entrée de l'utilisateur (sous la forme de paramètres de requête HTTP) à des objets internes. Ceci est souvent appelé liaison automatique.
-Cette fonctionnalité peut parfois être exploitée pour accéder à des champs qui n'ont jamais été destinés à être modifiés de l'extérieur, ce qui entraîne une élévation des privilèges, une falsification des données, un contournement des mécanismes de sécurité, etc.
-Dans ce cas, il existe une vulnérabilité d'affectation en masse.
+Les applications web modernes sont trÃ¨s souvent basÃ©es sur des frameworks. Bon nombre de ces cadres d'application Web permettent la liaison automatique de l'entrÃ©e de l'utilisateur (sous la forme de paramÃ¨tres de requÃªte HTTP) Ã  des objets internes. Ceci est souvent appelÃ© liaison automatique.
+Cette fonctionnalitÃ© peut parfois Ãªtre exploitÃ©e pour accÃ©der Ã  des champs qui n'ont jamais Ã©tÃ© destinÃ©s Ã  Ãªtre modifiÃ©s de l'extÃ©rieur, ce qui entraÃ®ne une Ã©lÃ©vation des privilÃ¨ges, une falsification des donnÃ©es, un contournement des mÃ©canismes de sÃ©curitÃ©, etc.
+Dans ce cas, il existe une vulnÃ©rabilitÃ© d'affectation en masse.
 
-Exemples de propriétés sensibles :
+Exemples de propriÃ©tÃ©s sensiblesÂ :
 
-- **Propriétés liées aux autorisations** : ne doivent être définies que par des utilisateurs privilégiés (par exemple, `is_admin`, `role`, `approved`).
-- **Propriétés dépendantes du processus** : ne doivent être définies qu'en interne, après la fin d'un processus (par exemple, `balance`, `status`, `email_verified`)
-- **Propriétés internes** : ne doivent être définies qu'en interne par l'application (par exemple, `created_at`, `updated_at`)
+- **PropriÃ©tÃ©s liÃ©es aux autorisations**Â : ne doivent Ãªtre dÃ©finies que par des utilisateurs privilÃ©giÃ©s (par exemple, `is_admin`, `role`, `approved`).
+- **PropriÃ©tÃ©s dÃ©pendantes du processus**Â : ne doivent Ãªtre dÃ©finies qu'en interne, aprÃ¨s la fin d'un processus (par exemple, `balance`, `status`, `email_verified`)
+- **PropriÃ©tÃ©s internes**Â : ne doivent Ãªtre dÃ©finies qu'en interne par l'application (par exemple, `created_at`, `updated_at`)
 
 ## Objectifs des tests
 
-- Identifier les requêtes qui modifient les objets
-- Évaluer s'il est possible de modifier des champs jamais destinés à être modifiés de l'extérieur
+- Identifier les requÃªtes qui modifient les objets
+- Ã‰valuer s'il est possible de modifier des champs jamais destinÃ©s Ã  Ãªtre modifiÃ©s de l'extÃ©rieur
 
 ## Comment tester
 
-Voici un exemple classique qui peut aider à illustrer le problème.
+Voici un exemple classique qui peut aider Ã  illustrer le problÃ¨me.
 
-Supposons une application Web Java avec un objet `User` semblable à ce qui suit :
+Supposons une application Web Java avec un objet `User` semblable Ã  ce qui suitÂ :
 
 ```java
 public class User {
@@ -38,7 +38,7 @@ public class User {
 }
 ```
 
-Pour créer un nouvel `User`, l'application Web implémente la vue suivante :
+Pour crÃ©er un nouvel `User`, l'application Web implÃ©mente la vue suivanteÂ :
 
 ```html
 <form action="/createUser" method="POST">
@@ -49,7 +49,7 @@ Pour créer un nouvel `User`, l'application Web implémente la vue suivante :
 </form>
 ```
 
-Le contrôleur qui gère la demande de création (Spring fournit la liaison automatique avec le modèle `User`):
+Le contrÃ´leur qui gÃ¨re la demande de crÃ©ation (Spring fournit la liaison automatique avec le modÃ¨le `User`):
 
 ```java
 @RequestMapping(value = "/createUser", method = RequestMethod.POST)
@@ -59,7 +59,7 @@ public String createUser(User user) {
 }
 ```
 
-Lorsque le formulaire est soumis, la requête suivante est générée par le navigateur :
+Lorsque le formulaire est soumis, la requÃªte suivante est gÃ©nÃ©rÃ©e par le navigateurÂ :
 
 ```http
 POST /createUser
@@ -67,7 +67,7 @@ POST /createUser
 username=bob&password=supersecretpassword&email=bob@domain.test
 ```
 
-Cependant, en raison de la liaison automatique, un attaquant peut ajouter le paramètre `isAdmin` à la requête, que le contrôleur liera automatiquement au modèle.
+Cependant, en raison de la liaison automatique, un attaquant peut ajouter le paramÃ¨tre `isAdmin` Ã  la requÃªte, que le contrÃ´leur liera automatiquement au modÃ¨le.
 
 ```http
 POST /createUser
@@ -75,42 +75,42 @@ POST /createUser
 username=bob&password=supersecretpassword&email=bob@domain.test&isAdmin=true
 ```
 
-L'utilisateur est ensuite créé avec la propriété `isAdmin` définie sur `true`, lui donnant des droits d'administration sur l'application.
+L'utilisateur est ensuite crÃ©Ã© avec la propriÃ©tÃ© `isAdmin` dÃ©finie sur `true`, lui donnant des droits d'administration sur l'application.
 
-### Test de la boîte noire
+### Test en boÃ®te noire
 
-#### Détecter les gestionnaires
+#### DÃ©tecter les gestionnaires
 
-Afin de déterminer quelle partie de l'application est vulnérable à l'affectation en masse, énumérez toutes les parties de l'application qui acceptent le contenu de l'utilisateur et peuvent potentiellement être mappées avec un modèle. Cela inclut toutes les requêtes HTTP (le plus souvent GET, POST et PUT) qui semblent autoriser les opérations de création ou de mise à jour sur le back-end.
-L'un des indicateurs les plus simples des affectations de masse potentielles est la présence d'une syntaxe entre parenthèses pour les noms de paramètres d'entrée, comme par exemple :
+Afin de dÃ©terminer quelle partie de l'application est vulnÃ©rable Ã  l'affectation en masse, Ã©numÃ©rez toutes les parties de l'application qui acceptent le contenu de l'utilisateur et peuvent potentiellement Ãªtre mappÃ©es avec un modÃ¨le. Cela inclut toutes les requÃªtes HTTP (le plus souvent GET, POST et PUT) qui semblent autoriser les opÃ©rations de crÃ©ation ou de mise Ã  jour sur le back-end.
+L'un des indicateurs les plus simples des affectations de masse potentielles est la prÃ©sence d'une syntaxe entre parenthÃ¨ses pour les noms de paramÃ¨tres d'entrÃ©e, comme par exempleÂ :
 
 ```html
 <input name="user[name]" type="text">
 ```
 
-Lorsque de tels modèles sont rencontrés, essayez d'ajouter une entrée liée à un attribut non existant (par exemple, `user[nonexistingattribute]`) et analysez la réponse/le comportement.
-Si l'application n'implémente aucun contrôle (par exemple la liste des champs autorisés), il est probable qu'elle réponde par une erreur (par exemple 500) due au fait que l'application ne trouve pas l'attribut associé à l'objet. Plus intéressant encore, ces erreurs facilitent parfois la découverte des noms d'attributs et des types de données de valeur nécessaires pour exploiter le problème, sans accès au code source.
+Lorsque de tels modÃ¨les sont rencontrÃ©s, essayez d'ajouter une entrÃ©e liÃ©e Ã  un attribut non existant (par exemple, `user[nonexistingattribute]`) et analysez la rÃ©ponse/le comportement.
+Si l'application n'implÃ©mente aucun contrÃ´le (par exemple la liste des champs autorisÃ©s), il est probable qu'elle rÃ©ponde par une erreur (par exemple 500) due au fait que l'application ne trouve pas l'attribut associÃ© Ã  l'objet. Plus intÃ©ressant encore, ces erreurs facilitent parfois la dÃ©couverte des noms d'attributs et des types de donnÃ©es de valeur nÃ©cessaires pour exploiter le problÃ¨me, sans accÃ¨s au code source.
 
 #### Identifier les champs sensibles
 
-Comme dans les tests en boîte noire, le testeur n'a pas de visibilité sur le code source, il est nécessaire de trouver d'autres moyens afin de recueillir des informations sur les attributs associés aux objets.
-Analysez les réponses reçues par le backend, en particulier faites attention à :
+Comme dans les tests en boÃ®te noire, le testeur n'a pas de visibilitÃ© sur le code source, il est nÃ©cessaire de trouver d'autres moyens afin de recueillir des informations sur les attributs associÃ©s aux objets.
+Analysez les rÃ©ponses reÃ§ues par le backend, en particulier faites attention Ã  :
 
 - Code source de la page HTML
-- Code JavaScript personnalisé
-- Réponses API
+- Code JavaScript personnalisÃ©
+- RÃ©ponses API
 
-Par exemple, très souvent, il est possible d'exploiter des handlers qui retournent des détails sur un objet afin de récolter des indices sur les champs associés.
-Supposons par exemple un gestionnaire qui renvoie le profil de l'utilisateur (par exemple `GET /profile`), cela peut inclure d'autres attributs liés à l'utilisateur (dans cet exemple, l'attribut `isAdmin` semble particulièrement intéressant).
+Par exemple, trÃ¨s souvent, il est possible d'exploiter des handlers qui retournent des dÃ©tails sur un objet afin de rÃ©colter des indices sur les champs associÃ©s.
+Supposons par exemple un gestionnaire qui renvoie le profil de l'utilisateur (par exemple `GET /profile`), cela peut inclure d'autres attributs liÃ©s Ã  l'utilisateur (dans cet exemple, l'attribut `isAdmin` semble particuliÃ¨rement intÃ©ressant).
 
 ```json
 {"_id":12345,"username":"bob","age":38,"email":"bob@domain.test","isAdmin":false}
 ```
 
-Essayez ensuite d'exploiter les gestionnaires qui permettent la modification ou la création d'utilisateurs, en ajoutant l'attribut `isAdmin` configuré à `true`.
+Essayez ensuite d'exploiter les gestionnaires qui permettent la modification ou la crÃ©ation d'utilisateurs, en ajoutant l'attribut `isAdmin` configurÃ© Ã  `true`.
 
-Une autre approche consiste à utiliser des listes de mots afin d'essayer d'énumérer tous les attributs potentiels. L'énumération peut ensuite être automatisée (par exemple via wfuzz, Burp Intruder, ZAP fuzzer, etc.). L'outil sqlmap inclut une liste de mots [common-columns.txt](https://github.com/sqlmapproject/sqlmap/blob/master/data/txt/common-columns.txt) qui peut être utile pour identifier les attributs potentiellement sensibles.
-Voici un petit exemple de noms d'attributs intéressants courants :
+Une autre approche consiste Ã  utiliser des listes de mots afin d'essayer d'Ã©numÃ©rer tous les attributs potentiels. L'Ã©numÃ©ration peut ensuite Ãªtre automatisÃ©e (par exemple via wfuzz, Burp Intruder, ZAP fuzzer, etc.). L'outil sqlmap inclut une liste de mots [common-columns.txt](https://github.com/sqlmapproject/sqlmap/blob/master/data/txt/common-columns.txt) qui peut Ãªtre utile pour identifier les attributs potentiellement sensibles.
+Voici un petit exemple de noms d'attributs intÃ©ressants courantsÂ :
 
 - `is_admin`
 - `is_administrator`
@@ -120,48 +120,48 @@ Voici un petit exemple de noms d'attributs intéressants courants :
 - `administrator`
 - `role`
 
-Lorsque plusieurs rôles sont disponibles, essayez de comparer les demandes faites par différents niveaux d'utilisateurs (faites particulièrement attention aux rôles privilégiés). Par exemple, si des paramètres supplémentaires sont inclus dans les requêtes effectuées par un utilisateur administratif, essayez-les en tant qu'utilisateur faiblement privilégié/anonyme.
+Lorsque plusieurs rÃ´les sont disponibles, essayez de comparer les demandes faites par diffÃ©rents niveaux d'utilisateurs (faites particuliÃ¨rement attention aux rÃ´les privilÃ©giÃ©s). Par exemple, si des paramÃ¨tres supplÃ©mentaires sont inclus dans les requÃªtes effectuÃ©es par un utilisateur administratif, essayez-les en tant qu'utilisateur faiblement privilÃ©giÃ©/anonyme.
 
-#### Vérifier l'impact
+#### VÃ©rifier l'impact
 
-L'impact d'une affectation de masse peut varier en fonction du contexte. Par conséquent, pour chaque entrée de test tentée dans la phase précédente, analysez le résultat et déterminez s'il représente une vulnérabilité ayant un impact réaliste sur la sécurité de l'application Web.
-Par exemple, la modification de l'identifiant d'un objet peut entraîner un déni de service applicatif ou une élévation de privilèges. Un autre exemple est lié à la possibilité de modifier le rôle/statut de l'utilisateur (par exemple, `role` ou `isAdmin`) entraînant une élévation verticale des privilèges.
+L'impact d'une affectation de masse peut varier en fonction du contexte. Par consÃ©quent, pour chaque entrÃ©e de test tentÃ©e dans la phase prÃ©cÃ©dente, analysez le rÃ©sultat et dÃ©terminez s'il reprÃ©sente une vulnÃ©rabilitÃ© ayant un impact rÃ©aliste sur la sÃ©curitÃ© de l'application Web.
+Par exemple, la modification de l'identifiant d'un objet peut entraÃ®ner un dÃ©ni de service applicatif ou une Ã©lÃ©vation de privilÃ¨ges. Un autre exemple est liÃ© Ã  la possibilitÃ© de modifier le rÃ´le/statut de l'utilisateur (par exemple, `role` ou `isAdmin`) entraÃ®nant une Ã©lÃ©vation verticale des privilÃ¨ges.
 
-### Test de la boîte grise
+### Test en boÃ®te grise
 
-Lorsque l'analyse est effectuée avec une approche de test en boîte grise, il est possible de suivre la même méthodologie pour vérifier le problème. Cependant, la plus grande connaissance de l'application permet d'identifier plus facilement les frameworks et les gestionnaires sujets à une vulnérabilité d'affectation de masse.
-En particulier, lorsque le code source est disponible, il est possible de rechercher plus facilement et plus précisément les vecteurs d'entrée. Lors d'une révision du code source, utilisez des outils simples (tels que la commande grep) pour rechercher un ou plusieurs modèles courants dans le code de l'application.
-L'accès au schéma de la BD ou au code source permet également d'identifier facilement les champs sensibles.
+Lorsque l'analyse est effectuÃ©e avec une approche de test en boÃ®te grise, il est possible de suivre la mÃªme mÃ©thodologie pour vÃ©rifier le problÃ¨me. Cependant, la plus grande connaissance de l'application permet d'identifier plus facilement les frameworks et les gestionnaires sujets Ã  une vulnÃ©rabilitÃ© d'affectation de masse.
+En particulier, lorsque le code source est disponible, il est possible de rechercher plus facilement et plus prÃ©cisÃ©ment les vecteurs d'entrÃ©e. Lors d'une rÃ©vision du code source, utilisez des outils simples (tels que la commande grep) pour rechercher un ou plusieurs modÃ¨les courants dans le code de l'application.
+L'accÃ¨s au schÃ©ma de la BD ou au code source permet Ã©galement d'identifier facilement les champs sensibles.
 
-####Java
+#### Java
 
-Spring MVC permet de lier automatiquement l'entrée de l'utilisateur à l'objet. Identifiez les contrôleurs qui gèrent les demandes de changement d'état (par exemple, trouvez les occurrences de `@RequestMapping`), puis vérifiez si des contrôles sont en place (à la fois sur le contrôleur ou sur les modèles concernés). Les limitations à l'exploitation de l'assignation de masse peuvent être, par exemple, sous la forme de :
+Spring MVC permet de lier automatiquement l'entrÃ©e de l'utilisateur Ã  l'objet. Identifiez les contrÃ´leurs qui gÃ¨rent les demandes de changement d'Ã©tat (par exemple, trouvez les occurrences de `@RequestMapping`), puis vÃ©rifiez si des contrÃ´les sont en place (Ã  la fois sur le contrÃ´leur ou sur les modÃ¨les concernÃ©s). Les limitations Ã  l'exploitation de l'assignation de masse peuvent Ãªtre, par exemple, sous la forme de :
 
-- liste des champs pouvant être liés via la méthode `setAllowedFields` de la classe `DataBinder` (par exemple `binder.setAllowedFields(["username","password","email"])`)
-- liste des champs non contraignants via la méthode `setDisallowedFields` de la classe `DataBinder` (par exemple `binder.setDisallowedFields(["isAdmin"])`)
+- liste des champs pouvant Ãªtre liÃ©s via la mÃ©thode `setAllowedFields` de la classe `DataBinder` (par exemple `binder.setAllowedFields(["username","password","email"])`)
+- liste des champs non contraignants via la mÃ©thode `setDisallowedFields` de la classe `DataBinder` (par exemple `binder.setDisallowedFields(["isAdmin"])`)
 
-Il est également conseillé de faire attention à l'utilisation de l'annotation `@ModelAttribute` qui permet de spécifier un nom/clé différent.
+Il est Ã©galement conseillÃ© de faire attention Ã  l'utilisation de l'annotation `@ModelAttribute` qui permet de spÃ©cifier un nom/clÃ© diffÃ©rent.
 
-####PHP
+#### PHP
 
-Laravel Eloquent ORM fournit une méthode "create" qui permet l'attribution automatique d'attributs. Cependant, les dernières versions d'Eloquent ORM fournissent une protection par défaut contre les vulnérabilités d'attribution de masse nécessitant de spécifier explicitement les attributs autorisés qui peuvent être attribués automatiquement, via le tableau `$fillable`, ou les attributs qui doivent être protégés (non-bindable), via le Tableau `$gardé`. Par conséquent, en analysant les modèles (classes qui étendent la classe `Model`), il est possible d'identifier les attributs autorisés ou refusés et donc de signaler les vulnérabilités potentielles.
+Laravel Eloquent ORM fournit une mÃ©thode "create" qui permet l'attribution automatique d'attributs. Cependant, les derniÃ¨res versions d'Eloquent ORM fournissent une protection par dÃ©faut contre les vulnÃ©rabilitÃ©s d'attribution de masse nÃ©cessitant de spÃ©cifier explicitement les attributs autorisÃ©s qui peuvent Ãªtre attribuÃ©s automatiquement, via le tableau `$fillable`, ou les attributs qui doivent Ãªtre protÃ©gÃ©s (non-bindable), via le Tableau `$gardÃ©`. Par consÃ©quent, en analysant les modÃ¨les (classes qui Ã©tendent la classe `Model`), il est possible d'identifier les attributs autorisÃ©s ou refusÃ©s et donc de signaler les vulnÃ©rabilitÃ©s potentielles.
 
-#### .RAPPORTER
+#### ASP .NET
 
-La liaison de modèle dans ASP.NET lie automatiquement les entrées utilisateur aux propriétés de l'objet. Cela fonctionne également avec les types complexes et convertit automatiquement les données d'entrée en propriétés si les noms des propriétés correspondent à l'entrée.
-Identifiez les contrôleurs, puis vérifiez si des contrôles sont en place (à la fois à l'intérieur du contrôleur ou dans les modèles concernés). Les limitations à l'exploitation de l'assignation de masse peuvent être, par exemple, sous la forme de :
+La liaison de modÃ¨le dans ASP.NET lie automatiquement les entrÃ©es utilisateur aux propriÃ©tÃ©s de l'objet. Cela fonctionne Ã©galement avec les types complexes et convertit automatiquement les donnÃ©es d'entrÃ©e en propriÃ©tÃ©s si les noms des propriÃ©tÃ©s correspondent Ã  l'entrÃ©e.
+Identifiez les contrÃ´leurs, puis vÃ©rifiez si des contrÃ´les sont en place (Ã  la fois Ã  l'intÃ©rieur du contrÃ´leur ou dans les modÃ¨les concernÃ©s). Les limitations Ã  l'exploitation de l'assignation de masse peuvent Ãªtre, par exemple, sous la forme de :
 
-- champs déclarés en `ReadOnly`
-- liste des champs pouvant être liés via l'attribut `Bind` (par exemple `[Bind(Include = "FirstName, LastName")] Student std`), via `includeProperties` (par exemple `includeProperties: new[] { "FirstName, LastName" }` ) ou via `TryUpdateModel`
+- champs dÃ©clarÃ©s en `ReadOnly`
+- liste des champs pouvant Ãªtre liÃ©s via l'attribut `Bind` (par exemple `[Bind(Include = "FirstName, LastName")] Student std`), via `includeProperties` (par exemple `includeProperties: new[] { "FirstName, LastName" }` ) ou via `TryUpdateModel`
 - liste des champs non contraignants via l'attribut `Bind` (par exemple `[Bind(Exclude = "Status")] Student std`) ou via `excludeProperties` (par exemple `excludeProperties: new[] { "Status" }`)
 
 ## Correction
 
-Utilisez les fonctionnalités intégrées, fournies par les frameworks, pour définir des champs pouvant être liés et non liés. Une approche basée sur les champs autorisés (bindable), dans laquelle seules les propriétés qui doivent être mises à jour par l'utilisateur sont explicitement définies, est préférable.
-Une approche architecturale pour éviter le problème consiste à utiliser le modèle *Data Transfer Object* (DTO) afin d'éviter la liaison directe. Le DTO ne doit inclure que les champs censés être modifiables par l'utilisateur.
+Utilisez les fonctionnalitÃ©s intÃ©grÃ©es, fournies par les frameworks, pour dÃ©finir des champs pouvant Ãªtre liÃ©s et non liÃ©s. Une approche basÃ©e sur les champs autorisÃ©s (bindable), dans laquelle seules les propriÃ©tÃ©s qui doivent Ãªtre mises Ã  jour par l'utilisateur sont explicitement dÃ©finies, est prÃ©fÃ©rable.
+Une approche architecturale pour Ã©viter le problÃ¨me consiste Ã  utiliser le modÃ¨le *Data Transfer Object* (DTO) afin d'Ã©viter la liaison directe. Le DTO ne doit inclure que les champs censÃ©s Ãªtre modifiables par l'utilisateur.
 
-## Références
+## RÃ©fÃ©rences
 
-- [OWASP : Sécurité des API](https://github.com/OWASP/API-Security/blob/master/2019/en/src/0xa6-mass-assignment.md)
-- [OWASP : série de feuilles de triche] (https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html)
-- [CWE-915 : Modification mal contrôlée d'attributs d'objet déterminés dynamiquement] (https://cwe.mitre.org/data/definitions/915.html)
+- [OWASPÂ : SÃ©curitÃ© des API](https://github.com/OWASP/API-Security/blob/master/2019/en/src/0xa6-mass-assignment.md)
+- [OWASPÂ : sÃ©rie de feuilles de triche](https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html)
+- [CWE-915Â : Modification mal contrÃ´lÃ©e d'attributs d'objet dÃ©terminÃ©s dynamiquement](https://cwe.mitre.org/data/definitions/915.html)
