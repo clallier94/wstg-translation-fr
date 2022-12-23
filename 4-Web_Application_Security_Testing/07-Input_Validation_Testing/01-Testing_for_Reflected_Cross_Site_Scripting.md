@@ -1,4 +1,4 @@
-# Test pour les scripts intersites
+# Test pour les scripts intersites reflétés
 
 |ID          |
 |------------|
@@ -6,9 +6,9 @@
 
 ## Sommaire
 
-Les [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) se produisent lorsqu'un attaquant injecte du code exécutable de navigateur dans une seule réponse HTTP. L'attaque injectée n'est pas stockée dans l'application elle-même ; il n'est pas persistant et n'affecte que les utilisateurs qui ouvrent un lien ou une page Web tiers construit de manière malveillante. La chaîne d'attaque est incluse dans les paramètres URI ou HTTP spécialement conçus, traitée de manière incorrecte par l'application et renvoyée à la victime.
+Les [Cross-site Scripting (XSS)](https://owasp.org/www-community/attacks/xss/) reflétés se produisent lorsqu'un attaquant injecte du code exécutable de navigateur dans une seule réponse HTTP. L'attaque injectée n'est pas stockée dans l'application elle-même ; il n'est pas persistant et n'affecte que les utilisateurs qui ouvrent un lien ou une page Web tiers construit de manière malveillante. La chaîne d'attaque est incluse dans les paramètres URI ou HTTP spécialement conçus, traitée de manière incorrecte par l'application et renvoyée à la victime.
 
-Les XSS sont le type le plus fréquent d'attaques XSS trouvées dans la nature. Les attaques XSS sont également appelées attaques XSS non persistantes et, puisque la charge utile de l'attaque est livrée et exécutée via une seule demande et réponse, elles sont également appelées XSS de premier ordre ou de type 1.
+Les XSS reflétés sont le type le plus fréquent d'attaques XSS trouvées dans la nature. Les attaques XSS reflétés sont également appelées attaques XSS non persistantes et, puisque la charge utile de l'attaque est livrée et exécutée via une seule demande et réponse, elles sont également appelées XSS de premier ordre ou de type 1.
 
 Lorsqu'une application Web est vulnérable à ce type d'attaque, elle transmet au client les entrées non validées envoyées via les requêtes. Le modus operandi commun de l'attaque comprend une étape de conception, dans laquelle l'attaquant crée et teste un URI incriminé, une étape d'ingénierie sociale, dans laquelle il convainc ses victimes de charger cet URI sur leurs navigateurs, et l'exécution éventuelle du code incriminé en utilisant le navigateur de la victime.
 
@@ -33,7 +33,7 @@ Détecter les vecteurs d'entrée. Pour chaque page Web, le testeur doit détermi
 
 #### Analyser les vecteurs d'entrée
 
-Analysez chaque vecteur d'entrée pour détecter les vulnérabilités potentielles. Pour détecter une vulnérabilité XSS, le testeur utilise généralement des données d'entrée spécialement conçues avec chaque vecteur d'entrée. Ces données d'entrée sont généralement inoffensives, mais déclenchent des réponses du navigateur Web qui manifestent la vulnérabilité. Les données de test peuvent être générées à l'aide d'un fuzzer d'application Web, d'une liste prédéfinie automatisée de chaînes d'attaque connues ou manuellement.
+Analysez chaque vecteur d'entrée pour détecter les vulnérabilités potentielles. Pour détecter une vulnérabilité XSS reflété, le testeur utilise généralement des données d'entrée spécialement conçues avec chaque vecteur d'entrée. Ces données d'entrée sont généralement inoffensives, mais déclenchent des réponses du navigateur Web qui manifestent la vulnérabilité. Les données de test peuvent être générées à l'aide d'un fuzzer d'application Web, d'une liste prédéfinie automatisée de chaînes d'attaque connues ou manuellement.
   Voici quelques exemples de telles données d'entrée :
 
 - `<script>alert(123)</script>`
@@ -105,7 +105,7 @@ Cela amènera l'utilisateur, en cliquant sur le lien fourni par le testeur, à t
 
 ### Contourner les filtres XSS
 
-Les attaques de script intersite sont empêchées car l'application Web nettoie les entrées, un pare-feu d'application Web bloque les entrées malveillantes ou par des mécanismes intégrés dans les navigateurs Web modernes. Le testeur doit tester les vulnérabilités en supposant que les navigateurs Web n'empêcheront pas l'attaque. Les navigateurs peuvent être obsolètes ou avoir des fonctions de sécurité intégrées désactivées. De même, il n'est pas garanti que les pare-feu d'applications Web reconnaissent les nouvelles attaques inconnues. Un attaquant pourrait créer une chaîne d'attaque qui n'est pas reconnue par le pare-feu de l'application Web.
+Les attaques de script intersite reflété sont empêchées car l'application Web nettoie les entrées, un pare-feu d'application Web bloque les entrées malveillantes ou par des mécanismes intégrés dans les navigateurs Web modernes. Le testeur doit tester les vulnérabilités en supposant que les navigateurs Web n'empêcheront pas l'attaque. Les navigateurs peuvent être obsolètes ou avoir des fonctions de sécurité intégrées désactivées. De même, il n'est pas garanti que les pare-feu d'applications Web reconnaissent les nouvelles attaques inconnues. Un attaquant pourrait créer une chaîne d'attaque qui n'est pas reconnue par le pare-feu de l'application Web.
 
 Ainsi, la majorité de la prévention XSS doit dépendre de la désinfection par l'application Web des entrées utilisateur non fiables. Il existe plusieurs mécanismes à la disposition des développeurs pour le nettoyage, tels que le renvoi d'une erreur, la suppression, l'encodage ou le remplacement d'une entrée non valide. Le moyen par lequel l'application détecte et corrige les entrées non valides est une autre faiblesse principale dans la prévention du XSS. Une liste de refus peut ne pas inclure toutes les chaînes d'attaque possibles, une liste d'autorisation peut être trop permissive, le nettoyage peut échouer ou un type d'entrée peut être incorrectement approuvé et rester non nettoyé. Tous ces éléments permettent aux attaquants de contourner les filtres XSS.
 
