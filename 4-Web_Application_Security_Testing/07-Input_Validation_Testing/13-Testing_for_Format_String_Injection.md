@@ -1,4 +1,4 @@
-# Test de l'injection de chaîne de format
+# Test de l'injection de chaÃ®ne de format
 
 |ID          |
 |------------|
@@ -6,23 +6,23 @@
 
 ## Sommaire
 
-Une chaîne de format est une séquence de caractères à terminaison nulle qui contient également des spécificateurs de conversion interprétés ou convertis au moment de l'exécution. Si le code côté serveur [concatène l'entrée d'un utilisateur avec une chaîne de format](https://www.netsparker.com/blog/web-security/string-concatenation-format-string-vulnerabilities/), un attaquant peut ajouter une conversion supplémentaire spécificateurs pour provoquer une erreur d'exécution, la divulgation d'informations ou un dépassement de mémoire tampon.
+Une chaÃ®ne de format est une sÃ©quence de caractÃ¨res Ã  terminaison nulle qui contient Ã©galement des spÃ©cificateurs de conversion interprÃ©tÃ©s ou convertis au moment de l'exÃ©cution. Si le code cÃ´tÃ© serveur [concatÃ¨ne l'entrÃ©e d'un utilisateur avec une chaÃ®ne de format](https://www.netsparker.com/blog/web-security/string-concatenation-format-string-vulnerabilities/), un attaquant peut ajouter une conversion supplÃ©mentaire spÃ©cificateurs pour provoquer une erreur d'exÃ©cution, la divulgation d'informations ou un dÃ©passement de mÃ©moire tampon.
 
-Le pire des cas pour les vulnérabilités des chaînes de format se produit dans les langages qui ne vérifient pas les arguments et incluent également un spécificateur `%n` qui écrit en mémoire. Ces fonctions, si elles sont exploitées par un attaquant modifiant une chaîne de format, pourraient entraîner [la divulgation d'informations et l'exécution de code](https://www.veracode.com/security/format-string) :
+Le pire des cas pour les vulnÃ©rabilitÃ©s des chaÃ®nes de format se produit dans les langages qui ne vÃ©rifient pas les arguments et incluent Ã©galement un spÃ©cificateur `%n` qui Ã©crit en mÃ©moire. Ces fonctions, si elles sont exploitÃ©es par un attaquant modifiant une chaÃ®ne de format, pourraient entraÃ®ner [la divulgation d'informations et l'exÃ©cution de code](https://www.veracode.com/security/format-string)Â :
 
-- C et C++ [printf](https://en.cppreference.com/w/c/io/fprintf) et méthodes similaires fprintf, sprintf, snprintf
+- C et C++ [printf](https://en.cppreference.com/w/c/io/fprintf) et mÃ©thodes similaires fprintf, sprintf, snprintf
 - Perl [printf](https://perldoc.perl.org/functions/printf.html) et sprintf
 
-Ces fonctions de chaîne de format ne peuvent pas écrire dans la mémoire, mais les attaquants peuvent toujours provoquer la divulgation d'informations en modifiant les chaînes de format en valeurs de sortie que les développeurs n'avaient pas l'intention d'envoyer :
+Ces fonctions de chaÃ®ne de format ne peuvent pas Ã©crire dans la mÃ©moire, mais les attaquants peuvent toujours provoquer la divulgation d'informations en modifiant les chaÃ®nes de format en valeurs de sortie que les dÃ©veloppeurs n'avaient pas l'intention d'envoyerÂ :
 
-- Python 2.6 et 2.7 [str.format](https://docs.python.org/2/library/string.html) et Python 3 unicode [str.format](https://docs.python.org/3 /library/stdtypes.html#str.format) peut être modifié en injectant des chaînes pouvant pointer vers [d'autres variables](https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/ ) en mémoire
+- Python 2.6 et 2.7 [str.format](https://docs.python.org/2/library/string.html) et Python 3 unicode [str.format](https://docs.python.org/3/library/stdtypes.html#str.format) peut Ãªtre modifiÃ© en injectant des chaÃ®nes pouvant pointer vers [d'autres variables](https://lucumr.pocoo.org/2016/12/29/careful-with-str-format/) en mÃ©moire
 
-Les fonctions de chaîne de format suivantes peuvent provoquer des erreurs d'exécution si l'attaquant ajoute des spécificateurs de conversion :
+Les fonctions de chaÃ®ne de format suivantes peuvent provoquer des erreurs d'exÃ©cution si l'attaquant ajoute des spÃ©cificateurs de conversionÂ :
 
-- Java [String.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html#format%28java.util.Locale% 2Cjava.lang.String%2Cjava.lang.Object...%29) et [PrintStream.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/ java/io/PrintStream.html#format%2528java.util.Locale%252Cjava.lang.String%252Cjava.lang.Object...%2529)
+- Java [String.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/String.html) et [PrintStream.format](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/io/PrintStream.html)
 - PHP [printf](https://www.php.net/manual/es/function.printf.php)
 
-Le modèle de code qui provoque une vulnérabilité de chaîne de format est un appel à une fonction de format de chaîne qui contient une entrée utilisateur non filtrée. L'exemple suivant montre comment un "printf" de débogage peut rendre un programme vulnérable :
+Le modÃ¨le de code qui provoque une vulnÃ©rabilitÃ© de chaÃ®ne de format est un appel Ã  une fonction de format de chaÃ®ne qui contient une entrÃ©e utilisateur non filtrÃ©e. L'exemple suivant montre comment un "printf" de dÃ©bogage peut rendre un programme vulnÃ©rableÂ :
 
 L'exemple en C :
 
@@ -44,57 +44,57 @@ System.out.printf("DEBUG Current user: ");
 System.out.printf(userName);
 ```
 
-Dans cet exemple particulier, si l'attaquant définissait son `userName` pour avoir un ou plusieurs spécificateurs de conversion, il y aurait un comportement indésirable. L'exemple C [imprimerait le contenu de la mémoire] (https://www.defcon.org/images/defcon-18/dc-18-presentations/Haas/DEFCON-18-Haas-Adv-Format-String-Attacks.pdf ) si `userName` contenait `%p%p%p%p%p`, et il peut corrompre le contenu de la mémoire s'il y a un `%n` dans la chaîne. Dans l'exemple Java, un `username` contenant n'importe quel spécificateur nécessitant une entrée (y compris `%x` ou `%s`) entraînerait le plantage du programme avec `IllegalFormatException`. Bien que les exemples soient toujours sujets à d'autres problèmes, la vulnérabilité peut être corrigée par les arguments printf de `printf("DEBUG Current user: %s", userName)`.
+Dans cet exemple particulier, si l'attaquant dÃ©finissait son `userName` pour avoir un ou plusieurs spÃ©cificateurs de conversion, il y aurait un comportement indÃ©sirable. L'exemple C [imprimerait le contenu de la mÃ©moire](https://www.defcon.org/images/defcon-18/dc-18-presentations/Haas/DEFCON-18-Haas-Adv-Format-String-Attacks.pdf) si `userName` contenait `%p%p%p%p%p`, et il peut corrompre le contenu de la mÃ©moire s'il y a un `%n` dans la chaÃ®ne. Dans l'exemple Java, un `username` contenant n'importe quel spÃ©cificateur nÃ©cessitant une entrÃ©e (y compris `%x` ou `%s`) entraÃ®nerait le plantage du programme avec `IllegalFormatException`. Bien que les exemples soient toujours sujets Ã  d'autres problÃ¨mes, la vulnÃ©rabilitÃ© peut Ãªtre corrigÃ©e par les arguments printf de `printf("DEBUG Current user: %s", userName)`.
 
 ## Objectifs des tests
 
-- Évaluer si l'injection de spécificateurs de conversion de chaîne de format dans des champs contrôlés par l'utilisateur provoque un comportement indésirable de l'application.
+- Ã‰valuer si l'injection de spÃ©cificateurs de conversion de chaÃ®ne de format dans des champs contrÃ´lÃ©s par l'utilisateur provoque un comportement indÃ©sirable de l'application.
 
 ## Comment tester
 
-Les tests incluent l'analyse du code et l'injection de spécificateurs de conversion en tant qu'entrée utilisateur dans l'application testée.
+Les tests incluent l'analyse du code et l'injection de spÃ©cificateurs de conversion en tant qu'entrÃ©e utilisateur dans l'application testÃ©e.
 
 ### Analyse statique
 
-Les outils d'analyse statique peuvent trouver des vulnérabilités de chaîne de format dans le code ou dans les binaires. Voici des exemples d'outils :
+Les outils d'analyse statique peuvent trouver des vulnÃ©rabilitÃ©s de chaÃ®ne de format dans le code ou dans les binaires. Voici des exemples d'outilsÂ :
 
 - C et C++ : [Flawfinder](https://dwheeler.com/flawfinder/)
-- Java : règle FindSecurityBugs [FORMAT_STRING_MANIPULATION](https://find-sec-bugs.github.io/bugs.htm#FORMAT_STRING_MANIPULATION)
-- PHP : Analyseur de formatage de chaînes dans [phpsa] (https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater)
+- JavaÂ : rÃ¨gle FindSecurityBugs [FORMAT_STRING_MANIPULATION](https://find-sec-bugs.github.io/bugs.htm#FORMAT_STRING_MANIPULATION)
+- PHPÂ : Analyseur de formatage de chaÃ®nes dans [phpsa](https://github.com/ovr/phpsa/blob/master/docs/05_Analyzers.md#function_string_formater)
 
-### Inspection manuelle des codes
+### Inspection manuelle des codes
 
-L'analyse statique peut manquer des cas plus subtils, notamment des chaînes de format générées par un code complexe. Pour rechercher manuellement des vulnérabilités dans une base de code, un testeur peut rechercher tous les appels dans la base de code qui acceptent une chaîne de format et retracer pour s'assurer que les entrées non fiables ne peuvent pas modifier la chaîne de format.
+L'analyse statique peut manquer des cas plus subtils, notamment des chaÃ®nes de format gÃ©nÃ©rÃ©es par un code complexe. Pour rechercher manuellement des vulnÃ©rabilitÃ©s dans une base de code, un testeur peut rechercher tous les appels dans la base de code qui acceptent une chaÃ®ne de format et retracer pour s'assurer que les entrÃ©es non fiables ne peuvent pas modifier la chaÃ®ne de format.
 
-### Injection du spécificateur de conversion
+### Injection du spÃ©cificateur de conversion
 
-Les testeurs peuvent vérifier au niveau du test unitaire ou du test système complet en envoyant des spécificateurs de conversion dans n'importe quelle entrée de chaîne. [Fuzz](https://owasp.org/www-community/Fuzzing) le programme utilisant tous les spécificateurs de conversion pour toutes les langues utilisées par le système testé. Consultez la page [Attaque de chaîne de format OWASP](https://owasp.org/www-community/attacks/Format_string_attack) pour les entrées possibles à utiliser. Si le test échoue, le programme plantera ou affichera une sortie inattendue. Si le test réussit, la tentative d'envoi d'un spécificateur de conversion doit être bloquée, ou la chaîne doit passer par le système sans problème comme avec toute autre entrée valide.
+Les testeurs peuvent vÃ©rifier au niveau du test unitaire ou du test systÃ¨me complet en envoyant des spÃ©cificateurs de conversion dans n'importe quelle entrÃ©e de chaÃ®ne. [Fuzz](https://owasp.org/www-community/Fuzzing) le programme utilisant tous les spÃ©cificateurs de conversion pour toutes les langues utilisÃ©es par le systÃ¨me testÃ©. Consultez la page [Attaque de chaÃ®ne de format OWASP](https://owasp.org/www-community/attacks/Format_string_attack) pour les entrÃ©es possibles Ã  utiliser. Si le test Ã©choue, le programme plantera ou affichera une sortie inattendue. Si le test rÃ©ussit, la tentative d'envoi d'un spÃ©cificateur de conversion doit Ãªtre bloquÃ©e, ou la chaÃ®ne doit passer par le systÃ¨me sans problÃ¨me comme avec toute autre entrÃ©e valide.
 
-Les exemples dans les sous-sections suivantes ont une URL de cette forme :
+Les exemples dans les sous-sections suivantes ont une URL de cette formeÂ :
 
 `https://vulnerable_host/userinfo?username=x`
 
-- La valeur contrôlée par l'utilisateur est `x` (pour le paramètre `username`).
+- La valeur contrÃ´lÃ©e par l'utilisateur est `x` (pour le paramÃ¨tre `username`).
 
 #### Injection manuelle
 
-Les testeurs peuvent effectuer un test manuel à l'aide d'un navigateur Web ou d'autres outils de débogage d'API Web. Accédez à l'application Web ou au site de sorte que la requête comporte des spécificateurs de conversion. Notez que la plupart des spécificateurs de conversion nécessitent [encoding](https://tools.ietf.org/html/rfc3986#section-2.1) s'ils sont envoyés dans une URL, car ils contiennent des caractères spéciaux, notamment `%` et `{`. Le test peut introduire une chaîne de spécificateurs `%s%s%s%n` en naviguant avec l'URL suivante :
+Les testeurs peuvent effectuer un test manuel Ã  l'aide d'un navigateur Web ou d'autres outils de dÃ©bogage d'API Web. AccÃ©dez Ã  l'application Web ou au site de sorte que la requÃªte comporte des spÃ©cificateurs de conversion. Notez que la plupart des spÃ©cificateurs de conversion nÃ©cessitent [encoding](https://tools.ietf.org/html/rfc3986#section-2.1) s'ils sont envoyÃ©s dans une URL, car ils contiennent des caractÃ¨res spÃ©ciaux, notamment `%` et `{`. Le test peut introduire une chaÃ®ne de spÃ©cificateurs `%s%s%s%n` en naviguant avec l'URL suivanteÂ :
 
 `https://vulnerable_host/userinfo?username=%25s%25s%25s%25n`
 
-Si le site Web est vulnérable, le navigateur ou l'outil devrait recevoir une erreur, qui peut inclure un délai d'attente ou un code de retour HTTP 500.
+Si le site Web est vulnÃ©rable, le navigateur ou l'outil devrait recevoir une erreur, qui peut inclure un dÃ©lai d'attente ou un code de retour HTTP 500.
 
 Le code Java renvoie l'erreur
 
 `java.util.MissingFormatArgumentException: Format specifier '%s'`
 
-Selon l'implémentation C, le processus peut se bloquer complètement avec `Segmentation Fault`.
+Selon l'implÃ©mentation C, le processus peut se bloquer complÃ¨tement avec `Segmentation Fault`.
 
-#### Fuzzing assisté par outil
+#### Fuzzing assistÃ© par outil
 
-Les outils de fuzzing, dont [wfuzz](https://github.com/xmendez/wfuzz), peuvent automatiser les tests d'injection. Pour wfuzz, commencez par un fichier texte (fuzz.txt dans cet exemple) avec une entrée par ligne :
+Les outils de fuzzing, dont [wfuzz](https://github.com/xmendez/wfuzz), peuvent automatiser les tests d'injection. Pour wfuzz, commencez par un fichier texte (fuzz.txt dans cet exemple) avec une entrÃ©e par ligneÂ :
 
-fuzz.txt :
+fuzz.txtÂ :
 
 ```text
 alice
@@ -103,17 +103,17 @@ alice
 {event.__init__.__globals__[CONFIG][SECRET_KEY]}
 ```
 
-Le fichier `fuzz.txt` contient les éléments suivants :
+Le fichier `fuzz.txt` contient les Ã©lÃ©ments suivantsÂ :
 
-- Une entrée valide "alice" pour vérifier que l'application peut traiter une entrée normale
-- Deux chaînes avec des spécificateurs de conversion de type C
-- Un spécificateur de conversion Python pour tenter de lire les variables globales
+- Une entrÃ©e valide "alice" pour vÃ©rifier que l'application peut traiter une entrÃ©e normale
+- Deux chaÃ®nes avec des spÃ©cificateurs de conversion de type C
+- Un spÃ©cificateur de conversion Python pour tenter de lire les variables globales
 
-Pour envoyer le fichier d'entrée de fuzzing à l'application Web testée, utilisez la commande suivante :
+Pour envoyer le fichier d'entrÃ©e de fuzzing Ã  l'application Web testÃ©e, utilisez la commande suivanteÂ :
 
 `wfuzz -c -z file,fuzz.txt,urlencode https://vulnerable_host/userinfo?username=FUZZ`
 
-Dans l'appel ci-dessus, l'argument `urlencode` active l'échappement approprié pour les chaînes et `FUZZ` (avec les lettres majuscules) indique à l'outil où introduire les entrées.
+Dans l'appel ci-dessus, l'argument `urlencode` active l'Ã©chappement appropriÃ© pour les chaÃ®nes et `FUZZ` (avec les lettres majuscules) indique Ã  l'outil oÃ¹ introduire les entrÃ©es.
 
 Un exemple de sortie est le suivant
 
@@ -127,4 +127,4 @@ ID           Response   Lines    Word     Chars       Payload
 000000001:   200        0 L      1 W      5 Ch        "alice"
 ```
 
-Le résultat ci-dessus valide la faiblesse de l'application face à l'injection de spécificateurs de conversion de type C `%s` et `%p`.
+Le rÃ©sultat ci-dessus valide la faiblesse de l'application face Ã  l'injection de spÃ©cificateurs de conversion de type C `%s` et `%p`.
