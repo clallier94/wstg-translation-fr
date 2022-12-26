@@ -1,4 +1,4 @@
-# Test de sécurité de la couche de transport faible
+# Test de sÃ©curitÃ© de la couche de transport faible
 
 |ID          |
 |------------|
@@ -6,103 +6,103 @@
 
 ## Sommaire
 
-Lorsque des informations sont transmises entre le client et le serveur, elles doivent être chiffrées et protégées afin d'empêcher qu'un attaquant ne puisse les lire ou les modifier. Cela se fait le plus souvent à l'aide de HTTPS, qui utilise le protocole [Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security), qui remplace l'ancien protocole Secure Socket Layer (SSL). TLS permet également au serveur de démontrer au client qu'il s'est connecté au bon serveur, en présentant un certificat numérique de confiance.
+Lorsque des informations sont transmises entre le client et le serveur, elles doivent Ãªtre chiffrÃ©es et protÃ©gÃ©es afin d'empÃªcher qu'un attaquant ne puisse les lire ou les modifier. Cela se fait le plus souvent Ã  l'aide de HTTPS, qui utilise le protocole [Transport Layer Security (TLS)](https://en.wikipedia.org/wiki/Transport_Layer_Security), qui remplace l'ancien protocole Secure Socket Layer (SSL). TLS permet Ã©galement au serveur de dÃ©montrer au client qu'il s'est connectÃ© au bon serveur, en prÃ©sentant un certificat numÃ©rique de confiance.
 
-Au fil des ans, un grand nombre de faiblesses cryptographiques ont été identifiées dans les protocoles SSL et TLS, ainsi que dans les chiffrements qu'ils utilisent. De plus, de nombreuses implémentations de ces protocoles présentent également de graves vulnérabilités. En tant que tel, il est important de tester que les sites implémentent non seulement TLS, mais qu'ils le font de manière sécurisée.
+Au fil des ans, un grand nombre de faiblesses cryptographiques ont Ã©tÃ© identifiÃ©es dans les protocoles SSL et TLS, ainsi que dans les chiffrements qu'ils utilisent. De plus, de nombreuses implÃ©mentations de ces protocoles prÃ©sentent Ã©galement de graves vulnÃ©rabilitÃ©s. En tant que tel, il est important de tester que les sites implÃ©mentent non seulement TLS, mais qu'ils le font de maniÃ¨re sÃ©curisÃ©e.
 
 ## Objectifs des tests
 
 - Valider la configuration du service.
-- Vérifiez la force cryptographique et la validité du certificat numérique.
-- Assurez-vous que la sécurité TLS ne peut pas être contournée et qu'elle est correctement implémentée dans l'application.
+- VÃ©rifiez la force cryptographique et la validitÃ© du certificat numÃ©rique.
+- Assurez-vous que la sÃ©curitÃ© TLS ne peut pas Ãªtre contournÃ©e et qu'elle est correctement implÃ©mentÃ©e dans l'application.
 
 ## Comment tester
 
-Les problèmes liés à la sécurité de la couche de transport peuvent être largement répartis dans les domaines suivants :
+Les problÃ¨mes liÃ©s Ã  la sÃ©curitÃ© de la couche de transport peuvent Ãªtre largement rÃ©partis dans les domaines suivantsÂ :
 
-### Configuration du serveur
+### Configuration du serveur
 
-Il existe un grand nombre de versions de protocole, de chiffrements et d'extensions pris en charge par TLS. Beaucoup d'entre eux sont considérés comme hérités et présentent des faiblesses cryptographiques, telles que celles répertoriées ci-dessous. Notez que de nouvelles faiblesses sont susceptibles d'être identifiées au fil du temps, cette liste peut donc être incomplète.
+Il existe un grand nombre de versions de protocole, de chiffrements et d'extensions pris en charge par TLS. Beaucoup d'entre eux sont considÃ©rÃ©s comme hÃ©ritÃ©s et prÃ©sentent des faiblesses cryptographiques, telles que celles rÃ©pertoriÃ©es ci-dessous. Notez que de nouvelles faiblesses sont susceptibles d'Ãªtre identifiÃ©es au fil du temps, cette liste peut donc Ãªtre incomplÃ¨te.
 
 - [SSLv2 (noyer)](https://drownattack.com/)
 - [SSLv3 (CANICHE)](https://en.wikipedia.org/wiki/POODLE)
 - [TLSv1.0 (BEAST)](https://www.acunetix.com/blog/web-security-zone/what-is-beast-attack/)
-- [TLSv1.1 (obsolète par RFC 8996)](https://tools.ietf.org/html/rfc8996)
+- [TLSv1.1 (obsolÃ¨te par RFC 8996)](https://tools.ietf.org/html/rfc8996)
 - [EXPORTER des suites de chiffrement (FREAK)](https://en.wikipedia.org/wiki/FREAK)
 - [NULL ciphers](https://www.rapid7.com/db/vulnerabilities/ssl-null-ciphers) ([ils ne fournissent qu'une authentification](https://tools.ietf.org/html/rfc4785)).
-- Chiffrements anonymes (ceux-ci peuvent être pris en charge sur les serveurs SMTP, comme indiqué dans la [RFC 7672](https://tools.ietf.org/html/rfc7672#section-8.2))
+- Chiffrements anonymes (ceux-ci peuvent Ãªtre pris en charge sur les serveurs SMTP, comme indiquÃ© dans la [RFC 7672](https://tools.ietf.org/html/rfc7672#section-8.2))
 - [chiffres RC4 (NOMORE)](https://www.rc4nomore.com/)
 - Chiffrements en mode CBC (BEAST, [Lucky 13](https://en.wikipedia.org/wiki/Lucky_Thirteen_attack))
 - [Compression TLS (CRIME)](https://en.wikipedia.org/wiki/CRIME)
-- [Clés DHE faibles (LOGJAM)](https://weakdh.org/)
+- [ClÃ©s DHE faibles (LOGJAM)](https://weakdh.org/)
 
-Le [Guide Mozilla Server Side TLS](https://wiki.mozilla.org/Security/Server_Side_TLS) détaille les protocoles et les chiffrements actuellement recommandés.
+Le [Guide Mozilla Server Side TLS](https://wiki.mozilla.org/Security/Server_Side_TLS) dÃ©taille les protocoles et les chiffrements actuellement recommandÃ©s.
 
-#### Exploitabilité
+#### ExploitabilitÃ©
 
-Il convient de souligner que même si bon nombre de ces attaques ont été démontrées dans un environnement de laboratoire, elles ne sont généralement pas considérées comme pratiques à exploiter dans le monde réel, car elles nécessitent une attaque MitM (généralement active) et des ressources importantes. En tant que tels, il est peu probable qu'ils soient exploités par quiconque autre que les États-nations.
+Il convient de souligner que mÃªme si bon nombre de ces attaques ont Ã©tÃ© dÃ©montrÃ©es dans un environnement de laboratoire, elles ne sont gÃ©nÃ©ralement pas considÃ©rÃ©es comme pratiques Ã  exploiter dans le monde rÃ©el, car elles nÃ©cessitent une attaque MitM (gÃ©nÃ©ralement active) et des ressources importantes. En tant que tels, il est peu probable qu'ils soient exploitÃ©s par quiconque autre que les Ã‰tats-nations.
 
-### Certificats numériques
+### Certificats numÃ©riques
 
 #### Faiblesses cryptographiques
 
-D'un point de vue cryptographique, il y a deux domaines principaux qui doivent être examinés sur un certificat numérique :
+D'un point de vue cryptographique, il y a deux domaines principaux qui doivent Ãªtre examinÃ©s sur un certificat numÃ©riqueÂ :
 
-- La force de la clé doit être *au moins* 2048 bits.
-- L'algorithme de signature doit être *au moins* SHA-256. Les algorithmes hérités tels que MD5 et SHA-1 ne doivent pas être utilisés.
+- La force de la clÃ© doit Ãªtre *au moins* 2048 bits.
+- L'algorithme de signature doit Ãªtre *au moins* SHA-256. Les algorithmes hÃ©ritÃ©s tels que MD5 et SHA-1 ne doivent pas Ãªtre utilisÃ©s.
 
-#### Validité
+#### ValiditÃ©
 
-En plus d'être cryptographiquement sécurisé, le certificat doit également être considéré comme valide (ou de confiance). Cela signifie qu'il doit :
+En plus d'Ãªtre cryptographiquement sÃ©curisÃ©, le certificat doit Ã©galement Ãªtre considÃ©rÃ© comme valide (ou de confiance). Cela signifie qu'il doit :
 
-- Être dans la période de validité définie.
-    - Tout certificat émis après le 1er septembre 2020 ne doit pas avoir une durée de vie maximale de plus de [398 jours](https://blog.mozilla.org/security/2020/07/09/reducing-tls-certificate-lifespans-to- 398 jours/).
-- Être signé par une autorité de certification (CA) de confiance.
-    - Il doit s'agir soit d'une autorité de certification publique de confiance pour les applications externes, soit d'une autorité de certification interne pour les applications internes.
-    - Ne signalez pas les applications internes comme ayant des certificats non fiables simplement parce que *votre* système ne fait pas confiance à l'autorité de certification.
-- Avoir un autre nom d'objet (SAN) qui correspond au nom d'hôte du système.
-    - Le champ Common Name (CN) est ignoré par les navigateurs modernes, qui ne regardent que le SAN.
-    - Assurez-vous que vous accédez au système avec le nom correct (par exemple, si vous accédez à l'hôte par IP, tout certificat apparaîtra comme non approuvé).
+- ÃŠtre dans la pÃ©riode de validitÃ© dÃ©finie.
+    - Tout certificat Ã©mis aprÃ¨s le 1er septembre 2020 ne doit pas avoir une durÃ©e de vie maximale de plus de [398 jours](https://blog.mozilla.org/security/2020/07/09/reducing-tls-certificate-lifespans-to-398-days/).
+- ÃŠtre signÃ© par une autoritÃ© de certification (CA) de confiance.
+    - Il doit s'agir soit d'une autoritÃ© de certification publique de confiance pour les applications externes, soit d'une autoritÃ© de certification interne pour les applications internes.
+    - Ne signalez pas les applications internes comme ayant des certificats non fiables simplement parce que *votre* systÃ¨me ne fait pas confiance Ã  l'autoritÃ© de certification.
+- Avoir un autre nom d'objet (SAN) qui correspond au nom d'hÃ´te du systÃ¨me.
+    - Le champ Common Name (CN) est ignorÃ© par les navigateurs modernes, qui ne regardent que le SAN.
+    - Assurez-vous que vous accÃ©dez au systÃ¨me avec le nom correct (par exemple, si vous accÃ©dez Ã  l'hÃ´te par IP, tout certificat apparaÃ®tra comme non approuvÃ©).
 
-Certains certificats peuvent être émis pour des domaines génériques (tels que `*.example.org`), ce qui signifie qu'ils peuvent être valides pour plusieurs sous-domaines. Bien que pratique, il existe un certain nombre de problèmes de sécurité qui doivent être pris en compte. Ceux-ci sont discutés dans le [OWASP Transport Layer Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html#carefully-consider-the-use-of-wildcard-certificates).
+Certains certificats peuvent Ãªtre Ã©mis pour des domaines gÃ©nÃ©riques (tels que `*.example.org`), ce qui signifie qu'ils peuvent Ãªtre valides pour plusieurs sous-domaines. Bien que pratique, il existe un certain nombre de problÃ¨mes de sÃ©curitÃ© qui doivent Ãªtre pris en compte. Ceux-ci sont discutÃ©s dans le [OWASP Transport Layer Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html#carefully-consider-the-use-of-wildcard-certificates).
 
-Les certificats peuvent également divulguer des informations sur les systèmes internes ou les noms de domaine dans les champs Émetteur et SAN, ce qui peut être utile lorsque vous essayez de créer une image du réseau interne ou de mener des activités d'ingénierie sociale.
+Les certificats peuvent Ã©galement divulguer des informations sur les systÃ¨mes internes ou les noms de domaine dans les champs Ã‰metteur et SAN, ce qui peut Ãªtre utile lorsque vous essayez de crÃ©er une image du rÃ©seau interne ou de mener des activitÃ©s d'ingÃ©nierie sociale.
 
-### Vulnérabilités d'implémentation
+### VulnÃ©rabilitÃ©s d'implÃ©mentation
 
-Au fil des ans, il y a eu des vulnérabilités dans les différentes implémentations TLS. Il y en a trop pour les énumérer ici, mais certains des exemples clés sont :
+Au fil des ans, il y a eu des vulnÃ©rabilitÃ©s dans les diffÃ©rentes implÃ©mentations TLS. Il y en a trop pour les Ã©numÃ©rer ici, mais certains des exemples clÃ©s sont :
 
-- [Générateur de nombres aléatoires prévisibles Debian OpenSSL](https://www.debian.org/security/2008/dsa-1571) (CVE-2008-0166)
-- [Renégociation non sécurisée OpenSSL](https://www.openssl.org/news/secadv/20091111.txt) (CVE-2009-3555)
+- [GÃ©nÃ©rateur de nombres alÃ©atoires prÃ©visibles Debian OpenSSL](https://www.debian.org/security/2008/dsa-1571) (CVE-2008-0166)
+- [RenÃ©gociation non sÃ©curisÃ©e OpenSSL](https://www.openssl.org/news/secadv/20091111.txt) (CVE-2009-3555)
 - [OpenSSL Heartbleed](https://heartbleed.com) (CVE-2014-0160)
 - [F5 TLS CANICHE](https://support.f5.com/csp/article/K15882) (CVE-2014-8730)
-- [Déni de service Microsoft Schannel] (https://docs.microsoft.com/en-us/security-updates/securitybulletins/2014/ms14-066) (MS14-066 / CVE-2014-6321)
+- [DÃ©ni de service Microsoft Schannel](https://docs.microsoft.com/en-us/security-updates/securitybulletins/2014/ms14-066) (MS14-066 / CVE-2014-6321)
 
-### Vulnérabilités des applications
+### VulnÃ©rabilitÃ©s des applications
 
-Outre la configuration sécurisée de la configuration TLS sous-jacente, l'application doit également l'utiliser de manière sécurisée. Certains de ces points sont traités ailleurs dans ce guide :
+Outre la configuration sÃ©curisÃ©e de la configuration TLS sous-jacente, l'application doit Ã©galement l'utiliser de maniÃ¨re sÃ©curisÃ©e. Certains de ces points sont traitÃ©s ailleurs dans ce guide :
 
-- [Ne pas envoyer de données sensibles sur des canaux non chiffrés (WSTG-CRYP-03)](03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels.md)
-- [Définition de l'en-tête HTTP Strict-Transport-Security (WSTG-CONF-07)](../02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security.md)
-- [Définition de l'indicateur de sécurité sur les cookies (WSTG-SESS-02)](../06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md)
+- [Ne pas envoyer de donnÃ©es sensibles sur des canaux non chiffrÃ©s (WSTG-CRYP-03)](03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels.md)
+- [DÃ©finition de l'en-tÃªte HTTP Strict-Transport-Security (WSTG-CONF-07)](../02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security.md)
+- [DÃ©finition de l'indicateur de sÃ©curitÃ© sur les cookies (WSTG-SESS-02)](../06-Session_Management_Testing/02-Testing_for_Cookies_Attributes.md)
 
 #### Contenu actif mixte
 
-Le contenu actif mixte se produit lorsque des ressources actives (telles que des scripts vers CSS) sont chargées via HTTP non chiffré et incluses dans une page sécurisée (HTTPS). Ceci est dangereux car cela permettrait à un attaquant de modifier ces fichiers (car ils sont envoyés en clair), ce qui pourrait lui permettre d'exécuter du code arbitraire (JavaScript ou CSS) dans la page. Le contenu passif (tel que les images) chargé via une connexion non sécurisée peut également divulguer des informations ou permettre à un attaquant de défigurer la page, bien qu'il soit moins susceptible de conduire à un compromis complet.
+Le contenu actif mixte se produit lorsque des ressources actives (telles que des scripts vers CSS) sont chargÃ©es via HTTP non chiffrÃ© et incluses dans une page sÃ©curisÃ©e (HTTPS). Ceci est dangereux car cela permettrait Ã  un attaquant de modifier ces fichiers (car ils sont envoyÃ©s en clair), ce qui pourrait lui permettre d'exÃ©cuter du code arbitraire (JavaScript ou CSS) dans la page. Le contenu passif (tel que les images) chargÃ© via une connexion non sÃ©curisÃ©e peut Ã©galement divulguer des informations ou permettre Ã  un attaquant de dÃ©figurer la page, bien qu'il soit moins susceptible de conduire Ã  un compromis complet.
 
-> Remarque : les navigateurs modernes bloqueront le chargement du contenu actif à partir de sources non sécurisées vers des pages sécurisées.
+> Remarque : les navigateurs modernes bloqueront le chargement du contenu actif Ã  partir de sources non sÃ©curisÃ©es vers des pages sÃ©curisÃ©es.
 
 #### Redirection de HTTP vers HTTPS
 
-De nombreux sites acceptent les connexions via HTTP non crypté, puis redirigent immédiatement l'utilisateur vers la version sécurisée (HTTPS) du site avec une redirection "301 Moved Permanently". La version HTTPS du site définit ensuite l'en-tête "Strict-Transport-Security" pour demander au navigateur de toujours utiliser HTTPS à l'avenir.
+De nombreux sites acceptent les connexions via HTTP non cryptÃ©, puis redirigent immÃ©diatement l'utilisateur vers la version sÃ©curisÃ©e (HTTPS) du site avec une redirection "301 Moved Permanently". La version HTTPS du site dÃ©finit ensuite l'en-tÃªte "Strict-Transport-Security" pour demander au navigateur de toujours utiliser HTTPS Ã  l'avenir.
 
-Cependant, si un attaquant parvient à intercepter cette requête initiale, il pourrait rediriger l'utilisateur vers un site malveillant ou utiliser un outil tel que [sslstrip](https://github.com/moxie0/sslstrip) pour intercepter les requêtes suivantes.
+Cependant, si un attaquant parvient Ã  intercepter cette requÃªte initiale, il pourrait rediriger l'utilisateur vers un site malveillant ou utiliser un outil tel que [sslstrip](https://github.com/moxie0/sslstrip) pour intercepter les requÃªtes suivantes.
 
-Afin de se défendre contre ce type d'attaque, le site doit être ajouté à la [liste de préchargement] (https://hstspreload.org).
+Afin de se dÃ©fendre contre ce type d'attaque, le site doit Ãªtre ajoutÃ© Ã  la [liste de prÃ©chargement](https://hstspreload.org).
 
-## Tests automatisés
+## Tests automatisÃ©s
 
-Il existe un grand nombre d'outils d'analyse qui peuvent être utilisés pour identifier les faiblesses de la configuration SSL/TLS d'un service, y compris des outils dédiés et des analyseurs de vulnérabilité à usage général. Certains des plus populaires sont :
+Il existe un grand nombre d'outils d'analyse qui peuvent Ãªtre utilisÃ©s pour identifier les faiblesses de la configuration SSL/TLS d'un service, y compris des outils dÃ©diÃ©s et des analyseurs de vulnÃ©rabilitÃ© Ã  usage gÃ©nÃ©ral. Certains des plus populaires sont :
 
 - [Nmap](https://nmap.org) (divers scripts)
 - [OWASP O-Saft](https://owasp.org/www-project-o-saft/)
@@ -111,15 +111,15 @@ Il existe un grand nombre d'outils d'analyse qui peuvent être utilisés pour iden
 - [Laboratoires SSL](https://www.ssllabs.com/ssltest/)
 - [testssl.sh](https://github.com/drwetter/testssl.sh)
 
-### Tests manuels
+### Tests manuels
 
-Il est également possible d'effectuer la plupart des vérifications manuellement, en utilisant des lignes de commande telles que `openssl s_client` ou `gnutls-cli` pour se connecter avec des protocoles, des chiffrements ou des options spécifiques.
+Il est Ã©galement possible d'effectuer la plupart des vÃ©rifications manuellement, en utilisant des lignes de commande telles que `openssl s_client` ou `gnutls-cli` pour se connecter avec des protocoles, des chiffrements ou des options spÃ©cifiques.
 
-Lors de tests de ce type, sachez que la version d'OpenSSL ou de GnuTLS fournie avec la plupart des systèmes modernes peut ne pas prendre en charge certains protocoles obsolètes et non sécurisés tels que les chiffrements SSLv2 ou EXPORT. Assurez-vous que votre version prend en charge les versions obsolètes avant de l'utiliser pour les tests, sinon vous vous retrouverez avec de faux négatifs.
+Lors de tests de ce type, sachez que la version d'OpenSSL ou de GnuTLS fournie avec la plupart des systÃ¨mes modernes peut ne pas prendre en charge certains protocoles obsolÃ¨tes et non sÃ©curisÃ©s tels que les chiffrements SSLv2 ou EXPORT. Assurez-vous que votre version prend en charge les versions obsolÃ¨tes avant de l'utiliser pour les tests, sinon vous vous retrouverez avec de faux nÃ©gatifs.
 
-Il peut également être possible d'effectuer des tests limités à l'aide d'un navigateur Web, car les navigateurs modernes fourniront des détails sur les protocoles et les chiffrements utilisés dans leurs outils de développement. Ils fournissent également un moyen simple de tester si un certificat est considéré comme fiable, en accédant au service et en voyant si un avertissement de certificat vous est présenté.
+Il peut Ã©galement Ãªtre possible d'effectuer des tests limitÃ©s Ã  l'aide d'un navigateur Web, car les navigateurs modernes fourniront des dÃ©tails sur les protocoles et les chiffrements utilisÃ©s dans leurs outils de dÃ©veloppement. Ils fournissent Ã©galement un moyen simple de tester si un certificat est considÃ©rÃ© comme fiable, en accÃ©dant au service et en voyant si un avertissement de certificat vous est prÃ©sentÃ©.
 
-## Références
+## RÃ©fÃ©rences
 
-- [Aide-mémoire sur la protection de la couche de transport OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html)
-- [Guide TLS côté serveur Mozilla] (https://wiki.mozilla.org/Security/Server_Side_TLS)
+- [Aide-mÃ©moire sur la protection de la couche de transport OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html)
+- [Guide TLS cÃ´tÃ© serveur Mozilla](https://wiki.mozilla.org/Security/Server_Side_TLS)
