@@ -129,16 +129,16 @@ CWE-780 : Utilisation de l'algorithme RSA sans OAEP
 
 ## Références
 
-- [Normes NIST FIPS] (https://csrc.nist.gov/publications/fips)
-- [Wikipédia : vecteur d'initialisation] (https://en.wikipedia.org/wiki/Initialization_vector)
+- [Normes NIST FIPS](https://csrc.nist.gov/publications/fips)
+- [Wikipédia : vecteur d'initialisation](https://en.wikipedia.org/wiki/Initialization_vector)
 - [Codage sécurisé - Génération de nombres aléatoires forts](https://www.securecoding.cert.org/confluence/display/java/MSC02-J.+Generate+strong+random+numbers)
-- [Remplissage de chiffrement asymétrique optimal] (https://en.wikipedia.org/wiki/Optimal_asymmetric_encryption_padding)
-- [Aide-mémoire sur le stockage cryptographique] (https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
-- [Fiche de triche de stockage de mot de passe] (https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
+- [Remplissage de chiffrement asymétrique optimal](https://en.wikipedia.org/wiki/Optimal_asymmetric_encryption_padding)
+- [Aide-mémoire sur le stockage cryptographique](https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html)
+- [Fiche de triche de stockage de mot de passe](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)
 - [Codage sécurisé - N'utilisez pas d'algorithmes cryptographiques non sécurisés ou faibles](https://www.securecoding.cert.org/confluence/display/java/MSC61-J.+Do+not+use+insecure+or+weak+ cryptographiques+algorithmes)
-- [Aléatoire non sécurisé] (https://owasp.org/www-community/vulnerabilities/Insecure_Randomness)
-- [Entropie insuffisante] (https://owasp.org/www-community/vulnerabilities/Insufficient_Entropy)
-- [Longueur d'ID de session insuffisante] (https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length)
+- [Aléatoire non sécurisé](https://owasp.org/www-community/vulnerabilities/Insecure_Randomness)
+- [Entropie insuffisante](https://owasp.org/www-community/vulnerabilities/Insufficient_Entropy)
+- [Longueur d'ID de session insuffisante](https://owasp.org/www-community/vulnerabilities/Insufficient_Session-ID_Length)
 - [Utilisation d'un algorithme cryptographique défectueux ou risqué](https://owasp.org/www-community/vulnerabilities/Using_a_broken_or_risky_cryptographic_algorithm)
 - [API Javax.crypto.cipher](https://docs.oracle.com/javase/8/docs/api/javax/crypto/Cipher.html)
 - ISO 18033-1:2015 – Algorithmes de chiffrement
