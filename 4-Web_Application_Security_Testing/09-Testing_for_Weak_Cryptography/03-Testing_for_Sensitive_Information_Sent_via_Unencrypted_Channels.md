@@ -10,7 +10,7 @@ Les données sensibles doivent être protégées lorsqu'elles sont transmises su
 
 - [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure).
 - [OWASP ASVS - Vérification V9](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x17-V9-Communications.md).
-- [Aide-mémoire sur la protection de la couche de transport] (https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
+- [Aide-mémoire sur la protection de la couche de transport](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
 
 En règle générale, si les données doivent être protégées lors de leur stockage, ces données doivent également être protégées lors de leur transmission. Voici quelques exemples de données sensibles :
 
@@ -37,7 +37,7 @@ Exemples d'informations d'identification personnelle (PII) :
 
 ## Comment tester
 
-Divers types d'informations devant être protégées pourraient être transmises par l'application en clair. Pour vérifier si ces informations sont transmises via HTTP au lieu de HTTPS, capturez le trafic entre un client et un serveur d'applications Web nécessitant des informations d'identification. Pour tout message contenant des données sensibles, vérifiez que l'échange s'est produit à l'aide de HTTPS. Voir plus d'informations sur la transmission non sécurisée des identifiants [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure) ou [Transport Layer Protection Cheat Sheet] (https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
+Divers types d'informations devant être protégées pourraient être transmises par l'application en clair. Pour vérifier si ces informations sont transmises via HTTP au lieu de HTTPS, capturez le trafic entre un client et un serveur d'applications Web nécessitant des informations d'identification. Pour tout message contenant des données sensibles, vérifiez que l'échange s'est produit à l'aide de HTTPS. Voir plus d'informations sur la transmission non sécurisée des identifiants [OWASP Top 10 2017 A3-Sensitive Data Exposure](https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure) ou [Transport Layer Protection Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Protection_Cheat_Sheet.html).
 
 ### Exemple 1 : Authentification de base sur HTTP
 
@@ -114,7 +114,7 @@ Si l'application Web dispose de fonctionnalités permettant à un utilisateur de
 - Formulaires permettant aux utilisateurs de modifier les informations d'identification
 - Formulaires qui demandent à l'utilisateur de s'authentifier auprès d'un autre fournisseur (par exemple, traitement des paiements)
 
-### Exemple 5 : test des informations sensibles au mot de passe dans le code source ou les journaux
+### Exemple 5 : test des informations sensibles au mot de passe dans le code source ou les journaux
 
 Utilisez l'une des techniques suivantes pour rechercher des informations sensibles.
 
@@ -140,5 +140,5 @@ Utilisez HTTPS pour l'ensemble du site Web et redirigez toutes les requêtes HTT
 ## Références
 
 - [Transport non sécurisé OWASP](https://owasp.org/www-community/vulnerabilities/Insecure_Transport)
-- [Aide-mémoire sur la sécurité du transport strict HTTP OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html)
-- [Encryptons] (https://letsencrypt.org)
+- [Aide-mémoire sur la sécurité du transport strict HTTP OWASP](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Strict_Transport_Security_Cheat_Sheet.html)
+- [Encryptons](https://letsencrypt.org)
