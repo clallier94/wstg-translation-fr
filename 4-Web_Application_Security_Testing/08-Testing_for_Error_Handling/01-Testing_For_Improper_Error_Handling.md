@@ -1,4 +1,4 @@
-# Test de la gestion incorrecte des erreurs
+# Test de la gestion inappropri√©e des erreurs 
 
 |ID          |
 |------------|
@@ -6,77 +6,77 @@
 
 ## Sommaire
 
-Tous les types d'applications (applications Web, serveurs Web, bases de donnÈes, etc.) gÈnÈreront des erreurs pour diverses raisons. Les dÈveloppeurs ignorent souvent la gestion de ces erreurs ou repoussent l'idÈe qu'un utilisateur essaiera un jour de dÈclencher une erreur ‡ dessein (*par exemple* en envoyant une chaÓne l‡ o˘ un entier est attendu). Lorsque le dÈveloppeur ne considËre que le chemin heureux, il oublie toutes les autres entrÈes utilisateur possibles que le code peut recevoir mais ne peut pas gÈrer.
+Tous les types d'applications (applications Web, serveurs Web, bases de donn√©es, etc.) g√©n√©reront des erreurs pour diverses raisons. Les d√©veloppeurs ignorent souvent la gestion de ces erreurs ou repoussent l'id√©e qu'un utilisateur essaiera un jour de d√©clencher une erreur √† dessein (*par exemple* en envoyant une cha√Æne l√† o√π un entier est attendu). Lorsque le d√©veloppeur ne consid√®re que le chemin heureux, il oublie toutes les autres entr√©es utilisateur possibles que le code peut recevoir mais ne peut pas g√©rer.
 
-Les erreurs augmentent parfois comme†:
+Les erreurs augmentent parfois comme¬†:
 
 - traces de pile,
-- les timeouts du rÈseau,
-- dÈcalage d'entrÈe,
-- et les vidages mÈmoire.
+- les timeouts du r√©seau,
+- d√©calage d'entr√©e,
+- et les vidages m√©moire.
 
-Une mauvaise gestion des erreurs peut permettre aux attaquants de†:
+Une mauvaise gestion des erreurs peut permettre aux attaquants de¬†:
 
-- Comprendre les API utilisÈes en interne.
-- Cartographier les diffÈrents services s'intÈgrant les uns aux autres en obtenant un aperÁu des systËmes internes et des cadres utilisÈs, ce qui ouvre la porte ‡ l'enchaÓnement des attaques.
-- Recueillir les versions et les types d'applications utilisÈes.
-- DoS le systËme en forÁant le systËme dans une impasse ou une exception non gÈrÈe qui envoie un signal de panique au moteur qui l'exÈcute.
-- ContrÙle le contournement lorsqu'une certaine exception n'est pas limitÈe par la logique dÈfinie autour du chemin heureux.
+- Comprendre les API utilis√©es en interne.
+- Cartographier les diff√©rents services s'int√©grant les uns aux autres en obtenant un aper√ßu des syst√®mes internes et des cadres utilis√©s, ce qui ouvre la porte √† l'encha√Ænement des attaques.
+- Recueillir les versions et les types d'applications utilis√©es.
+- DoS le syst√®me en for√ßant le syst√®me dans une impasse ou une exception non g√©r√©e qui envoie un signal de panique au moteur qui l'ex√©cute.
+- Contr√¥le le contournement lorsqu'une certaine exception n'est pas limit√©e par la logique d√©finie autour du chemin heureux.
 
 ## Objectifs des tests
 
 - Identifier la sortie d'erreur existante.
-- Analyser les diffÈrentes sorties retournÈes.
+- Analyser les diff√©rentes sorties retourn√©es.
 
 ## Comment tester
 
-Les erreurs sont gÈnÈralement considÈrÈes comme bÈnignes car elles fournissent des donnÈes de diagnostic et des messages qui pourraient aider l'utilisateur ‡ comprendre le problËme en question ou permettre au dÈveloppeur de dÈboguer cette erreur.
+Les erreurs sont g√©n√©ralement consid√©r√©es comme b√©nignes car elles fournissent des donn√©es de diagnostic et des messages qui pourraient aider l'utilisateur √† comprendre le probl√®me en question ou permettre au d√©veloppeur de d√©boguer cette erreur.
 
-En essayant d'envoyer des donnÈes inattendues ou en forÁant le systËme dans certains cas et scÈnarios extrÍmes, le systËme ou l'application dÈvoilera la plupart du temps un peu ce qui se passe en interne, ‡ moins que les dÈveloppeurs ne dÈsactivent toutes les erreurs possibles et ne renvoient un certain message personnalisÈ. .
+En essayant d'envoyer des donn√©es inattendues ou en for√ßant le syst√®me dans certains cas et sc√©narios extr√™mes, le syst√®me ou l'application d√©voilera la plupart du temps un peu ce qui se passe en interne, √† moins que les d√©veloppeurs ne d√©sactivent toutes les erreurs possibles et ne renvoient un certain message personnalis√©. .
 
 ### Serveurs Web
 
-Toutes les applications Web s'exÈcutent sur un serveur Web, qu'il soit intÈgrÈ ou ‡ part entiËre. Les applications Web doivent gÈrer et analyser les requÍtes HTTP, et pour cela, un serveur Web fait toujours partie de la pile. Certains des serveurs Web les plus connus sont NGINX, Apache et IIS.
+Toutes les applications Web s'ex√©cutent sur un serveur Web, qu'il soit int√©gr√© ou √† part enti√®re. Les applications Web doivent g√©rer et analyser les requ√™tes HTTP, et pour cela, un serveur Web fait toujours partie de la pile. Certains des serveurs Web les plus connus sont NGINX, Apache et IIS.
 
-Les serveurs Web ont des messages d'erreur et des formats connus. Si l'on n'est pas familier avec leur apparence, une recherche en ligne pour eux fournirait des exemples. Une autre faÁon serait de consulter leur documentation ou simplement de configurer un serveur localement et de dÈcouvrir les erreurs en parcourant les pages utilisÈes par le serveur Web.
+Les serveurs Web ont des messages d'erreur et des formats connus. Si l'on n'est pas familier avec leur apparence, une recherche en ligne pour eux fournirait des exemples. Une autre fa√ßon serait de consulter leur documentation ou simplement de configurer un serveur localement et de d√©couvrir les erreurs en parcourant les pages utilis√©es par le serveur Web.
 
-Pour dÈclencher des messages d'erreur, un testeur doit†:
+Pour d√©clencher des messages d'erreur, un testeur doit¬†:
 
-- Rechercher des fichiers et dossiers alÈatoires qui ne seront pas trouvÈs (404s).
-- Essayez de demander des dossiers qui existent et voyez le comportement du serveur (403, page blanche ou liste de rÈpertoires).
-- Essayez d'envoyer une requÍte qui rompt le [HTTP RFC](https://tools.ietf.org/html/rfc7231). Un exemple serait d'envoyer un trËs grand chemin, de casser le format des en-tÍtes ou de changer la version HTTP.
-    - MÍme si les erreurs sont gÈrÈes au niveau de l'application, la rupture de la RFC HTTP peut faire apparaÓtre le serveur Web intÈgrÈ puisqu'il doit gÈrer la requÍte, et les dÈveloppeurs oublient de remplacer ces erreurs.
+- Rechercher des fichiers et dossiers al√©atoires qui ne seront pas trouv√©s (404s).
+- Essayez de demander des dossiers qui existent et voyez le comportement du serveur (403, page blanche ou liste de r√©pertoires).
+- Essayez d'envoyer une requ√™te qui rompt le [HTTP RFC](https://tools.ietf.org/html/rfc7231). Un exemple serait d'envoyer un tr√®s grand chemin, de casser le format des en-t√™tes ou de changer la version HTTP.
+    - M√™me si les erreurs sont g√©r√©es au niveau de l'application, la rupture de la RFC HTTP peut faire appara√Ætre le serveur Web int√©gr√© puisqu'il doit g√©rer la requ√™te, et les d√©veloppeurs oublient de remplacer ces erreurs.
 
 ### Applications
 
-Les applications sont les plus susceptibles d'Èmettre une grande variÈtÈ de messages d'erreur, notamment†: des traces de pile, des vidages mÈmoire, des exceptions mal gÈrÈes et des erreurs gÈnÈriques. Cela est d˚ au fait que les applications sont construites sur mesure la plupart du temps et que les dÈveloppeurs doivent observer et gÈrer tous les cas d'erreur possibles (ou disposer d'un mÈcanisme global de capture d'erreurs), et ces erreurs peuvent apparaÓtre ‡ partir d'intÈgrations avec d'autres services.
+Les applications sont les plus susceptibles d'√©mettre une grande vari√©t√© de messages d'erreur, notamment¬†: des traces de pile, des vidages m√©moire, des exceptions mal g√©r√©es et des erreurs g√©n√©riques. Cela est d√ª au fait que les applications sont construites sur mesure la plupart du temps et que les d√©veloppeurs doivent observer et g√©rer tous les cas d'erreur possibles (ou disposer d'un m√©canisme global de capture d'erreurs), et ces erreurs peuvent appara√Ætre √† partir d'int√©grations avec d'autres services.
 
-Pour qu'une application gÈnËre ces erreurs, un testeur doit†:
+Pour qu'une application g√©n√®re ces erreurs, un testeur doit¬†:
 
-1. Identifiez les points d'entrÈe possibles o˘ l'application attend des donnÈes.
-2. Analysez le type d'entrÈe attendu (chaÓnes, entiers, JSON, XML, etc.).
-3. Fuzzez chaque point d'entrÈe en fonction des Ètapes prÈcÈdentes pour avoir un scÈnario de test plus ciblÈ.
-   - Fuzzer chaque entrÈe avec toutes les injections possibles n'est pas la meilleure solution, sauf si vous disposez d'un temps de test illimitÈ et que l'application peut gÈrer autant d'entrÈes.
-   - Si le fuzzing n'est pas une option, sÈlectionnez manuellement les entrÈes viables qui ont le plus de chances de casser un certain analyseur (*par exemple* un crochet fermant pour un corps JSON, un texte volumineux o˘ seuls quelques caractËres sont attendus, injection CLRF avec paramËtres qui pourraient Ítre analysÈs par les serveurs et les contrÙles de validation d'entrÈe, les caractËres spÈciaux qui ne s'appliquent pas aux noms de fichiers, etc.).
-   - Le fuzzing avec des donnÈes de jargon doit Ítre exÈcutÈ pour chaque type, car parfois les interprÈteurs sortiront de la gestion des exceptions du dÈveloppeur.
-4. Comprenez le service qui rÈpond avec le message d'erreur et essayez de crÈer une liste fuzz plus prÈcise pour faire ressortir plus d'informations ou de dÈtails sur l'erreur de ce service (il peut s'agir d'une base de donnÈes, d'un service autonome, etc.).
+1. Identifiez les points d'entr√©e possibles o√π l'application attend des donn√©es.
+2. Analysez le type d'entr√©e attendu (cha√Ænes, entiers, JSON, XML, etc.).
+3. Fuzzez chaque point d'entr√©e en fonction des √©tapes pr√©c√©dentes pour avoir un sc√©nario de test plus cibl√©.
+   - Fuzzer chaque entr√©e avec toutes les injections possibles n'est pas la meilleure solution, sauf si vous disposez d'un temps de test illimit√© et que l'application peut g√©rer autant d'entr√©es.
+   - Si le fuzzing n'est pas une option, s√©lectionnez manuellement les entr√©es viables qui ont le plus de chances de casser un certain analyseur (*par exemple* un crochet fermant pour un corps JSON, un texte volumineux o√π seuls quelques caract√®res sont attendus, injection CLRF avec param√®tres qui pourraient √™tre analys√©s par les serveurs et les contr√¥les de validation d'entr√©e, les caract√®res sp√©ciaux qui ne s'appliquent pas aux noms de fichiers, etc.).
+   - Le fuzzing avec des donn√©es de jargon doit √™tre ex√©cut√© pour chaque type, car parfois les interpr√©teurs sortiront de la gestion des exceptions du d√©veloppeur.
+4. Comprenez le service qui r√©pond avec le message d'erreur et essayez de cr√©er une liste fuzz plus pr√©cise pour faire ressortir plus d'informations ou de d√©tails sur l'erreur de ce service (il peut s'agir d'une base de donn√©es, d'un service autonome, etc.).
 
-Les messages d'erreur sont parfois la principale faiblesse de la cartographie des systËmes, en particulier sous une architecture de microservices. Si les services ne sont pas correctement configurÈs pour gÈrer les erreurs de maniËre gÈnÈrique et uniforme, les messages d'erreur permettent ‡ un testeur d'identifier quel service gËre quelles requÍtes et permettent une attaque plus ciblÈe par service.
+Les messages d'erreur sont parfois la principale faiblesse de la cartographie des syst√®mes, en particulier sous une architecture de microservices. Si les services ne sont pas correctement configur√©s pour g√©rer les erreurs de mani√®re g√©n√©rique et uniforme, les messages d'erreur permettent √† un testeur d'identifier quel service g√®re quelles requ√™tes et permettent une attaque plus cibl√©e par service.
 
-> Le testeur doit garder un úil vigilant sur le type de rÈponse. Parfois, les erreurs sont renvoyÈes comme un succËs avec un corps d'erreur, masquent l'erreur dans un 302 ou simplement en ayant une maniËre personnalisÈe de reprÈsenter cette erreur.
+> Le testeur doit garder un ≈ìil vigilant sur le type de r√©ponse. Parfois, les erreurs sont renvoy√©es comme un succ√®s avec un corps d'erreur, masquent l'erreur dans un 302 ou simplement en ayant une mani√®re personnalis√©e de repr√©senter cette erreur.
 
 ## Correction
 
-Pour remÈdier aux problËmes, consultez les [ContrÙles proactifs C10](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions) et la [Fiche de triche pour la gestion des erreurs](https:/ /cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).
+Pour rem√©dier aux probl√®mes, consultez les [Contr√¥les proactifs C10](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions) et la [Fiche de triche pour la gestion des erreurs](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html).
 
-## Cours de rÈcrÈation
+## Cours de r√©cr√©ation
 
 - [Juice Shop - Gestion des erreurs](https://pwning.owasp-juice.shop/part2/security-misconfiguration.html#provoke-an-error-that-is-nither-very-gracefully-ni-consistently-handled )
 
-## RÈfÈrences
+## R√©f√©rences
 
 - [WSTG : Annexe C - Vecteurs Fuzz](../../6-Appendix/C-Fuzz_Vectors.md)
-- [ContrÙles proactifs C10†: gÈrer toutes les erreurs et exceptions] (https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions)
-- [ASVS v4.1 v7.4†: gestion des erreurs](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x15-V7-Error-Logging.md#v74-error-handling)
+- [Contr√¥les proactifs C10¬†: g√©rer toutes les erreurs et exceptions](https://owasp.org/www-project-proactive-controls/v3/en/c10-errors-exceptions)
+- [ASVS v4.1 v7.4¬†: gestion des erreurs](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x15-V7-Error-Logging.md#v74-error-handling)
 - [CWE 728 - Traitement incorrect des erreurs](https://cwe.mitre.org/data/definitions/728.html)
-- [Cheat Sheet Series†: Gestion des erreurs] (https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
+- [Cheat Sheet Series¬†: Gestion des erreurs](https://cheatsheetseries.owasp.org/cheatsheets/Error_Handling_Cheat_Sheet.html)
