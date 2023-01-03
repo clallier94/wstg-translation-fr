@@ -50,9 +50,9 @@ Méthode de test spécifique :
 ## Cas de test associés
 
 - Tous les cas de test [Input Validation](../07-Input_Validation_Testing/README.md).
-- [Test d'énumération de compte et de compte d'utilisateur devinable] (../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md).
-- [Test pour contourner le schéma de gestion de session] (../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md).
-- [Test des variables de session exposées] (../06-Session_Management_Testing/04-Testing_for_Exposed_Session_Variables.md).
+- [Test d'énumération de compte et de compte d'utilisateur devinable](../03-Identity_Management_Testing/04-Testing_for_Account_Enumeration_and_Guessable_User_Account.md).
+- [Test pour contourner le schéma de gestion de session](../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md).
+- [Test des variables de session exposées](../06-Session_Management_Testing/04-Testing_for_Exposed_Session_Variables.md).
 
 ## Correction
 
@@ -60,8 +60,8 @@ L'application/le système doit s'assurer que seules les données "logiquement va
 
 ## Outils
 
-- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
-- [Burp Suite] (https://portswigger.net/burp)
+- [Proxy d'attaque Zed OWASP (ZAP)](https://www.zaproxy.org)
+- [Burp Suite](https://portswigger.net/burp)
 
 ## Références
 
