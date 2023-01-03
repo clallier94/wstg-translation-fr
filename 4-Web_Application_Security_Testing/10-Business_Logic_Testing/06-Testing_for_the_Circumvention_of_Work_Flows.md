@@ -45,15 +45,15 @@ Un système de tableau d'affichage électronique peut être conçu pour garantir
 
 - [Test de la traversée du répertoire/de l'inclusion de fichiers](../05-Authorization_Testing/01-Testing_Directory_Traversal_File_Include.md)
 - [Test de contournement du schéma d'autorisation](../05-Authorization_Testing/02-Testing_for_Bypassing_Authorization_Schema.md)
-- [Test pour contourner le schéma de gestion de session](../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md)
-- [Tester la validation des données de la logique métier] (01-Test_Business_Logic_Data_Validation.md)
-- [Tester la capacité de forger des demandes] (02-Test_Ability_to_Forge_Requests.md)
-- [Tester les vérifications d'intégrité] (03-Test_Integrity_Checks.md)
-- [Tester la synchronisation du processus] (04-Test_for_Process_Timing.md)
-- [Tester le nombre de fois qu'une fonction peut être utilisée dans les limites] (05-Test_Number_of_Times_a_Function_Can_Be_Used_Limits.md)
-- [Tester les défenses contre l'utilisation abusive des applications] (07-Test_Defenses_Against_Application_Misuse.md)
-- [Téléchargement test de types de fichiers inattendus] (08-Test_Upload_of_Unexpected_File_Types.md)
-- [Tester le téléchargement de fichiers malveillants] (09-Test_Upload_of_Malicious_Files.md)
+- [Tester pour contourner le schéma de gestion de session](../06-Session_Management_Testing/01-Testing_for_Session_Management_Schema.md)
+- [Tester la validation des données de la logique métier](01-Test_Business_Logic_Data_Validation.md)
+- [Tester la capacité de forger des demandes](02-Test_Ability_to_Forge_Requests.md)
+- [Tester les vérifications d'intégrité](03-Test_Integrity_Checks.md)
+- [Tester la synchronisation du processus](04-Test_for_Process_Timing.md)
+- [Tester le nombre de fois qu'une fonction peut être utilisée dans les limites](05-Test_Number_of_Times_a_Function_Can_Be_Used_Limits.md)
+- [Tester les défenses contre l'utilisation abusive des applications](07-Test_Defenses_Against_Application_Misuse.md)
+- [Téléchargement test de types de fichiers inattendus](08-Test_Upload_of_Unexpected_File_Types.md)
+- [Tester le téléchargement de fichiers malveillants](09-Test_Upload_of_Malicious_Files.md)
 
 ## Correction
 
@@ -61,5 +61,5 @@ L'application doit être consciente d'elle-même et disposer de contrôles garan
 
 ## Références
 
-- [Aide-mémoire sur les cas d'abus OWASP] (https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
+- [Aide-mémoire sur les cas d'abus OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Abuse_Case_Cheat_Sheet.html)
 - [CWE-840 : Erreurs de logique métier](https://cwe.mitre.org/data/definitions/840.html)
