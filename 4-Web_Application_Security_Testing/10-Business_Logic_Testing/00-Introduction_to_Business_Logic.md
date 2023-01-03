@@ -18,7 +18,7 @@ Parfois, dans des applications très complexes, le testeur n'aura pas une compr�
 
 Les outils automatisés ont du mal à comprendre le contexte, c'est donc à une personne d'effectuer ce genre de tests. Les deux exemples suivants illustrent comment la compréhension de la fonctionnalité de l'application, les intentions du développeur et certaines réflexions créatives "prêtes à l'emploi" peuvent briser la logique de l'application. Le premier exemple commence par une manipulation simpliste des paramètres, tandis que le second est un exemple réel d'un processus en plusieurs étapes conduisant à subvertir complètement l'application.
 
-**Exemple 1**:
+**Exemple 1** :
 
 Supposons qu'un site de commerce électronique permette aux utilisateurs de sélectionner des articles à acheter, d'afficher une page de résumé, puis de proposer la vente. Que se passerait-il si un attaquant pouvait revenir à la page de résumé, maintenir sa même session valide et injecter un coût inférieur pour un article et terminer la transaction, puis passer à la caisse ?
 
@@ -42,19 +42,19 @@ Lors de l'installation d'addons, vous devez toujours faire preuve de diligence e
 
 Pour observer les blocs de requête et de réponse du trafic HTTP
 
-- [Proxy d'attaque Zed OWASP] (https://www.zaproxy.org)
-- [Burp Proxy] (https://portswigger.net/burp)
+- [Proxy d'attaque Zed OWASP](https://www.zaproxy.org)
+- [Burp Proxy](https://portswigger.net/burp)
 
-### Plug-ins de navigateur Web
+### Plug-ins de navigateur Web
 
 Pour afficher et modifier les en-têtes HTTP/HTTPS, publier les paramètres et observer le DOM du navigateur
 
-- [Tamper Data for FF Quantum] (https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum)
+- [Tamper Data for FF Quantum](https://addons.mozilla.org/en-US/firefox/addon/tamper-data-for-ff-quantum)
 - [Tamper Chrome (pour Google Chrome)](https://chrome.google.com/webstore/detail/tamper-chrome-extension/hifhgpdkfodlpnlmlnmhchnkepplebkb)
 
 ## Outils de test divers
 
-- [Barre d'outils du développeur Web] (https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
+- [Barre d'outils du développeur Web](https://chrome.google.com/webstore/detail/bfbameneiokkgbdmiekhjnmfkcnldhhm)
     - L'extension Web Developer ajoute un bouton de barre d'outils au navigateur avec divers outils de développement Web. Il s'agit du portage officiel de l'extension Web Developer pour Firefox.
 - [Fabricant de requêtes HTTP pour Chrome](https://chrome.google.com/webstore/detail/kajfghlhfkcocafkcjlajldicbikpgnp)
 - [Fabricant de requêtes HTTP pour Firefox](https://addons.mozilla.org/en-US/firefox/addon/http-request-maker)
@@ -68,11 +68,11 @@ Pour afficher et modifier les en-têtes HTTP/HTTPS, publier les paramètres et o
 ### Papiers blanc
 
 - [The Common Misuse Scoring System (CMSS): Metrics for Software Feature Misuse Vulnerabilities - NISTIR 7864](https://csrc.nist.gov/publications/detail/nistir/7864/final)
-- [Test à l'état fini des interfaces utilisateur graphiques, Fevzi Belli] (https://pdfs.semanticscholar.org/b57c/6c8022abfd2cb17ec785d3622027b3edfaaf.pdf)
-- [Principes et méthodes de test des machines à états finis - Une enquête, David Lee, Mihalis Yannakakis] (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.380.3405&rep=rep1&type=pdf)
+- [Test à l'état fini des interfaces utilisateur graphiques, Fevzi Belli](https://pdfs.semanticscholar.org/b57c/6c8022abfd2cb17ec785d3622027b3edfaaf.pdf)
+- [Principes et méthodes de test des machines à états finis - Une enquête, David Lee, Mihalis Yannakakis](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.380.3405&rep=rep1&type=pdf)
 - [Problèmes de sécurité dans les jeux en ligne, Jianxin Jeff Yan et Hyun-Jin Choi](https://www.researchgate.net/publication/220677013_Security_issues_in_online_games)
 - [Securing Virtual Worlds Against Real Attack, Dr. Igor Muttik, McAfee](https://www.info-point-security.com/open_downloads/2008/McAfee_wp_online_gaming_0808.pdf)
-- [Seven Business Logic Flaws That Put Your Website At Risk - Jeremiah Grossman Fondateur et CTO, WhiteHat Security](https://www.slideshare.net/jeremiahgrossman/seven-business-logic-flaws-that-put-your-website -à-risque-harvard-07062008)
+- [Seven Business Logic Flaws That Put Your Website At Risk - Jeremiah Grossman Fondateur et CTO, WhiteHat Security](https://www.slideshare.net/jeremiahgrossman/seven-business-logic-flaws-that-put-your-website-at-risk-harvard-07062008)
 - [Vers une détection automatisée des vulnérabilités logiques dans les applications Web - Viktoria Felmetsger Ludovico Cavedon Christopher Kruegel Giovanni Vigna](https://www.usenix.org/legacy/event/sec10/tech/full_papers/Felmetsger.pdf)
 
 ### Lié à l'OWASP
@@ -85,9 +85,9 @@ Pour afficher et modifier les en-têtes HTTP/HTTPS, publier les paramètres et o
 - [Logique métier](https://en.wikipedia.org/wiki/Business_logic)
 - [Business Logic Flaws et Yahoo Games](http://jeremiahgrossman.blogspot.com/2006/12/business-logic-flaws.html)
 - [CWE-840 : Erreurs de logique métier](https://cwe.mitre.org/data/definitions/840.html)
-- [Défier la logique : théorie, conception et mise en œuvre de systèmes complexes pour tester la logique d'application] (https://pdfs.semanticscholar.org/d14a/18f08f6488f903f2f691a1d159e95d8ee04f.pdf)
+- [Défier la logique : théorie, conception et mise en œuvre de systèmes complexes pour tester la logique d'application](https://pdfs.semanticscholar.org/d14a/18f08f6488f903f2f691a1d159e95d8ee04f.pdf)
 - [Cycle de vie des tests logiciels](http://softwaretestingfundamentals.com/software-testing-life-cycle/)
 
 ### Livres
 
-- [Le ​​modèle de décision : un cadre logique métier reliant les entreprises et la technologie, par Barbara Von Halle, Larry Goldberg, publié par CRC Press, ISBN1420082817 (2010)] (https://isbnsearch.org/isbn/1420082817)
+- [Le ​​modèle de décision : un cadre logique métier reliant les entreprises et la technologie, par Barbara Von Halle, Larry Goldberg, publié par CRC Press, ISBN1420082817 (2010)](https://isbnsearch.org/isbn/1420082817)
