@@ -65,12 +65,12 @@ L'application doit suivre des contrôles d'accès stricts sur la façon dont les
 ## Outils
 
 - Divers outils système/applicatifs tels que des éditeurs et des outils de manipulation de fichiers.
-- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
-- [Burp Suite] (https://portswigger.net/burp)
+- [Proxy d'attaque Zed OWASP (ZAP)](https://www.zaproxy.org)
+- [Burp Suite](https://portswigger.net/burp)
 
 ## Références
 
-- [Mise en œuvre de l'intégrité référentielle et de la logique métier partagée dans une RDB] (http://www.agiledata.org/essays/referentialIntegrity.html)
-- [Sur les règles et les contraintes d'intégrité dans les systèmes de bases de données] (https://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf)
+- [Mise en œuvre de l'intégrité référentielle et de la logique métier partagée dans une RDB](http://www.agiledata.org/essays/referentialIntegrity.html)
+- [Sur les règles et les contraintes d'intégrité dans les systèmes de bases de données](https://www.comp.nus.edu.sg/~lingtw/papers/IST92.teopk.pdf)
 - [Utiliser l'intégrité référentielle pour appliquer les règles métier de base dans Oracle](https://www.techrepublic.com/article/use-referential-integrity-to-enforce-basic-business-rules-in-oracle/)
 - [Optimiser la réutilisation de la logique métier avec la logique réactive](https://dzone.com/articles/maximizing-business-logic)
