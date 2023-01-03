@@ -1,4 +1,4 @@
-# Tester la fonctionnalité de paiement
+# Tester la fonctionnalitÃ© de paiement
 
 |ID          |
 |------------|
@@ -6,55 +6,55 @@
 
 ## Sommaire
 
-De nombreuses applications implémentent des fonctionnalités de paiement, notamment des sites de commerce électronique, des abonnements, des organisations caritatives, des sites de dons et des bureaux de change. La sécurité de cette fonctionnalité est essentielle, car des vulnérabilités pourraient permettre à des attaquants de voler l'organisation, de faire des achats frauduleux ou même de voler les détails de la carte de paiement d'autres utilisateurs. Ces problèmes pourraient entraîner non seulement des dommages à la réputation de l'organisation, mais également des pertes financières importantes, à la fois des pertes directes et des amendes des régulateurs de l'industrie.
+De nombreuses applications implÃ©mentent des fonctionnalitÃ©s de paiement, notamment des sites de commerce Ã©lectronique, des abonnements, des organisations caritatives, des sites de dons et des bureaux de change. La sÃ©curitÃ© de cette fonctionnalitÃ© est essentielle, car des vulnÃ©rabilitÃ©s pourraient permettre Ã  des attaquants de voler l'organisation, de faire des achats frauduleux ou mÃªme de voler les dÃ©tails de la carte de paiement d'autres utilisateurs. Ces problÃ¨mes pourraient entraÃ®ner non seulement des dommages Ã  la rÃ©putation de l'organisation, mais Ã©galement des pertes financiÃ¨res importantes, Ã  la fois des pertes directes et des amendes des rÃ©gulateurs de l'industrie.
 
 ## Objectifs des tests
 
-- Déterminer si la logique métier de la fonctionnalité de commerce électronique est robuste.
-- Comprendre le fonctionnement de la fonctionnalité de paiement.
-- Déterminer si la fonctionnalité de paiement est sécurisée.
+- DÃ©terminer si la logique mÃ©tier de la fonctionnalitÃ© de commerce Ã©lectronique est robuste.
+- Comprendre le fonctionnement de la fonctionnalitÃ© de paiement.
+- DÃ©terminer si la fonctionnalitÃ© de paiement est sÃ©curisÃ©e.
 
 ## Comment tester
 
-### Méthodes d'intégration de la passerelle de paiement
+### MÃ©thodes d'intÃ©gration de la passerelle de paiement
 
-Les applications peuvent intégrer la fonctionnalité de paiement de différentes manières, et l'approche de test variera en fonction de celle qui est utilisée. Les méthodes les plus courantes sont :
+Les applications peuvent intÃ©grer la fonctionnalitÃ© de paiement de diffÃ©rentes maniÃ¨res, et l'approche de test variera en fonction de celle qui est utilisÃ©e. Les mÃ©thodes les plus courantes sont :
 
 - Rediriger l'utilisateur vers une passerelle de paiement tierce.
 - Chargement d'une passerelle de paiement tiers dans un IFRAME sur l'application.
-- Disposer d'un formulaire HTML qui effectue une requête POST inter-domaines vers une passerelle de paiement tierce.
-- Accepter directement les détails de la carte, puis effectuer un POST depuis le backend de l'application vers l'API de la passerelle de paiement.
+- Disposer d'un formulaire HTML qui effectue une requÃªte POST inter-domaines vers une passerelle de paiement tierce.
+- Accepter directement les dÃ©tails de la carte, puis effectuer un POST depuis le backend de l'application vers l'API de la passerelle de paiement.
 
-### PCI DSS
+### PCIÂ DSS
 
-La norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS) est une norme que les organisations sont tenues de suivre pour traiter les paiements par débit et par carte (bien qu'il soit important de noter qu'il ne s'agit pas d'une loi). Une discussion complète de cette norme sort du cadre de ce guide (et de la plupart des tests de pénétration) - mais il est utile pour les testeurs de comprendre quelques points clés.
+La norme de sÃ©curitÃ© des donnÃ©es de l'industrie des cartes de paiement (PCI DSS) est une norme que les organisations sont tenues de suivre pour traiter les paiements par dÃ©bit et par carte (bien qu'il soit important de noter qu'il ne s'agit pas d'une loi). Une discussion complÃ¨te de cette norme sort du cadre de ce guide (et de la plupart des tests de pÃ©nÃ©tration) - mais il est utile pour les testeurs de comprendre quelques points clÃ©s.
 
-L'idée fausse la plus courante concernant la norme PCI DSS est qu'elle ne s'applique qu'aux systèmes qui stockent les données des titulaires de cartes (c'est-à-dire les détails des cartes de débit ou de crédit). Ceci est incorrect : cela s'applique à tout système qui "stocke, traite ou transmet" ces informations. Les exigences exactes à respecter dépendent de la manière dont les méthodes d'intégration de la passerelle de paiement sont utilisées. Les [Conseils sur le traitement des paiements de commerce électronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337 .pdf) fournit plus de détails à ce sujet, mais sous forme de bref résumé :
+L'idÃ©e fausse la plus courante concernant la norme PCI DSS est qu'elle ne s'applique qu'aux systÃ¨mes qui stockent les donnÃ©es des titulaires de cartes (c'est-Ã -dire les dÃ©tails des cartes de dÃ©bit ou de crÃ©dit). Ceci est incorrectÂ : cela s'applique Ã  tout systÃ¨me qui "stocke, traite ou transmet" ces informations. Les exigences exactes Ã  respecter dÃ©pendent de la maniÃ¨re dont les mÃ©thodes d'intÃ©gration de la passerelle de paiement sont utilisÃ©es. Les [Conseils sur le traitement des paiements de commerce Ã©lectronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf) fournit plus de dÃ©tails Ã  ce sujet, mais sous forme de bref rÃ©sumÃ©Â :
 
-| Méthode d'intégration | Questionnaire d'auto-évaluation (SAQ) |
+| MÃ©thode d'intÃ©gration | Questionnaire d'auto-Ã©valuation (SAQ) |
 |--------------------|------------------------------------------|
 | Redirect | [SAQ A](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-A.pdf) |
 | IFRAME | [SAQ A](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-A.pdf) |
 | Cross-domain POST | [SAQ A-EP](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2-SAQ-A_EP-rev1_1.pdf) |
 | Backend API | [SAQ D](https://www.pcisecuritystandards.org/documents/PCI-DSS-v3_2_1-SAQ-D_Merchant.pdf) |
 
-Outre les différences dans la surface d'attaque et le profil de risque de chaque approche, il existe également une différence significative dans le nombre d'exigences entre SAQ A (22 exigences) et SAQ D (329 exigences) que l'organisation doit respecter. En tant que tel, il convient de mettre en évidence les applications qui n'utilisent pas de redirection ou d'IFRAME, car elles représentent des risques techniques et de conformité accrus.
+Outre les diffÃ©rences dans la surface d'attaque et le profil de risque de chaque approche, il existe Ã©galement une diffÃ©rence significative dans le nombre d'exigences entre SAQ A (22 exigences) et SAQ D (329 exigences) que l'organisation doit respecter. En tant que tel, il convient de mettre en Ã©vidence les applications qui n'utilisent pas de redirection ou d'IFRAME, car elles reprÃ©sentent des risques techniques et de conformitÃ© accrus.
 
-### Modification de la quantité
+### Modification de la quantitÃ©
 
-La plupart des sites de commerce électronique permettent aux utilisateurs d'ajouter des articles à un panier avant de commencer le processus de paiement. Ce panier doit garder une trace des articles qui ont été ajoutés et de la quantité de chaque article. La quantité doit normalement être un nombre entier positif, mais si le site Web ne le valide pas correctement, il peut être possible de spécifier une quantité décimale d'un article (telle que "0,1") ou une quantité négative (telle que "-1" ). Selon le traitement backend, l'ajout de quantités négatives d'un article peut entraîner une valeur négative, ce qui réduit le coût global du panier.
+La plupart des sites de commerce Ã©lectronique permettent aux utilisateurs d'ajouter des articles Ã  un panier avant de commencer le processus de paiement. Ce panier doit garder une trace des articles qui ont Ã©tÃ© ajoutÃ©s et de la quantitÃ© de chaque article. La quantitÃ© doit normalement Ãªtre un nombre entier positif, mais si le site Web ne le valide pas correctement, il peut Ãªtre possible de spÃ©cifier une quantitÃ© dÃ©cimale d'un article (telle que `0.1`) ou une quantitÃ© nÃ©gative (telle que `-1` ). Selon le traitement backend, l'ajout de quantitÃ©s nÃ©gatives d'un article peut entraÃ®ner une valeur nÃ©gative, ce qui rÃ©duit le coÃ»t global du panier.
 
-Il existe généralement plusieurs manières de modifier le contenu du panier qui doit être testé, telles que :
+Il existe gÃ©nÃ©ralement plusieurs maniÃ¨res de modifier le contenu du panier qui doit Ãªtre testÃ©, telles que :
 
-- Ajout d'une quantité négative d'un article.
-- Suppression répétée d'articles jusqu'à ce que la quantité soit négative.
-- Mise à jour de la quantité à une valeur négative.
+- Ajout d'une quantitÃ© nÃ©gative d'un article.
+- Suppression rÃ©pÃ©tÃ©e d'articles jusqu'Ã  ce que la quantitÃ© soit nÃ©gative.
+- Mise Ã  jour de la quantitÃ© Ã  une valeur nÃ©gative.
 
-Certains sites peuvent également fournir un menu déroulant de quantités valides (comme les articles qui doivent être achetés par pack de 10), et il peut être possible de falsifier ces demandes pour ajouter d'autres quantités d'articles.
+Certains sites peuvent Ã©galement fournir un menu dÃ©roulant de quantitÃ©s valides (comme les articles qui doivent Ãªtre achetÃ©s par pack de 10), et il peut Ãªtre possible de falsifier ces demandes pour ajouter d'autres quantitÃ©s d'articles.
 
-Si les détails complets du panier sont transmis à la passerelle de paiement (plutôt que de simplement transmettre une valeur totale), il peut également être possible de falsifier les valeurs à ce stade.
+Si les dÃ©tails complets du panier sont transmis Ã  la passerelle de paiement (plutÃ´t que de simplement transmettre une valeur totale), il peut Ã©galement Ãªtre possible de falsifier les valeurs Ã  ce stade.
 
-Enfin, si l'application est vulnérable à la [pollution des paramètres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md), il peut être possible de provoquer un comportement inattendu en passant plusieurs fois un paramètre, par exemple :
+Enfin, si l'application est vulnÃ©rable Ã  la [pollution des paramÃ¨tres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md), il peut Ãªtre possible de provoquer un comportement inattendu en passant plusieurs fois un paramÃ¨tre, par exempleÂ :
 
 ```http
 POST /api/basket/add
@@ -67,7 +67,7 @@ item_id=1&quantity=5&quantity=4
 
 #### Sur la demande
 
-Lors de l'ajout d'un article au panier, l'application ne doit inclure que l'article et une quantité, comme dans l'exemple de demande ci-dessous :
+Lors de l'ajout d'un article au panier, l'application ne doit inclure que l'article et une quantitÃ©, comme dans l'exemple de demande ci-dessousÂ :
 
 ```http
 POST /api/basket/add HTTP/1.1
@@ -76,7 +76,7 @@ Host: example.org
 item_id=1&quantity=5
 ```
 
-Cependant, dans certains cas, l'application peut également inclure le prix, ce qui signifie qu'il peut être possible de le falsifier :
+Cependant, dans certains cas, l'application peut Ã©galement inclure le prix, ce qui signifie qu'il peut Ãªtre possible de le falsifierÂ :
 
 ```http
 POST /api/basket/add HTTP/1.1
@@ -85,15 +85,15 @@ Host: example.org
 item_id=1&quantity=5&price=2.00
 ```
 
-Différents types d'éléments peuvent avoir des règles de validation différentes, de sorte que chaque type doit être testé séparément. Certaines applications permettent également aux utilisateurs d'ajouter un don facultatif à une association caritative dans le cadre de leur achat, et ce don peut généralement être d'un montant arbitraire. Si ce montant n'est pas validé, il peut être possible d'ajouter un montant de don négatif, ce qui réduirait alors la valeur totale du panier.
+DiffÃ©rents types d'Ã©lÃ©ments peuvent avoir des rÃ¨gles de validation diffÃ©rentes, de sorte que chaque type doit Ãªtre testÃ© sÃ©parÃ©ment. Certaines applications permettent Ã©galement aux utilisateurs d'ajouter un don facultatif Ã  une association caritative dans le cadre de leur achat, et ce don peut gÃ©nÃ©ralement Ãªtre d'un montant arbitraire. Si ce montant n'est pas validÃ©, il peut Ãªtre possible d'ajouter un montant de don nÃ©gatif, ce qui rÃ©duirait alors la valeur totale du panier.
 
 #### Sur la passerelle de paiement
 
-Si le processus de paiement est effectué sur une passerelle de paiement tierce, il peut être possible de falsifier les prix entre l'application et la passerelle.
+Si le processus de paiement est effectuÃ© sur une passerelle de paiement tierce, il peut Ãªtre possible de falsifier les prix entre l'application et la passerelle.
 
-Le transfert vers la passerelle peut être effectué à l'aide d'un POST interdomaine vers la passerelle, comme illustré dans l'exemple HTML ci-dessous.
+Le transfert vers la passerelle peut Ãªtre effectuÃ© Ã  l'aide d'un POST interdomaine vers la passerelle, comme illustrÃ© dans l'exemple HTML ci-dessous.
 
-> Remarque : Les détails de la carte ne sont pas inclus dans cette demande - l'utilisateur sera invité à les saisir sur la passerelle de paiement :
+> Remarque : Les dÃ©tails de la carte ne sont pas inclus dans cette demande - l'utilisateur sera invitÃ© Ã  les saisir sur la passerelle de paiementÂ :
 
 ```html
 <form action="https://example.org/process_payment" method="POST">
@@ -109,142 +109,142 @@ Le transfert vers la passerelle peut être effectué à l'aide d'un POST interdomai
 </form>
 ```
 
-En modifiant le formulaire HTML ou en interceptant la requête POST, il peut être possible de modifier les prix des articles, et de les acheter effectivement moins cher. Notez que de nombreuses passerelles de paiement rejetteront une transaction avec une valeur de zéro, donc un total de 0,01 a plus de chances de réussir. Cependant, certaines passerelles de paiement peuvent accepter des valeurs négatives (utilisées pour traiter les remboursements). Lorsqu'il existe plusieurs valeurs (telles que les prix des articles, les frais d'expédition et le coût total du panier), toutes doivent être testées.
+En modifiant le formulaire HTML ou en interceptant la requÃªte POST, il peut Ãªtre possible de modifier les prix des articles, et de les acheter effectivement moins cher. Notez que de nombreuses passerelles de paiement rejetteront une transaction avec une valeur de zÃ©ro, donc un total de 0,01 a plus de chances de rÃ©ussir. Cependant, certaines passerelles de paiement peuvent accepter des valeurs nÃ©gatives (utilisÃ©es pour traiter les remboursements). Lorsqu'il existe plusieurs valeurs (telles que les prix des articles, les frais d'expÃ©dition et le coÃ»t total du panier), toutes doivent Ãªtre testÃ©es.
 
-Si la passerelle de paiement utilise un IFRAME à la place, il peut être possible d'effectuer un type d'attaque similaire en modifiant l'URL IFRAME :
+Si la passerelle de paiement utilise un IFRAME Ã  la place, il peut Ãªtre possible d'effectuer un type d'attaque similaire en modifiant l'URL IFRAMEÂ :
 
 ```html
 <iframe src="https://example.org/payment_iframe?merchant_id=123&basket_total=22.00" />
 ```
 
-> Remarque : Les passerelles de paiement sont généralement gérées par des tiers et, en tant que telles, peuvent ne pas être incluses dans la portée des tests. Cela signifie que si la falsification des prix peut être acceptable, d'autres types d'attaques (telles que l'injection SQL) ne doivent pas être effectuées sans approbation écrite explicite).
+> RemarqueÂ : Les passerelles de paiement sont gÃ©nÃ©ralement gÃ©rÃ©es par des tiers et, en tant que telles, peuvent ne pas Ãªtre incluses dans la portÃ©e des tests. Cela signifie que si la falsification des prix peut Ãªtre acceptable, d'autres types d'attaques (telles que l'injection SQL) ne doivent pas Ãªtre effectuÃ©es sans approbation Ã©crite explicite).
 
-#### Détails de la transaction cryptée
+#### DÃ©tails de la transaction cryptÃ©e
 
-Afin d'éviter que la transaction ne soit falsifiée, certaines passerelles de paiement crypteront les détails de la demande qui leur est faite. Par exemple, [Paypal](https://developer.paypal.com/api/nvp-soap/paypal-payments-standard/integration-guide/encryptedwebpayments/#link-usingewptoprotectmanuallycreatedpaymentbuttons) utilise la cryptographie à clé publique.
+Afin d'Ã©viter que la transaction ne soit falsifiÃ©e, certaines passerelles de paiement crypteront les dÃ©tails de la demande qui leur est faite. Par exemple, [Paypal](https://developer.paypal.com/api/nvp-soap/paypal-payments-standard/integration-guide/encryptedwebpayments/#link-usingewptoprotectmanuallycreatedpaymentbuttons) utilise la cryptographie Ã  clÃ© publique.
 
-La première chose à essayer est de faire une demande non cryptée, car certaines passerelles de paiement autorisent les transactions non sécurisées à moins qu'elles n'aient été spécifiquement configurées pour les rejeter.
+La premiÃ¨re chose Ã  essayer est de faire une demande non cryptÃ©e, car certaines passerelles de paiement autorisent les transactions non sÃ©curisÃ©es Ã  moins qu'elles n'aient Ã©tÃ© spÃ©cifiquement configurÃ©es pour les rejeter.
 
-Si cela ne fonctionne pas, vous devez trouver la clé publique utilisée pour chiffrer les détails de la transaction, qui pourraient être exposés dans une sauvegarde de l'application, ou si vous pouvez trouver une vulnérabilité de traversée de répertoire.
+Si cela ne fonctionne pas, vous devez trouver la clÃ© publique utilisÃ©e pour chiffrer les dÃ©tails de la transaction, qui pourraient Ãªtre exposÃ©s dans une sauvegarde de l'application, ou si vous pouvez trouver une vulnÃ©rabilitÃ© de traversÃ©e de rÃ©pertoire.
 
-Alternativement, il est possible que l'application réutilise la même paire de clés publique/privée pour la passerelle de paiement et son certificat numérique. Vous pouvez obtenir la clé publique du serveur avec la commande suivante :
+Alternativement, il est possible que l'application rÃ©utilise la mÃªme paire de clÃ©s publique/privÃ©e pour la passerelle de paiement et son certificat numÃ©rique. Vous pouvez obtenir la clÃ© publique du serveur avec la commande suivanteÂ :
 
 ```bash
 echo -e '\0' | openssl s_client -connect example.org:443 2>/dev/null | openssl x509 -pubkey -noout
 ```
 
-Une fois que vous avez cette clé, vous pouvez alors essayer de créer une demande cryptée (basée sur la documentation de la passerelle de paiement) et la soumettre à la passerelle pour voir si elle est acceptée.
+Une fois que vous avez cette clÃ©, vous pouvez alors essayer de crÃ©er une demande cryptÃ©e (basÃ©e sur la documentation de la passerelle de paiement) et la soumettre Ã  la passerelle pour voir si elle est acceptÃ©e.
 
-#### Hachages sécurisés
+#### Hachages sÃ©curisÃ©s
 
-D'autres passerelles de paiement utilisent un hachage sécurisé (ou un HMAC) des détails de la transaction pour empêcher toute falsification. Les détails exacts de la façon dont cela est fait varient selon les fournisseurs (par exemple, [Adyen](https://docs.adyen.com/online-payments/classic-integrations/hosted-payment-pages/hmac-signature-calculation) utilisez HMAC-SHA256), mais il inclura normalement les détails de la transaction et une valeur secrète. Par exemple, un hachage peut être calculé comme suit :
+D'autres passerelles de paiement utilisent un hachage sÃ©curisÃ© (ou un HMAC) des dÃ©tails de la transaction pour empÃªcher toute falsification. Les dÃ©tails exacts de la faÃ§on dont cela est fait varient selon les fournisseurs (par exemple, [Adyen](https://docs.adyen.com/online-payments/classic-integrations/hosted-payment-pages/hmac-signature-calculation) utilisez HMAC-SHA256), mais il inclura normalement les dÃ©tails de la transaction et une valeur secrÃ¨te. Par exemple, un hachage peut Ãªtre calculÃ© comme suitÂ :
 
 ```php
 $secure_hash = md5($merchant_id . $transaction_id . $items . $total_value . $secret)
 ```
 
-Cette valeur est ensuite ajoutée à la requête POST envoyée à la passerelle de paiement et vérifiée pour s'assurer que la transaction n'a pas été falsifiée.
+Cette valeur est ensuite ajoutÃ©e Ã  la requÃªte POST envoyÃ©e Ã  la passerelle de paiement et vÃ©rifiÃ©e pour s'assurer que la transaction n'a pas Ã©tÃ© falsifiÃ©e.
 
-La première chose à essayer est de supprimer le hachage sécurisé, car certaines passerelles de paiement autorisent les transactions non sécurisées, sauf si une option de configuration spécifique a été définie.
+La premiÃ¨re chose Ã  essayer est de supprimer le hachage sÃ©curisÃ©, car certaines passerelles de paiement autorisent les transactions non sÃ©curisÃ©es, sauf si une option de configuration spÃ©cifique a Ã©tÃ© dÃ©finie.
 
-La requête POST doit contenir toutes les valeurs requises pour calculer ce hachage, autres que la clé secrète. Cela signifie que si vous savez comment le hachage est calculé (ce qui devrait être inclus dans la documentation de la passerelle de paiement), vous pouvez tenter de forcer brutalement le secret. Alternativement, si le site Web exécute une application standard, il peut y avoir un secret par défaut dans les fichiers de configuration ou le code source. Enfin, si vous pouvez trouver une sauvegarde du site Web ou accéder aux fichiers de configuration, vous pourrez peut-être y trouver le secret.
+La requÃªte POST doit contenir toutes les valeurs requises pour calculer ce hachage, autres que la clÃ© secrÃ¨te. Cela signifie que si vous savez comment le hachage est calculÃ© (ce qui devrait Ãªtre inclus dans la documentation de la passerelle de paiement), vous pouvez tenter de forcer brutalement le secret. Alternativement, si le site Web exÃ©cute une application standard, il peut y avoir un secret par dÃ©faut dans les fichiers de configuration ou le code source. Enfin, si vous pouvez trouver une sauvegarde du site Web ou accÃ©der aux fichiers de configuration, vous pourrez peut-Ãªtre y trouver le secret.
 
-Si vous pouvez obtenir ce secret, vous pouvez alors falsifier les détails de la transaction, puis générer votre propre hachage sécurisé qui sera accepté par la passerelle de paiement.
+Si vous pouvez obtenir ce secret, vous pouvez alors falsifier les dÃ©tails de la transaction, puis gÃ©nÃ©rer votre propre hachage sÃ©curisÃ© qui sera acceptÃ© par la passerelle de paiement.
 
 #### Falsification de devises
 
-S'il n'est pas possible de modifier les prix réels, il peut être possible de modifier la devise utilisée, en particulier lorsque les applications prennent en charge plusieurs devises. Par exemple, l'application peut valider que le prix est de 10, mais si vous pouvez changer la devise pour payer 10 USD au lieu de 10 GBP, cela vous permettra d'acheter des articles moins cher.
+S'il n'est pas possible de modifier les prix rÃ©els, il peut Ãªtre possible de modifier la devise utilisÃ©e, en particulier lorsque les applications prennent en charge plusieurs devises. Par exemple, l'application peut valider que le prix est de 10, mais si vous pouvez changer la devise pour payer 10 USD au lieu de 10 GBP, cela vous permettra d'acheter des articles moins cher.
 
-#### Requêtes différées
+#### RequÃªtes diffÃ©rÃ©es
 
-Si la valeur des articles sur le site change au fil du temps (par exemple lors d'un échange de devises), il peut alors être possible d'acheter ou de vendre à un ancien prix en interceptant les demandes à l'aide d'un proxy local et en les retardant. Pour que cela soit exploitable, le prix devrait être soit inclus dans la demande, soit lié à quelque chose dans la demande (comme l'ID de session ou de transaction). L'exemple ci-dessous montre comment cela pourrait potentiellement être exploité sur une application permettant aux utilisateurs d'acheter et de vendre de l'or :
+Si la valeur des articles sur le site change au fil du temps (par exemple lors d'un Ã©change de devises), il peut alors Ãªtre possible d'acheter ou de vendre Ã  un ancien prix en interceptant les demandes Ã  l'aide d'un proxy local et en les retardant. Pour que cela soit exploitable, le prix devrait Ãªtre soit inclus dans la demande, soit liÃ© Ã  quelque chose dans la demande (comme l'ID de session ou de transaction). L'exemple ci-dessous montre comment cela pourrait potentiellement Ãªtre exploitÃ© sur une application permettant aux utilisateurs d'acheter et de vendre de l'orÂ :
 
 - Voir le prix actuel de l'or sur le site Web.
 - Initier une demande d'achat pour 1 once d'or.
 - Intercepter et geler la demande.
-- Attendez une minute pour vérifier à nouveau le prix de l'or :
-    - S'il augmente, laissez la transaction se terminer et achetez l'or à un prix inférieur à sa valeur actuelle.
-    - S'il diminue, supprimez la requête request.
+- Attendez une minute pour vÃ©rifier Ã  nouveau le prix de l'orÂ :
+    - S'il augmente, laissez la transaction se terminer et achetez l'or Ã  un prix infÃ©rieur Ã  sa valeur actuelle.
+    - S'il diminue, supprimez la requÃªte request.
 
-Si le site Web permet à l'utilisateur d'effectuer des paiements en utilisant des crypto-monnaies (qui sont généralement beaucoup plus volatiles), il peut être possible d'exploiter cela en obtenant un prix fixe dans cette crypto-monnaie, puis en attendant de voir si la valeur augmente ou diminue par rapport au devise principale utilisée par le site Web.
+Si le site Web permet Ã  l'utilisateur d'effectuer des paiements en utilisant des crypto-monnaies (qui sont gÃ©nÃ©ralement beaucoup plus volatiles), il peut Ãªtre possible d'exploiter cela en obtenant un prix fixe dans cette crypto-monnaie, puis en attendant de voir si la valeur augmente ou diminue par rapport au devise principale utilisÃ©e par le site Web.
 
-### Codes de réduction
+### Codes de rÃ©duction
 
-Si l'application prend en charge les codes de réduction, différentes vérifications doivent être effectuées :
+Si l'application prend en charge les codes de rÃ©duction, diffÃ©rentes vÃ©rifications doivent Ãªtre effectuÃ©esÂ :
 
-- Les codes sont-ils facilement devinables (TEST, TEST10, SORRY, SORRY10, nom de l'entreprise, etc.) ?
-    - Si un code contient un nombre, peut-on trouver plus de codes en augmentant le nombre ?
-- Existe-t-il une protection contre la force brute ?
-- Plusieurs codes de réduction peuvent-ils être appliqués en même temps ?
-- Les codes de réduction peuvent-ils être appliqués plusieurs fois ?
-- Pouvez-vous [injecter des caractères génériques](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection) tels que `%` ou `*` ?
-- Les codes de réduction sont-ils exposés dans la source HTML ou dans les champs `<input>` masqués n'importe où sur l'application ?
+- Les codes sont-ils facilement devinables (TEST, TEST10, SORRY, SORRY10, nom de l'entreprise, etc.)Â ?
+    - Si un code contient un nombre, peut-on trouver plus de codes en augmentant le nombreÂ ?
+- Existe-t-il une protection contre la force bruteÂ ?
+- Plusieurs codes de rÃ©duction peuvent-ils Ãªtre appliquÃ©s en mÃªme tempsÂ ?
+- Les codes de rÃ©duction peuvent-ils Ãªtre appliquÃ©s plusieurs fois ?
+- Pouvez-vous [injecter des caractÃ¨res gÃ©nÃ©riques](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md#sql-wildcard-injection) tels que `%` ou `*`Â ?
+- Les codes de rÃ©duction sont-ils exposÃ©s dans la source HTML ou dans les champs `<input>` masquÃ©s n'importe oÃ¹ sur l'applicationÂ ?
 
-En plus de celles-ci, les vulnérabilités habituelles telles que l'injection SQL doivent être testées.
+En plus de celles-ci, les vulnÃ©rabilitÃ©s habituelles telles que l'injection SQL doivent Ãªtre testÃ©es.
 
 ### Rupture des flux de paiement
 
-Si le processus de paiement ou de paiement sur une application implique plusieurs étapes (telles que l'ajout d'articles à un panier, la saisie de codes de réduction, la saisie de détails d'expédition et la saisie d'informations de facturation), il peut être possible de provoquer un comportement imprévu en effectuant ces étapes en dehors de la séquence attendue. Par exemple, vous pouvez essayer :
+Si le processus de paiement ou de paiement sur une application implique plusieurs Ã©tapes (telles que l'ajout d'articles Ã  un panier, la saisie de codes de rÃ©duction, la saisie de dÃ©tails d'expÃ©dition et la saisie d'informations de facturation), il peut Ãªtre possible de provoquer un comportement imprÃ©vu en effectuant ces Ã©tapes en dehors de la sÃ©quence attendue. Par exemple, vous pouvez essayerÂ :
 
-- Modification de l'adresse de livraison après saisie des coordonnées de facturation pour réduire les frais de port.
-- Suppression d'articles après avoir entré les détails d'expédition, pour éviter une valeur de panier minimum.
-- Modification du contenu du panier après application d'un code de réduction.
-- Modifier le contenu d'un panier après avoir terminé le processus de commande.
+- Modification de l'adresse de livraison aprÃ¨s saisie des coordonnÃ©es de facturation pour rÃ©duire les frais de port.
+- Suppression d'articles aprÃ¨s avoir entrÃ© les dÃ©tails d'expÃ©dition, pour Ã©viter une valeur de panier minimum.
+- Modification du contenu du panier aprÃ¨s application d'un code de rÃ©duction.
+- Modifier le contenu d'un panier aprÃ¨s avoir terminÃ© le processus de commande.
 
-Il peut également être possible d'ignorer tout le processus de paiement pour la transaction. Par exemple, si l'application redirige vers une passerelle de paiement tierce, le flux de paiement peut être :
+Il peut Ã©galement Ãªtre possible d'ignorer tout le processus de paiement pour la transaction. Par exemple, si l'application redirige vers une passerelle de paiement tierce, le flux de paiement peut ÃªtreÂ :
 
-- L'utilisateur entre des détails sur l'application.
-- L'utilisateur est redirigé vers la passerelle de paiement tiers.
-- L'utilisateur saisit les détails de sa carte.
-    - Si le paiement est réussi, ils sont redirigés vers `success.php` sur l'application.
-    - Si le paiement échoue, ils sont redirigés vers `failure.php` sur l'application
-- L'application met à jour sa base de données de commandes et traite la commande si elle a réussi.
+- L'utilisateur entre des dÃ©tails sur l'application.
+- L'utilisateur est redirigÃ© vers la passerelle de paiement tiers.
+- L'utilisateur saisit les dÃ©tails de sa carte.
+    - Si le paiement est rÃ©ussi, ils sont redirigÃ©s vers `success.php` sur l'application.
+    - Si le paiement Ã©choue, ils sont redirigÃ©s vers `failure.php` sur l'application
+- L'application met Ã  jour sa base de donnÃ©es de commandes et traite la commande si elle a rÃ©ussi.
 
-Selon que l'application valide ou non le succès du paiement sur la passerelle, il peut être possible de forcer la navigation vers la page "success.php" (éventuellement en incluant un ID de transaction si nécessaire), ce qui entraînerait le site Web à traiter la commande comme si le paiement avait réussi. De plus, il peut être possible de faire des demandes répétées à la page `success.php` pour qu'une commande soit traitée plusieurs fois.
+Selon que l'application valide ou non le succÃ¨s du paiement sur la passerelle, il peut Ãªtre possible de forcer la navigation vers la page "success.php" (Ã©ventuellement en incluant un ID de transaction si nÃ©cessaire), ce qui entraÃ®nerait le site Web Ã  traiter la commande comme si le paiement avait rÃ©ussi. De plus, il peut Ãªtre possible de faire des demandes rÃ©pÃ©tÃ©es Ã  la page `success.php` pour qu'une commande soit traitÃ©e plusieurs fois.
 
 ### Exploitation des frais de traitement des transactions
 
-Les commerçants doivent normalement payer des frais pour chaque transaction traitée, qui se composent généralement d'une petite commission fixe et d'un pourcentage de la valeur totale. Cela signifie que recevoir de très petits paiements (tels que 0,01 $) peut entraîner une perte d'argent pour le commerçant, car les frais de traitement de la transaction sont supérieurs à la valeur totale de la transaction.
+Les commerÃ§ants doivent normalement payer des frais pour chaque transaction traitÃ©e, qui se composent gÃ©nÃ©ralement d'une petite commission fixe et d'un pourcentage de la valeur totale. Cela signifie que recevoir de trÃ¨s petits paiements (tels que 0,01 $) peut entraÃ®ner une perte d'argent pour le commerÃ§ant, car les frais de traitement de la transaction sont supÃ©rieurs Ã  la valeur totale de la transaction.
 
-Ce problème est rarement exploitable sur les sites de commerce électronique, car le prix de l'article le moins cher est généralement suffisamment élevé pour l'éviter. Cependant, si le site Web permet aux clients d'effectuer des paiements avec des montants arbitraires (tels que des dons), vérifiez qu'il applique une valeur minimale raisonnable.
+Ce problÃ¨me est rarement exploitable sur les sites de commerce Ã©lectronique, car le prix de l'article le moins cher est gÃ©nÃ©ralement suffisamment Ã©levÃ© pour l'Ã©viter. Cependant, si le site Web permet aux clients d'effectuer des paiements avec des montants arbitraires (tels que des dons), vÃ©rifiez qu'il applique une valeur minimale raisonnable.
 
 ### Tester les cartes de paiement
 
-La plupart des passerelles de paiement ont un ensemble de détails de carte de test définis, qui peuvent être utilisés par les développeurs lors des tests et du débogage. Celles-ci ne doivent être utilisables que sur les versions de développement ou bac à sable des passerelles, mais peuvent être acceptées sur les sites en ligne si elles ont été mal configurées.
+La plupart des passerelles de paiement ont un ensemble de dÃ©tails de carte de test dÃ©finis, qui peuvent Ãªtre utilisÃ©s par les dÃ©veloppeurs lors des tests et du dÃ©bogage. Celles-ci ne doivent Ãªtre utilisables que sur les versions de dÃ©veloppement ou bac Ã  sable des passerelles, mais peuvent Ãªtre acceptÃ©es sur les sites en ligne si elles ont Ã©tÃ© mal configurÃ©es.
 
-Des exemples de ces détails de test pour diverses passerelles de paiement sont répertoriés ci-dessous :
+Des exemples de ces dÃ©tails de test pour diverses passerelles de paiement sont rÃ©pertoriÃ©s ci-dessousÂ :
 
-- [Adyen - Numéros de carte de test](https://docs.adyen.com/development-resources/test-cards/test-card-numbers)
+- [Adyen - NumÃ©ros de carte de test](https://docs.adyen.com/development-resources/test-cards/test-card-numbers)
 - [Globalpay - Cartes de test](https://developer.globalpay.com/resources/test-card-numbers)
-- [Stripe - Numéros de carte de test de base] (https://stripe.com/docs/testing#cards)
-- [Worldpay - Numéros de carte de test](http://support.worldpay.com/support/kb/bg/testandgolive/tgl5103.html)
+- [Stripe - NumÃ©ros de carte de test de base](https://stripe.com/docs/testing#cards)
+- [Worldpay - NumÃ©ros de carte de test](http://support.worldpay.com/support/kb/bg/testandgolive/tgl5103.html)
 
 ### Logistique des tests
 
-Le test de la fonctionnalité de paiement sur les applications peut introduire une complexité supplémentaire, en particulier si un site en direct est en cours de test. Les domaines qui doivent être pris en compte incluent :
+Le test de la fonctionnalitÃ© de paiement sur les applications peut introduire une complexitÃ© supplÃ©mentaire, en particulier si un site en direct est en cours de test. Les domaines qui doivent Ãªtre pris en compte incluent :
 
-- Obtention des détails de paiement de la carte de test pour l'application.
-    - Si celles-ci ne sont pas disponibles, il peut être possible d'obtenir une carte prépayée ou une alternative.
-- Garder une trace de toutes les commandes passées afin qu'elles puissent être annulées et remboursées.
-- Ne pas passer de commandes qui ne peuvent pas être annulées ou qui entraîneront d'autres actions (comme l'expédition immédiate de marchandises depuis un entrepôt).
+- Obtention des dÃ©tails de paiement de la carte de test pour l'application.
+    - Si celles-ci ne sont pas disponibles, il peut Ãªtre possible d'obtenir une carte prÃ©payÃ©e ou une alternative.
+- Garder une trace de toutes les commandes passÃ©es afin qu'elles puissent Ãªtre annulÃ©es et remboursÃ©es.
+- Ne pas passer de commandes qui ne peuvent pas Ãªtre annulÃ©es ou qui entraÃ®neront d'autres actions (comme l'expÃ©dition immÃ©diate de marchandises depuis un entrepÃ´t).
 
-## Cas de test associés
+## Cas de test associÃ©s
 
-- [Test de la pollution des paramètres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md)
+- [Test de la pollution des paramÃ¨tres HTTP](../07-Input_Validation_Testing/04-Testing_for_HTTP_Parameter_Pollution.md)
 - [Test pour l'injection SQL](../07-Input_Validation_Testing/05-Testing_for_SQL_Injection.md)
 - [Test pour le contournement des flux de travail](06-Testing_for_the_Circumvention_of_Work_Flows.md)
 
 ## Correction
 
-- Dans la mesure du possible, évitez de stocker, de transmettre ou de traiter les détails de la carte.
+- Dans la mesure du possible, Ã©vitez de stocker, de transmettre ou de traiter les dÃ©tails de la carte.
     - Utilisez une redirection ou IFRAME pour la passerelle de paiement.
-- Examinez la documentation de la passerelle de paiement et utilisez toutes les fonctionnalités de sécurité disponibles (telles que le cryptage et les hachages sécurisés).
-- Gérer toutes les informations relatives aux prix côté serveur :
-    - Les seuls éléments inclus dans les demandes côté client doivent être les ID d'articles et les quantités.
-- Mettre en œuvre des contraintes de validation d'entrée et de logique métier appropriées (telles que la vérification des numéros ou des valeurs d'éléments négatifs).
-- Assurez-vous que le flux de paiement de l'application est robuste et que les étapes ne peuvent pas être effectuées dans le désordre.
+- Examinez la documentation de la passerelle de paiement et utilisez toutes les fonctionnalitÃ©s de sÃ©curitÃ© disponibles (telles que le cryptage et les hachages sÃ©curisÃ©s).
+- GÃ©rer toutes les informations relatives aux prix cÃ´tÃ© serveurÂ :
+    - Les seuls Ã©lÃ©ments inclus dans les demandes cÃ´tÃ© client doivent Ãªtre les ID d'articles et les quantitÃ©s.
+- Mettre en oeuvre des contraintes de validation d'entrÃ©e et de logique mÃ©tier appropriÃ©es (telles que la vÃ©rification des numÃ©ros ou des valeurs d'Ã©lÃ©ments nÃ©gatifs).
+- Assurez-vous que le flux de paiement de l'application est robuste et que les Ã©tapes ne peuvent pas Ãªtre effectuÃ©es dans le dÃ©sordre.
 
-## Références
+## RÃ©fÃ©rences
 
-- [Norme de sécurité des données de l'industrie des cartes de paiement (PCI DSS)](https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf)
-- [Conseils pour le traitement des paiements de commerce électronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf)
+- [Norme de sÃ©curitÃ© des donnÃ©es de l'industrie des cartes de paiement (PCI DSS)](https://www.pcisecuritystandards.org/documents/PCI_DSS_v3-2-1.pdf)
+- [Conseils pour le traitement des paiements de commerce Ã©lectronique par Visa](https://www.visa.co.uk/dam/VCOM/regional/ve/unitedkingdom/PDF/risk/processing-e-commerce-payments-guide-73-17337.pdf)
