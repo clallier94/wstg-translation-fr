@@ -12,7 +12,7 @@ Traditionnellement, le protocole HTTP n'autorise qu'une seule requête/réponse 
 
 ### Origine
 
-Il est de la responsabilité du serveur de vérifier l'[en-tête "Origin"](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin) dans la poignée de main HTTP WebSocket initiale. Si le serveur ne valide pas l'en-tête d'origine dans la poignée de main WebSocket initiale, le serveur WebSocket peut accepter des connexions de n'importe quelle origine. Cela pourrait permettre aux attaquants de communiquer avec le domaine interdomaine du serveur WebSocket, ce qui entraînerait des problèmes de type CSRF. Voir aussi [Top 10-2017 A5-Broken Access Control](https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control).
+Il est de la responsabilité du serveur de vérifier l'[en-tête `Origin`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin) dans la poignée de main HTTP WebSocket initiale. Si le serveur ne valide pas l'en-tête d'origine dans la poignée de main WebSocket initiale, le serveur WebSocket peut accepter des connexions de n'importe quelle origine. Cela pourrait permettre aux attaquants de communiquer avec le domaine interdomaine du serveur WebSocket, ce qui entraînerait des problèmes de type CSRF. Voir aussi [Top 10-2017 A5-Broken Access Control](https://owasp.org/www-project-top-ten/2017/A5_2017-Broken_Access_Control).
 
 ### Confidentialité et Intégrité
 
@@ -20,7 +20,7 @@ WebSockets peut être utilisé sur TCP non chiffré ou sur TLS chiffré. Pour ut
 
 ### Désinfection des entrées
 
-Comme pour toutes les données provenant de sources non fiables, les données doivent être correctement filtrées et encodées. Voir aussi [Top 10-2017 A1-Injection](https://owasp.org/www-project-top-ten/2017/A1_2017-Injection) et [Top 10-2017 A7-Cross-Site Scripting (XSS)] (https://owasp.org/www-project-top-ten/2017/A7_2017-Cross-Site_Scripting_(XSS)).
+Comme pour toutes les données provenant de sources non fiables, les données doivent être correctement filtrées et encodées. Voir aussi [Top 10-2017 A1-Injection](https://owasp.org/www-project-top-ten/2017/A1_2017-Injection) et [Top 10-2017 A7-Cross-Site Scripting (XSS)](https://owasp.org/www-project-top-ten/2017/A7_2017-Cross-Site_Scripting_(XSS)).
 
 ## Objectifs des tests
 
@@ -67,7 +67,7 @@ Les tests en boîte grise sont similaires aux tests en boîte noire. Dans les te
 
 ## Outils
 
-- [Proxy d'attaque Zed OWASP (ZAP)] (https://www.zaproxy.org)
+- [Proxy d'attaque Zed OWASP (ZAP)](https://www.zaproxy.org)
 - [Client WebSocket](https://github.com/ethicalhack3r/scripts/blob/master/WebSockets.html)
 - [Client Google Chrome Simple WebSocket](https://chrome.google.com/webstore/detail/simple-websocket-client/pfdhoblngboilpfeibdedpjgfnlcodoo?hl=en)
 
@@ -77,5 +77,5 @@ Les tests en boîte grise sont similaires aux tests en boîte noire. Dans les te
 - [W3C - L'API WebSocket](https://html.spec.whatwg.org/multipage/web-sockets.html#network)
 - [IETF - Le protocole WebSocket](https://tools.ietf.org/html/rfc6455)
 - [Christian Schneider - Piratage WebSocket intersite (CSWSH)](http://www.christian-schneider.net/CrossSiteWebSocketHijacking.html)
-- [Robert Koch - Sur WebSockets dans les tests de pénétration] (http://www.ub.tuwien.ac.at/dipl/2013/AC07815487.pdf)
+- [Robert Koch - Sur WebSockets dans les tests de pénétration](http://www.ub.tuwien.ac.at/dipl/2013/AC07815487.pdf)
 - [DigiNinja - OWASP ZAP et Web Sockets](http://www.digininja.org/blog/zap_web_sockets.php)
