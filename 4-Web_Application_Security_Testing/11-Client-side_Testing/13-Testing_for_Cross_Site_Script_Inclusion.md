@@ -68,7 +68,7 @@ Le site d'attaque, `attackingwebsite.com`, a un `index.html` avec le code suivan
 </html>
 ```
 
-Dans cet exemple, une victime est authentifiée avec `victim.com`. Un attaquant attire la victime vers "attackingwebsite.com" via l'ingénierie sociale, des e-mails de phishing, etc. Le navigateur de la victime récupère ensuite "api.js", ce qui entraîne la fuite des données sensibles via la variable JavaScript globale et leur affichage à l'aide de "innerHTML".
+Dans cet exemple, une victime est authentifiée avec `victim.com`. Un attaquant attire la victime vers `attackingwebsite.com` via l'ingénierie sociale, des e-mails de phishing, etc. Le navigateur de la victime récupère ensuite `api.js`, ce qui entraîne la fuite des données sensibles via la variable JavaScript globale et leur affichage à l'aide de `innerHTML`.
 
 ### 2. Fuite de données sensibles via les paramètres de fonction globaux
 
@@ -155,7 +155,7 @@ Dans cet exemple, l'utilisation des colonnes `____` comme points d'injection et 
 
 ### 4. Fuite de données sensibles via des erreurs d'exécution JavaScript
 
-Les navigateurs présentent normalement des [messages d'erreur JavaScript] normalisés (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors). Cependant, dans le cas d'IE9/10, les messages d'erreur d'exécution ont fourni des détails supplémentaires qui pourraient être utilisés pour divulguer des données. Par exemple, un site Web "victim.com" diffuse le contenu suivant à l'URI "http://victim.com/service/csvendpoint" pour les utilisateurs authentifiés :
+Les navigateurs présentent normalement des [messages d'erreur JavaScript normalisés](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors). Cependant, dans le cas d'IE9/10, les messages d'erreur d'exécution ont fourni des détails supplémentaires qui pourraient être utilisés pour divulguer des données. Par exemple, un site Web "victim.com" diffuse le contenu suivant à l'URI `http://victim.com/service/csvendpoint` pour les utilisateurs authentifiés :
 
 ```text
 HTTP/1.1 200 OK
