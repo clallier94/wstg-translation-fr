@@ -375,7 +375,7 @@ Le code de clickjacking pour créer cette page est présenté ci-dessous :
 
 Avec l'aide de CSS (notez le bloc `#clickjacking`), nous pouvons masquer et positionner convenablement l'iframe de manière à ce qu'il corresponde aux boutons. Si la victime clique sur le bouton "Cliquez et partez !" le formulaire est soumis et le transfert est terminé.
 
-![Clickjacking exemple Malicious Page 3](images/Clickjacking_exemple_malicious_page_3.png)\
+![Clickjacking exemple Malicious Page 3](images/Clickjacking_example_malicious_page_3.png)\
 *Figure 4.11.9-6 : Exemple de détournement de clic Malicious Page 3*
 
 L'exemple présenté utilise uniquement la technique de base du détournement de clic, mais avec une technique avancée, il est possible de forcer l'utilisateur à remplir le formulaire avec des valeurs définies par l'attaquant.
