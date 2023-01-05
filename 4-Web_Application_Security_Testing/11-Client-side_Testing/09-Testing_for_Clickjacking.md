@@ -48,11 +48,11 @@ Si la page `http://www.target.site` est chargée avec succès dans le cadre, alo
 
 ### Contourner la protection contre le détournement de clics
 
-Si la page "http://www.target.site" n'apparaît pas dans le cadre en ligne, le site dispose probablement d'une certaine forme de protection contre le détournement de clics. Il est important de noter que cela ne garantit pas que la page est totalement à l'abri du détournement de clics.
+Si la page http://www.target.site n'apparaît pas dans le cadre en ligne, le site dispose probablement d'une certaine forme de protection contre le détournement de clics. Il est important de noter que cela ne garantit pas que la page est totalement à l'abri du détournement de clics.
 
 Les méthodes de protection d'une page Web contre le détournement de clics peuvent être divisées en quelques mécanismes principaux. Il est possible de contourner ces méthodes dans certaines circonstances en utilisant des solutions de contournement spécifiques. Pour plus de ressources OWASP sur la défense contre le détournement de clics, consultez la [fiche de triche de défense contre le détournement de clics OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Clickjacking_Defense_Cheat_Sheet.html).
 
-#### Protection côté client : suppression de trames
+#### Protection côté client : suppression de trames
 
 La méthode côté client la plus courante, qui a été développée pour protéger une page Web contre le détournement de clics, s'appelle Frame Busting et consiste en un script dans chaque page qui ne doit pas être encadré. Le but de cette technique est d'empêcher un site de fonctionner lorsqu'il est chargé à l'intérieur d'un cadre.
 
@@ -64,7 +64,7 @@ Les versions mobiles du site Web sont généralement plus petites et plus rapide
 
 ##### Double encadrement
 
-Certaines techniques de contournement de trame tentent de casser la trame en attribuant une valeur à l'attribut `parent.location` dans l'instruction "counter-action".
+Certaines techniques de contournement de trame tentent de casser la trame en attribuant une valeur à l'attribut `parent.location` dans l'instruction `counter-action`.
 
 De telles actions sont, par exemple :
 
@@ -100,7 +100,7 @@ Sous-cadre fictif de l'attaquant (`fictitious.html`) :
 
 Trois techniques de désactivation peuvent être utilisées avec les trames :
 
-- Attribut sandbox : avec HTML5, il existe un nouvel attribut appelé "sandbox". Il active un ensemble de restrictions sur le contenu chargé dans l'iframe. Pour le moment, cet attribut n'est compatible qu'avec Chrome et Safari.
+- Attribut sandbox : avec HTML5, il existe un nouvel attribut appelé `sandbox`. Il active un ensemble de restrictions sur le contenu chargé dans l'iframe. Pour le moment, cet attribut n'est compatible qu'avec Chrome et Safari.
 
 exemple :
 
@@ -108,7 +108,7 @@ exemple :
 <iframe src="http://exemple.org" sandbox></iframe>
 ```
 
-- Mode design : Paul Stone a montré un problème de sécurité concernant le "designMode" qui peut être activé dans la page de cadrage (via document.designMode), désactivant JavaScript en top et sub-frame.
+- Mode design : Paul Stone a montré un problème de sécurité concernant le `designMode` qui peut être activé dans la page de cadrage (via document.designMode), désactivant JavaScript en top et sub-frame.
 
 ##### Événement OnBeforeUnload
 
@@ -230,7 +230,7 @@ exemple :
 
 #### Protection côté serveur : X-Frame-Options
 
-Une approche alternative au code de contournement de trame côté client consiste en une défense basée sur l'en-tête. L'en-tête `X-FRAME-OPTIONS` est envoyé par le serveur sur les réponses HTTP et est utilisé pour marquer les pages Web qui ne doivent pas être encadrées. Cet en-tête peut prendre les valeurs `DENY`, `SAMEORIGIN`, `ALLOW-FROM` origin ou `ALLOWALL` non standard. La valeur recommandée est "REFUSER".
+Une approche alternative au code de contournement de trame côté client consiste en une défense basée sur l'en-tête. L'en-tête `X-FRAME-OPTIONS` est envoyé par le serveur sur les réponses HTTP et est utilisé pour marquer les pages Web qui ne doivent pas être encadrées. Cet en-tête peut prendre les valeurs `DENY`, `SAMEORIGIN`, `ALLOW-FROM` origin ou `ALLOWALL` non standard. La valeur recommandée est `DENY`.
 
 L'en-tête `X-FRAME-OPTIONS` est une très bonne solution, et a été adopté par tous les principaux navigateurs, mais aussi pour cette technique, il existe certaines limitations qui pourraient conduire dans tous les cas à exploiter la vulnérabilité de détournement de clic.
 
@@ -242,7 +242,7 @@ Les proxys Web sont connus pour ajouter et supprimer des en-têtes. Dans le cas 
 
 Dans ce cas également, étant donné que `X-FRAME-OPTIONS` doit être implémenté dans chaque page du site Web, les développeurs n'ont peut-être pas protégé la version mobile du site Web.
 
-#### Protection côté serveur : utilisation de la directive frame-ancestors de la politique de sécurité du contenu (CSP)
+#### Protection côté serveur : utilisation de la directive frame-ancestors de la politique de sécurité du contenu (CSP)
 
 La directive `frame-ancestors` dans HTTP Content-Security-Policy (CSP) spécifie les parents acceptables qui peuvent intégrer une page en utilisant `<frame>`, `<iframe>`, `<object>`, `<embed >`, ou `<applet>` balises.
 
